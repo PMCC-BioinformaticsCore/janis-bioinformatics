@@ -1,5 +1,5 @@
-from janis.bioinformatics.tools.samtools.samtoolslatest import SamToolsLatest
-from janis.bioinformatics.tools.samtools.view.base import SamToolsViewBase
+from bioinformatics.tools.samtools.samtoolslatest import SamToolsLatest
+from bioinformatics.tools.samtools.view.base import SamToolsViewBase
 
 
 class SamToolsViewLatest(SamToolsLatest, SamToolsViewBase):

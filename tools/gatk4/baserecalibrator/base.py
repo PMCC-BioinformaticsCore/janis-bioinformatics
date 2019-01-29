@@ -1,11 +1,11 @@
 from abc import ABC
 
 from janis import ToolArgument, ToolInput, ToolOutput, Filename, Array, File, String, Int, Boolean, Double, Directory
-from janis.bioinformatics.data_types.bam import Bam
-from janis.bioinformatics.data_types.bampair import BamPair
-from janis.bioinformatics.data_types.fasta import FastaWithDict
-from janis.bioinformatics.data_types.vcf import VcfIdx
-from janis.bioinformatics.tools.gatk4.gatk4toolbase import Gatk4ToolBase
+from bioinformatics.data_types.bam import Bam
+from bioinformatics.data_types.bampair import BamPair
+from bioinformatics.data_types.fasta import FastaWithDict
+from bioinformatics.data_types.vcf import VcfIdx
+from bioinformatics.tools.gatk4.gatk4toolbase import Gatk4ToolBase
 from janis.unix.data_types.tsv import Tsv
 from janis.utils.metadata import ToolMetadata
 

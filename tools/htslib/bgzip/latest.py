@@ -1,5 +1,5 @@
-from janis.bioinformatics.tools.htslib.bgzip.base import BGZipBase
-from janis.bioinformatics.tools.htslib.latest import HTSLibLatest
+from bioinformatics.tools.htslib.bgzip.base import BGZipBase
+from bioinformatics.tools.htslib.latest import HTSLibLatest
 
 
 class BGZipLatest(HTSLibLatest, BGZipBase):

@@ -1,5 +1,5 @@
-from janis.bioinformatics.tools.gatk4.gatk_4_0 import Gatk_4_0
-from janis.bioinformatics.tools.gatk4.mergesamfiles.base import Gatk4MergeSamFilesBase
+from bioinformatics.tools.gatk4.gatk_4_0 import Gatk_4_0
+from bioinformatics.tools.gatk4.mergesamfiles.base import Gatk4MergeSamFilesBase
 
 
 class Gatk4MergeSamFiles_4_0(Gatk_4_0, Gatk4MergeSamFilesBase):

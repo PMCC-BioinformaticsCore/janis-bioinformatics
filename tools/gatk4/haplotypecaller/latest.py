@@ -1,5 +1,5 @@
-from janis.bioinformatics.tools.gatk4.gatk_latest import Gatk4Latest
-from janis.bioinformatics.tools.gatk4.haplotypecaller.base import Gatk4HaplotypeCallerBase
+from bioinformatics.tools.gatk4.gatk_latest import Gatk4Latest
+from bioinformatics.tools.gatk4.haplotypecaller.base import Gatk4HaplotypeCallerBase
 
 
 class Gatk4HaplotypeCallerLatest(Gatk4Latest, Gatk4HaplotypeCallerBase):

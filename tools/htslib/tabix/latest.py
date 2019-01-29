@@ -1,5 +1,5 @@
-from janis.bioinformatics.tools.htslib.latest import HTSLibLatest
-from janis.bioinformatics.tools.htslib.tabix.base import TabixBase
+from bioinformatics.tools.htslib.latest import HTSLibLatest
+from bioinformatics.tools.htslib.tabix.base import TabixBase
 
 
 class TabixLatest(HTSLibLatest, TabixBase):

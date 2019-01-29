@@ -1,9 +1,13 @@
 from abc import ABC, abstractmethod
 
-from janis import CommandTool, ToolInput, ToolArgument
+from bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 
 
-class BwaToolBase(CommandTool, ABC):
+class BwaToolBase(BioinformaticsTool, ABC):
+
+    @staticmethod
+    def tool_provider():
+        return "bwa"
 
     @staticmethod
     def base_command():

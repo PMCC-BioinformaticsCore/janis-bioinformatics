@@ -1,9 +1,9 @@
 from abc import ABC
 
 from janis import ToolInput, String, Boolean, File, Filename, Array, Int, ToolOutput
-from janis.bioinformatics.data_types.fasta import FastaWithDict
-from janis.bioinformatics.data_types.vcf import TabixIdx, Vcf, VcfIdx
-from janis.bioinformatics.tools.bcftools.bcftoolstoolbase import BcfToolsToolBase
+from bioinformatics.data_types.fasta import FastaWithDict
+from bioinformatics.data_types.vcf import TabixIdx, Vcf, VcfIdx
+from bioinformatics.tools.bcftools.bcftoolstoolbase import BcfToolsToolBase
 from janis.utils.metadata import ToolMetadata
 
 

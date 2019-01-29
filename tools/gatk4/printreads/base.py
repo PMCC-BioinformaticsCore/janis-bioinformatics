@@ -2,9 +2,9 @@ from abc import ABC
 from typing import List
 
 from janis import ToolOutput, ToolInput, Filename
-from janis.bioinformatics.data_types.bam import Bam
-from janis.bioinformatics.data_types.bampair import BamPair
-from janis.bioinformatics.tools.gatk4.gatk4toolbase import Gatk4ToolBase
+from bioinformatics.data_types.bam import Bam
+from bioinformatics.data_types.bampair import BamPair
+from bioinformatics.tools.gatk4.gatk4toolbase import Gatk4ToolBase
 from janis.utils.metadata import ToolMetadata
 
 

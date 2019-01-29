@@ -1,5 +1,5 @@
-from janis.bioinformatics.tools.gatk3.baserecalibrator.base import Gatk3RecalibratorBase
-from janis.bioinformatics.tools.gatk3.gatk_3_3_7 import Gatk_3_3_7
+from bioinformatics.tools.gatk3.baserecalibrator.base import Gatk3RecalibratorBase
+from bioinformatics.tools.gatk3.gatk_3_3_7 import Gatk_3_3_7
 
 
 class Gatk3BaseRecalibrator_3_3_7(Gatk_3_3_7, Gatk3RecalibratorBase):

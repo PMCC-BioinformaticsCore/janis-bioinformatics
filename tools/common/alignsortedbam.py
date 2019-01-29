@@ -1,16 +1,17 @@
-from janis import Workflow, Step, String, Input, Directory, Output
-from janis.bioinformatics.data_types.bam import Bam
-from janis.bioinformatics.data_types.bampair import BamPair
-from janis.bioinformatics.data_types.fasta import Fasta
-from janis.bioinformatics.data_types.fastq import Fastq
-from janis.bioinformatics.data_types.sam import Sam
-from janis.bioinformatics.tools.bwa.mem.latest import BwaMemLatest
-from janis.bioinformatics.tools.gatk4.sortsam.latest import Gatk4SortSamLatest
-from janis.bioinformatics.tools.samtools.view.latest import SamToolsViewLatest
+from bioinformatics.data_types.bam import Bam
+from bioinformatics.data_types.bampair import BamPair
+from bioinformatics.data_types.fasta import Fasta
+from bioinformatics.data_types.fastq import Fastq
+from bioinformatics.data_types.sam import Sam
+from bioinformatics.tools.bioinformaticstoolbase import BioinformaticsWorkflow
+from bioinformatics.tools.bwa.mem.latest import BwaMemLatest
+from bioinformatics.tools.gatk4.sortsam.latest import Gatk4SortSamLatest
+from bioinformatics.tools.samtools.view.latest import SamToolsViewLatest
+from janis import Step, String, Input, Directory, Output
 from janis.utils.metadata import WorkflowMetadata
 
 
-class AlignSortedBam(Workflow):
+class AlignSortedBam(BioinformaticsWorkflow):
 
     def __init__(self):
         super(AlignSortedBam, self).__init__("alignsortedbam", friendly_name="Align sorted BAM")

@@ -1,5 +1,5 @@
-from janis.bioinformatics.tools.gatk4.gatk_latest import Gatk4Latest
-from janis.bioinformatics.tools.gatk4.markduplicates.base import Gatk4MarkDuplicatesBase
+from bioinformatics.tools.gatk4.gatk_latest import Gatk4Latest
+from bioinformatics.tools.gatk4.markduplicates.base import Gatk4MarkDuplicatesBase
 
 
 class Gatk4MarkDuplicatesLatest(Gatk4Latest, Gatk4MarkDuplicatesBase):

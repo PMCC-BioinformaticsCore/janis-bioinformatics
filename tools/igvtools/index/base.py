@@ -1,6 +1,6 @@
 from janis import ToolInput
-from janis.bioinformatics.data_types.vcf import TabixIdx
-from janis.bioinformatics.tools.igvtools.igvtoolstoolbase import IgvToolsToolBase
+from bioinformatics.data_types.vcf import TabixIdx
+from bioinformatics.tools.igvtools.igvtoolstoolbase import IgvToolsToolBase
 from janis.utils.metadata import ToolMetadata
 
 

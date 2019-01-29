@@ -1,5 +1,5 @@
-from janis.bioinformatics.tools.gatk4.gatk_latest import Gatk4Latest
-from janis.bioinformatics.tools.gatk4.mutect2.base import Gatk4Mutect2Base
+from bioinformatics.tools.gatk4.gatk_latest import Gatk4Latest
+from bioinformatics.tools.gatk4.mutect2.base import Gatk4Mutect2Base
 
 
 class Gatk4Mutect2Latest(Gatk4Latest, Gatk4Mutect2Base):

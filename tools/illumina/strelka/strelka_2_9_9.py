@@ -1,6 +1,6 @@
 import yaml
 
-from janis.bioinformatics.tools.illumina.strelka.base import StrelkaBase
+from bioinformatics.tools.illumina.strelka.base import StrelkaBase
 
 
 class Strelka_2_9_9(StrelkaBase):

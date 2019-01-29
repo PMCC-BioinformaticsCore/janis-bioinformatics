@@ -1,8 +1,13 @@
 from abc import ABC, abstractmethod
-from janis import CommandTool
+
+from bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 
 
-class SamToolsToolBase(CommandTool, ABC):
+class SamToolsToolBase(BioinformaticsTool, ABC):
+
+    @staticmethod
+    def tool_provider():
+        return "samtools"
 
     @classmethod
     @abstractmethod

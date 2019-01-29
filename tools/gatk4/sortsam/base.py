@@ -1,9 +1,9 @@
 from janis import ToolInput, Filename, String, ToolArgument, Array, File, Int, Boolean, ToolOutput, Directory
-from janis.bioinformatics.data_types.bam import Bam
-from janis.bioinformatics.data_types.bampair import BamPair
-from janis.bioinformatics.data_types.fasta import FastaWithDict
-from janis.bioinformatics.data_types.sam import Sam
-from janis.bioinformatics.tools.gatk4.gatk4toolbase import Gatk4ToolBase
+from bioinformatics.data_types.bam import Bam
+from bioinformatics.data_types.bampair import BamPair
+from bioinformatics.data_types.fasta import FastaWithDict
+from bioinformatics.data_types.sam import Sam
+from bioinformatics.tools.gatk4.gatk4toolbase import Gatk4ToolBase
 from janis.utils.metadata import ToolMetadata
 
 
@@ -14,7 +14,7 @@ class Gatk4SortSamBase(Gatk4ToolBase):
 
     @staticmethod
     def tool():
-        return "gatksortsam"
+        return "gatk4sortsam"
 
     def friendly_name(self):
         return "GATK4: Sort SAM"

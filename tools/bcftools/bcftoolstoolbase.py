@@ -1,11 +1,15 @@
 from abc import ABC, abstractmethod
 from datetime import date
 
-from janis import CommandTool
+from bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 from janis.utils.metadata import ToolMetadata
 
 
-class BcfToolsToolBase(CommandTool, ABC):
+class BcfToolsToolBase(BioinformaticsTool, ABC):
+
+    @staticmethod
+    def tool_provider():
+        return "bcftools"
 
     @classmethod
     @abstractmethod

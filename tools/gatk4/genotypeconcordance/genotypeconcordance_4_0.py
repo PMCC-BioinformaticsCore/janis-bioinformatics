@@ -1,5 +1,5 @@
-from janis.bioinformatics.tools.gatk4.gatk_4_0 import Gatk_4_0
-from janis.bioinformatics.tools.gatk4.genotypeconcordance.base import Gatk4GenotypeConcordanceBase
+from bioinformatics.tools.gatk4.gatk_4_0 import Gatk_4_0
+from bioinformatics.tools.gatk4.genotypeconcordance.base import Gatk4GenotypeConcordanceBase
 
 
 class Gatk4GenotypeConcordance_4_0(Gatk_4_0, Gatk4GenotypeConcordanceBase):

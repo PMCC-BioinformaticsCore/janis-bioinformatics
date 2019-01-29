@@ -1,5 +1,5 @@
-from janis.bioinformatics.tools.samtools.samtoolslatest import SamToolsLatest
-from janis.bioinformatics.tools.samtools.sort.base import SamToolsSortBase
+from bioinformatics.tools.samtools.samtoolslatest import SamToolsLatest
+from bioinformatics.tools.samtools.sort.base import SamToolsSortBase
 
 
 class SamToolsSortLatest(SamToolsLatest, SamToolsSortBase):

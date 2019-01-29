@@ -1,9 +1,9 @@
 from abc import ABC
 
 from janis import ToolInput, Filename, ToolOutput, Directory
-from janis.bioinformatics.data_types.bampair import BamPair
-from janis.bioinformatics.data_types.fasta import FastaWithDict
-from janis.bioinformatics.tools.gatk4.gatk4toolbase import Gatk4ToolBase
+from bioinformatics.data_types.bampair import BamPair
+from bioinformatics.data_types.fasta import FastaWithDict
+from bioinformatics.tools.gatk4.gatk4toolbase import Gatk4ToolBase
 from janis.unix.data_types.tsv import Tsv
 from janis.utils.metadata import ToolMetadata
 

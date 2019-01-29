@@ -1,15 +1,21 @@
 from abc import ABC, abstractmethod
 from typing import List
 
-from janis import CommandTool, ToolOutput, ToolInput, ToolArgument, Boolean, String, File
-from janis.bioinformatics.data_types.bampair import BamPair
-from janis.bioinformatics.data_types.fasta import FastaWithDict
-from janis.bioinformatics.data_types.vcf import TabixIdx
+from bioinformatics.data_types.bampair import BamPair
+from bioinformatics.data_types.fasta import FastaWithDict
+from bioinformatics.data_types.vcf import TabixIdx
+from bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
+from janis import ToolOutput, ToolInput, ToolArgument, Boolean, String, File
 from janis.unix.data_types.tsv import Tsv
 from janis.utils.metadata import ToolMetadata
 
 
-class StrelkaBase(CommandTool, ABC):
+class StrelkaBase(BioinformaticsTool, ABC):
+
+    @staticmethod
+    def tool_provider():
+        return "illumina"
+
     @staticmethod
     def tool():
         return "strelka-germline"

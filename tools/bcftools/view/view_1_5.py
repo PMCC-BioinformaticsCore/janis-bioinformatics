@@ -1,5 +1,5 @@
-from janis.bioinformatics.tools.bcftools.bcftools_1_5 import BcfTools_1_5
-from janis.bioinformatics.tools.bcftools.view.base import BcfToolsViewBase
+from bioinformatics.tools.bcftools.bcftools_1_5 import BcfTools_1_5
+from bioinformatics.tools.bcftools.view.base import BcfToolsViewBase
 
 
 class BcfToolsView_1_5(BcfTools_1_5, BcfToolsViewBase):

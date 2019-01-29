@@ -1,20 +1,21 @@
-import os
 import glob
 import importlib
-from inspect import isclass, isfunction, signature, isabstract
+import os
+from inspect import isclass, isabstract
 
-from janis import Workflow
-from janis.tool.tool import Tool
 from constants import PROJECT_ROOT_DIR
-from janis.types.data_types import DataType
-from janis.types.registry import register_type
+from janis import Workflow
 from janis.tool.commandtool import CommandTool
 from janis.tool.registry import register_tool, get_tools
+from janis.types.data_types import DataType
+from janis.types.registry import register_type
 from janis.utils.logger import Logger
+
 
 def try_register_type(cls):
     try:
-        if isabstract(cls): return
+        if isabstract(cls):
+            return
         # if isfunction(cls) and len(signature(cls).parameters) == 0:
         #     Logger.log(str(cls) + " is an empty-param function")
         #     Logger.mute()
@@ -37,13 +38,18 @@ def try_register_type(cls):
         elif isclass(cls) and issubclass(cls, DataType) and cls != DataType:
             if register_type(cls):
                 Logger.log("Registered type: " + cls.name())
+        else:
+            Logger.log("Skipping: " + str(type(cls)))
 
     except Exception as e:
         import traceback
         Logger.log_ex(e)
         Logger.warn(traceback.format_exc())
 
-ignore_files = set(["regeneratedocumentation.py"])
+    Logger.set_console_level(5)
+
+
+ignore_files: set = {"regeneratedocumentation.py"}
 
 d = os.path.dirname(os.path.abspath(__file__))
 Logger.log("Locating modules from " + d)
@@ -55,7 +61,6 @@ for file in files:
     if os.path.basename(file) in ignore_files:
         continue
 
-
     name = os.path.splitext(file.replace(PROJECT_ROOT_DIR + "/", ""))[0].replace("/", ".")
     try:
         module = importlib.import_module(name)
@@ -63,5 +68,5 @@ for file in files:
         for cc in q:
             try_register_type(q[cc])
 
-    except:
-        continue
+    except Exception as e:
+        Logger.log_ex(e)

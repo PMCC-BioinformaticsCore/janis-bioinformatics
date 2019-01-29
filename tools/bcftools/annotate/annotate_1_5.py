@@ -1,5 +1,5 @@
-from janis.bioinformatics.tools.bcftools.annotate.base import BcfToolsAnnotateBase
-from janis.bioinformatics.tools.bcftools.bcftools_1_5 import BcfTools_1_5
+from bioinformatics.tools.bcftools.annotate.base import BcfToolsAnnotateBase
+from bioinformatics.tools.bcftools.bcftools_1_5 import BcfTools_1_5
 
 
 class BcfToolsAnnotate_1_5(BcfTools_1_5, BcfToolsAnnotateBase):

@@ -1,6 +1,6 @@
 from janis import File, ToolInput
-from janis.bioinformatics.tools.gatk4.gatk_4_0 import Gatk_4_0
-from janis.bioinformatics.tools.gatk4.printreads.base import Gatk4PrintReadsBase
+from bioinformatics.tools.gatk4.gatk_4_0 import Gatk_4_0
+from bioinformatics.tools.gatk4.printreads.base import Gatk4PrintReadsBase
 
 
 class Gatk4PrintReads_4_0(Gatk_4_0, Gatk4PrintReadsBase):

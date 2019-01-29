@@ -1,11 +1,12 @@
+from bioinformatics.tools.bioinformaticstoolbase import BioinformaticsWorkflow
 from janis import Step, Workflow, Input, Output, Array
-from janis.bioinformatics.data_types.vcf import Vcf, VcfIdx
-from janis.bioinformatics.tools.gatk4.genotypeconcordance.latest import Gatk4GenotypeConcordanceLatest
-from janis.bioinformatics.tools.htslib.bgzip.bgzip_1_2_1 import BGZip_1_2_1
-from janis.bioinformatics.tools.htslib.tabix.tabix_1_2_1 import Tabix_1_2_1
+from bioinformatics.data_types.vcf import Vcf, VcfIdx
+from bioinformatics.tools.gatk4.genotypeconcordance.latest import Gatk4GenotypeConcordanceLatest
+from bioinformatics.tools.htslib.bgzip.bgzip_1_2_1 import BGZip_1_2_1
+from bioinformatics.tools.htslib.tabix.tabix_1_2_1 import Tabix_1_2_1
 
 
-class PerformanceValidator_1_2_1(Workflow):
+class PerformanceValidator_1_2_1(BioinformaticsWorkflow):
     def __init__(self):
         super(PerformanceValidator_1_2_1, self).__init__("performanceValidator", friendly_name="Performance Validator")
 

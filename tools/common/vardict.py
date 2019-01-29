@@ -1,14 +1,14 @@
 from typing import List
 
-from janis import CommandTool, ToolOutput, ToolInput, Filename, File, ToolArgument, Boolean, Float, Int, String
-from janis.bioinformatics.data_types.bampair import BamPair
-from janis.bioinformatics.data_types.bed import Bed
-from janis.bioinformatics.data_types.fasta import FastaFai
-from janis.bioinformatics.data_types.vcf import Vcf
-from janis.types.common_data_types import Stdout
+from bioinformatics.data_types.bampair import BamPair
+from bioinformatics.data_types.bed import Bed
+from bioinformatics.data_types.fasta import FastaFai
+from bioinformatics.data_types.vcf import Vcf
+from bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
+from janis import ToolOutput, ToolInput, Filename, ToolArgument, Boolean, Float, Int, String
 
 
-class VarDict(CommandTool):
+class VarDict(BioinformaticsTool):
     @staticmethod
     def tool():
         return "vardict"

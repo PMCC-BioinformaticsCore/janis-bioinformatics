@@ -1,5 +1,5 @@
-from janis.bioinformatics.tools.gatk3.gatk3_latest import Gatk3Latest
-from janis.bioinformatics.tools.gatk3.printreads.base import Gatk3PrintReadsBase
+from bioinformatics.tools.gatk3.gatk3_latest import Gatk3Latest
+from bioinformatics.tools.gatk3.printreads.base import Gatk3PrintReadsBase
 
 
 class Gatk3PrintReadsLatest(Gatk3Latest, Gatk3PrintReadsBase):

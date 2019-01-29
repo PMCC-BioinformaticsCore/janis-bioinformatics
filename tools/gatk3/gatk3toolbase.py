@@ -1,9 +1,14 @@
 from abc import ABC, abstractmethod
 
-from janis import CommandTool, ToolInput, ToolArgument, Boolean
+from bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
+from janis import ToolInput, ToolArgument, Boolean
 
 
-class Gatk3ToolBase(CommandTool, ABC):
+class Gatk3ToolBase(BioinformaticsTool, ABC):
+
+    @staticmethod
+    def tool_provider():
+        return "gatk3_NEEDS_WORK"
 
     @staticmethod
     def base_command():

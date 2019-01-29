@@ -1,8 +1,14 @@
 from abc import ABC, abstractmethod
+
+from bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 from janis import CommandTool
 
 
-class IgvToolsToolBase(CommandTool, ABC):
+class IgvToolsToolBase(BioinformaticsTool, ABC):
+
+    @staticmethod
+    def tool_provider():
+        return "igvtools"
 
     @classmethod
     @abstractmethod

@@ -1,12 +1,12 @@
 from typing import List
 
-from janis import CommandTool, ToolOutput, ToolInput, Filename, File, ToolArgument, Boolean, Float, Int, String
-from janis.bioinformatics.data_types.fasta import FastaWithDict
-from janis.bioinformatics.data_types.vcf import Vcf
-from janis.types.common_data_types import Stdout
+from bioinformatics.data_types.fasta import FastaWithDict
+from bioinformatics.data_types.vcf import Vcf
+from bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
+from janis import ToolOutput, ToolInput, Filename, ToolArgument
 
 
-class SplitMultiAllele(CommandTool):
+class SplitMultiAllele(BioinformaticsTool):
     @staticmethod
     def tool():
         return "SplitMultiAllele"
@@ -66,7 +66,9 @@ class SplitMultiAllele(CommandTool):
             vt decompose -s - -o -                          |\
             vt normalize -n -q - -o - -r $HumanREF          |\
             sed 's/ID=AD,Number=./ID=AD,Number=1/' > $2
-        
+    
+    ========
+    
     SED documentation:
         Usage: sed [OPTION]... {script-only-if-no-other-script} [input-file]...
         

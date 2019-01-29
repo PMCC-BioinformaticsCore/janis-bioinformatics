@@ -3,12 +3,12 @@ from typing import Dict, Any, Optional
 
 from janis import String, Int, File, ToolOutput, ToolInput, \
     ToolArgument, Boolean, Double, Array, Filename
-from janis.bioinformatics.data_types.bam import Bam
-from janis.bioinformatics.data_types.bampair import BamPair
-from janis.bioinformatics.data_types.bed import Bed
-from janis.bioinformatics.data_types.fasta import FastaWithDict
-from janis.bioinformatics.data_types.vcf import VcfIdx, Vcf
-from janis.bioinformatics.tools.gatk4.gatk4toolbase import Gatk4ToolBase
+from bioinformatics.data_types.bam import Bam
+from bioinformatics.data_types.bampair import BamPair
+from bioinformatics.data_types.bed import Bed
+from bioinformatics.data_types.fasta import FastaWithDict
+from bioinformatics.data_types.vcf import VcfIdx, Vcf
+from bioinformatics.tools.gatk4.gatk4toolbase import Gatk4ToolBase
 from janis.utils.metadata import ToolMetadata
 from janis.utils.resources import Resources
 

@@ -1,8 +1,8 @@
 from abc import ABC
 
 from janis import ToolInput, Filename, ToolOutput, File, Array, String, Boolean, Int, Float, Directory
-from janis.bioinformatics.data_types.vcf import VcfIdx, TabixIdx
-from janis.bioinformatics.tools.gatk4.gatk4toolbase import Gatk4ToolBase
+from bioinformatics.data_types.vcf import VcfIdx, TabixIdx
+from bioinformatics.tools.gatk4.gatk4toolbase import Gatk4ToolBase
 from janis.utils.metadata import ToolMetadata
 
 
