@@ -1,7 +1,7 @@
-from Pipeline import ToolInput
-from Pipeline.bioinformatics.data_types.vcf import TabixIdx
-from Pipeline.bioinformatics.tools.igvtools.igvtoolstoolbase import IgvToolsToolBase
-from Pipeline.utils.metadata import ToolMetadata
+from janis import ToolInput
+from janis.bioinformatics.data_types.vcf import TabixIdx
+from janis.bioinformatics.tools.igvtools.igvtoolstoolbase import IgvToolsToolBase
+from janis.utils.metadata import ToolMetadata
 
 
 class IgvToolsIndexBase(IgvToolsToolBase):

@@ -1,4 +1,4 @@
-# from Pipeline import Step, ToolInput, ToolOutput
+# from janis import Step, ToolInput, ToolOutput
 #
 # from typing import Dict
 #

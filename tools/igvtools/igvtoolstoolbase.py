@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from Pipeline import CommandTool
+from janis import CommandTool
 
 
 class IgvToolsToolBase(CommandTool, ABC):

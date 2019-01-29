@@ -1,5 +1,5 @@
-from Pipeline.bioinformatics.tools.gatk4.gatk_latest import Gatk4Latest
-from Pipeline.bioinformatics.tools.gatk4.mergesamfiles.base import Gatk4MergeSamFilesBase
+from janis.bioinformatics.tools.gatk4.gatk_latest import Gatk4Latest
+from janis.bioinformatics.tools.gatk4.mergesamfiles.base import Gatk4MergeSamFilesBase
 
 
 class Gatk4MergeSamFilesLatest(Gatk4Latest, Gatk4MergeSamFilesBase):

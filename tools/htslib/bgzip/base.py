@@ -1,10 +1,10 @@
 from abc import abstractmethod, ABC
 from typing import List
 
-from Pipeline import CommandTool, ToolOutput, ToolInput, Boolean, Int, String, File
-from Pipeline.bioinformatics.data_types.vcf import TabixIdx, VcfIdx, Vcf, CompressedVcf
-from Pipeline.types.common_data_types import Stdout
-from Pipeline.utils.metadata import ToolMetadata
+from janis import CommandTool, ToolOutput, ToolInput, Boolean, Int, String, File
+from janis.bioinformatics.data_types.vcf import TabixIdx, VcfIdx, Vcf, CompressedVcf
+from janis.types.common_data_types import Stdout
+from janis.utils.metadata import ToolMetadata
 
 
 class BGZipBase(CommandTool, ABC):

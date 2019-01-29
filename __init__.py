@@ -3,14 +3,14 @@ import glob
 import importlib
 from inspect import isclass, isfunction, signature, isabstract
 
-from Pipeline import Workflow
-from Pipeline.tool.tool import Tool
+from janis import Workflow
+from janis.tool.tool import Tool
 from constants import PROJECT_ROOT_DIR
-from Pipeline.types.data_types import DataType
-from Pipeline.types.registry import register_type
-from Pipeline.tool.commandtool import CommandTool
-from Pipeline.tool.registry import register_tool, get_tools
-from Pipeline.utils.logger import Logger
+from janis.types.data_types import DataType
+from janis.types.registry import register_type
+from janis.tool.commandtool import CommandTool
+from janis.tool.registry import register_tool, get_tools
+from janis.utils.logger import Logger
 
 def try_register_type(cls):
     try:

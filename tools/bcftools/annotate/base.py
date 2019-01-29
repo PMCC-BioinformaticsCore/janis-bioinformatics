@@ -1,9 +1,9 @@
 from abc import ABC
 
-from Pipeline import ToolInput, File, Boolean, String, Array, Int, Filename, ToolOutput
-from Pipeline.bioinformatics.data_types.vcf import Vcf
-from Pipeline.bioinformatics.tools.bcftools.bcftoolstoolbase import BcfToolsToolBase
-from Pipeline.utils.metadata import ToolMetadata
+from janis import ToolInput, File, Boolean, String, Array, Int, Filename, ToolOutput
+from janis.bioinformatics.data_types.vcf import Vcf
+from janis.bioinformatics.tools.bcftools.bcftoolstoolbase import BcfToolsToolBase
+from janis.utils.metadata import ToolMetadata
 
 
 class BcfToolsAnnotateBase(BcfToolsToolBase, ABC):

@@ -1,9 +1,9 @@
 from typing import List
 
-from Pipeline import CommandTool, ToolOutput, ToolInput, Filename, File, ToolArgument, Boolean, Float, Int, String
-from Pipeline.bioinformatics.data_types.fasta import FastaWithDict
-from Pipeline.bioinformatics.data_types.vcf import Vcf
-from Pipeline.types.common_data_types import Stdout
+from janis import CommandTool, ToolOutput, ToolInput, Filename, File, ToolArgument, Boolean, Float, Int, String
+from janis.bioinformatics.data_types.fasta import FastaWithDict
+from janis.bioinformatics.data_types.vcf import Vcf
+from janis.types.common_data_types import Stdout
 
 
 class SplitMultiAllele(CommandTool):

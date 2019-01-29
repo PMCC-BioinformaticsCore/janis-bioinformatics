@@ -1,9 +1,9 @@
-from Pipeline.bioinformatics.data_types.bam import Bam
-from Pipeline.bioinformatics.data_types.fastq import Fastq
-from Pipeline.bioinformatics.data_types.fasta import Fasta
+from janis.bioinformatics.data_types.bam import Bam
+from janis.bioinformatics.data_types.fastq import Fastq
+from janis.bioinformatics.data_types.fasta import Fasta
 
-from Pipeline.types.common_data_types import String, Int, Array, Filename
-from Pipeline.tool.commandtool import CommandTool, ToolOutput, ToolInput, ToolArgument
+from janis.types.common_data_types import String, Int, Array, Filename
+from janis.tool.commandtool import CommandTool, ToolOutput, ToolInput, ToolArgument
 
 
 class BwaMem(CommandTool):

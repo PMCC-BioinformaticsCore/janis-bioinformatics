@@ -1,10 +1,10 @@
 from abc import ABC
 
-from Pipeline import ToolInput, Filename, ToolOutput, File, Array, String, Int, Boolean, Directory
-from Pipeline.bioinformatics.data_types.bampair import BamPair
-from Pipeline.bioinformatics.tools.gatk4.gatk4toolbase import Gatk4ToolBase
-from Pipeline.unix.data_types.tsv import Tsv
-from Pipeline.utils.metadata import ToolMetadata
+from janis import ToolInput, Filename, ToolOutput, File, Array, String, Int, Boolean, Directory
+from janis.bioinformatics.data_types.bampair import BamPair
+from janis.bioinformatics.tools.gatk4.gatk4toolbase import Gatk4ToolBase
+from janis.unix.data_types.tsv import Tsv
+from janis.utils.metadata import ToolMetadata
 
 
 class Gatk4MarkDuplicatesBase(Gatk4ToolBase, ABC):

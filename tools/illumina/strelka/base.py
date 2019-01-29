@@ -1,12 +1,12 @@
 from abc import ABC, abstractmethod
 from typing import List
 
-from Pipeline import CommandTool, ToolOutput, ToolInput, ToolArgument, Boolean, String, File
-from Pipeline.bioinformatics.data_types.bampair import BamPair
-from Pipeline.bioinformatics.data_types.fasta import FastaWithDict
-from Pipeline.bioinformatics.data_types.vcf import TabixIdx
-from Pipeline.unix.data_types.tsv import Tsv
-from Pipeline.utils.metadata import ToolMetadata
+from janis import CommandTool, ToolOutput, ToolInput, ToolArgument, Boolean, String, File
+from janis.bioinformatics.data_types.bampair import BamPair
+from janis.bioinformatics.data_types.fasta import FastaWithDict
+from janis.bioinformatics.data_types.vcf import TabixIdx
+from janis.unix.data_types.tsv import Tsv
+from janis.utils.metadata import ToolMetadata
 
 
 class StrelkaBase(CommandTool, ABC):

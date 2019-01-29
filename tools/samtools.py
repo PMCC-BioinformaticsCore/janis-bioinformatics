@@ -1,6 +1,6 @@
-from Pipeline.bioinformatics.data_types.bam import Bam
-from Pipeline.bioinformatics.data_types.sam import Sam
-from Pipeline import String, CommandTool, ToolOutput, ToolInput, ToolArgument, \
+from janis.bioinformatics.data_types.bam import Bam
+from janis.bioinformatics.data_types.sam import Sam
+from janis import String, CommandTool, ToolOutput, ToolInput, ToolArgument, \
     Boolean, Int, File, Float, Array, Filename
 
 

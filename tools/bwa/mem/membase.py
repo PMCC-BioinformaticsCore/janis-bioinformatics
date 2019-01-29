@@ -1,12 +1,12 @@
 from abc import ABC
 
-from Pipeline import ToolInput, Int, Float, Boolean, String, ToolOutput, Filename, File
-from Pipeline.bioinformatics.data_types.bam import Bam
-from Pipeline.bioinformatics.data_types.fastq import Fastq
-from Pipeline.bioinformatics.data_types.sam import Sam
-from Pipeline.bioinformatics.tools.bwa.bwatoolbase import BwaToolBase
-from Pipeline.types.common_data_types import Stdout
-from Pipeline.utils.metadata import ToolMetadata
+from janis import ToolInput, Int, Float, Boolean, String, ToolOutput, Filename, File
+from janis.bioinformatics.data_types.bam import Bam
+from janis.bioinformatics.data_types.fastq import Fastq
+from janis.bioinformatics.data_types.sam import Sam
+from janis.bioinformatics.tools.bwa.bwatoolbase import BwaToolBase
+from janis.types.common_data_types import Stdout
+from janis.utils.metadata import ToolMetadata
 
 
 class BwaMemBase(BwaToolBase, ABC):

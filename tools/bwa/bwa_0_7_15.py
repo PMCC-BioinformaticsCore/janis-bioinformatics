@@ -1,4 +1,4 @@
-from Pipeline.bioinformatics.tools.bwa.bwabase import BwaBase
+from janis.bioinformatics.tools.bwa.bwabase import BwaBase
 
 
 class Bwa_0_7_15(BwaBase):

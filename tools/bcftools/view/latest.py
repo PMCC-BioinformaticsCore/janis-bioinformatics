@@ -1,5 +1,5 @@
-from Pipeline.bioinformatics.tools.bcftools.latest import BcfToolsLatest
-from Pipeline.bioinformatics.tools.bcftools.view.base import BcfToolsViewBase
+from janis.bioinformatics.tools.bcftools.latest import BcfToolsLatest
+from janis.bioinformatics.tools.bcftools.view.base import BcfToolsViewBase
 
 
 class BcfToolsViewLatest(BcfToolsLatest, BcfToolsViewBase):

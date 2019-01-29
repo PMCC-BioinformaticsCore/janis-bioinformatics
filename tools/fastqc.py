@@ -1,4 +1,4 @@
-from Pipeline import CommandTool
+from janis import CommandTool
 
 
 class FastQC(CommandTool):
@@ -17,7 +17,7 @@ class FastQC(CommandTool):
 
 # from typing import Dict
 #
-# from Pipeline import Step, ToolInput, ToolOutput
+# from janis import Step, ToolInput, ToolOutput
 #
 #
 # class FastQCFactory(StepFactory):

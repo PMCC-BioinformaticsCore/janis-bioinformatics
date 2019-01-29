@@ -1,5 +1,5 @@
-from Pipeline.bioinformatics.tools.bwa.bwa_0_7_15 import Bwa_0_7_15
-from Pipeline.bioinformatics.tools.bwa.mem.membase import BwaMemBase
+from janis.bioinformatics.tools.bwa.bwa_0_7_15 import Bwa_0_7_15
+from janis.bioinformatics.tools.bwa.mem.membase import BwaMemBase
 
 
 class BwaMem_0_7_15(Bwa_0_7_15, BwaMemBase):

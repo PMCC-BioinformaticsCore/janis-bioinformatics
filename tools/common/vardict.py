@@ -1,11 +1,11 @@
 from typing import List
 
-from Pipeline import CommandTool, ToolOutput, ToolInput, Filename, File, ToolArgument, Boolean, Float, Int, String
-from Pipeline.bioinformatics.data_types.bampair import BamPair
-from Pipeline.bioinformatics.data_types.bed import Bed
-from Pipeline.bioinformatics.data_types.fasta import FastaFai
-from Pipeline.bioinformatics.data_types.vcf import Vcf
-from Pipeline.types.common_data_types import Stdout
+from janis import CommandTool, ToolOutput, ToolInput, Filename, File, ToolArgument, Boolean, Float, Int, String
+from janis.bioinformatics.data_types.bampair import BamPair
+from janis.bioinformatics.data_types.bed import Bed
+from janis.bioinformatics.data_types.fasta import FastaFai
+from janis.bioinformatics.data_types.vcf import Vcf
+from janis.types.common_data_types import Stdout
 
 
 class VarDict(CommandTool):

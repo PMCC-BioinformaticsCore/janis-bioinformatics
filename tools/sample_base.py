@@ -1,8 +1,8 @@
-from Pipeline import ToolInput, Filename, String, ToolArgument, Array, File, Int, Boolean, ToolOutput, CommandTool
-from Pipeline.bioinformatics.data_types.bam import Bam
-from Pipeline.bioinformatics.data_types.fasta import FastaWithDict
-from Pipeline.bioinformatics.data_types.sam import Sam
-from Pipeline.bioinformatics.tools.gatk4.gatk4toolbase import Gatk4ToolBase
+from janis import ToolInput, Filename, String, ToolArgument, Array, File, Int, Boolean, ToolOutput, CommandTool
+from janis.bioinformatics.data_types.bam import Bam
+from janis.bioinformatics.data_types.fasta import FastaWithDict
+from janis.bioinformatics.data_types.sam import Sam
+from janis.bioinformatics.tools.gatk4.gatk4toolbase import Gatk4ToolBase
 
 
 class SampleBase(CommandTool):

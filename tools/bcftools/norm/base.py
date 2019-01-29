@@ -1,10 +1,10 @@
 from abc import ABC
 
-from Pipeline import ToolInput, String, Boolean, File, Filename, Array, Int, ToolOutput
-from Pipeline.bioinformatics.data_types.fasta import FastaWithDict
-from Pipeline.bioinformatics.data_types.vcf import TabixIdx, Vcf, VcfIdx
-from Pipeline.bioinformatics.tools.bcftools.bcftoolstoolbase import BcfToolsToolBase
-from Pipeline.utils.metadata import ToolMetadata
+from janis import ToolInput, String, Boolean, File, Filename, Array, Int, ToolOutput
+from janis.bioinformatics.data_types.fasta import FastaWithDict
+from janis.bioinformatics.data_types.vcf import TabixIdx, Vcf, VcfIdx
+from janis.bioinformatics.tools.bcftools.bcftoolstoolbase import BcfToolsToolBase
+from janis.utils.metadata import ToolMetadata
 
 
 class BcfToolsNormBase(BcfToolsToolBase, ABC):

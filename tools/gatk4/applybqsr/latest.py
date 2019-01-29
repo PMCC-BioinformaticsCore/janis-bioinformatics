@@ -1,5 +1,5 @@
-from Pipeline.bioinformatics.tools.gatk4.applybqsr.base import Gatk4ApplyBqsrBase
-from Pipeline.bioinformatics.tools.gatk4.gatk_latest import Gatk4Latest
+from janis.bioinformatics.tools.gatk4.applybqsr.base import Gatk4ApplyBqsrBase
+from janis.bioinformatics.tools.gatk4.gatk_latest import Gatk4Latest
 
 
 class Gatk4ApplyBqsrLatest(Gatk4Latest, Gatk4ApplyBqsrBase):

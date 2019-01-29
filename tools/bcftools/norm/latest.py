@@ -1,5 +1,5 @@
-from Pipeline.bioinformatics.tools.bcftools.latest import BcfToolsLatest
-from Pipeline.bioinformatics.tools.bcftools.norm.base import BcfToolsNormBase
+from janis.bioinformatics.tools.bcftools.latest import BcfToolsLatest
+from janis.bioinformatics.tools.bcftools.norm.base import BcfToolsNormBase
 
 
 class BcfToolsNormLatest(BcfToolsLatest, BcfToolsNormBase):

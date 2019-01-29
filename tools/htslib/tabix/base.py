@@ -1,9 +1,9 @@
 from abc import ABC
 from typing import List
 
-from Pipeline import CommandTool, ToolOutput, ToolInput, Boolean, Int, String, File
-from Pipeline.bioinformatics.data_types.vcf import TabixIdx, VcfIdx, CompressedVcf
-from Pipeline.utils.metadata import ToolMetadata
+from janis import CommandTool, ToolOutput, ToolInput, Boolean, Int, String, File
+from janis.bioinformatics.data_types.vcf import TabixIdx, VcfIdx, CompressedVcf
+from janis.utils.metadata import ToolMetadata
 
 
 class TabixBase(CommandTool, ABC):

@@ -1,5 +1,5 @@
-from Pipeline.bioinformatics.tools.bwa.bwalatest import BwaLatest
-from Pipeline.bioinformatics.tools.bwa.mem.membase import BwaMemBase
+from janis.bioinformatics.tools.bwa.bwalatest import BwaLatest
+from janis.bioinformatics.tools.bwa.mem.membase import BwaMemBase
 
 
 class BwaMemLatest(BwaLatest, BwaMemBase):

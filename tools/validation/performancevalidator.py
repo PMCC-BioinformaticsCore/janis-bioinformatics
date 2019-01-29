@@ -1,8 +1,8 @@
-from Pipeline import Step, Workflow, Input, Output, Array
-from Pipeline.bioinformatics.data_types.vcf import Vcf, VcfIdx
-from Pipeline.bioinformatics.tools.gatk4.genotypeconcordance.latest import Gatk4GenotypeConcordanceLatest
-from Pipeline.bioinformatics.tools.htslib.bgzip.bgzip_1_2_1 import BGZip_1_2_1
-from Pipeline.bioinformatics.tools.htslib.tabix.tabix_1_2_1 import Tabix_1_2_1
+from janis import Step, Workflow, Input, Output, Array
+from janis.bioinformatics.data_types.vcf import Vcf, VcfIdx
+from janis.bioinformatics.tools.gatk4.genotypeconcordance.latest import Gatk4GenotypeConcordanceLatest
+from janis.bioinformatics.tools.htslib.bgzip.bgzip_1_2_1 import BGZip_1_2_1
+from janis.bioinformatics.tools.htslib.tabix.tabix_1_2_1 import Tabix_1_2_1
 
 
 class PerformanceValidator_1_2_1(Workflow):

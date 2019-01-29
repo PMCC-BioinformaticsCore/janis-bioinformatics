@@ -1,13 +1,13 @@
-from Pipeline import Workflow, Step, String, Input, Directory, Output
-from Pipeline.bioinformatics.data_types.bam import Bam
-from Pipeline.bioinformatics.data_types.bampair import BamPair
-from Pipeline.bioinformatics.data_types.fasta import Fasta
-from Pipeline.bioinformatics.data_types.fastq import Fastq
-from Pipeline.bioinformatics.data_types.sam import Sam
-from Pipeline.bioinformatics.tools.bwa.mem.latest import BwaMemLatest
-from Pipeline.bioinformatics.tools.gatk4.sortsam.latest import Gatk4SortSamLatest
-from Pipeline.bioinformatics.tools.samtools.view.latest import SamToolsViewLatest
-from Pipeline.utils.metadata import WorkflowMetadata
+from janis import Workflow, Step, String, Input, Directory, Output
+from janis.bioinformatics.data_types.bam import Bam
+from janis.bioinformatics.data_types.bampair import BamPair
+from janis.bioinformatics.data_types.fasta import Fasta
+from janis.bioinformatics.data_types.fastq import Fastq
+from janis.bioinformatics.data_types.sam import Sam
+from janis.bioinformatics.tools.bwa.mem.latest import BwaMemLatest
+from janis.bioinformatics.tools.gatk4.sortsam.latest import Gatk4SortSamLatest
+from janis.bioinformatics.tools.samtools.view.latest import SamToolsViewLatest
+from janis.utils.metadata import WorkflowMetadata
 
 
 class AlignSortedBam(Workflow):

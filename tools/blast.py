@@ -1,4 +1,4 @@
-from Pipeline import CommandTool, ToolInput, File, String, ToolOutput, Directory, Int
+from janis import CommandTool, ToolInput, File, String, ToolOutput, Directory, Int
 
 
 class Blast(CommandTool):

@@ -1,10 +1,10 @@
-from Pipeline import ToolInput, Filename, String, ToolArgument, Array, File, Int, Boolean, ToolOutput, Directory
-from Pipeline.bioinformatics.data_types.bam import Bam
-from Pipeline.bioinformatics.data_types.bampair import BamPair
-from Pipeline.bioinformatics.data_types.fasta import FastaWithDict
-from Pipeline.bioinformatics.data_types.sam import Sam
-from Pipeline.bioinformatics.tools.gatk4.gatk4toolbase import Gatk4ToolBase
-from Pipeline.utils.metadata import ToolMetadata
+from janis import ToolInput, Filename, String, ToolArgument, Array, File, Int, Boolean, ToolOutput, Directory
+from janis.bioinformatics.data_types.bam import Bam
+from janis.bioinformatics.data_types.bampair import BamPair
+from janis.bioinformatics.data_types.fasta import FastaWithDict
+from janis.bioinformatics.data_types.sam import Sam
+from janis.bioinformatics.tools.gatk4.gatk4toolbase import Gatk4ToolBase
+from janis.utils.metadata import ToolMetadata
 
 
 class Gatk4SortSamBase(Gatk4ToolBase):

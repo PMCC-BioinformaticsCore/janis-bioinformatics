@@ -1,10 +1,10 @@
 from abc import ABC
 from typing import List
 
-from Pipeline import ToolOutput, ToolInput, Boolean, Int, String, File, Array, Float, Stdout
-from Pipeline.bioinformatics.data_types.vcf import Vcf
-from Pipeline.bioinformatics.tools.bcftools.bcftoolstoolbase import BcfToolsToolBase
-from Pipeline.utils.metadata import ToolMetadata
+from janis import ToolOutput, ToolInput, Boolean, Int, String, File, Array, Float, Stdout
+from janis.bioinformatics.data_types.vcf import Vcf
+from janis.bioinformatics.tools.bcftools.bcftoolstoolbase import BcfToolsToolBase
+from janis.utils.metadata import ToolMetadata
 
 
 class BcfToolsViewBase(BcfToolsToolBase, ABC):

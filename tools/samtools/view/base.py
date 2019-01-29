@@ -1,11 +1,11 @@
 from abc import ABC
 
-from Pipeline import ToolInput, ToolOutput, ToolArgument, Boolean, File, String, Int, Float, Filename
-from Pipeline.bioinformatics.data_types.bam import Bam
-from Pipeline.bioinformatics.data_types.fasta import FastaWithDict
-from Pipeline.bioinformatics.data_types.sam import Sam
-from Pipeline.bioinformatics.tools.samtools.samtoolstoolbase import SamToolsToolBase
-from Pipeline.utils.metadata import ToolMetadata
+from janis import ToolInput, ToolOutput, ToolArgument, Boolean, File, String, Int, Float, Filename
+from janis.bioinformatics.data_types.bam import Bam
+from janis.bioinformatics.data_types.fasta import FastaWithDict
+from janis.bioinformatics.data_types.sam import Sam
+from janis.bioinformatics.tools.samtools.samtoolstoolbase import SamToolsToolBase
+from janis.utils.metadata import ToolMetadata
 
 
 class SamToolsViewBase(SamToolsToolBase, ABC):

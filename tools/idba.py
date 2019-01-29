@@ -1,4 +1,4 @@
-from Pipeline import CommandTool, ToolInput, File, String, ToolOutput
+from janis import CommandTool, ToolInput, File, String, ToolOutput
 
 
 class Idba(CommandTool):

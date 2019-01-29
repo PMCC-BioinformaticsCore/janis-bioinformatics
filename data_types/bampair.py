@@ -1,5 +1,5 @@
-from Pipeline import File
-from Pipeline.bioinformatics.data_types.bam import Bam
+from janis import File
+from janis.bioinformatics.data_types.bam import Bam
 
 
 class BamPair(File):

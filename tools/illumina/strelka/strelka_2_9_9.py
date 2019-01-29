@@ -1,6 +1,6 @@
 import yaml
 
-from Pipeline.bioinformatics.tools.illumina.strelka.base import StrelkaBase
+from janis.bioinformatics.tools.illumina.strelka.base import StrelkaBase
 
 
 class Strelka_2_9_9(StrelkaBase):

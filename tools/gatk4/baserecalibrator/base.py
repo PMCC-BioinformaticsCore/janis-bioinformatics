@@ -1,13 +1,13 @@
 from abc import ABC
 
-from Pipeline import ToolArgument, ToolInput, ToolOutput, Filename, Array, File, String, Int, Boolean, Double, Directory
-from Pipeline.bioinformatics.data_types.bam import Bam
-from Pipeline.bioinformatics.data_types.bampair import BamPair
-from Pipeline.bioinformatics.data_types.fasta import FastaWithDict
-from Pipeline.bioinformatics.data_types.vcf import VcfIdx
-from Pipeline.bioinformatics.tools.gatk4.gatk4toolbase import Gatk4ToolBase
-from Pipeline.unix.data_types.tsv import Tsv
-from Pipeline.utils.metadata import ToolMetadata
+from janis import ToolArgument, ToolInput, ToolOutput, Filename, Array, File, String, Int, Boolean, Double, Directory
+from janis.bioinformatics.data_types.bam import Bam
+from janis.bioinformatics.data_types.bampair import BamPair
+from janis.bioinformatics.data_types.fasta import FastaWithDict
+from janis.bioinformatics.data_types.vcf import VcfIdx
+from janis.bioinformatics.tools.gatk4.gatk4toolbase import Gatk4ToolBase
+from janis.unix.data_types.tsv import Tsv
+from janis.utils.metadata import ToolMetadata
 
 
 class Gatk4BaseRecalibratorBase(Gatk4ToolBase, ABC):

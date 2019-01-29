@@ -1,11 +1,11 @@
 from abc import ABC
 
-from Pipeline import ToolArgument, ToolInput, Filename, String, ToolOutput, Array, File, Int, Boolean, Directory
-from Pipeline.bioinformatics.data_types.bam import Bam
-from Pipeline.bioinformatics.data_types.bampair import BamPair
-from Pipeline.bioinformatics.data_types.fasta import FastaWithDict
-from Pipeline.bioinformatics.tools.gatk4.gatk4toolbase import Gatk4ToolBase
-from Pipeline.utils.metadata import ToolMetadata
+from janis import ToolArgument, ToolInput, Filename, String, ToolOutput, Array, File, Int, Boolean, Directory
+from janis.bioinformatics.data_types.bam import Bam
+from janis.bioinformatics.data_types.bampair import BamPair
+from janis.bioinformatics.data_types.fasta import FastaWithDict
+from janis.bioinformatics.tools.gatk4.gatk4toolbase import Gatk4ToolBase
+from janis.utils.metadata import ToolMetadata
 
 
 class Gatk4MergeSamFilesBase(Gatk4ToolBase, ABC):

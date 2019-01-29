@@ -1,12 +1,12 @@
 from abc import ABC
 
-from Pipeline import String, Int, File, ToolOutput, ToolInput, \
+from janis import String, Int, File, ToolOutput, ToolInput, \
     ToolArgument, Boolean, Double, Array, Filename
-from Pipeline.bioinformatics.data_types.bam import Bam
-from Pipeline.bioinformatics.data_types.bed import Bed
-from Pipeline.bioinformatics.data_types.fasta import FastaWithDict
-from Pipeline.bioinformatics.data_types.vcf import VcfIdx, Vcf
-from Pipeline.bioinformatics.tools.gatk3.gatk3toolbase import Gatk3ToolBase
+from janis.bioinformatics.data_types.bam import Bam
+from janis.bioinformatics.data_types.bed import Bed
+from janis.bioinformatics.data_types.fasta import FastaWithDict
+from janis.bioinformatics.data_types.vcf import VcfIdx, Vcf
+from janis.bioinformatics.tools.gatk3.gatk3toolbase import Gatk3ToolBase
 
 
 class Gatk3HaplotypeCallerBase(Gatk3ToolBase, ABC):

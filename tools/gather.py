@@ -1,5 +1,5 @@
-from Pipeline.bioinformatics.data_types.bam import Bam
-from Pipeline import File, CommandTool, ToolOutput, ToolInput
+from janis.bioinformatics.data_types.bam import Bam
+from janis import File, CommandTool, ToolOutput, ToolInput
 
 
 class Gather(CommandTool):

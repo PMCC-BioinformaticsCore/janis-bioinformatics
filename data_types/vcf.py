@@ -1,6 +1,6 @@
 from abc import ABC
 
-from Pipeline import File
+from janis import File
 
 
 class Vcf(File):

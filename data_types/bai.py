@@ -1,4 +1,4 @@
-from Pipeline import File
+from janis import File
 
 
 class Bai(File):

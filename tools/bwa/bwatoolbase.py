@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from Pipeline import CommandTool, ToolInput, ToolArgument
+from janis import CommandTool, ToolInput, ToolArgument
 
 
 class BwaToolBase(CommandTool, ABC):

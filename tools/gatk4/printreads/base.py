@@ -1,11 +1,11 @@
 from abc import ABC
 from typing import List
 
-from Pipeline import ToolOutput, ToolInput, Filename
-from Pipeline.bioinformatics.data_types.bam import Bam
-from Pipeline.bioinformatics.data_types.bampair import BamPair
-from Pipeline.bioinformatics.tools.gatk4.gatk4toolbase import Gatk4ToolBase
-from Pipeline.utils.metadata import ToolMetadata
+from janis import ToolOutput, ToolInput, Filename
+from janis.bioinformatics.data_types.bam import Bam
+from janis.bioinformatics.data_types.bampair import BamPair
+from janis.bioinformatics.tools.gatk4.gatk4toolbase import Gatk4ToolBase
+from janis.utils.metadata import ToolMetadata
 
 
 class Gatk4PrintReadsBase(Gatk4ToolBase, ABC):

@@ -1,8 +1,8 @@
-from Pipeline import Array, String, Int, File, CommandTool, ToolOutput, \
+from janis import Array, String, Int, File, CommandTool, ToolOutput, \
     ToolInput, ToolArgument, Double, Boolean, Filename
-from Pipeline.bioinformatics.data_types.bampair import BamPair
-from Pipeline.bioinformatics.data_types.bai import Bai
-from Pipeline.bioinformatics.data_types.bam import Bam
+from janis.bioinformatics.data_types.bampair import BamPair
+from janis.bioinformatics.data_types.bai import Bai
+from janis.bioinformatics.data_types.bam import Bam
 
 
 class PicardMarkDup(CommandTool):

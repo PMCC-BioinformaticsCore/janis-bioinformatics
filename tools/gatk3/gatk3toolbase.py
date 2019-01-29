@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from Pipeline import CommandTool, ToolInput, ToolArgument, Boolean
+from janis import CommandTool, ToolInput, ToolArgument, Boolean
 
 
 class Gatk3ToolBase(CommandTool, ABC):

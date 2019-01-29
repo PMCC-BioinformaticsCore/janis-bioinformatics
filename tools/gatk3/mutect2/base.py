@@ -1,11 +1,11 @@
 from abc import ABC
 
-from Pipeline import ToolInput, Array, Filename, ToolOutput, File
-from Pipeline.bioinformatics.data_types.bampair import BamPair
-from Pipeline.bioinformatics.data_types.bed import Bed
-from Pipeline.bioinformatics.data_types.fasta import FastaWithDict
-from Pipeline.bioinformatics.data_types.vcf import VcfIdx
-from Pipeline.bioinformatics.tools.gatk3.gatk3toolbase import Gatk3ToolBase
+from janis import ToolInput, Array, Filename, ToolOutput, File
+from janis.bioinformatics.data_types.bampair import BamPair
+from janis.bioinformatics.data_types.bed import Bed
+from janis.bioinformatics.data_types.fasta import FastaWithDict
+from janis.bioinformatics.data_types.vcf import VcfIdx
+from janis.bioinformatics.tools.gatk3.gatk3toolbase import Gatk3ToolBase
 
 
 class Gatk3Mutect2Base(Gatk3ToolBase, ABC):

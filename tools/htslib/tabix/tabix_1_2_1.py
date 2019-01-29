@@ -1,5 +1,5 @@
-from Pipeline.bioinformatics.tools.htslib.htslib_1_2_1 import HTSLib_1_2_1
-from Pipeline.bioinformatics.tools.htslib.tabix.base import TabixBase
+from janis.bioinformatics.tools.htslib.htslib_1_2_1 import HTSLib_1_2_1
+from janis.bioinformatics.tools.htslib.tabix.base import TabixBase
 
 
 class Tabix_1_2_1(HTSLib_1_2_1, TabixBase):

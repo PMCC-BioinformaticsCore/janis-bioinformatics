@@ -1,6 +1,6 @@
 from typing import Any, Dict
 
-from Pipeline import File, Array, Logger
+from janis import File, Array, Logger
 
 
 class Fastq(Array):

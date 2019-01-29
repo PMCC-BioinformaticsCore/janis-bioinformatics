@@ -1,5 +1,5 @@
-from Pipeline.bioinformatics.tools.gatk4.gatk_4_0 import Gatk_4_0
-from Pipeline.bioinformatics.tools.gatk4.baserecalibrator.base import Gatk4BaseRecalibratorBase
+from janis.bioinformatics.tools.gatk4.gatk_4_0 import Gatk_4_0
+from janis.bioinformatics.tools.gatk4.baserecalibrator.base import Gatk4BaseRecalibratorBase
 
 
 class Gatk4BaseRecalibrator_4_0(Gatk_4_0, Gatk4BaseRecalibratorBase):

@@ -1,5 +1,5 @@
 from typing import Dict, List
-from Pipeline import DataType
+from janis import DataType
 
 
 class SequenceReadArchivePaired(DataType):

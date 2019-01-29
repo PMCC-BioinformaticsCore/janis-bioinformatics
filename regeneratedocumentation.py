@@ -1,13 +1,13 @@
 from datetime import date
 
-from Pipeline import CommandTool, Logger
+from janis import CommandTool, Logger
 import tabulate
-# from Pipeline.bioinformatics.tools.bwa.mem.latest import BwaMemLatest
-# from Pipeline.bioinformatics.tools.gatk4.haplotypecaller.latest import Gatk4HaplotypeCallerLatest
+# from janis.bioinformatics.tools.bwa.mem.latest import BwaMemLatest
+# from janis.bioinformatics.tools.gatk4.haplotypecaller.latest import Gatk4HaplotypeCallerLatest
 
-from Pipeline.tool.registry import get_tools
-from Pipeline.tool.tool import Tool
-from Pipeline.utils.metadata import Metadata
+from janis.tool.registry import get_tools
+from janis.tool.tool import Tool
+from janis.utils.metadata import Metadata
 from constants import PROJECT_ROOT_DIR
 
 docs_dir = PROJECT_ROOT_DIR + "/docs/"
@@ -29,7 +29,7 @@ def prepare_tool(tool: Tool):
     if not tool:
         return None, None, None
 
-    tool_module = tool.__module__.split(".")[1]     # Pipeline._bioinformatics_.tools.$toolproducer.$toolname.$version
+    tool_module = tool.__module__.split(".")[1]     # janis._bioinformatics_.tools.$toolproducer.$toolname.$version
 
     tool_dir = tools_dir + tool_module + "/" + tool.id() + ".rst"
 
@@ -108,7 +108,7 @@ Optional inputs
 
 
 def prepare_all_tools():
-    import Pipeline.bioinformatics
+    import janis.bioinformatics
     # tools = [[Gatk4HaplotypeCallerLatest], [BwaMemLatest]]
     tools = get_tools()
 

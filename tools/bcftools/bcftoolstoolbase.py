@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 from datetime import date
 
-from Pipeline import CommandTool
-from Pipeline.utils.metadata import ToolMetadata
+from janis import CommandTool
+from janis.utils.metadata import ToolMetadata
 
 
 class BcfToolsToolBase(CommandTool, ABC):

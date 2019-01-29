@@ -1,9 +1,9 @@
 from abc import ABC
 
-from Pipeline import ToolInput, Filename, ToolOutput, File, Array, String, Boolean, Int, Float, Directory
-from Pipeline.bioinformatics.data_types.vcf import VcfIdx, TabixIdx
-from Pipeline.bioinformatics.tools.gatk4.gatk4toolbase import Gatk4ToolBase
-from Pipeline.utils.metadata import ToolMetadata
+from janis import ToolInput, Filename, ToolOutput, File, Array, String, Boolean, Int, Float, Directory
+from janis.bioinformatics.data_types.vcf import VcfIdx, TabixIdx
+from janis.bioinformatics.tools.gatk4.gatk4toolbase import Gatk4ToolBase
+from janis.utils.metadata import ToolMetadata
 
 
 class Gatk4GenotypeConcordanceBase(Gatk4ToolBase, ABC):

@@ -1,10 +1,10 @@
 from abc import ABC
 
-from Pipeline import ToolInput, Filename, Int, String, Boolean, ToolOutput, Array
-from Pipeline.bioinformatics.data_types.bam import Bam
-from Pipeline.bioinformatics.data_types.fasta import FastaWithDict
-from Pipeline.bioinformatics.tools.samtools.samtoolstoolbase import SamToolsToolBase
-from Pipeline.utils.metadata import ToolMetadata
+from janis import ToolInput, Filename, Int, String, Boolean, ToolOutput, Array
+from janis.bioinformatics.data_types.bam import Bam
+from janis.bioinformatics.data_types.fasta import FastaWithDict
+from janis.bioinformatics.tools.samtools.samtoolstoolbase import SamToolsToolBase
+from janis.utils.metadata import ToolMetadata
 
 
 class SamToolsSortBase(SamToolsToolBase, ABC):
