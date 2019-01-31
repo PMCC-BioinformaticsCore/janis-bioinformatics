@@ -1,0 +1,1 @@
+from bioinformatics.janis_bioinformatics.tools.bcftools.view.latest import BcfToolsLatest
