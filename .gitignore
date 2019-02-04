@@ -3,3 +3,5 @@ build/
 dist/
 __pycache__/
 **/**/__pycache/
+*.pyc
+janis_pipelines.bioinformatics.egg-info/
