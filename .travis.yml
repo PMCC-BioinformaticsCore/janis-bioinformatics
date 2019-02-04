@@ -1,0 +1,12 @@
+language: python
+python:
+- '3.6'
+install: true
+script: echo "Deploying Janis-Bioinformatics"
+deploy:
+  provider: pypi
+  user: illusional
+  distributions: "sdist bdist_wheel"
+  on:
+    tags: true
+    repo: PMCC-BioinformaticsCore/janis-bioinformatics
