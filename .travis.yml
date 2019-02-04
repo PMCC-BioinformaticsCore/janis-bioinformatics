@@ -6,7 +6,9 @@ script: echo "Deploying Janis-Bioinformatics"
 deploy:
   provider: pypi
   user: illusional
-  distributions: "sdist bdist_wheel"
+  distributions: sdist bdist_wheel
   on:
     tags: true
     repo: PMCC-BioinformaticsCore/janis-bioinformatics
+  password:
+    secure: rXdE41JYzNGWyQjtt4aQSE8kJowwNrRtlPKqDnRpHmdYSdRyNjQf7bD3LZTYqphec4vUGblsAy7kKmAUv9GINLCSZdDUqXHQGKp+V75WxJB6j+MyJ8LjLAuSarVT1mu4S5uOUJr4ONN7WjRc9TaNSfk17PDGIy1lzEucfCtUvn9RVZr6SNFZnS6FA8KI7AnF624BB0g4cTeepqEY5ZZz9QPDqOQtydF4bvOzJs4XJKnk5IJNf4Ow+Y8swg+iRNl4SECFyZ2x7e9LrCfX1Sr7JchfSV3egq101NZMAqt1K5yNT78lC1af1ITJVIaxCcoM6q+9pNyX7f6EKgy7OPLg52VaYLrtRIv8ZfXQvy94+Oooe33JAxLTm/5TjCbgoq7XJMbFUvQrLrTDYqsX1FxF4q3Wffzfir1l/fOzi7exgZkAy1cCp5KpQV4l0MX+qFbsIdF0bwmpP0lpE+BLBYTam0SUPfPbgE7pWBaLdojLynvmtVp/hOfEpRp7TKB3/OLn0UHl2OnDhCQVzn2yz1EJP8wqsKfWfC+cIp2xy6O0JLXhUa1LfxR7P+AJjObR6HrYi59TrO0kR3QhNhskqG80MkZod8HpWP77kEPmhJDB5Hx3qedQ+rcjHVstIbD8tf+zDJ4eilZlge9qHHL5ycGLDwS3/44kDLESpMT50QT4X/w=
