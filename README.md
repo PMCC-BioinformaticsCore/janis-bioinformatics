@@ -1,5 +1,9 @@
 # Bioinformatics Tools (Pipelines)
 
+[![Documentation Status](https://readthedocs.org/projects/janis/badge/?version=latest)](https://janis.readthedocs.io/en/latest/tools/bioinformatics/index.html)
+[![Build Status](https://travis-ci.org/PMCC-BioinformaticsCore/janis-bioinformatics.svg?branch=master)](https://travis-ci.org/PMCC-BioinformaticsCore/janis-bioinformatics)
+[![PyPI version](https://badge.fury.io/py/janis-pipelines.bioinformatics.svg)](https://badge.fury.io/py/janis-pipelines.bioinformatics)
+
 This repository contains tools and data types for [Janis](https://github.com/PMCC-BioinformaticsCore/janis) 
 directly related to the bioinformatics field.
 
@@ -14,10 +18,22 @@ when connecting inputs and steps together (as you know a BAM file should be conn
 This documentation will be updated with a full (_generated_) list of data types, however for now here's an approximate list (nested means inherited):
 
 
-### Nested types
-If a type is nested
-
 ### Non-exhaustive of bioinformatics data types
+- Sam
+- Bam
+- Bai
+    - BamBai (.bam + .bai)
+- Bed
+- Vcf
+	- VcfIdx (.vcf + .vcf.idx)
+- CompressedVcf
+	- VcfTabix
+- Fastq
+- FastaFai (.fasta + .fasta.fai)
+	- Fasta (FastaFai + fasta.amb, fasta.ann, fasta.bwt, fasta.pac, fasta.sa)
+		- FastaWithDict (Fasta + .dict)
+		
+\* Nested means inherited.
 
 
 ## Testing
@@ -28,11 +44,9 @@ to logically test them without functionally running them with test data.
 As Janis contains unit tests, there should be sufficient coverage for the base of the command tools.
 
 There are plans to build a module to functionally test these tools (with some test data), 
-however that will probably be a little while away
+however that will probably be a little while away.
 
 ## Documentation
-
-[![Documentation Status](https://readthedocs.org/projects/janis/badge/?version=latest)](https://janis.readthedocs.io/en/latest/?badge=latest)
 
 Documentation is generated on [Janis](https://github.com/PMCC-BioinformaticsCore/janis). 
 To generate new documentation you will need to: 

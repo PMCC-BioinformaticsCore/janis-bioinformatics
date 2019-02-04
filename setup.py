@@ -1,6 +1,6 @@
 from setuptools import setup
 
-VERSION = "v0.0.1"
+VERSION = "v0.0.2"
 DESCRIPTION = "Bioinformatics tools for Janis; the Pipeline creation helper"
 
 ######## SHOULDN'T NEED EDITS BELOW THIS LINE ########
@@ -9,7 +9,7 @@ with open("./README.md") as readme:
     long_description = readme.read()
 
 setup(
-    name="janis bioinformatics",
+    name="janis-pipelines.bioinformatics",
     version=VERSION,
     description=DESCRIPTION,
     url="https://github.com/PMCC-BioinformaticsCore/janis-bioinformatics",
