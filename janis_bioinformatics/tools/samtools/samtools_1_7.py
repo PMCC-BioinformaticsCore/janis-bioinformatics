@@ -1,4 +1,4 @@
-from bioinformatics.janis_bioinformatics.tools import SamToolsToolBase
+from .samtoolstoolbase import SamToolsToolBase
 
 
 class SamTools_1_7(SamToolsToolBase):

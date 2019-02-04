@@ -1,5 +1,5 @@
-from bioinformatics.janis_bioinformatics.tools import Gatk_4_0
-from bioinformatics.janis_bioinformatics.tools.gatk4.mutect2.base import Gatk4Mutect2Base
+from .base import Gatk4Mutect2Base
+from ..gatk_4_0 import Gatk_4_0
 
 
 class GatkMutect2_4_0(Gatk_4_0, Gatk4Mutect2Base):

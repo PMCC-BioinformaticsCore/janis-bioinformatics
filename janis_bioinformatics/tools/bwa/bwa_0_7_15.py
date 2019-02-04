@@ -1,4 +1,4 @@
-from bioinformatics.janis_bioinformatics.tools.bwa.bwabase import BwaBase
+from .bwabase import BwaBase
 
 
 class Bwa_0_7_15(BwaBase):

@@ -1,10 +1,9 @@
 from abc import ABC, abstractmethod
 from typing import List
 
-from bioinformatics.janis_bioinformatics.data_types.bampair import BamPair
-from bioinformatics.janis_bioinformatics.data_types import FastaWithDict
-from bioinformatics.janis_bioinformatics.data_types import TabixIdx
-from bioinformatics.janis_bioinformatics.tools import BioinformaticsTool
+from janis_bioinformatics.data_types import FastaWithDict, VcfTabix, BamBai
+from janis_bioinformatics.tools import BioinformaticsTool
+
 from janis import ToolOutput, ToolInput, ToolArgument, Boolean, String, File
 from janis.unix.data_types.tsv import Tsv
 from janis.utils.metadata import ToolMetadata
@@ -26,7 +25,7 @@ class StrelkaBase(BioinformaticsTool, ABC):
 
     def inputs(self) -> List[ToolInput]:
         return [
-            ToolInput("bam", BamPair(), prefix="--bam", position=1, shell_quote=False,
+            ToolInput("bam", BamBai(), prefix="--bam", position=1, shell_quote=False,
                       doc="Sample BAM or CRAM file. May be specified more than once, multiple inputs will be treated "
                           "as each BAM file representing a different sample. [required] (no default)"),
             ToolInput("reference", FastaWithDict(), prefix="--referenceFasta", position=1, shell_quote=False,
@@ -71,10 +70,10 @@ class StrelkaBase(BioinformaticsTool, ABC):
                        doc="A tab-delimited report of various internal statistics from the variant calling process: "
                            "Runtime information accumulated for each genome segment, excluding auxiliary steps such "
                            "as BAM indexing and vcf merging. Indel candidacy statistics"),
-            ToolOutput("variants", TabixIdx(),
+            ToolOutput("variants", VcfTabix(),
                        glob="$(inputs.relativeStrelkaDirectory + '/results/variants/variants.vcf.gz')",
                        doc="Primary variant inferences are provided as a series of VCF 4.1 files"),
-            ToolOutput("genome", TabixIdx(),
+            ToolOutput("genome", VcfTabix(),
                        glob="$(inputs.relativeStrelkaDirectory + '/results/variants/genome.vcf.gz')"),
         ]
 
@@ -87,7 +86,7 @@ class StrelkaBase(BioinformaticsTool, ABC):
 
     @staticmethod
     def requirements():
-        from cwlgen.cwlgen import ShellCommandRequirement
+        from cwlgen import ShellCommandRequirement
         return [ShellCommandRequirement()]
 
     @staticmethod

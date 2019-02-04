@@ -2,11 +2,11 @@ from abc import ABC
 
 from janis import String, Int, File, ToolOutput, ToolInput, \
     ToolArgument, Boolean, Double, Array, Filename
-from bioinformatics.janis_bioinformatics.data_types.bam import Bam
-from bioinformatics.janis_bioinformatics.data_types import Bed
-from bioinformatics.janis_bioinformatics.data_types import FastaWithDict
-from bioinformatics.janis_bioinformatics.data_types import VcfIdx, Vcf
-from bioinformatics.janis_bioinformatics.tools import Gatk3ToolBase
+from janis_bioinformatics.data_types.bam import Bam
+from janis_bioinformatics.data_types import Bed
+from janis_bioinformatics.data_types import FastaWithDict
+from janis_bioinformatics.data_types import VcfIdx, Vcf
+from janis_bioinformatics.tools import Gatk3ToolBase
 
 
 class Gatk3HaplotypeCallerBase(Gatk3ToolBase, ABC):

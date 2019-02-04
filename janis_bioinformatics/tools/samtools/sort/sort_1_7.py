@@ -1,5 +1,5 @@
-from bioinformatics.janis_bioinformatics.tools import SamTools_1_7
-from bioinformatics.janis_bioinformatics.tools import SamToolsSortBase
+from ..samtools_1_7 import SamTools_1_7
+from .base import SamToolsSortBase
 
 
 class SamToolsSort_1_7(SamTools_1_7, SamToolsSortBase):

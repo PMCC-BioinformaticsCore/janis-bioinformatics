@@ -1,12 +1,8 @@
-from bioinformatics.janis_bioinformatics.data_types.bam import Bam
-from bioinformatics.janis_bioinformatics.data_types.bampair import BamPair
-from bioinformatics.janis_bioinformatics.data_types import Fasta
-from bioinformatics.janis_bioinformatics.data_types.fastq import Fastq
-from bioinformatics.janis_bioinformatics.data_types import Sam
-from bioinformatics.janis_bioinformatics.tools import BioinformaticsWorkflow
-from bioinformatics.janis_bioinformatics.tools import BwaMemLatest
-from bioinformatics.janis_bioinformatics.tools import Gatk4SortSamLatest
-from bioinformatics.janis_bioinformatics.tools import SamToolsViewLatest
+from janis_bioinformatics.data_types import Bam, BamBai, Fasta, Fastq, Sam
+from janis_bioinformatics.tools import BioinformaticsWorkflow
+from janis_bioinformatics.tools.bwa import BwaMemLatest
+from janis_bioinformatics.tools.gatk4 import Gatk4SortSamLatest
+from janis_bioinformatics.tools.samtools import SamToolsViewLatest
 from janis import Step, String, Input, Directory, Output
 from janis.utils.metadata import WorkflowMetadata
 
@@ -36,7 +32,7 @@ class AlignSortedBam(BioinformaticsWorkflow):
 
         o1_bwa = Output("o1_bwa", Sam())
         o2_samtools = Output("o2_samtools", Bam())
-        o3_sortsam = Output("o3_sortsam", BamPair())
+        o3_sortsam = Output("o3_sortsam", BamBai())
 
         # Fully connect step 1
         self.add_edges([

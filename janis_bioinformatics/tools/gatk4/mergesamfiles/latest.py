@@ -1,5 +1,5 @@
-from bioinformatics.janis_bioinformatics.tools import Gatk4Latest
-from bioinformatics.janis_bioinformatics.tools import Gatk4MergeSamFilesBase
+from .base import Gatk4MergeSamFilesBase
+from ..gatk_latest import Gatk4Latest
 
 
 class Gatk4MergeSamFilesLatest(Gatk4Latest, Gatk4MergeSamFilesBase):

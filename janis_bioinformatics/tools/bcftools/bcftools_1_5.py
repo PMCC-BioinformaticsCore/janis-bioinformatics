@@ -1,4 +1,4 @@
-from bioinformatics.janis_bioinformatics.tools.bcftools.bcftoolsbase import BcfToolsBase
+from .bcftoolsbase import BcfToolsBase
 
 
 class BcfTools_1_5(BcfToolsBase):

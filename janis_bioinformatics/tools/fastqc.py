@@ -12,6 +12,10 @@ class FastQC(CommandTool):
         return "fastqc"
 
     @staticmethod
+    def version():
+        return "v0.11.5_cv3"
+
+    @staticmethod
     def docker():
         return "biocontainers/fastqc:v0.11.5_cv3"
 

@@ -1,6 +1,6 @@
 from janis import ToolInput
-from bioinformatics.janis_bioinformatics.data_types import TabixIdx
-from bioinformatics.janis_bioinformatics.tools import IgvToolsToolBase
+from janis_bioinformatics.data_types import VcfIdx
+from ..igvtoolstoolbase import IgvToolsToolBase
 from janis.utils.metadata import ToolMetadata
 
 
@@ -15,7 +15,7 @@ class IgvToolsIndexBase(IgvToolsToolBase):
 
     def inputs(self):
         return [
-            ToolInput("input", TabixIdx(), doc="The alignment or feature file for which an index will be created")
+            ToolInput("input", VcfIdx(), doc="The alignment or feature file for which an index will be created")
         ]
 
     def outputs(self):

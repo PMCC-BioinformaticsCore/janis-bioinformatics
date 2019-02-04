@@ -1,8 +1,8 @@
-from .bai import Bai
+from .bai import *
 from .bam import *
-from .bed import Bed
+from .bed import *
 from .fasta import *
-from .fastq import Fastq
-# from .paired_read import SequenceReadArchivePaired
-from .sam import Sam
+from .fastq import *
+from .paired_read import *
+from .sam import *
 from .vcf import *

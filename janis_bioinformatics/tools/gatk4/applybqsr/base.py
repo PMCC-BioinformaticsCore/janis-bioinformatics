@@ -1,9 +1,9 @@
 from abc import ABC
 
+from ..gatk4toolbase import Gatk4ToolBase
+from janis_bioinformatics.data_types import BamBai, FastaWithDict
+
 from janis import ToolInput, Filename, ToolOutput, Directory
-from bioinformatics.janis_bioinformatics.data_types.bampair import BamPair
-from bioinformatics.janis_bioinformatics.data_types import FastaWithDict
-from bioinformatics.janis_bioinformatics.tools import Gatk4ToolBase
 from janis.unix.data_types.tsv import Tsv
 from janis.utils.metadata import ToolMetadata
 
@@ -22,7 +22,7 @@ class Gatk4ApplyBqsrBase(Gatk4ToolBase, ABC):
 
     def inputs(self):
         return [
-            ToolInput("input", BamPair(), prefix="-I", doc="The SAM/BAM/CRAM file containing reads.", position=10),
+            ToolInput("input", BamBai(), prefix="-I", doc="The SAM/BAM/CRAM file containing reads.", position=10),
             ToolInput("reference", FastaWithDict(), prefix="-R", doc="Reference sequence"),
             ToolInput("outputFilename", Filename(extension="recal.bam"), prefix="-O", doc="Write output to this file"),
             ToolInput("recalFile", Tsv(optional=True), prefix="--bqsr-recal-file",
@@ -34,7 +34,7 @@ class Gatk4ApplyBqsrBase(Gatk4ToolBase, ABC):
 
     def outputs(self):
         return [
-            ToolOutput("output", BamPair(), glob="$(inputs.outputFilename)")
+            ToolOutput("output", BamBai(), glob="$(inputs.outputFilename)")
         ]
 
     def metadata(self):

@@ -1,8 +1,8 @@
 from abc import ABC
 from typing import List
 
-from bioinformatics.janis_bioinformatics.data_types import TabixIdx, CompressedVcf
-from bioinformatics.janis_bioinformatics.tools import BioinformaticsTool
+from janis_bioinformatics.data_types import VcfTabix, CompressedVcf
+from janis_bioinformatics.tools import BioinformaticsTool
 from janis import ToolOutput, ToolInput, Boolean, Int, String, File
 from janis.utils.metadata import ToolMetadata
 
@@ -35,12 +35,12 @@ class TabixBase(BioinformaticsTool, ABC):
 
     def outputs(self) -> List[ToolOutput]:
         return [
-            ToolOutput("output", TabixIdx(), glob="$(inputs.file.basename)")
+            ToolOutput("output", VcfTabix(), glob="$(inputs.file.basename)")
         ]
 
     @staticmethod
     def requirements():
-        import cwlgen.cwlgen as cwl
+        import cwlgen as cwl
         return [
             cwl.InitialWorkDirRequirement([
                 cwl.InitialWorkDirRequirement.Dirent("$(inputs.file)")

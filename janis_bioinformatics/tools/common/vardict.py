@@ -1,10 +1,7 @@
 from typing import List
 
-from bioinformatics.janis_bioinformatics.data_types.bampair import BamPair
-from bioinformatics.janis_bioinformatics.data_types import Bed
-from bioinformatics.janis_bioinformatics.data_types import FastaFai
-from bioinformatics.janis_bioinformatics.data_types import Vcf
-from bioinformatics.janis_bioinformatics.tools import BioinformaticsTool
+from janis_bioinformatics.tools import BioinformaticsTool
+from janis_bioinformatics.data_types import BamBai, Bed, FastaFai, Vcf
 from janis import ToolOutput, ToolInput, Filename, ToolArgument, Boolean, Float, Int, String
 
 
@@ -21,7 +18,7 @@ class VarDict(BioinformaticsTool):
         return [
             ToolInput("input", Bed(), position=2, shell_quote=False),
             ToolInput("outputFilename", Filename(extension=".vardict.vcf"), prefix=">", position=6, shell_quote=False),
-            ToolInput("indexedBam", BamPair(), prefix="-b", position=1, shell_quote=False, doc="The indexed BAM file"),
+            ToolInput("indexedBam", BamBai(), prefix="-b", position=1, shell_quote=False, doc="The indexed BAM file"),
 
             ToolInput("referenceFasta", FastaFai(), prefix="-G", position=1, shell_quote=False,
                       doc="The reference fasta. Should be indexed (.fai). "
@@ -45,7 +42,7 @@ class VarDict(BioinformaticsTool):
 
     @staticmethod
     def requirements():
-        from cwlgen.cwlgen import ShellCommandRequirement
+        from cwlgen import ShellCommandRequirement
         return [ShellCommandRequirement()]
 
     vardict_inputs = [

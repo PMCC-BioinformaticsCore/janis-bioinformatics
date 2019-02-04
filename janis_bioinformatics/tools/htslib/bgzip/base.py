@@ -1,8 +1,8 @@
 from abc import abstractmethod, ABC
 from typing import List
 
-from bioinformatics.janis_bioinformatics.data_types import Vcf, CompressedVcf
-from bioinformatics.janis_bioinformatics.tools import BioinformaticsTool
+from janis_bioinformatics.data_types import Vcf, CompressedVcf
+from janis_bioinformatics.tools import BioinformaticsTool
 from janis import ToolOutput, ToolInput, Boolean, Int, File
 from janis.types.common_data_types import Stdout
 from janis.utils.metadata import ToolMetadata

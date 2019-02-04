@@ -1,5 +1,5 @@
-from bioinformatics.janis_bioinformatics.tools.bcftools.bcftools_latest import BcfToolsLatest
-from bioinformatics.janis_bioinformatics.tools.bcftools.norm.base import BcfToolsNormBase
+from janis_bioinformatics.tools.bcftools.bcftools_latest import BcfToolsLatest
+from janis_bioinformatics.tools.bcftools.norm.base import BcfToolsNormBase
 
 
 class BcfToolsNormLatest(BcfToolsLatest, BcfToolsNormBase):

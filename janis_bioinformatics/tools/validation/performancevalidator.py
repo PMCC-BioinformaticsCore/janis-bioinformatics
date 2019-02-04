@@ -1,9 +1,8 @@
-from bioinformatics.janis_bioinformatics.tools import BioinformaticsWorkflow
+from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis import Step, Input, Output, Array
-from bioinformatics.janis_bioinformatics.data_types import Vcf, VcfIdx
-from bioinformatics.janis_bioinformatics.tools import Gatk4GenotypeConcordanceLatest
-from bioinformatics.janis_bioinformatics.tools import BGZip_1_2_1
-from bioinformatics.janis_bioinformatics.tools.htslib.tabix.tabix_1_2_1 import Tabix_1_2_1
+from janis_bioinformatics.data_types import Vcf, VcfIdx
+from janis_bioinformatics.tools.gatk4 import Gatk4GenotypeConcordanceLatest
+from janis_bioinformatics.tools.htslib import BGZip_1_2_1, Tabix_1_2_1
 
 
 class PerformanceValidator_1_2_1(BioinformaticsWorkflow):

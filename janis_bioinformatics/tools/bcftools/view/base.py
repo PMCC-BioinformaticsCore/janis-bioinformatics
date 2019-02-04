@@ -2,8 +2,8 @@ from abc import ABC
 from typing import List
 
 from janis import ToolOutput, ToolInput, Boolean, Int, String, File, Array, Float, Stdout
-from bioinformatics.janis_bioinformatics.data_types import Vcf
-from bioinformatics.janis_bioinformatics.tools.bcftools.bcftoolstoolbase import BcfToolsToolBase
+from janis_bioinformatics.data_types import Vcf
+from ..bcftoolstoolbase import BcfToolsToolBase
 from janis.utils.metadata import ToolMetadata
 
 

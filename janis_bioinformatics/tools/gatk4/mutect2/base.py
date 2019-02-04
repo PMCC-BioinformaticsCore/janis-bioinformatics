@@ -1,11 +1,8 @@
 from abc import ABC
 
 from janis import ToolInput, Filename, ToolOutput, String, Float
-from bioinformatics.janis_bioinformatics.data_types.bampair import BamPair
-from bioinformatics.janis_bioinformatics.data_types import Bed
-from bioinformatics.janis_bioinformatics.data_types import FastaWithDict
-from bioinformatics.janis_bioinformatics.data_types import VcfIdx, Vcf
-from bioinformatics.janis_bioinformatics.tools import Gatk4ToolBase
+from janis_bioinformatics.data_types import BamBai, Bed, FastaWithDict, VcfIdx, Vcf
+from ..gatk4toolbase import Gatk4ToolBase
 from janis.utils.metadata import ToolMetadata
 
 
@@ -23,7 +20,7 @@ class Gatk4Mutect2Base(Gatk4ToolBase, ABC):
 
     @staticmethod
     def requirements():
-        import cwlgen.cwlgen as cwl
+        import cwlgen as cwl
         return [
             cwl.ResourceRequirement(ram_min="64000")
         ]
@@ -31,10 +28,10 @@ class Gatk4Mutect2Base(Gatk4ToolBase, ABC):
     @staticmethod
     def tumor_normal_inputs():
         return [
-            ToolInput("tumor", BamPair(), position=5, prefix="-I", doc="BAM/SAM/CRAM file containing reads"),
+            ToolInput("tumor", BamBai(), position=5, prefix="-I", doc="BAM/SAM/CRAM file containing reads"),
             ToolInput("tumorName", String(), position=6, prefix="-tumor",
                       doc="BAM sample name of tumor. May be URL-encoded as output by GetSampleName with -encode."),
-            ToolInput("normal", BamPair(), position=5, prefix="-I", doc="BAM/SAM/CRAM file containing reads"),
+            ToolInput("normal", BamBai(), position=5, prefix="-I", doc="BAM/SAM/CRAM file containing reads"),
             ToolInput("normalName", String(), position=6, prefix="-normal",
                       doc="BAM sample name of normal. May be URL-encoded as output by GetSampleName with -encode."),
         ]

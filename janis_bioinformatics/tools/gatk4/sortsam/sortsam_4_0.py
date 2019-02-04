@@ -1,5 +1,5 @@
-from bioinformatics.janis_bioinformatics.tools.gatk4.gatk_4_0 import Gatk_4_0
-from bioinformatics.janis_bioinformatics.tools.gatk4.sortsam.base import Gatk4SortSamBase
+from .base import Gatk4SortSamBase
+from ..gatk_4_0 import Gatk_4_0
 
 
 class Gatk4SortSam_4_0(Gatk4SortSamBase, Gatk_4_0):

@@ -1,8 +1,8 @@
 from abc import ABC
 
 from janis import ToolInput, Filename, ToolOutput, File, Array, String, Boolean, Int, Float, Directory
-from bioinformatics.janis_bioinformatics.data_types import VcfIdx, TabixIdx
-from bioinformatics.janis_bioinformatics.tools.gatk4 import Gatk4ToolBase
+from janis_bioinformatics.data_types import VcfIdx, VcfTabix
+from ..gatk4toolbase import Gatk4ToolBase
 from janis.utils.metadata import ToolMetadata
 
 
@@ -20,7 +20,7 @@ class Gatk4GenotypeConcordanceBase(Gatk4ToolBase, ABC):
 
     def inputs(self):
         return [
-            ToolInput("callVCF", TabixIdx(), prefix="--CALL_VCF", doc="The VCF containing the call sample"),
+            ToolInput("callVCF", VcfTabix(), prefix="--CALL_VCF", doc="The VCF containing the call sample"),
             ToolInput("truthVCF", VcfIdx(), prefix="--TRUTH_VCF", doc="The VCF containing the truth sample"),
             ToolInput("outputBasename", Filename(), prefix="--OUTPUT",
                       doc="Basename for the three metrics files that are to be written. Resulting files will be:"

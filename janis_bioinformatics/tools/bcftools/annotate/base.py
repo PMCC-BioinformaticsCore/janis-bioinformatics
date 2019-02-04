@@ -1,8 +1,9 @@
 from abc import ABC
 
-from bioinformatics.janis_bioinformatics.tools.bcftools.bcftoolstoolbase import BcfToolsToolBase
+from ..bcftoolstoolbase import BcfToolsToolBase
+
 from janis import ToolInput, File, Boolean, String, Array, Int, Filename, ToolMetadata, ToolOutput
-from bioinformatics.janis_bioinformatics.data_types import Vcf
+from janis_bioinformatics.data_types import Vcf
 
 
 class BcfToolsAnnotateBase(BcfToolsToolBase, ABC):

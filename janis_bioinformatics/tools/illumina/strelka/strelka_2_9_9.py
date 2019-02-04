@@ -1,6 +1,6 @@
-import yaml
+import ruamel.yaml
 
-from bioinformatics.janis_bioinformatics.tools import StrelkaBase
+from janis_bioinformatics.tools.illumina.strelka.base import StrelkaBase
 
 
 class Strelka_2_9_9(StrelkaBase):
@@ -9,7 +9,11 @@ class Strelka_2_9_9(StrelkaBase):
         return "illusional/strelka"
 
 
+StrelkaLatest = Strelka_2_9_9
+
+
 if __name__ == "__main__":
+    from janis.translations.cwl import translate_tool
     print(Strelka_2_9_9().help())
-    cwl = Strelka_2_9_9().cwl(with_docker=True)
-    print("\n\n" + yaml.dump(cwl))
+    cwl = translate_tool(Strelka_2_9_9(), with_docker=True).get_dict()
+    print("\n\n" + ruamel.yaml.dump(cwl))

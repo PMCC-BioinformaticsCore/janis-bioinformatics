@@ -1,5 +1,5 @@
-from bioinformatics.janis_bioinformatics.tools import IgvToolsLatest
-from bioinformatics.janis_bioinformatics.tools.igvtools.index.base import IgvToolsIndexBase
+from ..igvtoolslatest import IgvToolsLatest
+from .base import IgvToolsIndexBase
 
 
 class IgvToolsIndexLatest(IgvToolsLatest, IgvToolsIndexBase):

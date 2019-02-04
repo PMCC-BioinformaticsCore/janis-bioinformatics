@@ -1,10 +1,10 @@
 from abc import ABC
 
 from janis import ToolInput, ToolOutput, ToolArgument, Boolean, File, String, Int, Float, Filename
-from bioinformatics.janis_bioinformatics.data_types.bam import Bam
-from bioinformatics.janis_bioinformatics.data_types import FastaWithDict
-from bioinformatics.janis_bioinformatics.data_types import Sam
-from bioinformatics.janis_bioinformatics.tools import SamToolsToolBase
+from janis_bioinformatics.data_types.bam import Bam
+from janis_bioinformatics.data_types import FastaWithDict
+from janis_bioinformatics.data_types import Sam
+from ..samtoolstoolbase import SamToolsToolBase
 from janis.utils.metadata import ToolMetadata
 
 

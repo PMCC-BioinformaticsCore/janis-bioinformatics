@@ -1,4 +1,4 @@
-from bioinformatics.janis_bioinformatics.tools import IgvToolsBase
+from .igvtoolsbase import IgvToolsBase
 
 
 class IgvTools_2_0(IgvToolsBase):

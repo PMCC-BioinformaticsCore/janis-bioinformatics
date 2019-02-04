@@ -1,9 +1,9 @@
 from abc import ABC
 
 from janis import ToolInput, Int, Float, Boolean, String, ToolOutput, Filename, File
-from bioinformatics.janis_bioinformatics.data_types.fastq import Fastq
-from bioinformatics.janis_bioinformatics.data_types import Sam
-from bioinformatics.janis_bioinformatics.tools.bwa.bwatoolbase import BwaToolBase
+from janis_bioinformatics.data_types.fastq import Fastq
+from janis_bioinformatics.data_types import Sam
+from janis_bioinformatics.tools.bwa.bwatoolbase import BwaToolBase
 from janis.types.common_data_types import Stdout
 from janis.utils.metadata import ToolMetadata
 

@@ -1,12 +1,8 @@
 from abc import ABC
 
-from janis import String, Int, File, ToolOutput, ToolInput, \
-    Boolean, Double, Array, Filename
-from bioinformatics.janis_bioinformatics.data_types.bampair import BamPair
-from bioinformatics.janis_bioinformatics.data_types import Bed
-from bioinformatics.janis_bioinformatics.data_types import FastaWithDict
-from bioinformatics.janis_bioinformatics.data_types import VcfIdx
-from bioinformatics.janis_bioinformatics.tools import Gatk4ToolBase
+from janis import String, Int, File, ToolOutput, ToolInput, Boolean, Double, Array, Filename
+from janis_bioinformatics.data_types import BamBai, Bed, FastaWithDict, VcfIdx
+from ..gatk4toolbase import Gatk4ToolBase
 from janis.utils.metadata import ToolMetadata
 
 
@@ -26,7 +22,7 @@ class Gatk4HaplotypeCallerBase(Gatk4ToolBase, ABC):
         return [
             *super(Gatk4HaplotypeCallerBase, self).inputs(),
             *Gatk4HaplotypeCallerBase.optional_args,
-            ToolInput("inputRead", BamPair(), doc="BAM/SAM/CRAM file containing reads", prefix="--input"),
+            ToolInput("inputRead", BamBai(), doc="BAM/SAM/CRAM file containing reads", prefix="--input"),
             ToolInput("reference", FastaWithDict(), position=5, prefix="--reference", doc="Reference sequence file"),
             ToolInput("outputFilename", Filename(extension=".vcf"), position=8, prefix="--output",
                       doc="File to which variants should be written"),

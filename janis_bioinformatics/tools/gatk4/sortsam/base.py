@@ -1,8 +1,6 @@
 from janis import ToolInput, Filename, String, Array, File, Int, Boolean, ToolOutput, Directory
-from bioinformatics.janis_bioinformatics.data_types.bam import Bam
-from bioinformatics.janis_bioinformatics.data_types.bampair import BamPair
-from bioinformatics.janis_bioinformatics.data_types.fasta import FastaWithDict
-from bioinformatics.janis_bioinformatics.tools.gatk4.gatk4toolbase import Gatk4ToolBase
+from janis_bioinformatics.data_types import Bam, BamBai, FastaWithDict
+from ..gatk4toolbase import Gatk4ToolBase
 from janis.utils.metadata import ToolMetadata
 
 
@@ -16,7 +14,7 @@ class Gatk4SortSamBase(Gatk4ToolBase):
         return "gatk4sortsam"
 
     def friendly_name(self):
-        return "GATK4: Sort SAM"
+        return "GATK4: SortSAM"
 
     def metadata(self):
         from datetime import date
@@ -48,7 +46,7 @@ class Gatk4SortSamBase(Gatk4ToolBase):
 
     def outputs(self):
         return [
-            ToolOutput("output", BamPair(), glob="$(inputs.outputFilename)")
+            ToolOutput("output", BamBai(), glob="$(inputs.outputFilename)")
         ]
 
     additional_args = [

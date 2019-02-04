@@ -1,4 +1,4 @@
-from bioinformatics.janis_bioinformatics.tools import HTSLibBase
+from .htslibbase import HTSLibBase
 
 
 class HTSLib_1_2_1(HTSLibBase):

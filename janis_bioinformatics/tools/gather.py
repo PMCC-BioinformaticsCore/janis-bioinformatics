@@ -1,4 +1,4 @@
-from bioinformatics.janis_bioinformatics.data_types.bam import Bam
+from ..data_types.bam import Bam
 from janis import File, CommandTool, ToolOutput, ToolInput
 
 

@@ -1,5 +1,5 @@
-from bioinformatics.janis_bioinformatics.tools import Gatk4ApplyBqsrBase
-from bioinformatics.janis_bioinformatics.tools import Gatk4Latest
+from .base import Gatk4ApplyBqsrBase
+from ..gatk_latest import Gatk4Latest
 
 
 class Gatk4ApplyBqsrLatest(Gatk4Latest, Gatk4ApplyBqsrBase):

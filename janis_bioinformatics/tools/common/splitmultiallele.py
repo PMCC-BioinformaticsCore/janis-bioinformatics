@@ -1,8 +1,8 @@
 from typing import List
 
-from bioinformatics.janis_bioinformatics.data_types import FastaWithDict
-from bioinformatics.janis_bioinformatics.data_types import Vcf
-from bioinformatics.janis_bioinformatics.tools import BioinformaticsTool
+from janis_bioinformatics.data_types import FastaWithDict
+from janis_bioinformatics.data_types import Vcf
+from janis_bioinformatics.tools import BioinformaticsTool
 from janis import ToolOutput, ToolInput, Filename, ToolArgument
 
 

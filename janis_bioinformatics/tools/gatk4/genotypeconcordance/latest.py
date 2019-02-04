@@ -1,5 +1,5 @@
-from bioinformatics.janis_bioinformatics.tools import Gatk4Latest
-from bioinformatics.janis_bioinformatics.tools import Gatk4GenotypeConcordanceBase
+from .base import Gatk4GenotypeConcordanceBase
+from ..gatk_latest import Gatk4Latest
 
 
 class Gatk4GenotypeConcordanceLatest(Gatk4Latest, Gatk4GenotypeConcordanceBase):

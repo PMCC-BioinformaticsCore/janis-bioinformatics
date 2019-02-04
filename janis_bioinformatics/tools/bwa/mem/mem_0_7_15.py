@@ -1,5 +1,5 @@
-from bioinformatics.janis_bioinformatics.tools import Bwa_0_7_15
-from bioinformatics.janis_bioinformatics.tools import BwaMemBase
+from ..bwa_0_7_15 import Bwa_0_7_15
+from .base import BwaMemBase
 
 
 class BwaMem_0_7_15(Bwa_0_7_15, BwaMemBase):

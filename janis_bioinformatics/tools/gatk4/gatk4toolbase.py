@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from bioinformatics.janis_bioinformatics.tools import BioinformaticsTool
+from .. import BioinformaticsTool
 from janis import ToolInput, Boolean
 
 

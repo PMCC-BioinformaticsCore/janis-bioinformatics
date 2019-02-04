@@ -1,10 +1,8 @@
 from abc import ABC
 
 from janis import ToolInput, ToolOutput, Filename, Array, Directory
-from bioinformatics.janis_bioinformatics.data_types.bampair import BamPair
-from bioinformatics.janis_bioinformatics.data_types import FastaWithDict
-from bioinformatics.janis_bioinformatics.data_types import VcfIdx
-from bioinformatics.janis_bioinformatics.tools import Gatk4ToolBase
+from janis_bioinformatics.data_types import BamBai, FastaWithDict, VcfIdx
+from ..gatk4toolbase import Gatk4ToolBase
 from janis.unix.data_types.tsv import Tsv
 from janis.utils.metadata import ToolMetadata
 
@@ -27,7 +25,7 @@ class Gatk4BaseRecalibratorBase(Gatk4ToolBase, ABC):
             *super(Gatk4BaseRecalibratorBase, self).inputs(),
             *Gatk4BaseRecalibratorBase.additional_args,
 
-            ToolInput("input", BamPair(), position=6, prefix="-I", doc="BAM/SAM/CRAM file containing reads"),
+            ToolInput("input", BamBai(), position=6, prefix="-I", doc="BAM/SAM/CRAM file containing reads"),
             ToolInput("knownSites", Array(VcfIdx()), prefix="--known-sites", position=28,
                       doc="**One or more databases of known polymorphic sites used to exclude "
                           "regions around known polymorphisms from analysis.** "

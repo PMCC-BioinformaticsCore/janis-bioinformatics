@@ -1,8 +1,8 @@
 from abc import ABC
 
 from janis import ToolInput, Filename, ToolOutput, File, Array, String, Int, Boolean, Directory
-from bioinformatics.janis_bioinformatics.data_types.bampair import BamPair
-from bioinformatics.janis_bioinformatics.tools import Gatk4ToolBase
+from janis_bioinformatics.data_types import BamBai
+from ..gatk4toolbase import Gatk4ToolBase
 from janis.unix.data_types.tsv import Tsv
 from janis.utils.metadata import ToolMetadata
 
@@ -21,7 +21,7 @@ class Gatk4MarkDuplicatesBase(Gatk4ToolBase, ABC):
 
     def inputs(self):
         return [
-            ToolInput("input", BamPair(), prefix="-I", position=10,
+            ToolInput("input", BamBai(), prefix="-I", position=10,
                       doc="One or more input SAM or BAM files to analyze. Must be coordinate sorted."),
             ToolInput("outputFilename", Filename(extension=".bam"), position=10, prefix="-O",
                       doc="File to write duplication metrics to"),
@@ -33,7 +33,7 @@ class Gatk4MarkDuplicatesBase(Gatk4ToolBase, ABC):
 
     def outputs(self):
         return [
-            ToolOutput("output", BamPair(), glob="$(inputs.outputFilename)"),
+            ToolOutput("output", BamBai(), glob="$(inputs.outputFilename)"),
             ToolOutput("metrics", Tsv(), glob="$(inputs.metricsFilename)")
         ]
 

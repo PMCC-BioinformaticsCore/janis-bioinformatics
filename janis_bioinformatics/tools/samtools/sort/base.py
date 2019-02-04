@@ -1,8 +1,8 @@
 from abc import ABC
 
 from janis import ToolInput, Filename, Int, String, Boolean, ToolOutput, Array
-from bioinformatics.janis_bioinformatics.data_types.bam import Bam
-from bioinformatics.janis_bioinformatics.tools import SamToolsToolBase
+from janis_bioinformatics.data_types.bam import Bam
+from janis_bioinformatics.tools.samtools.samtoolstoolbase import SamToolsToolBase
 from janis.utils.metadata import ToolMetadata
 
 

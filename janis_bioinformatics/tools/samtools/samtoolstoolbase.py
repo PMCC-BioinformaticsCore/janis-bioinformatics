@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from bioinformatics.janis_bioinformatics.tools import BioinformaticsTool
+from janis_bioinformatics.tools import BioinformaticsTool
 
 
 class SamToolsToolBase(BioinformaticsTool, ABC):

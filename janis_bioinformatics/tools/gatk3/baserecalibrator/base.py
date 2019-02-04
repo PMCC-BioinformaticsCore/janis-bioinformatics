@@ -1,11 +1,11 @@
 from abc import ABC
 
 from janis import ToolArgument, ToolInput, ToolOutput, Filename, Array, File, String, Int, Boolean, Double
-from bioinformatics.janis_bioinformatics.data_types.bampair import BamPair
-from bioinformatics.janis_bioinformatics.data_types import Bed
-from bioinformatics.janis_bioinformatics.data_types import FastaWithDict
-from bioinformatics.janis_bioinformatics.data_types import VcfIdx
-from bioinformatics.janis_bioinformatics.tools import Gatk3ToolBase
+from janis_bioinformatics.data_types.bampair import BamPair
+from janis_bioinformatics.data_types import Bed
+from janis_bioinformatics.data_types import FastaWithDict
+from janis_bioinformatics.data_types import VcfIdx
+from janis_bioinformatics.tools import Gatk3ToolBase
 
 
 class Gatk3RecalibratorBase(Gatk3ToolBase, ABC):
