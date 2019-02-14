@@ -6,6 +6,9 @@ from janis import ToolOutput, ToolInput, Filename, ToolArgument, Boolean, Float,
 
 
 class VarDict(BioinformaticsTool):
+    def friendly_name(self) -> str:
+        return "Vardict"
+
     @staticmethod
     def tool():
         return "vardict"

@@ -48,7 +48,7 @@ class SplitMultiAllele(BioinformaticsTool):
 
     @staticmethod
     def requirements():
-        from cwlgen.cwlgen import ShellCommandRequirement
+        from cwlgen import ShellCommandRequirement
         return [ShellCommandRequirement()]
 
 

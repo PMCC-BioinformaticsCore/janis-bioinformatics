@@ -1,6 +1,6 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
-VERSION = "v0.0.2"
+VERSION = "v0.0.3"
 DESCRIPTION = "Bioinformatics tools for Janis; the Pipeline creation helper"
 
 ######## SHOULDN'T NEED EDITS BELOW THIS LINE ########
@@ -16,7 +16,7 @@ setup(
     author="Michael Franklin, Evan Thomas, Mohammad Bhuyan",
     author_email="michael.franklin@petermac.org",
     license="GNU",
-    packages=["janis_bioinformatics"],
+    packages=["janis_bioinformatics"] + ["janis_bioinformatics." + p for p in sorted(find_packages('./janis_bioinformatics'))],
     install_requires=["janis-pipelines"],
     zip_safe=False,
     long_description=long_description,
