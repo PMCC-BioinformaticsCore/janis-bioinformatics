@@ -4,7 +4,7 @@ from typing import List
 from janis_bioinformatics.data_types import FastaWithDict, VcfTabix, BamBai, Bam
 from janis_bioinformatics.tools import BioinformaticsTool
 
-from janis import ToolOutput, ToolInput, ToolArgument, Boolean, String, File, Directory
+from janis import ToolOutput, ToolInput, ToolArgument, Boolean, String, File, Directory, Stdout
 from janis.unix.data_types.tsv import Tsv
 from janis.utils.metadata import ToolMetadata
 
@@ -52,7 +52,7 @@ class MantaBase(BioinformaticsTool, ABC):
 
     def outputs(self) -> List[ToolOutput]:
         return [
-
+            ToolOutput("tmpout", String(optional=True))
         ]
 
     def arguments(self) -> List[ToolArgument]:
