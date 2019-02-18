@@ -8,11 +8,11 @@ class TestManta(TestBase):
         w = Manta_1_4_0()
         cwl = w.translate("cwl")
         task = self.run_task(source=cwl, inputs={
-            "reference": {"class": "File",
+            "referenceFasta": {"class": "File",
                           "path": "/Users/franklinmichael/reference/hg38/assembly/Homo_sapiens_assembly38.fasta"},
             "bam": {"class": "File",
                     "path": "/Users/franklinmichael/Desktop/workflows-for-testing/strelka/inputs/BRCA1.bam"},
-            "runDir": "output"
+            "runDir": "out" # "{ "class": "Directory", "path": "/Users/franklinmichael/Desktop/tmpdir" }
         })
 
         print(task.outputs)
