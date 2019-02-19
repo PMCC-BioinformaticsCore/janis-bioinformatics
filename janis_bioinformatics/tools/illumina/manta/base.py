@@ -109,7 +109,7 @@ of capabilities and limitations.""".strip()
         ToolInput("runDir", Filename(), prefix="--runDir", position=1, shell_quote=False,
                   doc="Run script and run output will be written to this directory [required] "
                       "(default: MantaWorkflow)"),
-        ToolInput("referenceFasta", FastaWithDict(optional=True), prefix="--referenceFasta", position=1,
+        ToolInput("reference", FastaWithDict(), prefix="--referenceFasta", position=1,
                   shell_quote=False, doc="samtools-indexed reference fasta file [required]"),
 
         ToolInput("tumorBam", Bam(optional=True), prefix="--tumorBam", position=1, shell_quote=False,
@@ -125,7 +125,7 @@ of capabilities and limitations.""".strip()
     ]
 
     running_inputs = [
-        ToolInput("mode", String(default="local"), prefix="--mode", position=3, shell_quote=False,
+        ToolInput("mode", String(default="local", optional=True), prefix="--mode", position=3, shell_quote=False,
                   doc="(-m) select run mode (local|sge)"),
         ToolInput("jobs", Int(optional=True), prefix="--jobs", position=3, shell_quote=False,
                   doc="(-j) number of jobs, must be an integer or 'unlimited' "

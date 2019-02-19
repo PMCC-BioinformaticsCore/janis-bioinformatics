@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import List
 
-from janis_bioinformatics.data_types import FastaWithDict, VcfTabix, BamBai
+from janis_bioinformatics.data_types import FastaWithDict, VcfTabix, BamBai, Vcf
 from janis_bioinformatics.tools import BioinformaticsTool
 
 from janis import ToolOutput, ToolInput, ToolArgument, Boolean, String, File
@@ -35,10 +35,47 @@ class StrelkaBase(BioinformaticsTool, ABC):
                       doc="Name of directory to be created where all workflow scripts and output will be written. "
                           "Each analysis requires a separate directory."),
 
-            ToolInput("version", Boolean(optional=True), prefix="--version", position=3, shell_quote=False,
-                      doc="show program's version number and exit"),
-            ToolInput("help", Boolean(optional=True), prefix="--help", position=3, shell_quote=False,
-                      doc="(-h) show this help message and exit"),
+            ToolInput("ploidy", VcfTabix(optional=True), prefix="--ploidy", position=1, shell_quote=False,
+                      doc="Provide ploidy file in VCF. The VCF should include one sample column per input sample "
+                          "labeled with the same sample names found in the input BAM/CRAM RG header sections. "
+                          "Ploidy should be provided in records using the FORMAT/CN field, which are interpreted "
+                          "to span the range [POS+1, INFO/END]. Any CN value besides 1 or 0 will be treated as 2. "
+                          "File must be tabix indexed. (no default)"),
+            ToolInput("noCompress", VcfTabix(optional=True), prefix="--noCompress", position=1, shell_quote=False,
+                      doc="Provide BED file of regions where gVCF block compression is not allowed. "
+                          "File must be bgzip- compressed/tabix-indexed. (no default)"),
+            ToolInput("callContinuousVf", String(optional=True), prefix="--callContinuousVf",
+                      doc="Call variants on CHROM without a ploidy prior assumption, "
+                          "issuing calls with continuous variant frequencies (no default)"),
+            ToolInput("rna", Boolean(optional=True), prefix="--rna", position=1, shell_quote=False,
+                      doc="Set options for RNA-Seq input."),
+            ToolInput("indelCandidates", VcfTabix(optional=True), prefix="--indelCandidates", position=1, shell_quote=False,
+                      doc="Specify a VCF of candidate indel alleles. These alleles are always evaluated but only "
+                          "reported in the output when they are inferred to exist in the sample. "
+                          "The VCF must be tabix indexed. All indel alleles must be left-shifted/normalized, "
+                          "any unnormalized alleles will be ignored. This option may be specified more than once, "
+                          "multiple input VCFs will be merged. (default: None)"),
+            ToolInput("forcedGT", VcfTabix(optional=True), prefix="--forcedGT", position=1, shell_quote=False,
+                      doc="Specify a VCF of candidate alleles. These alleles are always evaluated and reported even "
+                          "if they are unlikely to exist in the sample. The VCF must be tabix indexed. "
+                          "All indel alleles must be left- shifted/normalized, any unnormalized allele will "
+                          "trigger a runtime error. This option may be specified more than once, multiple input "
+                          "VCFs will be merged. Note that for any SNVs provided in the VCF, the SNV site will "
+                          "be reported (and for gVCF, excluded from block compression), "
+                          "but the specific SNV alleles are ignored. (default: None)"),
+            ToolInput("exome", File(optional=True), prefix="--exome", position=1, shell_quote=False,
+                      doc="--targeted Set options for exome or other targeted input: "
+                          "note in particular that this flag turns off high-depth filters"),
+            ToolInput("callRegions", File(optional=True), prefix="--callRegions", position=1, shell_quote=False,
+                      doc="Optionally provide a bgzip-compressed/tabix-indexed BED file containing the set of "
+                          "regions to call. No VCF output will be provided outside of these regions. The full "
+                          "genome will still be used to estimate statistics from the input (such as expected depth "
+                          "per chromosome). Only one BED file may be specified. (default: call the entire genome)"),
+
+            # ToolInput("version", Boolean(optional=True), prefix="--version", position=3, shell_quote=False,
+            #           doc="show program's version number and exit"),
+            # ToolInput("help", Boolean(optional=True), prefix="--help", position=3, shell_quote=False,
+            #           doc="(-h) show this help message and exit"),
             ToolInput("mode", String(optional=True, default="local"), prefix="--mode", position=3, shell_quote=False,
                       doc="(-m MODE)  select run mode (local|sge)"),
             ToolInput("queue", String(optional=True), prefix="--queue", position=3, shell_quote=False,
@@ -50,8 +87,8 @@ class StrelkaBase(BioinformaticsTool, ABC):
                       doc=" (-g MEMGB) gigabytes of memory available to run workflow "
                           "-- only meaningful in local mode, must be an integer (default: Estimate the total "
                           "memory for this node for local mode, 'unlimited' for sge mode)"),
-            ToolInput("dryRun", Boolean(optional=True), prefix="--dryRun", position=3, shell_quote=False,
-                      doc="dryRun (-d,) workflow code without actually running command-tasks"),
+            # ToolInput("dryRun", Boolean(optional=True), prefix="--dryRun", position=3, shell_quote=False,
+            #           doc="dryRun (-d,) workflow code without actually running command-tasks"),
             ToolInput("quiet", Boolean(optional=True), prefix="--quiet", position=3, shell_quote=False,
                       doc="Don't write any log output to stderr "
                           "(but still write to workspace/pyflow.data/logs/pyflow_log.txt)"),

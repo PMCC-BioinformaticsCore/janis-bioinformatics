@@ -42,7 +42,7 @@ Convert between VCF and BCF. Former bcftools subset."""
 
     def outputs(self) -> List[ToolOutput]:
         return [
-            ToolOutput("output", Stdout(File()))
+            ToolOutput("output", Stdout(Vcf()))
         ]
 
 
