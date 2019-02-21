@@ -1,6 +1,7 @@
 from abc import ABC
 
-from janis import ToolInput, ToolOutput, ToolArgument, Boolean, File, String, Int, Float, Filename
+from janis import ToolInput, ToolOutput, ToolArgument, Boolean, File, String, Int, Float, Filename, Stdout, \
+    InputSelector
 from janis_bioinformatics.data_types.bam import Bam
 from janis_bioinformatics.data_types import FastaWithDict
 from janis_bioinformatics.data_types import Sam
@@ -32,13 +33,9 @@ class SamToolsViewBase(SamToolsToolBase, ABC):
 
         ]
 
-    @staticmethod
-    def stdout():
-        return "$(inputs.outputFilename)"
-
     def outputs(self):
         return [
-            ToolOutput("out", Bam(), glob="$(inputs.outputFilename)"),
+            ToolOutput("out", Bam(), glob=InputSelector("outputFilename")),
         ]
 
     def friendly_name(self):

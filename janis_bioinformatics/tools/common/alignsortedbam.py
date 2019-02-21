@@ -1,4 +1,4 @@
-from janis_bioinformatics.data_types import Bam, BamBai, Fasta, Fastq, Sam
+from janis_bioinformatics.data_types import Bam, BamBai, Fastq, Sam, FastaWithDict
 from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.bwa import BwaMemLatest
 from janis_bioinformatics.tools.gatk4 import Gatk4SortSamLatest
@@ -25,7 +25,7 @@ class AlignSortedBam(BioinformaticsWorkflow):
         s3_sortsam = Step("s3_sortsam", Gatk4SortSamLatest())
 
         s1_inp_header = Input("read_group_header_line", String())
-        s1_inp_reference = Input("reference", Fasta())
+        s1_inp_reference = Input("reference", FastaWithDict())
         s1_inp_fastq = Input("fastq", Fastq())
 
         s3_inp_tmpdir = Input("tmpdir", Directory())
@@ -43,7 +43,7 @@ class AlignSortedBam(BioinformaticsWorkflow):
         self.add_default_value(s1_bwa.threads, 36)
 
         # fully connect step 2
-        self.add_edge(s1_bwa, s2_samtools.sam)
+        self.add_edge(s1_bwa.out, s2_samtools.sam)
 
         # fully connect step 3
         self.add_edges([
@@ -56,10 +56,12 @@ class AlignSortedBam(BioinformaticsWorkflow):
         self.add_default_value(s3_sortsam.maxRecordsInRam, 5000000)
 
         # connect to output
-        self.add_edge(s1_bwa, o1_bwa)
-        self.add_edge(s2_samtools, o2_samtools)
+        self.add_edge(s1_bwa.out, o1_bwa)
+        self.add_edge(s2_samtools.out, o2_samtools)
         self.add_edge(s3_sortsam.output, o3_sortsam)
 
 
 if __name__ == "__main__":
-    print(AlignSortedBam().help())
+    w = AlignSortedBam()
+    w.dump_translation("wdl")
+    # print(AlignSortedBam().help())

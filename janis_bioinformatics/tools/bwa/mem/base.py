@@ -1,8 +1,8 @@
 from abc import ABC
 
-from janis import ToolInput, Int, Float, Boolean, String, ToolOutput, Filename, File
+from janis import ToolInput, Int, Float, Boolean, String, ToolOutput, Filename, File, InputSelector
 from janis_bioinformatics.data_types.fastq import Fastq
-from janis_bioinformatics.data_types import Sam
+from janis_bioinformatics.data_types import Sam, FastaWithDict
 from janis_bioinformatics.tools.bwa.bwatoolbase import BwaToolBase
 from janis.types.common_data_types import Stdout
 from janis.utils.metadata import ToolMetadata
@@ -58,7 +58,7 @@ does not work with split alignments. One may consider to use option -M to flag s
         return [
             *super(BwaMemBase, self).inputs(),
             *BwaMemBase.additional_inputs,
-            ToolInput("reference", File(), position=9),
+            ToolInput("reference", FastaWithDict(), position=9),
             ToolInput("reads", Fastq(), position=10, doc=None),
             ToolInput("mates", Fastq(optional=True), position=11, doc=None),
             ToolInput("outputFilename", Filename(extension=".sam"))
@@ -66,7 +66,7 @@ does not work with split alignments. One may consider to use option -M to flag s
 
     def outputs(self):
         return [
-            ToolOutput("out", Stdout(Sam(), stdoutname="$(inputs.outputFilename)"))
+            ToolOutput("out", Stdout(Sam(), stdoutname=InputSelector("outputFilename")))
         ]
 
     def arguments(self):

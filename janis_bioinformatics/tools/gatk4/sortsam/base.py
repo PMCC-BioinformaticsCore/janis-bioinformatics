@@ -1,4 +1,4 @@
-from janis import ToolInput, Filename, String, Array, File, Int, Boolean, ToolOutput, Directory
+from janis import ToolInput, Filename, String, Array, File, Int, Boolean, ToolOutput, Directory, InputSelector
 from janis_bioinformatics.data_types import Bam, BamBai, FastaWithDict
 from ..gatk4toolbase import Gatk4ToolBase
 from janis.utils.metadata import ToolMetadata
@@ -46,7 +46,7 @@ class Gatk4SortSamBase(Gatk4ToolBase):
 
     def outputs(self):
         return [
-            ToolOutput("output", BamBai(), glob="$(inputs.outputFilename)")
+            ToolOutput("output", BamBai(), glob=InputSelector("outputFilename"))
         ]
 
     additional_args = [
