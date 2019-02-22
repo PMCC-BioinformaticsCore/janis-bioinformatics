@@ -17,8 +17,14 @@ class PerformanceValidator_1_2_1(BioinformaticsWorkflow):
         s2_tabix = Step("s2_tabix", Tabix_1_2_1())
         s3_genotypeconcord = Step("s3_genotypeconcord", Gatk4GenotypeConcordanceLatest())
 
-        self.add_pipe(inp, s1_bgzip, s2_tabix, s3_genotypeconcord)
-        self.add_edges([(inp_truth, s3_genotypeconcord.truthVCF), (inp_intervals, s3_genotypeconcord.intervals)])
+        self.add_edges([
+            (inp, s1_bgzip.file),
+            (s1_bgzip.output, s2_tabix.file),
+            (s2_tabix.output, s3_genotypeconcord.callVCF),
+            (inp_truth, s3_genotypeconcord.truthVCF),
+            (inp_intervals, s3_genotypeconcord.intervals)
+        ])
+
         self.add_default_value(s3_genotypeconcord.treatMissingSitesAsHomeRef, True)
 
         self.add_edges([

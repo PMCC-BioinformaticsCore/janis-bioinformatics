@@ -1,6 +1,6 @@
 from abc import ABC
 
-from janis import ToolInput, Filename, String, ToolOutput, Array, File, Int, Boolean, Directory
+from janis import ToolInput, Filename, String, ToolOutput, Array, File, Int, Boolean, Directory, InputSelector
 from janis_bioinformatics.data_types import FastaWithDict, BamBai
 from ..gatk4toolbase import Gatk4ToolBase
 from janis.utils.metadata import ToolMetadata
@@ -28,7 +28,7 @@ class Gatk4MergeSamFilesBase(Gatk4ToolBase, ABC):
 
     def outputs(self):
         return [
-            ToolOutput("output", BamBai(), glob="$(inputs.outputFilename)")
+            ToolOutput("output", BamBai(), glob=InputSelector("outputFilename"))
         ]
 
     def metadata(self):

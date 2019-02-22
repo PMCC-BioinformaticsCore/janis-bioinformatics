@@ -1,6 +1,6 @@
 from abc import ABC
 
-from janis import String, Int, File, ToolOutput, ToolInput, Boolean, Double, Array, Filename
+from janis import String, Int, File, ToolOutput, ToolInput, Boolean, Double, Array, Filename, InputSelector
 from janis_bioinformatics.data_types import BamBai, Bed, FastaWithDict, VcfIdx
 from ..gatk4toolbase import Gatk4ToolBase
 from janis.utils.metadata import ToolMetadata
@@ -31,7 +31,7 @@ class Gatk4HaplotypeCallerBase(Gatk4ToolBase, ABC):
 
     def outputs(self):
         return [
-            ToolOutput("output", VcfIdx(), glob='$(inputs.outputFilename)',
+            ToolOutput("output", VcfIdx(), glob=InputSelector("outputFilename"),
                        doc="A raw, unfiltered, highly sensitive callset in VCF format. "
                            "File to which variants should be written"),
         ]

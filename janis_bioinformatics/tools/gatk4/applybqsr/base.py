@@ -3,7 +3,7 @@ from abc import ABC
 from ..gatk4toolbase import Gatk4ToolBase
 from janis_bioinformatics.data_types import BamBai, FastaWithDict
 
-from janis import ToolInput, Filename, ToolOutput, Directory
+from janis import ToolInput, Filename, ToolOutput, Directory, InputSelector
 from janis.unix.data_types.tsv import Tsv
 from janis.utils.metadata import ToolMetadata
 
@@ -34,7 +34,7 @@ class Gatk4ApplyBqsrBase(Gatk4ToolBase, ABC):
 
     def outputs(self):
         return [
-            ToolOutput("output", BamBai(), glob="$(inputs.outputFilename)")
+            ToolOutput("output", BamBai(), glob=InputSelector("outputFilename"))
         ]
 
     def metadata(self):

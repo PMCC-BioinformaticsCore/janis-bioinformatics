@@ -3,7 +3,7 @@ from typing import List
 
 from janis_bioinformatics.data_types import VcfTabix, CompressedVcf
 from janis_bioinformatics.tools import BioinformaticsTool
-from janis import ToolOutput, ToolInput, Boolean, Int, String, File
+from janis import ToolOutput, ToolInput, Boolean, Int, String, File, InputSelector
 from janis.utils.metadata import ToolMetadata
 
 
@@ -35,7 +35,7 @@ class TabixBase(BioinformaticsTool, ABC):
 
     def outputs(self) -> List[ToolOutput]:
         return [
-            ToolOutput("output", VcfTabix(), glob="$(inputs.file.basename)")
+            ToolOutput("output", VcfTabix(), glob=InputSelector("file.basename"))  # "$(inputs.file.basename)"
         ]
 
     @staticmethod

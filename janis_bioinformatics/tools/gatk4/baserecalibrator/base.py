@@ -1,7 +1,7 @@
 from abc import ABC
 
-from janis import ToolInput, ToolOutput, Filename, Array, Directory
-from janis_bioinformatics.data_types import BamBai, FastaWithDict, VcfIdx
+from janis import ToolInput, ToolOutput, Filename, Array, Directory, InputSelector
+from janis_bioinformatics.data_types import BamBai, FastaWithDict, VcfIdx, Vcf
 from ..gatk4toolbase import Gatk4ToolBase
 from janis.unix.data_types.tsv import Tsv
 from janis.utils.metadata import ToolMetadata
@@ -26,7 +26,7 @@ class Gatk4BaseRecalibratorBase(Gatk4ToolBase, ABC):
             *Gatk4BaseRecalibratorBase.additional_args,
 
             ToolInput("input", BamBai(), position=6, prefix="-I", doc="BAM/SAM/CRAM file containing reads"),
-            ToolInput("knownSites", Array(VcfIdx()), prefix="--known-sites", position=28,
+            ToolInput("knownSites", Array(Vcf()), prefix="--known-sites", position=28,
                       doc="**One or more databases of known polymorphic sites used to exclude "
                           "regions around known polymorphisms from analysis.** "
                           "This algorithm treats every reference mismatch as an indication of error. However, real "
@@ -51,7 +51,7 @@ class Gatk4BaseRecalibratorBase(Gatk4ToolBase, ABC):
 
     def outputs(self):
         return [
-            ToolOutput("output", Tsv(), glob="$(inputs.outputFilename)")
+            ToolOutput("output", Tsv(), glob=InputSelector("outputFilename"))
         ]
 
 

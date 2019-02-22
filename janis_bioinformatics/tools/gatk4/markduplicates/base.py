@@ -1,6 +1,6 @@
 from abc import ABC
 
-from janis import ToolInput, Filename, ToolOutput, File, Array, String, Int, Boolean, Directory
+from janis import ToolInput, Filename, ToolOutput, File, Array, String, Int, Boolean, Directory, InputSelector
 from janis_bioinformatics.data_types import BamBai
 from ..gatk4toolbase import Gatk4ToolBase
 from janis.unix.data_types.tsv import Tsv
@@ -33,8 +33,8 @@ class Gatk4MarkDuplicatesBase(Gatk4ToolBase, ABC):
 
     def outputs(self):
         return [
-            ToolOutput("output", BamBai(), glob="$(inputs.outputFilename)"),
-            ToolOutput("metrics", Tsv(), glob="$(inputs.metricsFilename)")
+            ToolOutput("output", BamBai(), glob=InputSelector("outputFilename")),
+            ToolOutput("metrics", Tsv(), glob=InputSelector("metricsFilename"))
         ]
 
     def metadata(self):

@@ -1,6 +1,6 @@
 from abc import ABC
 
-from janis import ToolInput, Filename, ToolOutput, File, Array, String, Boolean, Int, Float, Directory
+from janis import ToolInput, Filename, ToolOutput, File, Array, String, Boolean, Int, Float, Directory, WildcardSelector
 from janis_bioinformatics.data_types import VcfIdx, VcfTabix
 from ..gatk4toolbase import Gatk4ToolBase
 from janis.utils.metadata import ToolMetadata
@@ -33,9 +33,9 @@ class Gatk4GenotypeConcordanceBase(Gatk4ToolBase, ABC):
 
     def outputs(self):
         return [
-            ToolOutput("summaryMetrics", File(), glob="*.genotype_concordance_summary_metrics"),
-            ToolOutput("detailMetrics", File(), glob="*.genotype_concordance_detail_metrics"),
-            ToolOutput("contingencyMetrics", File(), glob="*.genotype_concordance_contingency_metrics"),
+            ToolOutput("summaryMetrics", File(), glob=WildcardSelector("*.genotype_concordance_summary_metrics")),
+            ToolOutput("detailMetrics", File(), glob=WildcardSelector("*.genotype_concordance_detail_metrics")),
+            ToolOutput("contingencyMetrics", File(), glob=WildcardSelector("*.genotype_concordance_contingency_metrics")),
             # ToolOutput("vcf", VcfIdx(optional=True), glob="*.vcf")
         ]
 

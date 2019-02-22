@@ -36,13 +36,13 @@ class ProcessBamFiles_4_0(Workflow):
         self.add_default_value(s1_merge.validationStringency, "SILENT")
 
         # S2: MarkDuplicates
-        self.add_edge(s1_merge, s2_mark)
+        self.add_edge(s1_merge.output, s2_mark.input)
         self.add_edge(tmpDir, s2_mark.tmpDir)
         self.add_default_value(s2_mark.createIndex, True)
         self.add_default_value(s2_mark.maxRecordsInRam, 5000000)
 
         # S3: BaseRecalibrator
-        self.add_edge(s2_mark, s3_recal)
+        self.add_edge(s2_mark.output, s3_recal.input)
         self.add_edge(reference, s3_recal.reference)
         self.add_edge(snps_dbsnp, s3_recal.knownSites)
         self.add_edge(snps_1000gp, s3_recal.knownSites)
@@ -51,8 +51,8 @@ class ProcessBamFiles_4_0(Workflow):
         self.add_edge(tmpDir, s3_recal.tmpDir)
 
         # S4: ApplyBQSR
-        self.add_edge(s2_mark.output, s4_bqsr)
-        self.add_edge(s3_recal, s4_bqsr.recalFile)
+        self.add_edge(s2_mark.output, s4_bqsr.input)
+        self.add_edge(s3_recal.output, s4_bqsr.recalFile)
         self.add_edge(reference, s4_bqsr.reference)
         self.add_edge(tmpDir, s4_bqsr.tmpDir)
 
@@ -64,4 +64,4 @@ class ProcessBamFiles_4_0(Workflow):
 
 
 if __name__ == "__main__":
-    ProcessBamFiles_4_0().dump_translation("cwl")
+    ProcessBamFiles_4_0().dump_translation("wdl")

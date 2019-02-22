@@ -1,6 +1,6 @@
 from abc import ABC
 
-from janis import ToolInput, String, Boolean, File, Filename, Array, Int, ToolOutput
+from janis import ToolInput, String, Boolean, File, Filename, Array, Int, ToolOutput, InputSelector
 from janis_bioinformatics.data_types import FastaWithDict
 from janis_bioinformatics.data_types import Vcf
 from janis_bioinformatics.tools.bcftools.bcftoolstoolbase import BcfToolsToolBase
@@ -30,7 +30,7 @@ class BcfToolsNormBase(BcfToolsToolBase, ABC):
 
     def outputs(self):
         return [
-            ToolOutput("output", Vcf(), glob="$(inputs.outputFilename)")
+            ToolOutput("output", Vcf(), glob=InputSelector("outputFilename"))
         ]
 
     def metadata(self):
