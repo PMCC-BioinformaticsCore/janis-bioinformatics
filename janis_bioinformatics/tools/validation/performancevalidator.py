@@ -11,7 +11,7 @@ class PerformanceValidator_1_2_1(BioinformaticsWorkflow):
 
         inp = Input("vcf", Vcf())
         inp_truth = Input("truth", VcfIdx())
-        inp_intervals = Input("intervals", Array(VcfIdx()))
+        inp_intervals = Input("intervals", Array(Vcf()))
 
         s1_bgzip = Step("s1_bgzip", BGZip_1_2_1())
         s2_tabix = Step("s2_tabix", Tabix_1_2_1())
@@ -19,8 +19,8 @@ class PerformanceValidator_1_2_1(BioinformaticsWorkflow):
 
         self.add_edges([
             (inp, s1_bgzip.file),
-            (s1_bgzip.output, s2_tabix.file),
-            (s2_tabix.output, s3_genotypeconcord.callVCF),
+            (s1_bgzip.out, s2_tabix.file),
+            (s2_tabix.out, s3_genotypeconcord.callVCF),
             (inp_truth, s3_genotypeconcord.truthVCF),
             (inp_intervals, s3_genotypeconcord.intervals)
         ])

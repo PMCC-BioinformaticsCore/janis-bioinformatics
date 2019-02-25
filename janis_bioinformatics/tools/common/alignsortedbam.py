@@ -30,9 +30,10 @@ class AlignSortedBam(BioinformaticsWorkflow):
 
         s3_inp_tmpdir = Input("tmpdir", Directory())
 
-        o1_bwa = Output("o1_bwa", Sam())
-        o2_samtools = Output("o2_samtools", Bam())
-        o3_sortsam = Output("o3_sortsam", BamBai())
+        out_bwa = Output("out_bwa", Sam())
+        out_samtools = Output("out_samtools", Bam())
+        out_sortsam = Output("out_sortsam", BamBai())
+        out = Output("out", BamBai())
 
         # Fully connect step 1
         self.add_edges([
@@ -47,7 +48,7 @@ class AlignSortedBam(BioinformaticsWorkflow):
 
         # fully connect step 3
         self.add_edges([
-            (s2_samtools.out, s3_sortsam.input),
+            (s2_samtools.out, s3_sortsam.bam),
             (s3_inp_tmpdir, s3_sortsam.tmpDir),
         ])
         self.add_default_value(s3_sortsam.sortOrder, "coordinate")
@@ -56,9 +57,10 @@ class AlignSortedBam(BioinformaticsWorkflow):
         self.add_default_value(s3_sortsam.maxRecordsInRam, 5000000)
 
         # connect to output
-        self.add_edge(s1_bwa.out, o1_bwa)
-        self.add_edge(s2_samtools.out, o2_samtools)
-        self.add_edge(s3_sortsam.output, o3_sortsam)
+        self.add_edge(s1_bwa.out, out_bwa)
+        self.add_edge(s2_samtools.out, out_samtools)
+        self.add_edge(s3_sortsam.out, out_sortsam)
+        self.add_edge(s3_sortsam.out, out)
 
 
 if __name__ == "__main__":

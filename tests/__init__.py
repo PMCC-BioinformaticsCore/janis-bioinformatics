@@ -8,7 +8,8 @@ class TestBase(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         print("starting up")
-        cls.engine = CWLTool()
+        cls.engine = Cromwell()
+        cls.engine.start_engine()
 
     @classmethod
     def tearDownClass(cls):
@@ -23,3 +24,6 @@ class TestBase(unittest.TestCase):
         print("Must determine how bam's can be compared: " + msg if msg else "")
         return True
 
+    def assertVcfEqual(self, first, second, msg):
+        print("Must determine how VCF's can be compared: " + msg if msg else "")
+        return True

@@ -13,11 +13,11 @@ class ProcessBamFiles_4_0(Workflow):
     def __init__(self):
         Workflow.__init__(self, "processbamfiles", friendly_name="Process BAM Files")
 
-        inp = Input("input", Array(BamBai()))
+        inp = Input("bams", Array(BamBai()))
         reference = Input("reference", FastaWithDict())
         tmpDir = Input("tmpDir", Directory())
 
-        snps_dbsnp = Input("snps_dbsnp", VcfIdx())
+        snps_dbsnp = Input("snps_dbsnp", VcfTabix())
         snps_1000gp = Input("snps_1000gp", VcfTabix())
         omni = Input("omni", VcfTabix())
         hapmap = Input("hapmap", VcfTabix())
@@ -28,7 +28,7 @@ class ProcessBamFiles_4_0(Workflow):
         s4_bqsr = Step("applyBQSR", GATK4.Gatk4ApplyBqsr_4_0())
 
         # S1: MergeSamFiles
-        self.add_edge(inp, s1_merge.input)
+        self.add_edge(inp, s1_merge.bams)
         self.add_edge(tmpDir, s1_merge.tmpDir)
         self.add_default_value(s1_merge.useThreading, True)
         self.add_default_value(s1_merge.createIndex, True)
@@ -36,13 +36,13 @@ class ProcessBamFiles_4_0(Workflow):
         self.add_default_value(s1_merge.validationStringency, "SILENT")
 
         # S2: MarkDuplicates
-        self.add_edge(s1_merge.output, s2_mark.input)
+        self.add_edge(s1_merge.out, s2_mark.bam)
         self.add_edge(tmpDir, s2_mark.tmpDir)
         self.add_default_value(s2_mark.createIndex, True)
         self.add_default_value(s2_mark.maxRecordsInRam, 5000000)
 
         # S3: BaseRecalibrator
-        self.add_edge(s2_mark.output, s3_recal.input)
+        self.add_edge(s2_mark.out, s3_recal.bam)
         self.add_edge(reference, s3_recal.reference)
         self.add_edge(snps_dbsnp, s3_recal.knownSites)
         self.add_edge(snps_1000gp, s3_recal.knownSites)
@@ -51,14 +51,14 @@ class ProcessBamFiles_4_0(Workflow):
         self.add_edge(tmpDir, s3_recal.tmpDir)
 
         # S4: ApplyBQSR
-        self.add_edge(s2_mark.output, s4_bqsr.input)
-        self.add_edge(s3_recal.output, s4_bqsr.recalFile)
+        self.add_edge(s2_mark.out, s4_bqsr.bam)
+        self.add_edge(s3_recal.out, s4_bqsr.recalFile)
         self.add_edge(reference, s4_bqsr.reference)
         self.add_edge(tmpDir, s4_bqsr.tmpDir)
 
         # Outputs
         self.add_edges([
-            (s4_bqsr.output, Output("output"))
+            (s4_bqsr.out, Output("out"))
         ])
 
 

@@ -24,7 +24,7 @@ class SplitMultiAllele(BioinformaticsTool):
 
     def inputs(self) -> List[ToolInput]:
         return [
-            ToolInput("input", Vcf(), position=2, shell_quote=False),
+            ToolInput("vcf", Vcf(), position=2, shell_quote=False),
             ToolInput("reference", FastaWithDict(), prefix="-r", position=7, shell_quote=False),
             ToolInput("outputFilename", Filename(extension=".norm.vcf"), prefix=">", position=10, shell_quote=False),
         ]
@@ -43,7 +43,7 @@ class SplitMultiAllele(BioinformaticsTool):
 
     def outputs(self) -> List[ToolOutput]:
         return [
-            ToolOutput("output", Vcf(), glob="$(inputs.outputFilename)")
+            ToolOutput("out", Vcf(), glob="$(inputs.outputFilename)")
         ]
 
     @staticmethod

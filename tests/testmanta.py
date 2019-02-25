@@ -12,7 +12,7 @@ class TestManta(TestBase):
                           "path": "/Users/franklinmichael/reference/hg38/assembly/Homo_sapiens_assembly38.fasta"},
             "bam": {"class": "File",
                     "path": "/Users/franklinmichael/Desktop/workflows-for-testing/strelka/inputs/BRCA1.bam"},
-            "runDir": "out" # "{ "class": "Directory", "path": "/Users/franklinmichael/Desktop/tmpdir" }
+            "runDir": "out"
         })
 
         print(task.outputs)

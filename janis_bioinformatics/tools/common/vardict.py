@@ -19,7 +19,7 @@ class VarDict(BioinformaticsTool):
 
     def inputs(self) -> List[ToolInput]:
         return [
-            ToolInput("input", Bed(), position=2, shell_quote=False),
+            ToolInput("bed", Bed(), position=2, shell_quote=False),
             ToolInput("outputFilename", Filename(extension=".vardict.vcf"), prefix=">", position=6, shell_quote=False),
             ToolInput("indexedBam", BamBai(), prefix="-b", position=1, shell_quote=False, doc="The indexed BAM file"),
 
@@ -32,7 +32,7 @@ class VarDict(BioinformaticsTool):
 
     def outputs(self):
         return [
-            ToolOutput("output", Vcf(), glob="$(inputs.outputFilename)")
+            ToolOutput("out", Vcf(), glob="$(inputs.outputFilename)")
         ]
 
     def arguments(self):
@@ -147,7 +147,7 @@ class VarDict(BioinformaticsTool):
                       "Default to 3 bp, or only calls when they're within 3 bp."),
         ToolInput("extensionNucleotide", Int(optional=True), prefix="-x", position=1, shell_quote=False,
                   doc="The number of nucleotide to extend for each segment, default: 0"),
-        ToolInput("y", Boolean(optional=True), prefix="-y", position=1, shell_quote=False, doc="<No content>"),
+        ToolInput("yy", Boolean(optional=True), prefix="-y", position=1, shell_quote=False, doc="<No content>"),
         ToolInput("downsamplingFraction", Int(optional=True), prefix="-Z", position=1, shell_quote=False,
                   doc="For downsampling fraction.  e.g. 0.7 means roughly 70% downsampling.  "
                       "Default: No downsampling.  Use with caution.  "
