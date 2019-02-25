@@ -36,7 +36,7 @@ class Gatk3HaplotypeCallerBase(Gatk3ToolBase, ABC):
 
     def outputs(self):
         return [
-            ToolOutput("output", Vcf(), glob='$(inputs.outputFilename)',
+            ToolOutput("out", Vcf(), glob='$(inputs.outputFilename)',
                        doc="""
     Either a VCF or GVCF file with raw, unfiltered SNP and indel calls. Regular VCFs must be filtered 
     either by variant recalibration (Best Practice) or hard-filtering before use in downstream analyses. 

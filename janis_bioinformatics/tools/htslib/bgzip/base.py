@@ -30,7 +30,7 @@ class BGZipBase(BioinformaticsTool, ABC):
 
     def outputs(self) -> List[ToolOutput]:
         return [
-            ToolOutput("output", Stdout(CompressedVcf(), stdoutname="$(inputs.file.basename + '.gz')"))
+            ToolOutput("out", Stdout(CompressedVcf(), stdoutname="$(inputs.file.basename + '.gz')"))
         ]
 
     def friendly_name(self):

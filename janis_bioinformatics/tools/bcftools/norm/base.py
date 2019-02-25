@@ -21,7 +21,7 @@ class BcfToolsNormBase(BcfToolsToolBase, ABC):
 
     def inputs(self):
         return [
-            ToolInput("input", Vcf(), position=10),
+            ToolInput("vcf", Vcf(), position=10),
             ToolInput("outputFilename", Filename(extension=".vcf"), prefix="-o",
                       doc="--output: When output consists of a single stream, "
                           "write it to FILE rather than to standard output, where it is written by default."),
@@ -30,7 +30,7 @@ class BcfToolsNormBase(BcfToolsToolBase, ABC):
 
     def outputs(self):
         return [
-            ToolOutput("output", Vcf(), glob=InputSelector("outputFilename"))
+            ToolOutput("out", Vcf(), glob=InputSelector("outputFilename"))
         ]
 
     def metadata(self):

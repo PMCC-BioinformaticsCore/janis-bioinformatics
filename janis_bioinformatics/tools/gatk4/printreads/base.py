@@ -22,13 +22,13 @@ class Gatk4PrintReadsBase(Gatk4ToolBase, ABC):
 
     def inputs(self):
         return [
-            ToolInput("input", Bam()),
+            ToolInput("bam", Bam()),
             ToolInput("outputFilename", Filename())
         ]
 
     def outputs(self) -> List[ToolOutput]:
         return [
-            ToolOutput("output", BamBai(), glob="$(inputs.outputFilename)")
+            ToolOutput("out", BamBai(), glob="$(inputs.outputFilename)")
         ]
 
     def metadata(self):

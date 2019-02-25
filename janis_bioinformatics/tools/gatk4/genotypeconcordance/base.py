@@ -1,7 +1,7 @@
 from abc import ABC
 
 from janis import ToolInput, Filename, ToolOutput, File, Array, String, Boolean, Int, Float, Directory, WildcardSelector
-from janis_bioinformatics.data_types import VcfIdx, VcfTabix
+from janis_bioinformatics.data_types import VcfIdx, VcfTabix, Vcf
 from ..gatk4toolbase import Gatk4ToolBase
 from janis.utils.metadata import ToolMetadata
 
@@ -111,7 +111,7 @@ VCF Output:
                       "include filtered sites when calculating genotype concordance."),
         ToolInput("intersectIntervals", Boolean(optional=True), prefix="--INTERSECT_INTERVALS",
                   doc="If true, multiple interval lists will be intersected. If false multiple lists will be unioned."),
-        ToolInput("intervals", Array(VcfIdx(), optional=True), prefix="--INTERVALS",
+        ToolInput("intervals", Array(Vcf(), optional=True), prefix="--INTERVALS",
                   doc="One or more interval list files that will be used to limit the genotype concordance. "
                       "Note - if intervals are specified, the VCF files must be indexed."),
         ToolInput("minDP", Float(optional=True), prefix="--MIN_DP",

@@ -22,9 +22,9 @@ class Gatk4ApplyBqsrBase(Gatk4ToolBase, ABC):
 
     def inputs(self):
         return [
-            ToolInput("input", BamBai(), prefix="-I", doc="The SAM/BAM/CRAM file containing reads.", position=10),
+            ToolInput("bam", BamBai(), prefix="-I", doc="The SAM/BAM/CRAM file containing reads.", position=10),
             ToolInput("reference", FastaWithDict(), prefix="-R", doc="Reference sequence"),
-            ToolInput("outputFilename", Filename(extension="recal.bam"), prefix="-O", doc="Write output to this file"),
+            ToolInput("outputFilename", Filename(extension=".bam"), prefix="-O", doc="Write output to this file"),
             ToolInput("recalFile", Tsv(optional=True), prefix="--bqsr-recal-file",
                       doc="Input recalibration table for BQSR"),
 
@@ -34,7 +34,7 @@ class Gatk4ApplyBqsrBase(Gatk4ToolBase, ABC):
 
     def outputs(self):
         return [
-            ToolOutput("output", BamBai(), glob=InputSelector("outputFilename"))
+            ToolOutput("out", BamBai(), glob=InputSelector("outputFilename"))
         ]
 
     def metadata(self):

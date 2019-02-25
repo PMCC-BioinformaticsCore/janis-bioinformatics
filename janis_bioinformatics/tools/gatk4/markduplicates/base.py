@@ -21,7 +21,7 @@ class Gatk4MarkDuplicatesBase(Gatk4ToolBase, ABC):
 
     def inputs(self):
         return [
-            ToolInput("input", BamBai(), prefix="-I", position=10,
+            ToolInput("bam", BamBai(), prefix="-I", position=10,
                       doc="One or more input SAM or BAM files to analyze. Must be coordinate sorted."),
             ToolInput("outputFilename", Filename(extension=".bam"), position=10, prefix="-O",
                       doc="File to write duplication metrics to"),
@@ -33,7 +33,7 @@ class Gatk4MarkDuplicatesBase(Gatk4ToolBase, ABC):
 
     def outputs(self):
         return [
-            ToolOutput("output", BamBai(), glob=InputSelector("outputFilename")),
+            ToolOutput("out", BamBai(), glob=InputSelector("outputFilename")),
             ToolOutput("metrics", Tsv(), glob=InputSelector("metricsFilename"))
         ]
 

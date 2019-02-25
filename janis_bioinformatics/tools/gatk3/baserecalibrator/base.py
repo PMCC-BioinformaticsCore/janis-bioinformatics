@@ -9,7 +9,7 @@ from janis_bioinformatics.tools import Gatk3ToolBase
 
 
 class Gatk3RecalibratorBase(Gatk3ToolBase, ABC):
-    output = ToolOutput("output", File(), glob='$(inputs.outputFile)')
+    output = ToolOutput("out", File(), glob='$(inputs.outputFile)')
 
     @staticmethod
     def tool():
@@ -24,7 +24,7 @@ class Gatk3RecalibratorBase(Gatk3ToolBase, ABC):
             *super(Gatk3RecalibratorBase, self).inputs(),
             *Gatk3RecalibratorBase.additional_args,
 
-            ToolInput("input", BamPair(), position=6, prefix="-I", doc="BAM/SAM/CRAM file containing reads"),
+            ToolInput("bam", BamPair(), position=6, prefix="-I", doc="BAM/SAM/CRAM file containing reads"),
             ToolInput("knownSites", Array(VcfIdx()), prefix="--knownSites", position=28,
                       doc="**One or more databases of known polymorphic sites used to exclude "
                           "regions around known polymorphisms from analysis.** "

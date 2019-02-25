@@ -25,7 +25,7 @@ class SamToolsViewBase(SamToolsToolBase, ABC):
 
             ToolInput("sam", Sam(), position=10),
 
-            ToolInput("reference", FastaWithDict(optional=True), position=5, prefix="-T",
+            ToolInput("reference", FastaWithDict(optional=True), position=6, prefix="-T",
                       doc="A FASTA format reference FILE, optionally compressed by bgzip and ideally indexed "
                           "by samtools faidx. If an index is not present, one will be generated for you."),
 

@@ -29,7 +29,7 @@ class SamToolsSortBase(SamToolsToolBase, ABC):
 
     def outputs(self):
         return [
-            ToolOutput("output", Bam(), glob="$(inputs.outputFilename)"),
+            ToolOutput("out", Bam(), glob="$(inputs.outputFilename)"),
             ToolOutput("temporaryOutputs", Array(Bam(), optional=True), glob="*.tmp.*.bam",
                        doc="By default, any temporary files are written alongside the output file, "
                            "as out.bam.tmp.nnnn.bam, or if output is to standard output, "

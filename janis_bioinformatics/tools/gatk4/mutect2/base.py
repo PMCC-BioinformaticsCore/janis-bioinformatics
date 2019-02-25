@@ -58,7 +58,7 @@ class Gatk4Mutect2Base(Gatk4ToolBase, ABC):
     def outputs(self):
         return [
             # Todo: Determine type of Gatk4Mutect2 output (.vcf.gz?)
-            ToolOutput("output", Vcf(), glob="$(inputs.outputFilename)", doc="To determine type")
+            ToolOutput("out", Vcf(), glob="$(inputs.outputFilename)", doc="To determine type")
         ]
 
     additional_args = []

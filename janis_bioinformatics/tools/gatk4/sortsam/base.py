@@ -35,7 +35,7 @@ class Gatk4SortSamBase(Gatk4ToolBase):
     def inputs(self):
         return [
             *super(Gatk4SortSamBase, self).inputs(),
-            ToolInput("input", Bam(), prefix="-I", doc="The SAM/BAM/CRAM file to sort.", position=10),
+            ToolInput("bam", Bam(), prefix="-I", doc="The SAM/BAM/CRAM file to sort.", position=10),
             ToolInput("outputFilename", Filename(extension=".bam"), position=10, prefix="-O",
                       doc="The sorted SAM/BAM/CRAM output file."),
             ToolInput("sortOrder", String(), prefix="-SO", position=10,
@@ -46,7 +46,7 @@ class Gatk4SortSamBase(Gatk4ToolBase):
 
     def outputs(self):
         return [
-            ToolOutput("output", BamBai(), glob=InputSelector("outputFilename"))
+            ToolOutput("out", BamBai(), glob=InputSelector("outputFilename"))
         ]
 
     additional_args = [

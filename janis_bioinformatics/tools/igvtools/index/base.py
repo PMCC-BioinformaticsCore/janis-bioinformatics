@@ -15,7 +15,7 @@ class IgvToolsIndexBase(IgvToolsToolBase):
 
     def inputs(self):
         return [
-            ToolInput("input", VcfIdx(), doc="The alignment or feature file for which an index will be created")
+            ToolInput("vcf", VcfIdx(), doc="The alignment or feature file for which an index will be created")
         ]
 
     def outputs(self):

@@ -42,7 +42,7 @@ class Gatk3Mutect2Base(Gatk3ToolBase, ABC):
 
     def outputs(self):
         return [
-            ToolOutput("output", File(), glob="$(inputs.outputFilename)")
+            ToolOutput("out", File(), glob="$(inputs.outputFilename)")
         ]
 
     additional_args = []
@@ -64,7 +64,7 @@ if __name__ == "__main__":
 # class GatkMutect2(CommandTool):
 #     inputBam_tumor =
 #
-#     output = ToolOutput("output", File(), glob='$(inputs.outputfile_name)')
+#     output = ToolOutput("out", File(), glob='$(inputs.outputfile_name)')
 #
 #     @staticmethod
 #     def tool():

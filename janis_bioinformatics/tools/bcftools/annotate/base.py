@@ -40,7 +40,7 @@ class BcfToolsAnnotateBase(BcfToolsToolBase, ABC):
 
     def outputs(self):
         return [
-            ToolOutput("output", Vcf(), glob="$(inputs.outputFilename)")
+            ToolOutput("out", Vcf(), glob="$(inputs.outputFilename)")
         ]
 
     @staticmethod

@@ -59,7 +59,7 @@ does not work with split alignments. One may consider to use option -M to flag s
             *super(BwaMemBase, self).inputs(),
             *BwaMemBase.additional_inputs,
             ToolInput("reference", FastaWithDict(), position=9),
-            ToolInput("reads", Fastq(), position=10, doc=None),
+            ToolInput("reads", Fastq(), position=10, doc=None, separator=" "),
             ToolInput("mates", Fastq(optional=True), position=11, doc=None),
             ToolInput("outputFilename", Filename(extension=".sam"))
         ]
