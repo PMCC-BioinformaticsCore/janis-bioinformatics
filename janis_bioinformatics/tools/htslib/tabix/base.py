@@ -23,7 +23,7 @@ class TabixBase(BioinformaticsTool, ABC):
 
     def inputs(self) -> List[ToolInput]:
         return [
-            ToolInput("file", CompressedVcf(), position=8,
+            ToolInput("file", CompressedVcf(), position=8, localise_file=True,
                       doc="File from which to create the index. The input data file must be position sorted and "
                           "compressed by bgzip which has a gzip(1) like interface."),
             ToolInput("preset", String(optional=True), prefix="--preset", position=2,
@@ -35,16 +35,7 @@ class TabixBase(BioinformaticsTool, ABC):
 
     def outputs(self) -> List[ToolOutput]:
         return [
-            ToolOutput("output", VcfTabix(), glob=InputSelector("file.basename"))  # "$(inputs.file.basename)"
-        ]
-
-    @staticmethod
-    def requirements():
-        import cwlgen as cwl
-        return [
-            cwl.InitialWorkDirRequirement([
-                cwl.InitialWorkDirRequirement.Dirent("$(inputs.file)")
-            ])
+            ToolOutput("out", VcfTabix(), glob=InputSelector("file", use_basename=True))  # "$(inputs.file.basename)"
         ]
 
     def friendly_name(self):
