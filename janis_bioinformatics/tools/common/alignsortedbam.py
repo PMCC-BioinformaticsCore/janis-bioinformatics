@@ -59,11 +59,11 @@ class AlignSortedBam(BioinformaticsWorkflow):
         # connect to output
         self.add_edge(s1_bwa.out, out_bwa)
         self.add_edge(s2_samtools.out, out_samtools)
-        self.add_edge(s3_sortsam.out, out_sortsam)
+        # self.add_edge(s3_sortsam.out, out_sortsam)
         self.add_edge(s3_sortsam.out, out)
 
 
 if __name__ == "__main__":
     w = AlignSortedBam()
-    w.dump_translation("wdl")
+    w.dump_translation("cwl")
     # print(AlignSortedBam().help())

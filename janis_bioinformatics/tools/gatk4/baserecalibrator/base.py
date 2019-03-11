@@ -27,6 +27,7 @@ class Gatk4BaseRecalibratorBase(Gatk4ToolBase, ABC):
 
             ToolInput("bam", BamBai(), position=6, prefix="-I", doc="BAM/SAM/CRAM file containing reads"),
             ToolInput("knownSites", Array(VcfTabix()), prefix="--known-sites", position=28,
+                      nest_input_binding_on_array=True,
                       doc="**One or more databases of known polymorphic sites used to exclude "
                           "regions around known polymorphisms from analysis.** "
                           "This algorithm treats every reference mismatch as an indication of error. However, real "
