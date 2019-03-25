@@ -5,3 +5,6 @@ __pycache__/
 **/**/__pycache/
 *.pyc
 janis_pipelines.bioinformatics.egg-info/
+
+cromwell-executions/
+cromwell-workflow-logs/
