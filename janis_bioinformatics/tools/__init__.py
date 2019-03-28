@@ -2,7 +2,7 @@
 # import glob
 
 from .bioinformaticstoolbase import BioinformaticsTool, BioinformaticsWorkflow
-from . import bcftools, bwa, common, gatk4, htslib, igvtools, illumina, samtools, validation, babrahambioinformatics
+from . import bcftools, bwa, common, gatk4, htslib, igvtools, illumina, samtools, validation, variantcallers, babrahambioinformatics
 
 # directory = dirname(__file__)
 # modules = glob.glob(directory+"/*")
