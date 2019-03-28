@@ -28,8 +28,6 @@ class AlignSortedBam(BioinformaticsWorkflow):
         s1_inp_reference = Input("reference", FastaWithDict())
         s1_inp_fastq = Input("fastq", Fastq())
 
-        s3_inp_tmpdir = Input("tmpdir", Directory())
-
         out_bwa = Output("out_bwa", Sam())
         out_samtools = Output("out_samtools", Bam())
         out_sortsam = Output("out_sortsam", BamBai())
@@ -41,7 +39,7 @@ class AlignSortedBam(BioinformaticsWorkflow):
             (s1_inp_fastq, s1_bwa.reads),
             (s1_inp_reference, s1_bwa.reference)
         ])
-        self.add_default_value(s1_bwa.threads, 36)
+        self.add_default_value(s1_bwa.threads, 1)
 
         # fully connect step 2
         self.add_edge(s1_bwa.out, s2_samtools.sam)
@@ -49,7 +47,6 @@ class AlignSortedBam(BioinformaticsWorkflow):
         # fully connect step 3
         self.add_edges([
             (s2_samtools.out, s3_sortsam.bam),
-            (s3_inp_tmpdir, s3_sortsam.tmpDir),
         ])
         self.add_default_value(s3_sortsam.sortOrder, "coordinate")
         self.add_default_value(s3_sortsam.createIndex, True)
@@ -67,3 +64,8 @@ if __name__ == "__main__":
     w = AlignSortedBam()
     w.dump_translation("cwl")
     # print(AlignSortedBam().help())
+
+    # import shepherd
+    #
+    # task = shepherd.from_workflow(w, engine=shepherd.Cromwell(), env="pmac")
+    # print(task.outputs)

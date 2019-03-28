@@ -120,7 +120,7 @@ If desired, duplicates can be removed using the REMOVE_DUPLICATE and REMOVE_SEQU
                       "the number of file handles needed to sort a SAM file, and increases the amount of RAM needed."),
         ToolInput("quiet", Boolean(optional=True), prefix="--QUIET", position=11,
                   doc="Whether to suppress job-summary info on System.err."),
-        ToolInput("tmpDir", Directory(optional=True), prefix="--TMP_DIR", position=11,
+        ToolInput("tmpDir", String(optional=True), prefix="--TMP_DIR", position=11, default="/tmp/",
                   doc="Undocumented option"),
         ToolInput("useJdkDeflater", Boolean(optional=True), prefix="--use_jdk_deflater", position=11,
                   doc="Whether to use the JdkDeflater (as opposed to IntelDeflater)"),

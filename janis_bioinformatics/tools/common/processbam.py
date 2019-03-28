@@ -15,7 +15,6 @@ class ProcessBamFiles_4_0(Workflow):
 
         inp = Input("bams", Array(BamBai()))
         reference = Input("reference", FastaWithDict())
-        tmpDir = Input("tmpDir", Directory())
 
         snps_dbsnp = Input("snps_dbsnp", VcfTabix())
         snps_1000gp = Input("snps_1000gp", VcfTabix())
@@ -29,7 +28,6 @@ class ProcessBamFiles_4_0(Workflow):
 
         # S1: MergeSamFiles
         self.add_edge(inp, s1_merge.bams)
-        self.add_edge(tmpDir, s1_merge.tmpDir)
         self.add_default_value(s1_merge.useThreading, True)
         self.add_default_value(s1_merge.createIndex, True)
         self.add_default_value(s1_merge.maxRecordsInRam, 5000000)
@@ -37,7 +35,6 @@ class ProcessBamFiles_4_0(Workflow):
 
         # S2: MarkDuplicates
         self.add_edge(s1_merge.out, s2_mark.bam)
-        self.add_edge(tmpDir, s2_mark.tmpDir)
         self.add_default_value(s2_mark.createIndex, True)
         self.add_default_value(s2_mark.maxRecordsInRam, 5000000)
 
@@ -48,13 +45,11 @@ class ProcessBamFiles_4_0(Workflow):
         self.add_edge(snps_1000gp, s3_recal.knownSites)
         self.add_edge(omni, s3_recal.knownSites)
         self.add_edge(hapmap, s3_recal.knownSites)
-        self.add_edge(tmpDir, s3_recal.tmpDir)
 
         # S4: ApplyBQSR
         self.add_edge(s2_mark.out, s4_bqsr.bam)
         self.add_edge(s3_recal.out, s4_bqsr.recalFile)
         self.add_edge(reference, s4_bqsr.reference)
-        self.add_edge(tmpDir, s4_bqsr.tmpDir)
 
         # Outputs
         self.add_edges([

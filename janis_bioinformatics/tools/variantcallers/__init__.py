@@ -1,0 +1,3 @@
+from .gatk_variants import GatkVariantCaller
+from .illumina_strelka import StrelkaVariantCaller
+from .vardict_variants import VardictVariantCaller

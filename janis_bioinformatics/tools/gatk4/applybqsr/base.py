@@ -3,7 +3,7 @@ from abc import ABC
 from ..gatk4toolbase import Gatk4ToolBase
 from janis_bioinformatics.data_types import BamBai, FastaWithDict
 
-from janis import ToolInput, Filename, ToolOutput, Directory, InputSelector
+from janis import ToolInput, Filename, ToolOutput, String, InputSelector
 from janis.unix.data_types.tsv import Tsv
 from janis.utils.metadata import ToolMetadata
 
@@ -74,6 +74,6 @@ and write out the recalibrated data to a new BAM or CRAM file.
 
     additional_args = [
         # Put more detail in here from documentation
-        ToolInput("tmpDir", Directory(optional=True), prefix="--tmp-dir", position=11,
+        ToolInput("tmpDir", String(optional=True), prefix="--tmp-dir", position=11, default="/tmp/",
                   doc="Temp directory to use."),
     ]

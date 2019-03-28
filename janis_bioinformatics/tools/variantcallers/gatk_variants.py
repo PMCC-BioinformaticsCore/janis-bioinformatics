@@ -25,8 +25,6 @@ class GatkVariantCaller(BioinformaticsWorkflow):
         omni = Input("omni", VcfTabix())
         hapmap = Input("hapmap", VcfTabix())
 
-        tmpDir = Input("tmpDir", Directory())
-
         s1_recal = Step("baseRecalibrator", GATK4.Gatk4BaseRecalibrator_4_0())
         s2_bqsr = Step("applyBQSR", GATK4.Gatk4ApplyBqsr_4_0())
         s3_haplo = Step("haplotypeCaller", GATK4.Gatk4HaplotypeCaller_4_0())
@@ -39,13 +37,11 @@ class GatkVariantCaller(BioinformaticsWorkflow):
         self.add_edge(snps_1000gp, s1_recal.knownSites)
         self.add_edge(omni, s1_recal.knownSites)
         self.add_edge(hapmap, s1_recal.knownSites)
-        self.add_edge(tmpDir, s1_recal.tmpDir)
 
         # S2: ApplyBQSR
         self.add_edge(bam, s2_bqsr.bam)
         self.add_edge(s1_recal.out, s2_bqsr.recalFile)
         self.add_edge(reference, s2_bqsr.reference)
-        self.add_edge(tmpDir, s2_bqsr.tmpDir)
 
         # S3: HaplotypeCaller
         self.add_edges([

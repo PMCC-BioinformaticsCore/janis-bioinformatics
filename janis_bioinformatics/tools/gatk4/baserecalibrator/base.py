@@ -1,6 +1,6 @@
 from abc import ABC
 
-from janis import ToolInput, ToolOutput, Filename, Array, Directory, InputSelector
+from janis import ToolInput, ToolOutput, Filename, Array, String, InputSelector
 from janis_bioinformatics.data_types import BamBai, FastaWithDict, VcfIdx, Vcf, VcfTabix
 from ..gatk4toolbase import Gatk4ToolBase
 from janis.unix.data_types.tsv import Tsv
@@ -83,7 +83,7 @@ table (of the several covariate values, num observations, num mismatches, empiri
         )
 
     additional_args = [
-        ToolInput("tmpDir", Directory(optional=True), prefix="--tmp-dir", doc="Temp directory to use.")
+        ToolInput("tmpDir", String(optional=True), prefix="--tmp-dir", default="/tmp/", doc="Temp directory to use.")
     ]
 
 
