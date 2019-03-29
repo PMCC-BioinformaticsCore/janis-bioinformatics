@@ -40,7 +40,7 @@ class FastQCBase(BioinformaticsTool, ABC):
 
     def inputs(self) -> List[ToolInput]:
         return [
-            ToolInput("read", File(), position=5),
+            ToolInput("reads", Fastq(), position=5),
             *self.additional_inputs
         ]
 
