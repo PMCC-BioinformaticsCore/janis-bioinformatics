@@ -2,7 +2,7 @@ from .base import Gatk4SortSamBase
 from ..gatk_4_0 import Gatk_4_0
 
 
-class Gatk4SortSam_4_0(Gatk4SortSamBase, Gatk_4_0):
+class Gatk4SortSam_4_0(Gatk_4_0, Gatk4SortSamBase):
     pass
 
 

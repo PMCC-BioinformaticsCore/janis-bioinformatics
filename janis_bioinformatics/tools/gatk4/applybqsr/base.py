@@ -1,7 +1,7 @@
 from abc import ABC
 
 from ..gatk4toolbase import Gatk4ToolBase
-from janis_bioinformatics.data_types import BamBai, FastaWithDict
+from janis_bioinformatics.data_types import BamBai, FastaWithDict, Bed
 
 from janis import ToolInput, Filename, ToolOutput, String, InputSelector
 from janis.unix.data_types.tsv import Tsv
@@ -22,6 +22,8 @@ class Gatk4ApplyBqsrBase(Gatk4ToolBase, ABC):
 
     def inputs(self):
         return [
+            *super(Gatk4ApplyBqsrBase, self).inputs(),
+
             ToolInput("bam", BamBai(), prefix="-I", doc="The SAM/BAM/CRAM file containing reads.", position=10),
             ToolInput("reference", FastaWithDict(), prefix="-R", doc="Reference sequence"),
             ToolInput("outputFilename", Filename(extension=".bam"), prefix="-O", doc="Write output to this file"),

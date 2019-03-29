@@ -1,5 +1,7 @@
 from abc import ABC, abstractmethod
 
+from janis_bioinformatics.data_types import Bed
+
 from .. import BioinformaticsTool
 from janis import ToolInput, Boolean
 
@@ -21,6 +23,8 @@ class Gatk4ToolBase(BioinformaticsTool, ABC):
 
     def inputs(self):
         return [
+            ToolInput("intervals", Bed(optional=True), prefix="--intervals",
+                  doc="-L	One or more genomic intervals over which to operate"),
             # ToolInput("pg-tag", Boolean(optional=True), prefix="--add-output-sam-program-record",
             #           doc="If true, adds a PG tag to created SAM/BAM/CRAM files.")
         ]
