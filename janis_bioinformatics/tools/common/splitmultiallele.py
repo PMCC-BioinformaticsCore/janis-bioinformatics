@@ -3,7 +3,7 @@ from typing import List
 from janis_bioinformatics.data_types import FastaWithDict
 from janis_bioinformatics.data_types import Vcf
 from janis_bioinformatics.tools import BioinformaticsTool
-from janis import ToolOutput, ToolInput, Filename, ToolArgument
+from janis import ToolOutput, ToolInput, Filename, ToolArgument, InputSelector
 
 
 class SplitMultiAllele(BioinformaticsTool):
@@ -43,7 +43,7 @@ class SplitMultiAllele(BioinformaticsTool):
 
     def outputs(self) -> List[ToolOutput]:
         return [
-            ToolOutput("out", Vcf(), glob="$(inputs.outputFilename)")
+            ToolOutput("out", Vcf(), glob=InputSelector("outputFilename"))
         ]
 
     @staticmethod
