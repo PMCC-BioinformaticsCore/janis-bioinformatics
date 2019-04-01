@@ -18,7 +18,7 @@ class MantaBase(BioinformaticsTool, ABC):
 
     @staticmethod
     def tool():
-        return "manta-germline"
+        return "manta_germline"
 
     @staticmethod
     def base_command():
@@ -39,11 +39,11 @@ class MantaBase(BioinformaticsTool, ABC):
             ToolOutput("diploidSV", VcfTabix(),
                        glob=InputSelector("runDir", suffix="/results/variants/diploidSV.vcf.gz")),
 
-            ToolOutput("alignmentStatsSummary", VcfTabix(),
+            ToolOutput("alignmentStatsSummary", File(),
                        glob=InputSelector("runDir", suffix="/results/stats/alignmentStatsSummary.txt")),
             ToolOutput("svCandidateGenerationStats", Tsv(),
                        glob=InputSelector("runDir", suffix="/results/stats/svCandidateGenerationStats.tsv")),
-            ToolOutput("svLocusGraphStats", VcfTabix(),
+            ToolOutput("svLocusGraphStats", Tsv(),
                        glob=InputSelector("runDir", suffix="/results/stats/svLocusGraphStats.tsv")),
 
         ]
