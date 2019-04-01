@@ -1,7 +1,7 @@
 from abc import ABC
 
 from janis import String, Int, File, ToolOutput, ToolInput, Boolean, Double, Array, Filename, InputSelector
-from janis_bioinformatics.data_types import BamBai, Bed, FastaWithDict, VcfIdx
+from janis_bioinformatics.data_types import BamBai, Bed, FastaWithDict, VcfIdx, VcfTabix
 from ..gatk4toolbase import Gatk4ToolBase
 from janis.utils.metadata import ToolMetadata
 
@@ -26,7 +26,9 @@ class Gatk4HaplotypeCallerBase(Gatk4ToolBase, ABC):
             ToolInput("reference", FastaWithDict(), position=5, prefix="--reference", doc="Reference sequence file"),
             ToolInput("outputFilename", Filename(extension=".vcf"), position=8, prefix="--output",
                       doc="File to which variants should be written"),
-            ToolInput("dbsnp", VcfIdx(), position=7, prefix="--dbsnp", doc="(Also: -D) A dbSNP VCF file."),
+            ToolInput("dbsnp", VcfTabix(), position=7, prefix="--dbsnp", doc="(Also: -D) A dbSNP VCF file."),
+            ToolInput("intervals", Bed(optional=True), prefix="--intervals",
+                      doc="-L (BASE) One or more genomic intervals over which to operate"),
         ]
 
     def outputs(self):
@@ -160,8 +162,6 @@ to our recommendations as documented (https://software.broadinstitute.org/gatk/d
                       "them to be treated as separate intervals instead. The --interval-merging-rule argument is an "
                       "enumerated type (IntervalMergingRule), which can have one of the following values:"
                       "[ALL, OVERLAPPING]"),
-        ToolInput("intervals", Bed(optional=True), prefix="--intervals",
-                  doc="-L	One or more genomic intervals over which to operate"),
         ToolInput("maxReadsPerAlignmentStart", Int(optional=True), prefix="--max-reads-per-alignment-start",
                   doc="(default: 50) Maximum number of reads to retain per alignment start position. "
                       "Reads above this threshold will be downsampled. Set to 0 to disable."),

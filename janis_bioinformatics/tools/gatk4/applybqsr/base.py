@@ -29,8 +29,8 @@ class Gatk4ApplyBqsrBase(Gatk4ToolBase, ABC):
             ToolInput("outputFilename", Filename(extension=".bam"), prefix="-O", doc="Write output to this file"),
             ToolInput("recalFile", Tsv(optional=True), prefix="--bqsr-recal-file",
                       doc="Input recalibration table for BQSR"),
-
-            *super(Gatk4ApplyBqsrBase, self).inputs(),
+            ToolInput("intervals", Bed(optional=True), prefix="--intervals",
+                      doc="-L (BASE) One or more genomic intervals over which to operate"),
             *self.additional_args
         ]
 

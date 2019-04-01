@@ -27,7 +27,7 @@ class Gatk4GenotypeConcordanceBase(Gatk4ToolBase, ABC):
                           "(1) .genotype_concordance_summary_metrics, "
                           "(2) .genotype_concordance_detail_metrics, "
                           "(3) .genotype_concordance_contingency_metrics."),
-            *super(Gatk4GenotypeConcordanceBase, self).inputs(),
+            # *super(Gatk4GenotypeConcordanceBase, self).inputs(),
             *self.additional_args
         ]
 

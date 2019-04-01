@@ -1,7 +1,7 @@
 from abc import ABC
 
 from janis import ToolInput, ToolOutput, Filename, Array, String, InputSelector
-from janis_bioinformatics.data_types import BamBai, FastaWithDict, VcfIdx, Vcf, VcfTabix
+from janis_bioinformatics.data_types import BamBai, FastaWithDict, VcfIdx, Vcf, VcfTabix, Bed
 from ..gatk4toolbase import Gatk4ToolBase
 from janis.unix.data_types.tsv import Tsv
 from janis.utils.metadata import ToolMetadata
@@ -47,7 +47,9 @@ class Gatk4BaseRecalibratorBase(Gatk4ToolBase, ABC):
                           "depending on which covariates were specified at runtime. The last three items are the "
                           "data- that is, number of observations for this combination of covariates, number of "
                           "reference mismatches, and the raw empirical quality score calculated by phred-scaling "
-                          "the mismatch rate. Use '/dev/stdout' to print to standard out.")
+                          "the mismatch rate. Use '/dev/stdout' to print to standard out."),
+            ToolInput("intervals", Bed(optional=True), prefix="--intervals",
+                      doc="-L (BASE) One or more genomic intervals over which to operate"),
         ]
 
     def outputs(self):
