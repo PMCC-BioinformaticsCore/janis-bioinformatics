@@ -26,14 +26,3 @@ class Fastq(Array):
         return {
             "path": {"type": "string", "required": True}
         }
-
-    def get_value_from_meta(self, meta):
-        return [meta.get("R1"), meta.get("R2")]
-
-    def cwl_input(self, value: Any):
-        # WDL: "{workflowName}.label" = meta["path"}
-        if not isinstance(value, list):
-
-            Logger.critical("Fastq expects a list of inputs")
-            return []
-        return [{File.cwl_input(x)} for x in value]
