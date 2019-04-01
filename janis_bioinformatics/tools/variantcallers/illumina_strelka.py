@@ -1,15 +1,11 @@
 from janis import Step, Input, Directory, Output
 
-from janis_bioinformatics.tools.bcftools.filter.filter_1_5 import BcfToolsFilter_1_5
-from janis_bioinformatics.tools.illumina.strelka.strelka_2_9_9 import Strelka_2_9_10
-
-from janis_bioinformatics.tools.illumina.manta.manta_1_4_0 import Manta_1_5_0
-
-from janis_bioinformatics.tools.common import SplitMultiAllele
-
 from janis_bioinformatics.data_types import FastaWithDict, BamBai, VcfTabix
-
 from janis_bioinformatics.tools import BioinformaticsWorkflow
+from janis_bioinformatics.tools.bcftools import BcfToolsView_1_5
+from janis_bioinformatics.tools.common import SplitMultiAllele
+from janis_bioinformatics.tools.illumina.manta.manta_1_4_0 import Manta_1_5_0
+from janis_bioinformatics.tools.illumina.strelka.strelka_2_9_9 import Strelka_2_9_10
 
 
 class StrelkaVariantCaller(BioinformaticsWorkflow):
@@ -24,17 +20,9 @@ class StrelkaVariantCaller(BioinformaticsWorkflow):
         bam = Input("bam", BamBai())
         reference = Input("reference", FastaWithDict())
 
-        snps_dbsnp = Input("snps_dbsnp", VcfTabix())
-        snps_1000gp = Input("snps_1000gp", VcfTabix())
-        omni = Input("omni", VcfTabix())
-        hapmap = Input("hapmap", VcfTabix())
-
-        tmpDir = Input("tmpDir", Directory())
-
-
         manta = Step("manta", Manta_1_5_0())
         strelka = Step("strelka", Strelka_2_9_10())
-        bcftools_fp = Step("bcftools_filerpass", BcfToolsFilter_1_5())
+        bcf_view = Step("bcf_view", BcfToolsView_1_5())
         split = Step("splitMultiAllele", SplitMultiAllele())
 
 
@@ -46,23 +34,23 @@ class StrelkaVariantCaller(BioinformaticsWorkflow):
 
         # S2: Strelka
         self.add_edges([
-            (bam, strelka),
-            (reference, strelka),
+            (bam, strelka.bam),
+            (reference, strelka.reference),
             (manta.candidateSmallIndels, strelka.indelCandidates),
         ])
 
         # S3: BcfTools Filter
-        self.add_edges([
-
-        ])
+        self.add_edge(strelka.variants, bcf_view.file)
+        self.add_default_value(bcf_view.applyFilters, ["PASS"])
 
 
         # S4: SplitMultiAllele
         self.add_edges([
             (reference, split.reference),
-            (bcftools_fp, split.input),
-        ])
+            (bcf_view.out, split.vcf),
+            (split.out, Output("splitOut"))
 
+        ])
 
         ## Outputs
         self.add_edges([
@@ -70,3 +58,9 @@ class StrelkaVariantCaller(BioinformaticsWorkflow):
             (strelka.variants, Output("variants")),
             (split.out, Output("out"))
         ])
+
+
+if __name__ == "__main__":
+
+    wf = StrelkaVariantCaller()
+    wdl = wf.dump_translation("wdl", to_console=True, to_disk=False, write_inputs_file=False)
