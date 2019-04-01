@@ -34,11 +34,12 @@ class CutAdaptBase(BioinformaticsTool):
                       doc="Sequence of an adapter ligated to the 3' end (paired data: of the first read). "
                           "The adapter and subsequent bases are trimmed. If a '$' character is appended ('anchoring'), "
                           "the adapter is only found if it is a suffix of the read."),
-            ToolInput("outputFilename", Filename(suffix="-R1", extension=".fastq", guid=fastq_uuid), prefix="-o",
+
+            ToolInput("outputFilename", Filename(suffix="-R1", extension=".fastq.gz", guid=fastq_uuid), prefix="-o",
                       doc="Write trimmed reads to FILE. FASTQ or FASTA format is chosen depending on input. "
                           "The summary report is sent to standard output. Use '{name}' in FILE to demultiplex "
                           "reads into multiple files. Default: write to standard output"),
-            ToolInput("secondReadFile", Filename(suffix="-R2", extension=".fastq", guid=fastq_uuid), prefix="-p",
+            ToolInput("secondReadFile", Filename(suffix="-R2", extension=".fastq.gz", guid=fastq_uuid), prefix="-p",
                       doc="Write second read in a pair to FILE."),
 
             *self.additional_args
@@ -46,7 +47,7 @@ class CutAdaptBase(BioinformaticsTool):
 
     def outputs(self) -> List[ToolOutput]:
         return [
-            ToolOutput("out", Fastq(), glob=WildcardSelector("*.fastq"))
+            ToolOutput("out", Fastq(), glob=WildcardSelector("*.fastq.gz"))
         ]
 
     additional_args = [
