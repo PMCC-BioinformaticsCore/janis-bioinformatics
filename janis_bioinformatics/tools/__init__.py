@@ -3,7 +3,7 @@
 
 from .bioinformaticstoolbase import BioinformaticsTool, BioinformaticsWorkflow
 from . import bcftools, bwa, common, gatk4, htslib, igvtools, illumina, samtools, validation, variantcallers, \
-    babrahambioinformatics, cutadapt
+    babrahambioinformatics, cutadapt, pmac
 
 # directory = dirname(__file__)
 # modules = glob.glob(directory+"/*")
