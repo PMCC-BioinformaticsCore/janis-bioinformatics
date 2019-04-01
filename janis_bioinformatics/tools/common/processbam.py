@@ -1,10 +1,10 @@
 from janis import Workflow, Step, Input, Output, Array, Directory
-from janis_bioinformatics.data_types import FastaWithDict, BamBai, VcfTabix, VcfIdx
+from janis_bioinformatics.data_types import FastaWithDict, BamBai, VcfTabix, VcfIdx, Bed
 
 import janis_bioinformatics.tools.gatk4 as GATK4
 
 
-class ProcessBamFiles_4_0(Workflow):
+class MergeAndMarkBams_4_0(Workflow):
 
     @staticmethod
     def version():
@@ -14,17 +14,9 @@ class ProcessBamFiles_4_0(Workflow):
         Workflow.__init__(self, "processbamfiles", friendly_name="Process BAM Files")
 
         inp = Input("bams", Array(BamBai()))
-        reference = Input("reference", FastaWithDict())
-
-        snps_dbsnp = Input("snps_dbsnp", VcfTabix())
-        snps_1000gp = Input("snps_1000gp", VcfTabix())
-        omni = Input("omni", VcfTabix())
-        hapmap = Input("hapmap", VcfTabix())
 
         s1_merge = Step("mergeSamFiles", GATK4.Gatk4MergeSamFiles_4_0())
         s2_mark = Step("markDuplicates", GATK4.Gatk4MarkDuplicates_4_0())
-        s3_recal = Step("baseRecalibrator", GATK4.Gatk4BaseRecalibrator_4_0())
-        s4_bqsr = Step("applyBQSR", GATK4.Gatk4ApplyBqsr_4_0())
 
         # S1: MergeSamFiles
         self.add_edge(inp, s1_merge.bams)
@@ -38,25 +30,11 @@ class ProcessBamFiles_4_0(Workflow):
         self.add_default_value(s2_mark.createIndex, True)
         self.add_default_value(s2_mark.maxRecordsInRam, 5000000)
 
-        # S3: BaseRecalibrator
-        self.add_edge(s2_mark.out, s3_recal.bam)
-        self.add_edge(reference, s3_recal.reference)
-        self.add_edge(snps_dbsnp, s3_recal.knownSites)
-        self.add_edge(snps_1000gp, s3_recal.knownSites)
-        self.add_edge(omni, s3_recal.knownSites)
-        self.add_edge(hapmap, s3_recal.knownSites)
-
-        # S4: ApplyBQSR
-        self.add_edge(s2_mark.out, s4_bqsr.bam)
-        self.add_edge(s3_recal.out, s4_bqsr.recalFile)
-        self.add_edge(reference, s4_bqsr.reference)
-
         # Outputs
         self.add_edges([
-            (s4_bqsr.out, Output("out"))
+            (s2_mark.out, Output("out"))
         ])
 
 
-
 if __name__ == "__main__":
-    ProcessBamFiles_4_0().dump_translation("wdl")
+    MergeAndMarkBams_4_0().dump_translation("wdl")
