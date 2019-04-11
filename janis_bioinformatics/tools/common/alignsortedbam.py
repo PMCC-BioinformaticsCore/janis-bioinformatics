@@ -1,3 +1,5 @@
+from janis.hints import CaptureType
+
 from janis_bioinformatics.data_types import Bam, BamBai, Fastq, Sam, FastaWithDict
 from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.bwa import BwaMemLatest, BwaMem_0_7_15
@@ -5,6 +7,7 @@ from janis_bioinformatics.tools.cutadapt.cutadapt_1_18 import CutAdapt_1_18
 from janis_bioinformatics.tools.gatk4 import Gatk4SortSamLatest, Gatk4SortSam_4_0
 from janis_bioinformatics.tools.samtools import SamToolsViewLatest, SamToolsView_1_7
 from janis import Step, String, Input, Directory, Output
+from janis.translations import build_resources_input
 from janis.utils.metadata import WorkflowMetadata
 
 
@@ -51,7 +54,6 @@ class AlignSortedBam(BioinformaticsWorkflow):
             (s1_inp_header, bwa.readGroupHeaderLine),
             (reference, bwa.reference)
         ])
-        self.add_default_value(bwa.threads, 1)
 
         # fully connect step 2
         self.add_edge(bwa.out, samtools.sam)
@@ -74,7 +76,10 @@ class AlignSortedBam(BioinformaticsWorkflow):
 
 if __name__ == "__main__":
     w = AlignSortedBam()
-    w.dump_translation("wdl")
+    # w.dump_translation("wdl")
+
+    print(build_resources_input(w, "wdl", {CaptureType.KEY: CaptureType.CHROMOSOME}))
+
     # print(AlignSortedBam().help())
 
     # import shepherd
