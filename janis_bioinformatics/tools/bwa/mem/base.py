@@ -1,11 +1,39 @@
 from abc import ABC
+from typing import Any, Dict
 
 from janis import ToolInput, Int, Float, Boolean, String, ToolOutput, Filename, File, InputSelector
+from janis.hints import HINTS, CaptureType
+from janis.types import CpuSelector
+
 from janis_bioinformatics.data_types.fastq import Fastq
 from janis_bioinformatics.data_types import Sam, FastaWithDict
 from janis_bioinformatics.tools.bwa.bwatoolbase import BwaToolBase
 from janis.types.common_data_types import Stdout
+from janis.utils import get_value_for_hints_and_ordered_resource_tuple
 from janis.utils.metadata import ToolMetadata
+
+
+BWA_MEM_TUPLE = [
+    (CaptureType.KEY, {
+        CaptureType.TARGETED: 8,
+        CaptureType.EXOME: 12,
+        CaptureType.CHROMOSOME: 12,
+        CaptureType.THIRTYX: 16,
+        CaptureType.NINETYX: 20,
+        CaptureType.THREEHUNDREDX: 24
+    })
+]
+
+BWA_CORES_TUPLE = [
+    (CaptureType.KEY, {
+        CaptureType.TARGETED: 16,
+        CaptureType.EXOME: 20,
+        CaptureType.CHROMOSOME: 24,
+        CaptureType.THIRTYX: 30,
+        CaptureType.NINETYX: 32,
+        CaptureType.THREEHUNDREDX: 32
+    })
+]
 
 
 class BwaMemBase(BwaToolBase, ABC):
@@ -69,11 +97,19 @@ does not work with split alignments. One may consider to use option -M to flag s
             ToolOutput("out", Stdout(Sam(), stdoutname=InputSelector("outputFilename")))
         ]
 
-    def arguments(self):
-        return []
+    def memory(self, hints: Dict[str, Any]):
+        val = get_value_for_hints_and_ordered_resource_tuple(hints, BWA_MEM_TUPLE)
+        if val: return val
+        return 16
+
+    def cpus(self, hints: Dict[str, Any]):
+        val = get_value_for_hints_and_ordered_resource_tuple(hints, BWA_CORES_TUPLE)
+        if val: return val
+        return 16
 
     additional_inputs = [
-        ToolInput("threads", Int(optional=True), prefix="-t", doc="Number of threads. (default = 1)"),
+        ToolInput("threads", Int(optional=True), default=CpuSelector(), prefix="-t",
+                  doc="Number of threads. (default = 1)"),
         ToolInput("minimumSeedLength", Int(optional=True), prefix="-k",
                   doc="Matches shorter than INT will be missed. The alignment speed is usually "
                       "insensitive to this value unless it significantly deviates 20. (Default: 19)"),
