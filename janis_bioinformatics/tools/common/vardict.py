@@ -21,9 +21,9 @@ class VarDict(BioinformaticsTool):
         return [
             ToolInput("bed", Bed(), position=2, shell_quote=False),
             ToolInput("outputFilename", Filename(extension=".vardict.vcf"), prefix=">", position=6, shell_quote=False),
-            ToolInput("indexedBam", BamBai(), prefix="-b", position=1, shell_quote=False, doc="The indexed BAM file"),
+            ToolInput("bam", BamBai(), prefix="-b", position=1, shell_quote=False, doc="The indexed BAM file"),
 
-            ToolInput("referenceFasta", FastaFai(), prefix="-G", position=1, shell_quote=False,
+            ToolInput("reference", FastaFai(), prefix="-G", position=1, shell_quote=False,
                       doc="The reference fasta. Should be indexed (.fai). "
                           "Defaults to: /ngs/reference_data/genomes/Hsapiens/hg19/seq/hg19.fa"),
             *VarDict.vardict_inputs,
