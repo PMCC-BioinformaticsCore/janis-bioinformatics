@@ -3,9 +3,35 @@ from typing import List
 
 from janis import ToolOutput, ToolInput, File, Boolean, String, Float, Int, InputSelector, Filename, ToolMetadata, \
     WildcardSelector
+from janis.hints import CaptureType
+from janis.utils import get_value_for_hints_and_ordered_resource_tuple
+
 from janis_bioinformatics.data_types import Bam, Fastq
 
 from janis_bioinformatics.tools import BioinformaticsTool
+
+
+CUTADAPT_MEM_TUPLE = [
+    (CaptureType.KEY, {
+        CaptureType.TARGETED: 2,
+        CaptureType.EXOME: 4,
+        CaptureType.CHROMOSOME: 4,
+        CaptureType.THIRTYX: 8,
+        CaptureType.NINETYX: 16,
+        CaptureType.THREEHUNDREDX: 24
+    })
+]
+
+CUTADAPT_CPU_TUPLE = [
+    (CaptureType.KEY, {
+        CaptureType.TARGETED: 2,
+        CaptureType.EXOME: 4,
+        CaptureType.CHROMOSOME: 5,
+        CaptureType.THIRTYX: 5,
+        CaptureType.NINETYX: 5,
+        CaptureType.THREEHUNDREDX: 5
+    })
+]
 
 
 class CutAdaptBase(BioinformaticsTool):
@@ -49,6 +75,16 @@ class CutAdaptBase(BioinformaticsTool):
         return [
             ToolOutput("out", Fastq(), glob=WildcardSelector("*.fastq.gz"))
         ]
+
+    def memory(self, hints):
+        val = get_value_for_hints_and_ordered_resource_tuple(hints, CUTADAPT_MEM_TUPLE)
+        if val: return val
+        return 4
+
+    def cpus(self, hints):
+        val = get_value_for_hints_and_ordered_resource_tuple(hints, CUTADAPT_CPU_TUPLE)
+        if val: return val
+        return 5
 
     additional_args = [
 
@@ -123,7 +159,7 @@ class CutAdaptBase(BioinformaticsTool):
         ToolInput("inputFileFormat", String(optional=True), prefix="-f",
                   doc="Input file format; can be either 'fasta', 'fastq' or 'sra-fastq'. "
                       "Ignored when reading csfasta/qual files. Default: auto-detect from file name extension."),
-        ToolInput("cores", Int(optional=True), prefix="-j",
+        ToolInput("cores", Int(optional=True), prefix="-j", default=0,
                   doc="Number of CPU cores to use. Use 0 to auto-detect. Default: 1"),
 
         ToolInput("adapter_g", String(optional=True), prefix="-g",
