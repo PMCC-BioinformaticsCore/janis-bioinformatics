@@ -1,6 +1,6 @@
 from abc import ABC
 
-from janis import ToolInput, Array, Filename, ToolOutput, File
+from janis import ToolInput, Array, Filename, ToolOutput, File, InputSelector
 from janis_bioinformatics.data_types.bampair import BamPair
 from janis_bioinformatics.data_types import Bed
 from janis_bioinformatics.data_types import FastaWithDict
@@ -42,7 +42,7 @@ class Gatk3Mutect2Base(Gatk3ToolBase, ABC):
 
     def outputs(self):
         return [
-            ToolOutput("out", File(), glob="$(inputs.outputFilename)")
+            ToolOutput("out", File(), glob=InputSelector("outputFilename"))
         ]
 
     additional_args = []

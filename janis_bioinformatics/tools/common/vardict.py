@@ -2,7 +2,7 @@ from typing import List
 
 from janis_bioinformatics.tools import BioinformaticsTool
 from janis_bioinformatics.data_types import BamBai, Bed, FastaFai, Vcf
-from janis import ToolOutput, ToolInput, Filename, ToolArgument, Boolean, Float, Int, String
+from janis import ToolOutput, ToolInput, Filename, ToolArgument, Boolean, Float, Int, String, InputSelector
 
 
 class VarDict(BioinformaticsTool):
@@ -15,12 +15,12 @@ class VarDict(BioinformaticsTool):
 
     @staticmethod
     def base_command():
-        return None
+        return "VarDict"
 
     def inputs(self) -> List[ToolInput]:
         return [
             ToolInput("bed", Bed(), position=2, shell_quote=False),
-            ToolInput("outputFilename", Filename(extension=".vardict.vcf"), prefix=">", position=6, shell_quote=False),
+            ToolInput("outputFilename", Filename(extension=".vcf", suffix=".vardict"), prefix=">", position=6, shell_quote=False),
             ToolInput("bam", BamBai(), prefix="-b", position=1, shell_quote=False, doc="The indexed BAM file"),
 
             ToolInput("reference", FastaFai(), prefix="-G", position=1, shell_quote=False,
@@ -32,15 +32,15 @@ class VarDict(BioinformaticsTool):
 
     def outputs(self):
         return [
-            ToolOutput("out", Vcf(), glob="$(inputs.outputFilename)")
+            ToolOutput("out", Vcf(), glob=InputSelector("outputFilename"))
         ]
 
     def arguments(self):
         return [
             # ToolArgument("export VarDict=\"/config/binaries/vardict/1.5.1/bin/VarDict\";", position=0, shell_quote=False),
-            ToolArgument("vardict", position=0, shell_quote=False),
-            ToolArgument("| $teststrandbias |", position=3, shell_quote=False),  # teststrandbias.R -> teststrandbias
-            ToolArgument("$var2vcf_valid", position=4, shell_quote=False)     # var2vcf_valid.pl -> var2vcf_valid
+            # ToolArgument("", position=0, shell_quote=False),
+            ToolArgument("| teststrandbias.R |", position=3, shell_quote=False),
+            ToolArgument("var2vcf_valid.pl", position=4, shell_quote=False)
         ]
 
     @staticmethod
@@ -198,6 +198,22 @@ class VarDict(BioinformaticsTool):
         - R (uses /usr/bin/env R)
         - samtools (must be in path, not required if using the Java implementation in place of vardict.pl)
     """
+
+
+class VarDict_1_5_6(VarDict):
+    @staticmethod
+    def docker():
+        return "michaelfranklin/vardict:1.5.6"
+
+class VarDict_1_5_7(VarDict):
+    @staticmethod
+    def docker():
+        return "michaelfranklin/vardict:1.5.7"
+
+class VarDict_1_5_8(VarDict):
+    @staticmethod
+    def docker():
+        return "michaelfranklin/vardict:1.5.8"
 
 
 if __name__ == "__main__":

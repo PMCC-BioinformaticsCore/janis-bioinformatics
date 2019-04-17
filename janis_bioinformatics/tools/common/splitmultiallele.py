@@ -26,7 +26,7 @@ class SplitMultiAllele(BioinformaticsTool):
         return [
             ToolInput("vcf", Vcf(), position=2, shell_quote=False),
             ToolInput("reference", FastaWithDict(), prefix="-r", position=7, shell_quote=False),
-            ToolInput("outputFilename", Filename(extension=".norm.vcf"), prefix=">", position=10, shell_quote=False),
+            ToolInput("outputFilename", Filename(extension=".vcf", suffix=".norm"), prefix=">", position=10, shell_quote=False),
         ]
 
     def arguments(self):

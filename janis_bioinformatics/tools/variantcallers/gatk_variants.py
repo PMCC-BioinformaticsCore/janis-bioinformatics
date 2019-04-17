@@ -1,10 +1,9 @@
-from janis import Step, Input, Directory, Output
-from janis_bioinformatics.tools.common import SplitMultiAllele
+from janis import Step, Input, Output
 
-from janis_bioinformatics.data_types import FastaWithDict, BamBai, VcfTabix, Bed, VcfIdx
-
-from janis_bioinformatics.tools import BioinformaticsWorkflow
 import janis_bioinformatics.tools.gatk4 as GATK4
+from janis_bioinformatics.data_types import FastaWithDict, BamBai, VcfTabix, Bed
+from janis_bioinformatics.tools import BioinformaticsWorkflow
+from janis_bioinformatics.tools.common import SplitMultiAllele
 
 
 class GatkVariantCaller(BioinformaticsWorkflow):

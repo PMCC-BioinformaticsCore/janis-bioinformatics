@@ -1,6 +1,6 @@
-from janis import Step, Input, Directory, Output
+from janis import Step, Input, Output, Array, String
 
-from janis_bioinformatics.data_types import FastaWithDict, BamBai, VcfTabix
+from janis_bioinformatics.data_types import FastaWithDict, BamBai
 from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.bcftools import BcfToolsView_1_5
 from janis_bioinformatics.tools.common import SplitMultiAllele
@@ -41,7 +41,7 @@ class StrelkaVariantCaller(BioinformaticsWorkflow):
 
         # S3: BcfTools Filter
         self.add_edge(strelka.variants, bcf_view.file)
-        self.add_default_value(bcf_view.applyFilters, ["PASS"])
+        self.add_edge(Input("filters", Array(String()), default=["PASS"]), bcf_view.applyFilters)
 
 
         # S4: SplitMultiAllele

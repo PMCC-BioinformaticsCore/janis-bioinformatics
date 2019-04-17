@@ -1,6 +1,6 @@
 from abc import ABC
 
-from janis import ToolInput, Filename, Int, String, Boolean, ToolOutput, Array
+from janis import ToolInput, Filename, Int, String, Boolean, ToolOutput, Array, InputSelector
 from janis_bioinformatics.data_types.bam import Bam
 from janis_bioinformatics.tools.samtools.samtoolstoolbase import SamToolsToolBase
 from janis.utils.metadata import ToolMetadata
@@ -29,7 +29,7 @@ class SamToolsSortBase(SamToolsToolBase, ABC):
 
     def outputs(self):
         return [
-            ToolOutput("out", Bam(), glob="$(inputs.outputFilename)"),
+            ToolOutput("out", Bam(), glob=InputSelector("outputFilename")),
             ToolOutput("temporaryOutputs", Array(Bam(), optional=True), glob="*.tmp.*.bam",
                        doc="By default, any temporary files are written alongside the output file, "
                            "as out.bam.tmp.nnnn.bam, or if output is to standard output, "
@@ -100,10 +100,6 @@ When the -n option is not present, reads are sorted by reference (according to t
     should be changed to an appropriate combination of -T PREFIX and -o FILE. The previous -o 
     option should be removed, as output defaults to standard output."""
         )
-
-    @staticmethod
-    def stdout():
-        return "$(inputs.outputFilename)"
 
     additional_inputs = [
         ToolInput("compression", Int(optional=True), prefix="-l",

@@ -1,7 +1,7 @@
 from abc import ABC
 from typing import List
 
-from janis import ToolOutput, ToolInput, Filename
+from janis import ToolOutput, ToolInput, Filename, InputSelector
 from janis_bioinformatics.data_types.bam import Bam, BamBai
 from ..gatk4toolbase import Gatk4ToolBase
 from janis.utils.metadata import ToolMetadata
@@ -28,7 +28,7 @@ class Gatk4PrintReadsBase(Gatk4ToolBase, ABC):
 
     def outputs(self) -> List[ToolOutput]:
         return [
-            ToolOutput("out", BamBai(), glob="$(inputs.outputFilename)")
+            ToolOutput("out", BamBai(), glob=InputSelector("outputFilename"))
         ]
 
     def metadata(self):

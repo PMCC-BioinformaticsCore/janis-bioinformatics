@@ -2,6 +2,7 @@ from abc import ABC
 from datetime import datetime
 from typing import List
 from janis import ToolOutput, ToolInput, ToolMetadata, File, String, Boolean, Array, WildcardSelector, Directory, Int
+from janis.types import CpuSelector
 from janis.unix.data_types.zipfile import ZipFile
 from janis_bioinformatics.data_types import Fastq
 
@@ -85,7 +86,7 @@ class FastQCBase(BioinformaticsTool, ABC):
             ToolInput("format", String(optional=True), prefix="--format",
                       doc="(-f) Bypasses the normal sequence file format detection and forces the program to use the "
                           "specified format.  Valid formats are bam,sam,bam_mapped,sam_mapped and fastq "),
-            ToolInput("threads", Int(optional=True), prefix="--threads",
+            ToolInput("threads", Int(optional=True), prefix="--threads", default=CpuSelector(),
                       doc="(-t) Specifies the number of files which can be processed simultaneously. "
                           "Each thread will be allocated 250MB of memory so you shouldn't run more threads than your "
                           "available memory will cope with, and not more than 6 threads on a 32 bit machine"),

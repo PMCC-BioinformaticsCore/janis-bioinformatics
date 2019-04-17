@@ -1,14 +1,12 @@
-from janis.hints import CaptureType
+from janis import Step, String, Input, Output, Int, Boolean
+from janis.utils.metadata import WorkflowMetadata
 
 from janis_bioinformatics.data_types import Bam, BamBai, Fastq, Sam, FastaWithDict
 from janis_bioinformatics.tools import BioinformaticsWorkflow
-from janis_bioinformatics.tools.bwa import BwaMemLatest, BwaMem_0_7_15
+from janis_bioinformatics.tools.bwa import BwaMem_0_7_15
 from janis_bioinformatics.tools.cutadapt.cutadapt_1_18 import CutAdapt_1_18
-from janis_bioinformatics.tools.gatk4 import Gatk4SortSamLatest, Gatk4SortSam_4_0
-from janis_bioinformatics.tools.samtools import SamToolsViewLatest, SamToolsView_1_7
-from janis import Step, String, Input, Directory, Output
-from janis.translations import build_resources_input
-from janis.utils.metadata import WorkflowMetadata
+from janis_bioinformatics.tools.gatk4 import Gatk4SortSam_4_0
+from janis_bioinformatics.tools.samtools import SamToolsView_1_7
 
 
 class AlignSortedBam(BioinformaticsWorkflow):
@@ -41,12 +39,17 @@ class AlignSortedBam(BioinformaticsWorkflow):
         self.add_edges([
             (fastqs, cutadapt.fastq)
         ])
-        self.add_default_value(cutadapt.adapter, "AGATCGGAAGAGCGGTTCAGCAGGAATGCCGAG")
-        self.add_default_value(cutadapt.adapter_g, "ACACTCTTTCCCTACACGACGCTCTTCCGATCT")
-        self.add_default_value(cutadapt.removeMiddle5Adapter, "AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT")
-        self.add_default_value(cutadapt.removeMiddle3Adapter, "CTCGGCATTCCTGCTGAACCGCTCTTCCGATCT")
-        self.add_default_value(cutadapt.qualityCutoff, 15)
-        self.add_default_value(cutadapt.minReadLength, 50)
+        # Step 1 with defaults
+        self.add_edges([
+            (Input("adapter", String(), default="AGATCGGAAGAGCGGTTCAGCAGGAATGCCGAG"), cutadapt.adapter),
+            (Input("adapter_g", String(), default="ACACTCTTTCCCTACACGACGCTCTTCCGATCT"), cutadapt.adapter_g),
+            (Input("removeMiddle5Adapter", String(), default="AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT"),
+             cutadapt.removeMiddle5Adapter),
+            (Input("removeMiddle3Adapter", String(), default="CTCGGCATTCCTGCTGAACCGCTCTTCCGATCT"),
+             cutadapt.removeMiddle3Adapter),
+            (Input("qualityCutoff", Int(), default=15), cutadapt.qualityCutoff),
+            (Input("minReadLength", Int(), default=50), cutadapt.minReadLength),
+        ])
 
         # S2: BWA mem
         self.add_edges([
@@ -59,13 +62,13 @@ class AlignSortedBam(BioinformaticsWorkflow):
         self.add_edge(bwa.out, samtools.sam)
 
         # fully connect step 3
+        self.add_edge(samtools.out, sortsam.bam)
         self.add_edges([
-            (samtools.out, sortsam.bam),
+            (Input("sortOrder", String(), default="coordinate"), sortsam.sortOrder),
+            (Input("createIndex", Boolean(), default=True), sortsam.createIndex),
+            (Input("validationStringency", String(), default="SILENT"), sortsam.validationStringency),
+            (Input("maxRecordsInRam", Int(), default=5000000), sortsam.maxRecordsInRam),
         ])
-        self.add_default_value(sortsam.sortOrder, "coordinate")
-        self.add_default_value(sortsam.createIndex, True)
-        self.add_default_value(sortsam.validationStringency, "SILENT")
-        self.add_default_value(sortsam.maxRecordsInRam, 5000000)
 
         # connect to output
         self.add_edge(bwa.out, out_bwa)
@@ -76,9 +79,10 @@ class AlignSortedBam(BioinformaticsWorkflow):
 
 if __name__ == "__main__":
     w = AlignSortedBam()
-    # w.dump_translation("wdl")
 
-    print(build_resources_input(w, "wdl", {CaptureType.KEY: CaptureType.CHROMOSOME}))
+    w.dump_translation("cwl", with_resource_overrides=True)
+
+    # print(build_resources_input(w, "wdl", {CaptureType.KEY: CaptureType.CHROMOSOME}))
 
     # print(AlignSortedBam().help())
 

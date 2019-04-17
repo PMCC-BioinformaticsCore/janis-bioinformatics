@@ -1,7 +1,7 @@
 from abc import ABC
 
-from janis import ToolInput, Filename, ToolOutput, String, Float
-from janis_bioinformatics.data_types import BamBai, Bed, FastaWithDict, VcfIdx, Vcf
+from janis import ToolInput, Filename, ToolOutput, String, Float, InputSelector
+from janis_bioinformatics.data_types import BamBai, Bed, FastaWithDict, VcfIdx, Vcf, VcfTabix
 from ..gatk4toolbase import Gatk4ToolBase
 from janis.utils.metadata import ToolMetadata
 
@@ -57,8 +57,7 @@ class Gatk4Mutect2Base(Gatk4ToolBase, ABC):
 
     def outputs(self):
         return [
-            # Todo: Determine type of Gatk4Mutect2 output (.vcf.gz?)
-            ToolOutput("out", Vcf(), glob="$(inputs.outputFilename)", doc="To determine type")
+            ToolOutput("out", VcfTabix(), glob=InputSelector("outputFilename"), doc="To determine type")
         ]
 
     additional_args = []

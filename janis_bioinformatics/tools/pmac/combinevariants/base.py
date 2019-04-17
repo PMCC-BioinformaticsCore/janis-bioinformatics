@@ -1,6 +1,6 @@
 from typing import List
 
-from janis import ToolOutput, ToolInput, File, String, Int, Filename, InputSelector
+from janis import ToolOutput, ToolInput, Array, File, String, Int, Filename, InputSelector
 from janis.unix.data_types.tsv import Tsv
 
 from janis_bioinformatics.data_types import Vcf
@@ -22,19 +22,22 @@ class CombineVariantsBase(BioinformaticsTool):
 
     def inputs(self) -> List[ToolInput]:
         return [
-            ToolInput("outputFilename", Filename(extension=".vcf")),
+            ToolInput("outputFilename", Filename(extension=".vcf", suffix=".combined")),
+
             ToolInput("regions", Filename(extension=".tsv"), prefix="--regions",
                       doc="Region file containing all the variants, used as samtools mpileup"),
 
-            ToolInput("vcfs", Vcf(), prefix="-i",
+            ToolInput("vcfs", Array(Vcf()), prefix="-i",
                       doc="input vcfs, the priority of the vcfs will be based on the order of the input"),
-            ToolInput("columns", String(), prefix="--columns",
+            ToolInput("type", String(), prefix="--type", doc="germline | somatic"),
+
+            ToolInput("columns", String(optional=True), prefix="--columns",
                       doc="Columns to keep, seperated by space output vcf (unsorted)"),
 
-            ToolInput("normal", String(), prefix="--normal",
+            ToolInput("normal", String(optional=True), prefix="--normal",
                       doc="Sample id of germline vcf, or normal sample id of somatic vcf"),
-            ToolInput("tumor", String(), prefix="--tumor", doc="tumor sample ID, required if inputs are somatic vcfs"),
-            ToolInput("priority", Int(), prefix="--priority",
+            ToolInput("tumor", String(optional=True), prefix="--tumor", doc="tumor sample ID, required if inputs are somatic vcfs"),
+            ToolInput("priority", Int(optional=True), prefix="--priority",
                       doc="The priority of the callers, must match with the callers in the source header")
         ]
 

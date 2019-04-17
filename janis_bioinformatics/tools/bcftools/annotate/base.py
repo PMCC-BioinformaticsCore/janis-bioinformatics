@@ -2,7 +2,7 @@ from abc import ABC
 
 from ..bcftoolstoolbase import BcfToolsToolBase
 
-from janis import ToolInput, File, Boolean, String, Array, Int, Filename, ToolMetadata, ToolOutput
+from janis import ToolInput, File, Boolean, String, Array, Int, Filename, ToolMetadata, ToolOutput, InputSelector
 from janis_bioinformatics.data_types import Vcf
 
 
@@ -40,7 +40,7 @@ class BcfToolsAnnotateBase(BcfToolsToolBase, ABC):
 
     def outputs(self):
         return [
-            ToolOutput("out", Vcf(), glob="$(inputs.outputFilename)")
+            ToolOutput("out", Vcf(), glob=InputSelector("outputFilename"))
         ]
 
     @staticmethod

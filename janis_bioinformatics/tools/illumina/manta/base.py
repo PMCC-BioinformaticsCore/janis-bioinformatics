@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
 from typing import List
 
+from janis.types import MemorySelector
+
 from janis_bioinformatics.data_types import FastaWithDict, VcfTabix, BamBai, Bam
 from janis_bioinformatics.tools import BioinformaticsTool
 
@@ -125,12 +127,12 @@ of capabilities and limitations.""".strip()
     ]
 
     running_inputs = [
-        ToolInput("mode", String(default="local", optional=True), prefix="--mode", position=3, shell_quote=False,
+        ToolInput("mode", String(optional=True), default="local", prefix="--mode", position=3, shell_quote=False,
                   doc="(-m) select run mode (local|sge)"),
-        ToolInput("jobs", Int(optional=True), prefix="--jobs", position=3, shell_quote=False,
+        ToolInput("jobs", String(optional=True), prefix="--jobs", default="unlimited", position=3, shell_quote=False,
                   doc="(-j) number of jobs, must be an integer or 'unlimited' "
                       "(default: Estimate total cores on this node for local mode, 128 for sge mode)"),
-        ToolInput("quiet", Boolean(optional=True, default=True), prefix="--quiet", position=3, shell_quote=False,
+        ToolInput("quiet", Boolean(optional=True), default=True, prefix="--quiet", position=3, shell_quote=False,
                   doc="Don't write any log output to stderr "
                       "(but still write to workspace/pyflow.data/logs/pyflow_log.txt)"),
         ToolInput("queue", String(optional=True), prefix="--queue", position=3, shell_quote=False,

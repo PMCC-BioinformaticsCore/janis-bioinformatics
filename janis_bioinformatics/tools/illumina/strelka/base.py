@@ -30,7 +30,7 @@ class StrelkaBase(BioinformaticsTool, ABC):
                           "as each BAM file representing a different sample. [required] (no default)"),
             ToolInput("reference", FastaWithDict(), prefix="--referenceFasta", position=1, shell_quote=False,
                       doc="samtools-indexed reference fasta file [required]"),
-            ToolInput("relativeStrelkaDirectory", String(optional=True, default="strelka_dir"), prefix="--runDir",
+            ToolInput("relativeStrelkaDirectory", String(optional=True), default="strelka_dir", prefix="--runDir",
                       position=1, shell_quote=False,
                       doc="Name of directory to be created where all workflow scripts and output will be written. "
                           "Each analysis requires a separate directory."),
@@ -76,11 +76,11 @@ class StrelkaBase(BioinformaticsTool, ABC):
             #           doc="show program's version number and exit"),
             # ToolInput("help", Boolean(optional=True), prefix="--help", position=3, shell_quote=False,
             #           doc="(-h) show this help message and exit"),
-            ToolInput("mode", String(optional=True, default="local"), prefix="--mode", position=3, shell_quote=False,
+            ToolInput("mode", String(optional=True), default="local", prefix="--mode", position=3, shell_quote=False,
                       doc="(-m MODE)  select run mode (local|sge)"),
             ToolInput("queue", String(optional=True), prefix="--queue", position=3, shell_quote=False,
                       doc="(-q QUEUE) specify scheduler queue name"),
-            ToolInput("jobs", String(optional=True), prefix="--jobs", position=3, shell_quote=False,
+            ToolInput("jobs", String(optional=True), default="unlimited", prefix="--jobs", position=3, shell_quote=False,
                       doc=" (-j JOBS)  number of jobs, must be an integer or 'unlimited' "
                           "(default: Estimate total cores on this node for local mode, 128 for sge mode)"),
             ToolInput("memGb", String(optional=True), prefix="--memGb", position=3, shell_quote=False,
@@ -99,7 +99,6 @@ class StrelkaBase(BioinformaticsTool, ABC):
 
     def outputs(self) -> List[ToolOutput]:
         return [
-            # ToolOutput("directory", Directory(), glob="$(inputs.relativeStrelkaDirectory)"),
             ToolOutput("configPickle", File(),
                        glob=InputSelector("relativeStrelkaDirectory", suffix="/runWorkflow.py.config.pickle")),
             ToolOutput("script", File(), glob=InputSelector("relativeStrelkaDirectory", suffix='/runWorkflow.py')),
