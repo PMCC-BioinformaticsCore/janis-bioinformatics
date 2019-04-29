@@ -27,18 +27,16 @@ class AlignSortedBam(BioinformaticsWorkflow):
         samtools = Step("samtools", SamToolsView_1_7())
         sortsam = Step("sortsam", Gatk4SortSam_4_0())
 
-        s1_inp_header = Input("read_group_header_line", String())
+        read_group_header = Input("readGroupHeaderLine", String())
         reference = Input("reference", FastaWithDict())
         fastqs = Input("fastq", Fastq())
 
-        out_bwa = Output("out_bwa", Sam())
-        out_samtools = Output("out_samtools", Bam())
-        out = Output("out", BamBai())
+        out_bwa = Output("out_bwa")
+        out_samtools = Output("out_samtools")
+        out = Output("out")
 
-        # Fully connect step 1
-        self.add_edges([
-            (fastqs, cutadapt.fastq)
-        ])
+        # S1: Cutadapt
+        self.add_edge(fastqs, cutadapt.fastq)
         # Step 1 with defaults
         self.add_edges([
             (Input("adapter", String(), default="AGATCGGAAGAGCGGTTCAGCAGGAATGCCGAG"), cutadapt.adapter),
@@ -54,14 +52,14 @@ class AlignSortedBam(BioinformaticsWorkflow):
         # S2: BWA mem
         self.add_edges([
             (cutadapt.out, bwa.reads),
-            (s1_inp_header, bwa.readGroupHeaderLine),
+            (read_group_header, bwa.readGroupHeaderLine),
             (reference, bwa.reference)
         ])
 
-        # fully connect step 2
+        # S3: SamTools
         self.add_edge(bwa.out, samtools.sam)
 
-        # fully connect step 3
+        # S4: SortSam
         self.add_edge(samtools.out, sortsam.bam)
         self.add_edges([
             (Input("sortOrder", String(), default="coordinate"), sortsam.sortOrder),
