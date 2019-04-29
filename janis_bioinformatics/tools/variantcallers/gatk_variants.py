@@ -17,7 +17,9 @@ class GatkVariantCaller(BioinformaticsWorkflow):
                                                  doc="GATK4 based variant caller: (BaseRecal + ApplyBQSR + Haplotype)")
 
         bam = Input("bam", BamBai())
-        intervals = Input("intervals", Bed())
+        intervals = Input("intervals", Bed(optional=True),
+                          doc="This optional intervals file supports processing by regions. If this file resolves "
+                              "to null, then GATK will process the whole genome per each tool's spec")
         reference = Input("reference", FastaWithDict())
 
         snps_dbsnp = Input("snps_dbsnp", VcfTabix())
