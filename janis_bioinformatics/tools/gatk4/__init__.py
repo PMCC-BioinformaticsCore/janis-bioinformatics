@@ -7,6 +7,7 @@ from .mergesamfiles.mergesamfiles_4_0 import Gatk4MergeSamFiles_4_0
 from .mutect2.mutect2_4_0 import GatkMutect2_4_0
 from .printreads.printreads_4_0 import Gatk4PrintReads_4_0
 from .sortsam.sortsam_4_0 import Gatk4SortSam_4_0
+from .gathervcfs.gathervcfs_4_0 import Gatk4GatherVcfs_4_0
 
 from .applybqsr.latest import Gatk4ApplyBqsrLatest
 from .baserecalibrator.latest import Gatk4BaseRecalibratorLatest
