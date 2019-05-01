@@ -1,10 +1,12 @@
 from abc import ABC, abstractmethod
 from typing import List
 
+from janis.types import CpuSelector
+
 from janis_bioinformatics.data_types import FastaWithDict, VcfTabix, BamBai, Vcf
 from janis_bioinformatics.tools import BioinformaticsTool
 
-from janis import ToolOutput, ToolInput, ToolArgument, Boolean, String, File, InputSelector
+from janis import ToolOutput, ToolInput, ToolArgument, Boolean, String, File, InputSelector, Int
 from janis.unix.data_types.tsv import Tsv
 from janis.utils.metadata import ToolMetadata
 
@@ -80,7 +82,7 @@ class StrelkaBase(BioinformaticsTool, ABC):
                       doc="(-m MODE)  select run mode (local|sge)"),
             ToolInput("queue", String(optional=True), prefix="--queue", position=3, shell_quote=False,
                       doc="(-q QUEUE) specify scheduler queue name"),
-            ToolInput("jobs", String(optional=True), default="unlimited", prefix="--jobs", position=3, shell_quote=False,
+            ToolInput("jobs", Int(optional=True), default=CpuSelector(), prefix="--jobs", position=3, shell_quote=False,
                       doc=" (-j JOBS)  number of jobs, must be an integer or 'unlimited' "
                           "(default: Estimate total cores on this node for local mode, 128 for sge mode)"),
             ToolInput("memGb", String(optional=True), prefix="--memGb", position=3, shell_quote=False,
