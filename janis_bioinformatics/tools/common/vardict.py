@@ -1,5 +1,7 @@
 from typing import List
 
+from janis.types import CpuSelector
+
 from janis_bioinformatics.tools import BioinformaticsTool
 from janis_bioinformatics.data_types import BamBai, Bed, FastaFai, Vcf
 from janis import ToolOutput, ToolInput, Filename, ToolArgument, Boolean, Float, Int, String, InputSelector
@@ -130,7 +132,8 @@ class VarDict(BioinformaticsTool):
                   doc="Trim bases after [INT] bases in the reads"),
         ToolInput("removeDuplicateReads", Boolean(optional=True), prefix="-t", position=1, shell_quote=False,
                   doc="Indicate to remove duplicated reads.  Only one pair with same start positions will be kept"),
-        ToolInput("threads", Int(optional=True), prefix="-th", position=1, shell_quote=False, doc="Threads count."),
+        ToolInput("threads", Int(optional=True), default=CpuSelector(), prefix="-th", position=1, shell_quote=False,
+                  doc="Threads count."),
         ToolInput("freq", Int(optional=True), prefix="-V", position=1, shell_quote=False,
                   doc="The lowest frequency in the normal sample allowed for a putative somatic mutation. "
                       "Defaults to 0.05"),
