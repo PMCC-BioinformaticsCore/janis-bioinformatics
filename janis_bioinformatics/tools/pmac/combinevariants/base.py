@@ -22,7 +22,7 @@ class CombineVariantsBase(BioinformaticsTool):
 
     def inputs(self) -> List[ToolInput]:
         return [
-            ToolInput("outputFilename", Filename(extension=".vcf", suffix=".combined")),
+            ToolInput("outputFilename", Filename(extension=".vcf", suffix=".combined"), prefix="-o"),
 
             ToolInput("regions", Filename(extension=".tsv"), prefix="--regions",
                       doc="Region file containing all the variants, used as samtools mpileup"),
