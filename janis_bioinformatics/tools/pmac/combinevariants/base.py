@@ -31,7 +31,7 @@ class CombineVariantsBase(BioinformaticsTool):
                       doc="input vcfs, the priority of the vcfs will be based on the order of the input"),
             ToolInput("type", String(), prefix="--type", doc="germline | somatic"),
 
-            ToolInput("columns", String(optional=True), prefix="--columns",
+            ToolInput("columns", Array(String(), optional=True), prefix="--columns",
                       doc="Columns to keep, seperated by space output vcf (unsorted)"),
 
             ToolInput("normal", String(optional=True), prefix="--normal",

@@ -1,1 +1,1 @@
-from .combinevariants.combinevariants_0_1_0 import CombineVariants_0_1_0, CombineVariantsLatest
+from .combinevariants.combinevariants_0_1_1 import CombineVariants_0_1_1, CombineVariantsLatest
