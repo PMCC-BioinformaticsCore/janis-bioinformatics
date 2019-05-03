@@ -1,3 +1,4 @@
+from datetime import date
 from janis import Step, Input, Output
 
 import janis_bioinformatics.tools.gatk4 as GATK4
@@ -10,11 +11,27 @@ class GatkVariantCaller(BioinformaticsWorkflow):
 
     @staticmethod
     def tool_provider():
-        return "Broad Institute (GATK)"
+        return "Broad Institute"
 
     def __init__(self):
         super(GatkVariantCaller, self).__init__("GATK4_VariantCaller", "GATK4 Variant Caller",
                                                  doc="GATK4 based variant caller: (BaseRecal + ApplyBQSR + Haplotype)")
+
+        self._metadata.version = "4.0.12.0"
+        self._metadata.dateCreated = date(2019, 2, 1)
+        self._metadata.maintainer = "Michael Franklin"
+        self._metadata.maintainerEmail = "michael.franklin@petermac.org"
+        self._metadata.keywords = ["variants", "gatk", "gatk4", "variant caller"]
+        self._metadata.documentation = """
+This is a VariantCaller based on the GATK Best Practice pipelines. It uses the GATK4 toolkit, specifically 4.0.12.0.
+
+It has the following steps:
+
+1. BaseRecalibrator
+2. ApplyBQSR
+3. HaplotypeCaller
+4. SplitMultiAllele
+        """.strip()
 
         bam = Input("bam", BamBai())
         intervals = Input("intervals", Bed(optional=True),
