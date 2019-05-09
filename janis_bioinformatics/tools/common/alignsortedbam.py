@@ -1,12 +1,11 @@
 from janis import Step, String, Input, Output, Int, Boolean
 from janis.utils.metadata import WorkflowMetadata
 
-from janis_bioinformatics.data_types import Bam, BamBai, Fastq, Sam, FastaWithDict
+from janis_bioinformatics.data_types import Fastq, FastaWithDict
 from janis_bioinformatics.tools import BioinformaticsWorkflow
-from janis_bioinformatics.tools.bwa import BwaMem_0_7_15
+from janis_bioinformatics.tools.common.bwamem_samtoolsview import BwaMem_SamToolsView
 from janis_bioinformatics.tools.cutadapt.cutadapt_1_18 import CutAdapt_1_18
 from janis_bioinformatics.tools.gatk4 import Gatk4SortSam_4_0
-from janis_bioinformatics.tools.samtools import SamToolsView_1_7
 
 
 class AlignSortedBam(BioinformaticsWorkflow):
@@ -23,16 +22,14 @@ class AlignSortedBam(BioinformaticsWorkflow):
         self._metadata.version = "1.0.0"
 
         cutadapt = Step("cutadapt", CutAdapt_1_18())
-        bwa = Step("bwa", BwaMem_0_7_15())
-        samtools = Step("samtools", SamToolsView_1_7())
+        bwasam = Step("bwa_sam", BwaMem_SamToolsView())
         sortsam = Step("sortsam", Gatk4SortSam_4_0())
 
         read_group_header = Input("readGroupHeaderLine", String())
         reference = Input("reference", FastaWithDict())
         fastqs = Input("fastq", Fastq())
 
-        out_bwa = Output("out_bwa")
-        out_samtools = Output("out_samtools")
+        out_bam = Output("out_bwa")
         out = Output("out")
 
         # S1: Cutadapt
@@ -49,18 +46,15 @@ class AlignSortedBam(BioinformaticsWorkflow):
             (Input("minReadLength", Int(), default=50), cutadapt.minReadLength),
         ])
 
-        # S2: BWA mem
+        # S2: BWA mem + Samtools View
         self.add_edges([
-            (cutadapt.out, bwa.reads),
-            (read_group_header, bwa.readGroupHeaderLine),
-            (reference, bwa.reference)
+            (cutadapt.out, bwasam.reads),
+            (read_group_header, bwasam.readGroupHeaderLine),
+            (reference, bwasam.reference)
         ])
 
-        # S3: SamTools
-        self.add_edge(bwa.out, samtools.sam)
-
-        # S4: SortSam
-        self.add_edge(samtools.out, sortsam.bam)
+        # S3: SortSam
+        self.add_edge(bwasam.out, sortsam.bam)
         self.add_edges([
             (Input("sortOrder", String(), default="coordinate"), sortsam.sortOrder),
             (Input("createIndex", Boolean(), default=True), sortsam.createIndex),
@@ -69,16 +63,14 @@ class AlignSortedBam(BioinformaticsWorkflow):
         ])
 
         # connect to output
-        self.add_edge(bwa.out, out_bwa)
-        self.add_edge(samtools.out, out_samtools)
-        # self.add_edge(sortsam.out, out_sortsam)
+        self.add_edge(bwasam.out, out_bam)
         self.add_edge(sortsam.out, out)
 
 
 if __name__ == "__main__":
     w = AlignSortedBam()
 
-    w.dump_translation("cwl", with_resource_overrides=True)
+    w.translate("wdl", with_resource_overrides=True)
 
     # print(build_resources_input(w, "wdl", {CaptureType.KEY: CaptureType.CHROMOSOME}))
 
