@@ -1,6 +1,6 @@
 from abc import ABC
 
-from janis import ToolInput, Filename, Int, String, Boolean, ToolOutput, Array, InputSelector
+from janis import ToolInput, Filename, Int, String, Boolean, ToolOutput, Array, InputSelector, WildcardSelector
 from janis_bioinformatics.data_types.bam import Bam
 from janis_bioinformatics.tools.samtools.samtoolstoolbase import SamToolsToolBase
 from janis.utils.metadata import ToolMetadata
@@ -30,7 +30,7 @@ class SamToolsSortBase(SamToolsToolBase, ABC):
     def outputs(self):
         return [
             ToolOutput("out", Bam(), glob=InputSelector("outputFilename")),
-            ToolOutput("temporaryOutputs", Array(Bam(), optional=True), glob="*.tmp.*.bam",
+            ToolOutput("temporaryOutputs", Array(Bam(), optional=True), glob=WildcardSelector("*.tmp.*.bam"),
                        doc="By default, any temporary files are written alongside the output file, "
                            "as out.bam.tmp.nnnn.bam, or if output is to standard output, "
                            "in the current directory as samtools.mmm.mmm.tmp.nnnn.bam.")
