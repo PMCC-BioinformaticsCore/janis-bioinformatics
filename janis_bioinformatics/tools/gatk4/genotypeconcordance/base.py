@@ -36,7 +36,7 @@ class Gatk4GenotypeConcordanceBase(Gatk4ToolBase, ABC):
             ToolOutput("summaryMetrics", File(), glob=WildcardSelector("*.genotype_concordance_summary_metrics")),
             ToolOutput("detailMetrics", File(), glob=WildcardSelector("*.genotype_concordance_detail_metrics")),
             ToolOutput("contingencyMetrics", File(), glob=WildcardSelector("*.genotype_concordance_contingency_metrics")),
-            # ToolOutput("vcf", VcfIdx(optional=True), glob="*.vcf")
+            # ToolOutput("vcf", VcfIdx(optional=True), glob=WildcardSelector("*.vcf"))
         ]
 
     def metadata(self):
