@@ -48,7 +48,8 @@ class BwaMem_SamToolsView(BioinformaticsTool):
         return [
             ToolArgument("bwa", position=0, shell_quote=False),
             ToolArgument("mem", position=1, shell_quote=False),
-            ToolArgument("| samtools", position=6, shell_quote=False),
+            ToolArgument("|", position=5, shell_quote=False),
+            ToolArgument("samtools", position=6, shell_quote=False),
             ToolArgument("view", position=7, shell_quote=False),
             ToolArgument(InputSelector("reference"), prefix="-T", position=8, shell_quote=False),
             ToolArgument(CpuSelector(), position=8, shell_quote=False, prefix="--threads",
