@@ -24,7 +24,7 @@ class BCFToolsSortBase(CommandTool):
     def inputs(self):
         return [
             ToolInput("vcf", Vcf(), position=1, doc="The VCF file to sort"),
-            ToolInput("maxMem", String(optional=True), default=MemorySelector(suffix="G"), prefix="--max-mem", doc="(-m) maximum memory to use [768M]"),
+            # ToolInput("maxMem", String(optional=True), default=MemorySelector(suffix="G"), prefix="--max-mem", doc="(-m) maximum memory to use [768M]"),
             ToolInput("outputFilename", Filename(), prefix="--output-file", doc="(-o) output file name [stdout]"),
             ToolInput("outputType", String(optional=True), prefix="--output-type",
                       doc="(-O) b: compressed BCF, u: uncompressed BCF, z: compressed VCF, v: uncompressed VCF [v]"),

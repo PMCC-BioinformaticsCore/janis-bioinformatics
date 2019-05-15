@@ -56,7 +56,7 @@ class CutAdaptBase(BioinformaticsTool):
         fastq_uuid = str(uuid.uuid1())
         return [
             ToolInput("fastq", Fastq(), position=5),
-            ToolInput("adapter", String(), prefix="-a",
+            ToolInput("adapter", String(optional=True), prefix="-a",
                       doc="Sequence of an adapter ligated to the 3' end (paired data: of the first read). "
                           "The adapter and subsequent bases are trimmed. If a '$' character is appended ('anchoring'), "
                           "the adapter is only found if it is a suffix of the read."),
