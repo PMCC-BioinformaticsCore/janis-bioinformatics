@@ -36,11 +36,11 @@ class AlignSortedBam(BioinformaticsWorkflow):
         self.add_edge(fastqs, cutadapt.fastq)
         # Step 1 with defaults
         self.add_edges([
-            (Input("adapter", String(), default="AGATCGGAAGAGCGGTTCAGCAGGAATGCCGAG"), cutadapt.adapter),
-            (Input("adapter_g", String(), default="ACACTCTTTCCCTACACGACGCTCTTCCGATCT"), cutadapt.adapter_g),
-            (Input("removeMiddle5Adapter", String(), default="AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT"),
+            (Input("adapter", String(optional=True)), cutadapt.adapter),
+            (Input("adapter_g", String(optional=True)), cutadapt.adapter_g),
+            (Input("removeMiddle5Adapter", String(optional=True)),
              cutadapt.removeMiddle5Adapter),
-            (Input("removeMiddle3Adapter", String(), default="CTCGGCATTCCTGCTGAACCGCTCTTCCGATCT"),
+            (Input("removeMiddle3Adapter", String(optional=True)),
              cutadapt.removeMiddle3Adapter),
             (Input("qualityCutoff", Int(), default=15), cutadapt.qualityCutoff),
             (Input("minReadLength", Int(), default=50), cutadapt.minReadLength),
