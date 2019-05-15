@@ -61,12 +61,12 @@ class VardictVariantCaller(BioinformaticsWorkflow):
         ])
 
         self.add_edges([
-            (vardict.out, Output("vardictVaraints")),
+            (vardict.out, Output("vardictVariants")),
             (split.out, Output("out"))
         ])
 
 
 if __name__ == "__main__":
     v = VardictVariantCaller()
-    v.dump_translation("cwl", to_disk=True, write_inputs_file=True, with_resource_overrides=True)
+    v.translate("cwl", to_disk=True, write_inputs_file=True, with_resource_overrides=True)
     print(v.generate_resources_file("cwl", { "CaptureType": "targeted" }))
