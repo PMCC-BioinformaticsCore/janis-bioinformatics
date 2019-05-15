@@ -74,7 +74,7 @@ class BwaMem_SamToolsView(BioinformaticsTool):
     def outputs(self) -> List[ToolOutput]:
         return [
             ToolOutput("out", Bam(), glob=InputSelector("outputFilename")),
-            ToolOutput("skippedReads", File(optional=True), glob=InputSelector("skippedReadsOutputFilename"))
+            # ToolOutput("skippedReads", File(optional=True), glob=InputSelector("skippedReadsOutputFilename"))
         ]
 
     def memory(self, hints: Dict[str, Any]):

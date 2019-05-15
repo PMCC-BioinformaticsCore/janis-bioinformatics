@@ -63,4 +63,4 @@ class StrelkaVariantCaller(BioinformaticsWorkflow):
 if __name__ == "__main__":
 
     wf = StrelkaVariantCaller()
-    wdl = wf.dump_translation("wdl", to_console=True, to_disk=False, write_inputs_file=False)
+    wdl = wf.translate("wdl", to_console=True, to_disk=False, write_inputs_file=False)

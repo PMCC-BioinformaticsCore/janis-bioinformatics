@@ -87,4 +87,4 @@ It has the following steps:
 
 if __name__ == "__main__":
     vc = GatkVariantCaller()
-    # print(vc.dump_translation("cwl"))
+    # print(vc.translate("cwl"))

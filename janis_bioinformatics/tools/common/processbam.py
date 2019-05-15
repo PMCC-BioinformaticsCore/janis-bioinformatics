@@ -44,4 +44,4 @@ class MergeAndMarkBams_4_0(Workflow):
 
 
 if __name__ == "__main__":
-    MergeAndMarkBams_4_0().dump_translation("wdl")
+    MergeAndMarkBams_4_0().translate("wdl")

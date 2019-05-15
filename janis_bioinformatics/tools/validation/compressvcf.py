@@ -25,4 +25,4 @@ class CompressVCF(BioinformaticsWorkflow):
 
 
 if __name__ == "__main__":
-    print(CompressVCF().dump_translation("cwl", to_disk=True, write_inputs_file=True))
+    print(CompressVCF().translate("cwl", to_disk=True, write_inputs_file=True))
