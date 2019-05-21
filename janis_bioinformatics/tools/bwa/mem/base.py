@@ -14,7 +14,7 @@ from janis.utils.metadata import ToolMetadata
 
 
 BWA_MEM_TUPLE = [
-    (CaptureType.KEY, {
+    (CaptureType.key(), {
         CaptureType.TARGETED: 8,
         CaptureType.EXOME: 12,
         CaptureType.CHROMOSOME: 12,
@@ -25,7 +25,7 @@ BWA_MEM_TUPLE = [
 ]
 
 BWA_CORES_TUPLE = [
-    (CaptureType.KEY, {
+    (CaptureType.key(), {
         CaptureType.TARGETED: 16,
         CaptureType.EXOME: 20,
         CaptureType.CHROMOSOME: 24,

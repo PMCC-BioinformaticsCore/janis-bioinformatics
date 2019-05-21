@@ -9,7 +9,7 @@ from janis_bioinformatics.data_types import FastaWithDict, Fastq, Bam, Bed
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 
 BWA_MEM_TUPLE = [
-    (CaptureType.KEY, {
+    (CaptureType.key(), {
         CaptureType.TARGETED: 8,
         CaptureType.EXOME: 12,
         CaptureType.CHROMOSOME: 12,
@@ -20,7 +20,7 @@ BWA_MEM_TUPLE = [
 ]
 
 BWA_CORES_TUPLE = [
-    (CaptureType.KEY, {
+    (CaptureType.key(), {
         CaptureType.TARGETED: 16,
         CaptureType.EXOME: 20,
         CaptureType.CHROMOSOME: 24,

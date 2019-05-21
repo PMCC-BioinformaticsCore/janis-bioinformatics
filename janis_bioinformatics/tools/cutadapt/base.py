@@ -12,7 +12,7 @@ from janis_bioinformatics.tools import BioinformaticsTool
 
 
 CUTADAPT_MEM_TUPLE = [
-    (CaptureType.KEY, {
+    (CaptureType.key(), {
         CaptureType.TARGETED: 2,
         CaptureType.EXOME: 4,
         CaptureType.CHROMOSOME: 4,
@@ -23,7 +23,7 @@ CUTADAPT_MEM_TUPLE = [
 ]
 
 CUTADAPT_CPU_TUPLE = [
-    (CaptureType.KEY, {
+    (CaptureType.key(), {
         CaptureType.TARGETED: 2,
         CaptureType.EXOME: 4,
         CaptureType.CHROMOSOME: 5,
