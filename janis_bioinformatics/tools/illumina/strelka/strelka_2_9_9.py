@@ -24,10 +24,3 @@ class Strelka_2_9_10(StrelkaBase):
 
 
 StrelkaLatest = Strelka_2_9_10
-
-
-if __name__ == "__main__":
-    from janis.translations.cwl import translate_tool
-    print(Strelka_2_9_9().help())
-    cwl = translate_tool(Strelka_2_9_9(), with_docker=True).get_dict()
-    print("\n\n" + ruamel.yaml.dump(cwl))
