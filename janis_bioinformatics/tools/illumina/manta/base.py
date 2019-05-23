@@ -1,15 +1,39 @@
 from abc import ABC, abstractmethod
-from typing import List
+from typing import List, Dict, Any
 
 from janis.types import MemorySelector, CpuSelector
+from janis.utils import get_value_for_hints_and_ordered_resource_tuple
 
 from janis_bioinformatics.data_types import FastaWithDict, VcfTabix, BamBai, Bam
 from janis_bioinformatics.tools import BioinformaticsTool
 
 from janis import ToolOutput, ToolInput, ToolArgument, Boolean, String, File, Directory, Stdout, Filename, \
-    InputSelector, Int
+    InputSelector, Int, CaptureType
 from janis.unix.data_types.tsv import Tsv
 from janis.utils.metadata import ToolMetadata
+
+
+CORES_TUPLE = [
+    (CaptureType.key(), {
+        CaptureType.TARGETED: 4,
+        CaptureType.CHROMOSOME: 16,
+        CaptureType.EXOME: 16,
+        CaptureType.THIRTYX: 40,
+        CaptureType.NINETYX: 80,
+        CaptureType.THREEHUNDREDX: 80
+    })
+]
+
+MEM_TUPLE = [
+    (CaptureType.key(), {
+        CaptureType.TARGETED: 4,
+        CaptureType.CHROMOSOME: 32,
+        CaptureType.EXOME: 32,
+        CaptureType.THIRTYX: 64,
+        CaptureType.NINETYX: 64,
+        CaptureType.THREEHUNDREDX: 64
+    })
+]
 
 
 class MantaBase(BioinformaticsTool, ABC):
@@ -25,6 +49,16 @@ class MantaBase(BioinformaticsTool, ABC):
     @staticmethod
     def base_command():
         return None
+
+    def cpus(self, hints: Dict[str, Any]):
+        val = get_value_for_hints_and_ordered_resource_tuple(hints, CORES_TUPLE)
+        if val: return val
+        return 4
+
+    def memory(self, hints: Dict[str, Any]):
+        val = get_value_for_hints_and_ordered_resource_tuple(hints, CORES_TUPLE)
+        if val: return val
+        return 4
 
     def inputs(self) -> List[ToolInput]:
         return [*self.config_inputs, *self.running_inputs]

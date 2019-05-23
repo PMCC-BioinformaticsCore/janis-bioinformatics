@@ -24,9 +24,9 @@ BWA_CORES_TUPLE = [
         CaptureType.TARGETED: 16,
         CaptureType.EXOME: 20,
         CaptureType.CHROMOSOME: 24,
-        CaptureType.THIRTYX: 30,
-        CaptureType.NINETYX: 32,
-        CaptureType.THREEHUNDREDX: 32
+        CaptureType.THIRTYX: 40,
+        CaptureType.NINETYX: 40,
+        CaptureType.THREEHUNDREDX: 40
     })
 ]
 

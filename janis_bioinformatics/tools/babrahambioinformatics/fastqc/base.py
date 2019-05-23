@@ -1,12 +1,36 @@
 from abc import ABC
 from datetime import datetime
-from typing import List
-from janis import ToolOutput, ToolInput, ToolMetadata, File, String, Boolean, Array, WildcardSelector, Directory, Int
-from janis.types import CpuSelector
-from janis.unix.data_types.zipfile import ZipFile
-from janis_bioinformatics.data_types import Fastq
+from typing import List, Dict, Tuple
 
+from janis import ToolOutput, ToolInput, ToolMetadata, File, String, Boolean, \
+    Array, WildcardSelector, Directory, Int, CaptureType, CpuSelector
+from janis.unix.data_types.zipfile import ZipFile
+
+from janis_bioinformatics.data_types import Fastq
 from janis_bioinformatics.tools import BioinformaticsTool
+
+
+CPU_TUPLE = [
+    (CaptureType.key(), {
+        CaptureType.TARGETED: 2,
+        CaptureType.EXOME: 2,
+        CaptureType.CHROMOSOME: 4,
+        CaptureType.THIRTYX: 8,
+        CaptureType.NINETYX: 12,
+        CaptureType.THREEHUNDREDX: 12
+    })
+]
+
+MEM_TUPLE = [
+    (CaptureType.key(), {
+        CaptureType.TARGETED: 2,
+        CaptureType.EXOME: 4,
+        CaptureType.CHROMOSOME: 8,
+        CaptureType.THIRTYX: 1,
+        CaptureType.NINETYX: 16,
+        CaptureType.THREEHUNDREDX: 32
+    })
+]
 
 
 class FastQCBase(BioinformaticsTool, ABC):

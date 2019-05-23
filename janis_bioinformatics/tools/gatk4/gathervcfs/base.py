@@ -1,10 +1,32 @@
 from abc import ABC
-
-from janis import ToolInput, Filename, ToolOutput, Array, String, InputSelector, File, Boolean, Int
+from typing import Dict, Any
+from janis.utils import get_value_for_hints_and_ordered_resource_tuple
+from janis import ToolInput, Filename, ToolOutput, Array, String, InputSelector, File, Boolean, Int, CaptureType
 from janis.utils.metadata import ToolMetadata
 
 from janis_bioinformatics.data_types import Vcf
 from ..gatk4toolbase import Gatk4ToolBase
+
+
+CORES_TUPLE = [
+    (CaptureType.key(), {
+        CaptureType.CHROMOSOME: 2,
+        CaptureType.EXOME: 2,
+        CaptureType.THIRTYX: 2,
+        CaptureType.NINETYX: 2,
+        CaptureType.THREEHUNDREDX: 2
+    })
+]
+
+MEM_TUPLE = [
+    (CaptureType.key(), {
+        CaptureType.CHROMOSOME: 16,
+        CaptureType.EXOME: 16,
+        CaptureType.THIRTYX: 16,
+        CaptureType.NINETYX: 32,
+        CaptureType.THREEHUNDREDX: 32
+    })
+]
 
 
 class Gatk4GatherVcfsBase(Gatk4ToolBase, ABC):
@@ -18,6 +40,16 @@ class Gatk4GatherVcfsBase(Gatk4ToolBase, ABC):
 
     def friendly_name(self):
         return "GATK4: Gather VCFs"
+
+    def cpus(self, hints: Dict[str, Any]):
+        val = get_value_for_hints_and_ordered_resource_tuple(hints, CORES_TUPLE)
+        if val: return val
+        return 2
+
+    def memory(self, hints: Dict[str, Any]):
+        val = get_value_for_hints_and_ordered_resource_tuple(hints, MEM_TUPLE)
+        if val: return val
+        return 8
 
     def inputs(self):
         return [

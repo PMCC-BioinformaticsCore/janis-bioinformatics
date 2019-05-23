@@ -11,7 +11,7 @@ from janis_bioinformatics.data_types import Bam, Fastq
 from janis_bioinformatics.tools import BioinformaticsTool
 
 
-CUTADAPT_MEM_TUPLE = [
+MEM_TUPLE = [
     (CaptureType.key(), {
         CaptureType.TARGETED: 2,
         CaptureType.EXOME: 4,
@@ -22,14 +22,14 @@ CUTADAPT_MEM_TUPLE = [
     })
 ]
 
-CUTADAPT_CPU_TUPLE = [
+CPU_TUPLE = [
     (CaptureType.key(), {
         CaptureType.TARGETED: 2,
         CaptureType.EXOME: 4,
         CaptureType.CHROMOSOME: 5,
-        CaptureType.THIRTYX: 5,
-        CaptureType.NINETYX: 5,
-        CaptureType.THREEHUNDREDX: 5
+        CaptureType.THIRTYX: 8,
+        CaptureType.NINETYX: 12,
+        CaptureType.THREEHUNDREDX: 16
     })
 ]
 
@@ -77,12 +77,12 @@ class CutAdaptBase(BioinformaticsTool):
         ]
 
     def memory(self, hints):
-        val = get_value_for_hints_and_ordered_resource_tuple(hints, CUTADAPT_MEM_TUPLE)
+        val = get_value_for_hints_and_ordered_resource_tuple(hints, MEM_TUPLE)
         if val: return val
         return 4
 
     def cpus(self, hints):
-        val = get_value_for_hints_and_ordered_resource_tuple(hints, CUTADAPT_CPU_TUPLE)
+        val = get_value_for_hints_and_ordered_resource_tuple(hints, CPU_TUPLE)
         if val: return val
         return 5
 

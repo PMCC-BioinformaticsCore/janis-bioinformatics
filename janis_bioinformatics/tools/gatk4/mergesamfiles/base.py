@@ -1,9 +1,33 @@
 from abc import ABC
+from typing import Dict, Any
 
-from janis import ToolInput, Filename, String, ToolOutput, Array, File, Int, Boolean, Directory, InputSelector
+from janis import ToolInput, Filename, String, ToolOutput, Array, File, Int, Boolean, InputSelector, \
+    CaptureType
+from janis.utils import get_value_for_hints_and_ordered_resource_tuple
+from janis.utils.metadata import ToolMetadata
+
 from janis_bioinformatics.data_types import FastaWithDict, BamBai
 from ..gatk4toolbase import Gatk4ToolBase
-from janis.utils.metadata import ToolMetadata
+
+CORES_TUPLE = [
+    (CaptureType.key(), {
+        CaptureType.CHROMOSOME: 2,
+        CaptureType.EXOME: 2,
+        CaptureType.THIRTYX: 2,
+        CaptureType.NINETYX: 2,
+        CaptureType.THREEHUNDREDX: 2
+    })
+]
+
+MEM_TUPLE = [
+    (CaptureType.key(), {
+        CaptureType.CHROMOSOME: 16,
+        CaptureType.EXOME: 16,
+        CaptureType.THIRTYX: 16,
+        CaptureType.NINETYX: 32,
+        CaptureType.THREEHUNDREDX: 32
+    })
+]
 
 
 class Gatk4MergeSamFilesBase(Gatk4ToolBase, ABC):
@@ -17,6 +41,16 @@ class Gatk4MergeSamFilesBase(Gatk4ToolBase, ABC):
 
     def friendly_name(self):
         return "GATK4: Merge SAM Files"
+
+    def cpus(self, hints: Dict[str, Any]):
+        val = get_value_for_hints_and_ordered_resource_tuple(hints, CORES_TUPLE)
+        if val: return val
+        return 4
+
+    def memory(self, hints: Dict[str, Any]):
+        val = get_value_for_hints_and_ordered_resource_tuple(hints, MEM_TUPLE)
+        if val: return val
+        return 8
 
     def inputs(self):
         return [

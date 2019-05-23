@@ -1,13 +1,38 @@
-from typing import List
+from abc import ABC
+from typing import List, Dict, Any
 
 from janis.types import CpuSelector
+from janis.utils import get_value_for_hints_and_ordered_resource_tuple
 
 from janis_bioinformatics.tools import BioinformaticsTool
 from janis_bioinformatics.data_types import BamBai, Bed, FastaFai, Vcf
-from janis import ToolOutput, ToolInput, Filename, ToolArgument, Boolean, Float, Int, String, InputSelector
+from janis import ToolOutput, ToolInput, Filename, ToolArgument, Boolean, Float, Int, String, InputSelector, CaptureType
+
+CORES_TUPLE = [
+    (CaptureType.key(), {
+        CaptureType.TARGETED: 4,
+        CaptureType.CHROMOSOME: 8,
+        CaptureType.EXOME: 8,
+        CaptureType.THIRTYX: 16,
+        CaptureType.NINETYX: 16,
+        CaptureType.THREEHUNDREDX: 16
+    })
+]
 
 
-class VarDict(BioinformaticsTool):
+MEM_TUPLE = [
+    (CaptureType.key(), {
+        CaptureType.TARGETED: 4,
+        CaptureType.CHROMOSOME: 16,
+        CaptureType.EXOME: 32,
+        CaptureType.THIRTYX: 64,
+        CaptureType.NINETYX: 64,
+        CaptureType.THREEHUNDREDX: 64
+    })
+]
+
+
+class VarDict(ABC, BioinformaticsTool):
     def friendly_name(self) -> str:
         return "Vardict"
 
@@ -18,6 +43,16 @@ class VarDict(BioinformaticsTool):
     @staticmethod
     def base_command():
         return "VarDict"
+
+    def cpus(self, hints: Dict[str, Any]):
+        val = get_value_for_hints_and_ordered_resource_tuple(hints, CORES_TUPLE)
+        if val: return val
+        return 4
+
+    def memory(self, hints: Dict[str, Any]):
+        val = get_value_for_hints_and_ordered_resource_tuple(hints, MEM_TUPLE)
+        if val: return val
+        return 8
 
     def inputs(self) -> List[ToolInput]:
         return [
@@ -208,10 +243,12 @@ class VarDict_1_5_6(VarDict):
     def docker():
         return "michaelfranklin/vardict:1.5.6"
 
+
 class VarDict_1_5_7(VarDict):
     @staticmethod
     def docker():
         return "michaelfranklin/vardict:1.5.7"
+
 
 class VarDict_1_5_8(VarDict):
     @staticmethod

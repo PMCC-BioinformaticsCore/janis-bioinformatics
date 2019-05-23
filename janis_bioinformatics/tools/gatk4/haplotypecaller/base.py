@@ -1,9 +1,31 @@
 from abc import ABC
-
-from janis import String, Int, File, ToolOutput, ToolInput, Boolean, Double, Array, Filename, InputSelector
+from typing import Dict, Any
+from janis.utils import get_value_for_hints_and_ordered_resource_tuple
+from janis import String, Int, File, ToolOutput, ToolInput, Boolean, Double, Array, Filename, InputSelector, CaptureType
 from janis_bioinformatics.data_types import BamBai, Bed, FastaWithDict, VcfIdx, VcfTabix
 from ..gatk4toolbase import Gatk4ToolBase
 from janis.utils.metadata import ToolMetadata
+
+
+CORES_TUPLE = [
+    (CaptureType.key(), {
+        CaptureType.CHROMOSOME: 2,
+        CaptureType.EXOME: 2,
+        CaptureType.THIRTYX: 2,
+        CaptureType.NINETYX: 2,
+        CaptureType.THREEHUNDREDX: 2
+    })
+]
+
+MEM_TUPLE = [
+    (CaptureType.key(), {
+        CaptureType.CHROMOSOME: 32,
+        CaptureType.EXOME: 32,
+        CaptureType.THIRTYX: 32,
+        CaptureType.NINETYX: 32,
+        CaptureType.THREEHUNDREDX: 32
+    })
+]
 
 
 class Gatk4HaplotypeCallerBase(Gatk4ToolBase, ABC):
@@ -17,6 +39,16 @@ class Gatk4HaplotypeCallerBase(Gatk4ToolBase, ABC):
 
     def friendly_name(self):
         return "GATK4: Haplotype Caller"
+
+    def cpus(self, hints: Dict[str, Any]):
+        val = get_value_for_hints_and_ordered_resource_tuple(hints, CORES_TUPLE)
+        if val: return val
+        return 2
+
+    def memory(self, hints: Dict[str, Any]):
+        val = get_value_for_hints_and_ordered_resource_tuple(hints, MEM_TUPLE)
+        if val: return val
+        return 8
 
     def inputs(self):
         return [
@@ -37,7 +69,6 @@ class Gatk4HaplotypeCallerBase(Gatk4ToolBase, ABC):
                        doc="A raw, unfiltered, highly sensitive callset in VCF format. "
                            "File to which variants should be written"),
         ]
-
 
     def metadata(self):
         from datetime import date

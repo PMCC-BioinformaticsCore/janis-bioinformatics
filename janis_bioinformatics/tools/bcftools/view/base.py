@@ -1,10 +1,32 @@
 from abc import ABC
-from typing import List
+from typing import List, Dict, Any
 
-from janis import ToolOutput, ToolInput, Boolean, Int, String, File, Array, Float, Stdout
+from janis.utils import get_value_for_hints_and_ordered_resource_tuple
+from janis import ToolOutput, ToolInput, Boolean, Int, String, File, Array, Float, Stdout, CaptureType
 from janis_bioinformatics.data_types import Vcf
 from ..bcftoolstoolbase import BcfToolsToolBase
 from janis.utils.metadata import ToolMetadata
+
+
+CORES_TUPLE = [
+    (CaptureType.key(), {
+        CaptureType.CHROMOSOME: 4,
+        CaptureType.EXOME: 4,
+        CaptureType.THIRTYX: 8,
+        CaptureType.NINETYX: 12,
+        CaptureType.THREEHUNDREDX: 16
+    })
+]
+
+MEM_TUPLE = [
+    (CaptureType.key(), {
+        CaptureType.CHROMOSOME: 16,
+        CaptureType.EXOME: 16,
+        CaptureType.THIRTYX: 32,
+        CaptureType.NINETYX: 64,
+        CaptureType.THREEHUNDREDX: 64
+    })
+]
 
 
 class BcfToolsViewBase(BcfToolsToolBase, ABC):
@@ -33,6 +55,16 @@ class BcfToolsViewBase(BcfToolsToolBase, ABC):
         metadata.documentation += """________________________________\n 
 View, subset and filter VCF or BCF files by position and filtering expression
 Convert between VCF and BCF. Former bcftools subset."""
+
+    def cpus(self, hints: Dict[str, Any]):
+        val = get_value_for_hints_and_ordered_resource_tuple(hints, CORES_TUPLE)
+        if val: return val
+        return 2
+
+    def memory(self, hints: Dict[str, Any]):
+        val = get_value_for_hints_and_ordered_resource_tuple(hints, MEM_TUPLE)
+        if val: return val
+        return 8
 
     def inputs(self) -> List[ToolInput]:
         return [
