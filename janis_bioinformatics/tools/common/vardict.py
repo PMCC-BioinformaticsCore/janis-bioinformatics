@@ -32,7 +32,7 @@ MEM_TUPLE = [
 ]
 
 
-class VarDict(ABC, BioinformaticsTool):
+class VarDict(BioinformaticsTool, ABC):
     def friendly_name(self) -> str:
         return "Vardict"
 

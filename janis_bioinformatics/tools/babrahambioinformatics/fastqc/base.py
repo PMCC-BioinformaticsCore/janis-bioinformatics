@@ -1,16 +1,17 @@
 from abc import ABC
 from datetime import datetime
-from typing import List, Dict, Tuple
+from typing import List, Dict, Any
 
 from janis import ToolOutput, ToolInput, ToolMetadata, File, String, Boolean, \
     Array, WildcardSelector, Directory, Int, CaptureType, CpuSelector
+from janis.utils import get_value_for_hints_and_ordered_resource_tuple
 from janis.unix.data_types.zipfile import ZipFile
 
 from janis_bioinformatics.data_types import Fastq
 from janis_bioinformatics.tools import BioinformaticsTool
 
 
-CPU_TUPLE = [
+CORES_TUPLE = [
     (CaptureType.key(), {
         CaptureType.TARGETED: 2,
         CaptureType.EXOME: 2,
@@ -62,6 +63,16 @@ class FastQCBase(BioinformaticsTool, ABC):
             "The program is not tied to any specific type of sequencing technique and can be used to look at libraries "
             "coming from a large number of different experiment types "
             "(Genomic Sequencing, ChIP-Seq, RNA-Seq, BS-Seq etc etc).")
+
+    def cpus(self, hints: Dict[str, Any]):
+        val = get_value_for_hints_and_ordered_resource_tuple(hints, CORES_TUPLE)
+        if val: return val
+        return 2
+
+    def memory(self, hints: Dict[str, Any]):
+        val = get_value_for_hints_and_ordered_resource_tuple(hints, MEM_TUPLE)
+        if val: return val
+        return 8
 
     def inputs(self) -> List[ToolInput]:
         return [

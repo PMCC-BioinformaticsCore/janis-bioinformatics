@@ -31,7 +31,7 @@ MEM_TUPLE = [
 ]
 
 
-class CombineVariantsBase(ABC, BioinformaticsTool):
+class CombineVariantsBase(BioinformaticsTool, ABC):
     @staticmethod
     def tool() -> str:
         return "combinevariants"

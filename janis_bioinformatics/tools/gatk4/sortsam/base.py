@@ -1,14 +1,13 @@
 from abc import ABC
 from typing import Dict, Any
-from janis.utils import get_value_for_hints_and_ordered_resource_tuple
 
 from janis import ToolInput, Filename, String, Array, File, Int, Boolean, ToolOutput, InputSelector, \
     CaptureType
+from janis.utils import get_value_for_hints_and_ordered_resource_tuple
 from janis.utils.metadata import ToolMetadata
 
 from janis_bioinformatics.data_types import Bam, BamBai, FastaWithDict
 from ..gatk4toolbase import Gatk4ToolBase
-
 
 CORES_TUPLE = [
     (CaptureType.key(), {
@@ -31,7 +30,7 @@ MEM_TUPLE = [
 ]
 
 
-class Gatk4SortSamBase(ABC, Gatk4ToolBase):
+class Gatk4SortSamBase(Gatk4ToolBase, ABC):
     @classmethod
     def gatk_command(cls):
         return "SortSam"

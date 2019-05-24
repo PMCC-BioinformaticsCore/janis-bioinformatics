@@ -1,10 +1,35 @@
+from abc import ABC
+from typing import Dict, Any
+
 from datetime import datetime
-from janis import CommandTool, ToolInput, ToolOutput, File, Boolean, String, Int, InputSelector, Filename, ToolMetadata
-from janis.types import MemorySelector
+from janis import CommandTool, ToolInput, ToolOutput, File, Boolean, String, Int, InputSelector, Filename, ToolMetadata, \
+    CaptureType
+from janis.utils import get_value_for_hints_and_ordered_resource_tuple
 from janis_bioinformatics.data_types import Vcf
 
 
-class BCFToolsSortBase(CommandTool):
+CORES_TUPLE = [
+    (CaptureType.key(), {
+        CaptureType.CHROMOSOME: 2,
+        CaptureType.EXOME: 2,
+        CaptureType.THIRTYX: 2,
+        CaptureType.NINETYX: 2,
+        CaptureType.THREEHUNDREDX: 2
+    })
+]
+
+MEM_TUPLE = [
+    (CaptureType.key(), {
+        CaptureType.CHROMOSOME: 16,
+        CaptureType.EXOME: 16,
+        CaptureType.THIRTYX: 16,
+        CaptureType.NINETYX: 16,
+        CaptureType.THREEHUNDREDX: 16
+    })
+]
+
+
+class BCFToolsSortBase(CommandTool, ABC):
 
     def friendly_name(self) -> str:
         return "BCFTools Sort"
@@ -20,6 +45,16 @@ class BCFToolsSortBase(CommandTool):
     @staticmethod
     def base_command():
         return ['bcftools', 'sort']
+
+    def cpus(self, hints: Dict[str, Any]):
+        val = get_value_for_hints_and_ordered_resource_tuple(hints, CORES_TUPLE)
+        if val: return val
+        return 2
+
+    def memory(self, hints: Dict[str, Any]):
+        val = get_value_for_hints_and_ordered_resource_tuple(hints, MEM_TUPLE)
+        if val: return val
+        return 8
 
     def inputs(self):
         return [
@@ -47,5 +82,4 @@ class BCFToolsSortBase(CommandTool):
             keywords=["BCFToolsSort"],
             documentation_url="",
             documentation="""About:   Sort VCF/BCF file.
-Usage:   bcftools sort [OPTIONS] <FILE.vcf>
-""")
+Usage:   bcftools sort [OPTIONS] <FILE.vcf>""")
