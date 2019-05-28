@@ -75,14 +75,14 @@ class Gatk4HaplotypeCallerBase(Gatk4ToolBase, ABC):
         return ToolMetadata(
             creator="Michael Franklin",
             maintainer="Michael Franklin",
-            maintainer_email="michael.franklin@petermac.org",
-            date_created=date(2018, 12, 24),
-            date_updated=date(2019, 1, 24),
+            maintainerEmail="michael.franklin@petermac.org",
+            dateCreated=date(2018, 12, 24),
+            dateUpdated=date(2019, 1, 24),
             institution="Broad Institute",
             doi=None,
             citation="See https://software.broadinstitute.org/gatk/documentation/article?id=11027 for more information",
             keywords=["gatk", "gatk4", "broad", "haplotype"],
-            documentation_url="https://software.broadinstitute.org/gatk/documentation/tooldocs/current/org_broadinstitute_hellbender_tools_walkers_haplotypecaller_HaplotypeCaller.php#",
+            documentationUrl="https://software.broadinstitute.org/gatk/documentation/tooldocs/current/org_broadinstitute_hellbender_tools_walkers_haplotypecaller_HaplotypeCaller.php#",
             documentation="""Call germline SNPs and indels via local re-assembly of haplotypes
     
 The HaplotypeCaller is capable of calling SNPs and indels simultaneously via local de-novo assembly of haplotypes 

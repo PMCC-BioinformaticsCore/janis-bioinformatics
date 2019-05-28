@@ -35,7 +35,7 @@ MEM_TUPLE = [
 ]
 
 
-class StrelkaBase(BioinformaticsTool, ABC):
+class StrelkaGermlineBase(BioinformaticsTool, ABC):
 
     @staticmethod
     def tool_provider():
@@ -175,14 +175,14 @@ class StrelkaBase(BioinformaticsTool, ABC):
         return ToolMetadata(
             creator="Michael Franklin",
             maintainer="Michael Franklin",
-            maintainer_email="michael.franklin@petermac.org",
-            date_created=date(2018, 12, 24),
-            date_updated=date(2019, 1, 24),
+            maintainerEmail="michael.franklin@petermac.org",
+            dateCreated=date(2018, 12, 24),
+            dateUpdated=date(2019, 1, 24),
             institution="Illumina",
             doi=None,
             citation=None, # find citation
             keywords=["broad", "igvtools", "index"],
-            documentation_url="https://github.com/Illumina/strelka",
+            documentationUrl="https://github.com/Illumina/strelka",
             documentation="""
 Strelka2 is a fast and accurate small variant caller optimized for analysis of germline variation 
 in small cohorts and somatic variation in tumor/normal sample pairs. The germline caller employs 

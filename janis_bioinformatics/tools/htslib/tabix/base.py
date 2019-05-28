@@ -46,14 +46,14 @@ class TabixBase(BioinformaticsTool, ABC):
         return ToolMetadata(
             creator="Michael Franklin",
             maintainer="Michael Franklin",
-            maintainer_email="michael.franklin@petermac.org",
-            date_created=date(2018, 12, 24),
-            date_updated=date(2019, 1, 24),
+            maintainerEmail="michael.franklin@petermac.org",
+            dateCreated=date(2018, 12, 24),
+            dateUpdated=date(2019, 1, 24),
             institution="HTSLib",
             doi=None,
             citation=None, # find citation
             keywords=["htslib", "tabix", "compression"],
-            documentation_url="http://www.htslib.org/doc/tabix.html",
+            documentationUrl="http://www.htslib.org/doc/tabix.html",
             documentation="""tabix – Generic indexer for TAB-delimited genome position files
 
 Tabix indexes a TAB-delimited genome position file in.tab.bgz and creates an index file (in.tab.bgz.tbi or 

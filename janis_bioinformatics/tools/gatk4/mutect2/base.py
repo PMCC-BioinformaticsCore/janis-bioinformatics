@@ -67,14 +67,14 @@ class Gatk4Mutect2Base(Gatk4ToolBase, ABC):
         return ToolMetadata(
             creator="Michael Franklin",
             maintainer="Michael Franklin",
-            maintainer_email="michael.franklin@petermac.org",
-            date_created=date(2018, 12, 24),
-            date_updated=date(2019, 1, 24),
+            maintainerEmail="michael.franklin@petermac.org",
+            dateCreated=date(2018, 12, 24),
+            dateUpdated=date(2019, 1, 24),
             institution="Broad Institute",
             doi=None,
             citation="See https://software.broadinstitute.org/gatk/documentation/article?id=11027 for more information",
             keywords=["gatk", "gatk4", "broad", "mutect2"],
-            documentation_url="https://software.broadinstitute.org/gatk/documentation/tooldocs/4.0.10.0/org_broadinstitute_hellbender_tools_walkers_mutect_Mutect2.php",
+            documentationUrl="https://software.broadinstitute.org/gatk/documentation/tooldocs/4.0.10.0/org_broadinstitute_hellbender_tools_walkers_mutect_Mutect2.php",
             documentation="""
 Call somatic short variants via local assembly of haplotypes. Short variants include single nucleotide (SNV) 
 and insertion and deletion (indel) variants. The caller combines the DREAM challenge-winning somatic 

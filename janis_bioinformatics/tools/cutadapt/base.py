@@ -226,14 +226,14 @@ class CutAdaptBase(BioinformaticsTool):
 
     def metadata(self):
         return ToolMetadata(
-            creator=None, maintainer="Michael Franklin", maintainer_email="michael.franklin@petermac.org",
-            date_created=datetime(2019, 3, 21), date_updated=datetime(2019, 3, 29),
+            creator=None, maintainer="Michael Franklin", maintainerEmail="michael.franklin@petermac.org",
+            dateCreated=datetime(2019, 3, 21), dateUpdated=datetime(2019, 3, 29),
             institution=None, doi="DOI:10.14806/ej.17.1.200",
             citation="Martin, Marcel. “Cutadapt Removes Adapter Sequences from High-Throughput Sequencing Reads.” "
                      "EMBnet.journal, vol. 17, no. 1, EMBnet Stichting, May 2011, p. 10. "
                      "Crossref, doi:10.14806/ej.17.1.200.",
             keywords=["cutadapt", "trim"],
-            documentation_url="https://cutadapt.readthedocs.io/en/stable/",
+            documentationUrl="https://cutadapt.readthedocs.io/en/stable/",
             documentation="""
 Cutadapt finds and removes adapter sequences, primers, poly-A tails and other types of unwanted sequence 
 from your high-throughput sequencing reads.

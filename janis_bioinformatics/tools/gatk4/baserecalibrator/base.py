@@ -96,14 +96,14 @@ class Gatk4BaseRecalibratorBase(Gatk4ToolBase, ABC):
         return ToolMetadata(
             creator="Michael Franklin",
             maintainer="Michael Franklin",
-            maintainer_email="michael.franklin@petermac.org",
-            date_created=date(2018, 12, 24),
-            date_updated=date(2019, 1, 24),
+            maintainerEmail="michael.franklin@petermac.org",
+            dateCreated=date(2018, 12, 24),
+            dateUpdated=date(2019, 1, 24),
             institution="Broad Institute",
             doi=None,
             citation="See https://software.broadinstitute.org/gatk/documentation/article?id=11027 for more information",
             keywords=["gatk", "gatk4", "broad", "base recalibrator"],
-            documentation_url="https://software.broadinstitute.org/gatk/documentation/tooldocs/current/org_broadinstitute_hellbender_tools_walkers_bqsr_BaseRecalibrator.php",
+            documentationUrl="https://software.broadinstitute.org/gatk/documentation/tooldocs/current/org_broadinstitute_hellbender_tools_walkers_bqsr_BaseRecalibrator.php",
             documentation="""
 First pass of the base quality score recalibration. Generates a recalibration table based on various covariates. 
 The default covariates are read group, reported quality score, machine cycle, and nucleotide context.

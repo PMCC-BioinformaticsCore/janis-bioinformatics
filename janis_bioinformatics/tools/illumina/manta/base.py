@@ -108,15 +108,15 @@ class MantaBase(BioinformaticsTool, ABC):
         return ToolMetadata(
             creator="Michael Franklin",
             maintainer="Michael Franklin",
-            maintainer_email="michael.franklin@petermac.org",
-            date_created=date(2019, 2, 12),
-            date_updated=date(2019, 2, 19),
+            maintainerEmail="michael.franklin@petermac.org",
+            dateCreated=date(2019, 2, 12),
+            dateUpdated=date(2019, 2, 19),
             institution="Illumina",
             doi=" doi:10.1093/bioinformatics/btv710",
             citation="Chen, X. et al. (2016) Manta: rapid detection of structural variants and indels for germline and "
                      "cancer sequencing applications. Bioinformatics, 32, 1220-1222. doi:10.1093/bioinformatics/btv710",
             keywords=["illumina", "manta", "variant caller"],
-            documentation_url="https://github.com/Illumina/manta",
+            documentationUrl="https://github.com/Illumina/manta",
             documentation="""
 Manta calls structural variants (SVs) and indels from mapped paired-end sequencing reads. 
 It is optimized for analysis of germline variation in small sets of individuals and somatic 

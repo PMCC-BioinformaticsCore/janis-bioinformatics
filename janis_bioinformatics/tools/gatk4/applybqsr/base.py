@@ -75,14 +75,14 @@ class Gatk4ApplyBqsrBase(Gatk4ToolBase, ABC):
         return ToolMetadata(
             creator="Michael Franklin",
             maintainer="Michael Franklin",
-            maintainer_email="michael.franklin@petermac.org",
-            date_created=date(2018, 12, 24),
-            date_updated=date(2019, 1, 24),
+            maintainerEmail="michael.franklin@petermac.org",
+            dateCreated=date(2018, 12, 24),
+            dateUpdated=date(2019, 1, 24),
             institution="Broad Institute",
             doi=None,
             citation="See https://software.broadinstitute.org/gatk/documentation/article?id=11027 for more information",
             keywords=["gatk", "gatk4", "broad"],
-            documentation_url="https://software.broadinstitute.org/gatk/documentation/tooldocs/current/org_broadinstitute_hellbender_tools_walkers_bqsr_ApplyBQSR.php",
+            documentationUrl="https://software.broadinstitute.org/gatk/documentation/tooldocs/current/org_broadinstitute_hellbender_tools_walkers_bqsr_ApplyBQSR.php",
             documentation="""
 Apply base quality score recalibration: This tool performs the second pass in a two-stage 
 process called Base Quality Score Recalibration (BQSR). Specifically, it recalibrates the 

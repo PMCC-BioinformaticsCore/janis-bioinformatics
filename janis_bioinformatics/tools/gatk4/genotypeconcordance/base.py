@@ -44,14 +44,14 @@ class Gatk4GenotypeConcordanceBase(Gatk4ToolBase, ABC):
         return ToolMetadata(
             creator="Michael Franklin",
             maintainer="Michael Franklin",
-            maintainer_email="michael.franklin@petermac.org",
-            date_created=date(2018, 12, 24),
-            date_updated=date(2019, 1, 24),
+            maintainerEmail="michael.franklin@petermac.org",
+            dateCreated=date(2018, 12, 24),
+            dateUpdated=date(2019, 1, 24),
             institution="Broad Institute",
             doi=None,
             citation="See https://software.broadinstitute.org/gatk/documentation/article?id=11027 for more information",
             keywords=["gatk", "gatk4", "broad", "genotype concordance"],
-            documentation_url="https://software.broadinstitute.org/gatk/documentation/tooldocs/4.0.5.0/picard_vcf_GenotypeConcordance.php",
+            documentationUrl="https://software.broadinstitute.org/gatk/documentation/tooldocs/4.0.5.0/picard_vcf_GenotypeConcordance.php",
             documentation="""GenotypeConcordance (Picard)
             
 Calculates the concordance between genotype data of one samples in each of two VCFs - one being 

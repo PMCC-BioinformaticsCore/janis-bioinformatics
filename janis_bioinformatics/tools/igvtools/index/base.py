@@ -31,14 +31,14 @@ class IgvToolsIndexBase(IgvToolsToolBase):
         return ToolMetadata(
             creator="Michael Franklin",
             maintainer="Michael Franklin",
-            maintainer_email="michael.franklin@petermac.org",
-            date_created=date(2018, 12, 24),
-            date_updated=date(2019, 1, 24),
+            maintainerEmail="michael.franklin@petermac.org",
+            dateCreated=date(2018, 12, 24),
+            dateUpdated=date(2019, 1, 24),
             institution="Broad Institute",
             doi=None,
             citation=None, # find citation
             keywords=["broad", "igvtools", "index"],
-            documentation_url="https://software.broadinstitute.org/software/igv/igvtools_commandline#index",
+            documentationUrl="https://software.broadinstitute.org/software/igv/igvtools_commandline#index",
             documentation="""
     TODO: ensure igvtools.index is inheriting the metadata from it's superclass
     

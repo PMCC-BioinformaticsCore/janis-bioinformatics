@@ -46,14 +46,14 @@ class BwaMemBase(BwaToolBase, ABC):
         return ToolMetadata(
             creator="Michael Franklin",
             maintainer="Michael Franklin",
-            maintainer_email="michael.franklin@petermac.org",
-            date_created=date(2018, 12, 24),
-            date_updated=date(2019, 1, 24),
+            maintainerEmail="michael.franklin@petermac.org",
+            dateCreated=date(2018, 12, 24),
+            dateUpdated=date(2019, 1, 24),
             institution="Sanger Institute",
             doi=None,
             citation="The BWA-MEM algorithm has not been published yet.",
             keywords=["bwa", "mem", "align"],
-            documentation_url="http://bio-bwa.sourceforge.net/bwa.shtml#3",
+            documentationUrl="http://bio-bwa.sourceforge.net/bwa.shtml#3",
             documentation="""bwa - Burrows-Wheeler Alignment Tool
 
 Align 70bp-1Mbp query sequences with the BWA-MEM algorithm. Briefly, the algorithm works by seeding alignments 

@@ -41,14 +41,14 @@ class BGZipBase(BioinformaticsTool, ABC):
         return ToolMetadata(
             creator="Michael Franklin",
             maintainer="Michael Franklin",
-            maintainer_email="michael.franklin@petermac.org",
-            date_created=date(2018, 12, 24),
-            date_updated=date(2019, 1, 24),
+            maintainerEmail="michael.franklin@petermac.org",
+            dateCreated=date(2018, 12, 24),
+            dateUpdated=date(2019, 1, 24),
             institution="HTSLib",
             doi=None,
             citation=None,  #"",
             keywords=["htslib", "bgzip", "compression"],
-            documentation_url="http://www.htslib.org/doc/bgzip.html",
+            documentationUrl="http://www.htslib.org/doc/bgzip.html",
             documentation="""bgzip – Block compression/decompression utility
 
 Bgzip compresses files in a similar manner to, and compatible with, gzip(1). The file is compressed 

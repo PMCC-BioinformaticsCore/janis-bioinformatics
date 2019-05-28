@@ -51,10 +51,10 @@ class FastQCBase(BioinformaticsTool, ABC):
         return ToolMetadata(
             creator="Simon Andrews",
             maintainer="Michael Franklin",
-            date_created=datetime(2019,3,25), date_updated=datetime(2019,3,25),
+            dateCreated=datetime(2019,3,25), dateUpdated=datetime(2019,3,25),
             institution="Babraham Bioinformatics",
             doi=None, citation=None, keywords=["fastqc", "quality", "qa"],
-            documentation_url="http://www.bioinformatics.babraham.ac.uk/projects/fastqc/",
+            documentationUrl="http://www.bioinformatics.babraham.ac.uk/projects/fastqc/",
             documentation=
             "FastQC is a program designed to spot potential problems in high througput sequencing datasets. "
             "It runs a set of analyses on one or more raw sequence files in fastq or bam format and produces a "

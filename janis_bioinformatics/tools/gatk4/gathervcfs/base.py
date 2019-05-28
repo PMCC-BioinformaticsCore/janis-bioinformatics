@@ -69,14 +69,14 @@ class Gatk4GatherVcfsBase(Gatk4ToolBase, ABC):
         return ToolMetadata(
             creator="Michael Franklin",
             maintainer="Michael Franklin",
-            maintainer_email="michael.franklin@petermac.org",
-            date_created=date(2018, 5, 1),
-            date_updated=date(2019, 5, 1),
+            maintainerEmail="michael.franklin@petermac.org",
+            dateCreated=date(2018, 5, 1),
+            dateUpdated=date(2019, 5, 1),
             institution="Broad Institute",
             doi=None,
             citation="See https://software.broadinstitute.org/gatk/documentation/article?id=11027 for more information",
             keywords=["gatk", "gatk4", "broad", "gather", "vcfs", "variant manipulation"],
-            documentation_url="https://software.broadinstitute.org/gatk/documentation/tooldocs/4.0.12.0/picard_vcf_GatherVcfs.php",
+            documentationUrl="https://software.broadinstitute.org/gatk/documentation/tooldocs/4.0.12.0/picard_vcf_GatherVcfs.php",
             documentation="""GatherVcfs (Picard)
             
 Gathers multiple VCF files from a scatter operation into a single VCF file. 

@@ -75,11 +75,11 @@ class BCFToolsSortBase(CommandTool, ABC):
     def metadata(self):
         return ToolMetadata(
             creator=None,
-            maintainer=None, maintainer_email=None,
-            date_created=datetime(2019, 5, 9), date_updated=datetime(2019, 5, 9),
+            maintainer=None, maintainerEmail=None,
+            dateCreated=datetime(2019, 5, 9), dateUpdated=datetime(2019, 5, 9),
             institution=None, doi=None,
             citation=None,
             keywords=["BCFToolsSort"],
-            documentation_url="",
+            documentationUrl="",
             documentation="""About:   Sort VCF/BCF file.
 Usage:   bcftools sort [OPTIONS] <FILE.vcf>""")

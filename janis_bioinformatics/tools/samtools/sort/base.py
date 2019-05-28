@@ -44,14 +44,14 @@ class SamToolsSortBase(SamToolsToolBase, ABC):
         return ToolMetadata(
             creator="Michael Franklin",
             maintainer="Michael Franklin",
-            maintainer_email="michael.franklin@petermac.org",
-            date_created=date(2018, 12, 24),
-            date_updated=date(2019, 1, 24),
+            maintainerEmail="michael.franklin@petermac.org",
+            dateCreated=date(2018, 12, 24),
+            dateUpdated=date(2019, 1, 24),
             institution="Samtools",
             doi=None,
             citation=None, # find citation
             keywords=["samtools", "sort"],
-            documentation_url="http://www.htslib.org/doc/samtools.html#DESCRIPTION",
+            documentationUrl="http://www.htslib.org/doc/samtools.html#DESCRIPTION",
             documentation="""Ensure SAMTOOLS.SORT is inheriting from parent metadata
     
 ---------------------------------------------------------------------------------------------------
