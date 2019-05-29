@@ -4,24 +4,24 @@ from janis_bioinformatics.data_types import FastaWithDict, BamBai
 from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.bcftools import BcfToolsView_1_5
 from janis_bioinformatics.tools.common import SplitMultiAllele
-from janis_bioinformatics.tools.illumina.manta.manta_1_4_0 import Manta_1_5_0
-from janis_bioinformatics.tools.illumina.strelka.strelka_2_9_9 import Strelka_2_9_10
+from janis_bioinformatics.tools.illumina import StrelkaGermline_2_9_10, Manta_1_5_0
 
 
-class StrelkaVariantCaller(BioinformaticsWorkflow):
+class StrelkaGermlineVariantCaller(BioinformaticsWorkflow):
 
     @staticmethod
     def tool_provider():
         return "Illumina"
 
     def __init__(self):
-        super(StrelkaVariantCaller, self).__init__("strelkaVariantCaller", "Strelka Variant Caller", doc=None)
+        super(StrelkaGermlineVariantCaller, self).__init__("strelkaGermlineVariantCaller",
+                                                           "Strelka Germline Variant Caller", doc=None)
 
         bam = Input("bam", BamBai())
         reference = Input("reference", FastaWithDict())
 
         manta = Step("manta", Manta_1_5_0())
-        strelka = Step("strelka", Strelka_2_9_10())
+        strelka = Step("strelka", StrelkaGermline_2_9_10())
         bcf_view = Step("bcf_view", BcfToolsView_1_5())
         split = Step("splitMultiAllele", SplitMultiAllele())
 
@@ -62,5 +62,5 @@ class StrelkaVariantCaller(BioinformaticsWorkflow):
 
 if __name__ == "__main__":
 
-    wf = StrelkaVariantCaller()
+    wf = StrelkaGermlineVariantCaller()
     wdl = wf.translate("wdl", to_console=True, to_disk=False, write_inputs_file=False)
