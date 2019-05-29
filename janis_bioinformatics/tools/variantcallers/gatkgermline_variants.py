@@ -7,15 +7,15 @@ from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.common import SplitMultiAllele
 
 
-class GatkVariantCaller(BioinformaticsWorkflow):
+class GatkGermlineVariantCaller(BioinformaticsWorkflow):
 
     @staticmethod
     def tool_provider():
         return "Broad Institute"
 
     def __init__(self):
-        super(GatkVariantCaller, self).__init__("GATK4_VariantCaller", "GATK4 Variant Caller",
-                                                 doc="GATK4 based variant caller: (BaseRecal + ApplyBQSR + Haplotype)")
+        super(GatkGermlineVariantCaller, self).__init__("GATK4_VariantCaller", "GATK4 Variant Caller",
+                                                        doc="GATK4 based variant caller: (BaseRecal + ApplyBQSR + Haplotype)")
 
         self._metadata.version = "4.0.12.0"
         self._metadata.dateCreated = date(2019, 2, 1)
@@ -86,5 +86,5 @@ It has the following steps:
 
 
 if __name__ == "__main__":
-    vc = GatkVariantCaller()
+    vc = GatkGermlineVariantCaller()
     # print(vc.translate("cwl"))
