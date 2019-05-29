@@ -1,4 +1,5 @@
 from janis import Step, Input, File, String, Float, Int, Boolean, Output
+from janis_bioinformatics.tools.pmac import TrimIUPAC_0_0_2
 
 from janis_bioinformatics.data_types import FastaWithDict, BamBai, Bed
 from janis_bioinformatics.tools import BioinformaticsWorkflow
@@ -28,6 +29,7 @@ class VardictVariantCaller(BioinformaticsWorkflow):
         vardict = Step("vardict", VarDictGermline_1_5_8())
         annotate = Step("annotate", BcfToolsAnnotate_1_5())
         split = Step("split", SplitMultiAllele())
+        trim = Step("trim", TrimIUPAC_0_0_2())
 
         # S1: vardict
         self.add_edges([
@@ -55,19 +57,21 @@ class VardictVariantCaller(BioinformaticsWorkflow):
         ])
 
         # S3: split
-        # S4: SplitMultiAllele
         self.add_edges([
             (reference, split.reference),
             (annotate.out, split.vcf)
         ])
 
+        # S4: trim
+        self.add_edge(split.out, trim.vcf)
+
         self.add_edges([
             (vardict.out, Output("vardictVariants")),
-            (split.out, Output("out"))
+            (trim.out, Output("out"))
         ])
 
 
 if __name__ == "__main__":
     v = VardictVariantCaller()
-    v.translate("cwl", to_disk=True, write_inputs_file=True, with_resource_overrides=True)
-    print(v.generate_resources_file("cwl", { "CaptureType": "targeted" }))
+    v.translate("wdl", with_resource_overrides=False)
+    # print(v.generate_resources_file("wdl", { "CaptureType": "targeted" }))
