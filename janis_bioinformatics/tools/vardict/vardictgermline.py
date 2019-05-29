@@ -8,6 +8,8 @@ from janis_bioinformatics.tools import BioinformaticsTool
 from janis_bioinformatics.data_types import BamBai, Bed, FastaFai, Vcf
 from janis import ToolOutput, ToolInput, Filename, ToolArgument, Boolean, Float, Int, String, InputSelector, CaptureType
 
+from janis_bioinformatics.tools.vardict.vardict import VarDict_1_5_6, VarDict_1_5_7, VarDict_1_5_8
+
 CORES_TUPLE = [
     (CaptureType.key(), {
         CaptureType.TARGETED: 4,
@@ -32,7 +34,7 @@ MEM_TUPLE = [
 ]
 
 
-class VarDict(BioinformaticsTool, ABC):
+class VarDictGermlineBase(BioinformaticsTool, ABC):
     def friendly_name(self) -> str:
         return "Vardict"
 
@@ -63,8 +65,8 @@ class VarDict(BioinformaticsTool, ABC):
             ToolInput("reference", FastaFai(), prefix="-G", position=1, shell_quote=False,
                       doc="The reference fasta. Should be indexed (.fai). "
                           "Defaults to: /ngs/reference_data/genomes/Hsapiens/hg19/seq/hg19.fa"),
-            *VarDict.vardict_inputs,
-            *VarDict.var2vcf_inputs
+            *VarDictGermlineBase.vardict_inputs,
+            *VarDictGermlineBase.var2vcf_inputs
         ]
 
     def outputs(self):
@@ -206,7 +208,7 @@ class VarDict(BioinformaticsTool, ABC):
         return "https://github.com/AstraZeneca-NGS/VarDict"
 
     def doc(self):
-        return  """
+        return """
     VarDict
     
     VarDict is an ultra sensitive variant caller for both single and paired sample variant 
@@ -238,23 +240,20 @@ class VarDict(BioinformaticsTool, ABC):
     """
 
 
-class VarDict_1_5_6(VarDict):
-    @staticmethod
-    def docker():
-        return "michaelfranklin/vardict:1.5.6"
+class VarDictGermline_1_5_6(VarDictGermlineBase, VarDict_1_5_6):
+    pass
 
 
-class VarDict_1_5_7(VarDict):
-    @staticmethod
-    def docker():
-        return "michaelfranklin/vardict:1.5.7"
+class VarDictGermline_1_5_7(VarDictGermlineBase, VarDict_1_5_7):
+    pass
 
 
-class VarDict_1_5_8(VarDict):
-    @staticmethod
-    def docker():
-        return "michaelfranklin/vardict:1.5.8"
+class VarDictGermline_1_5_8(VarDictGermlineBase, VarDict_1_5_8):
+    pass
+
+
+VarDictGermlineLatest = VarDictGermline_1_5_8
 
 
 if __name__ == "__main__":
-    print(VarDict().help())
+    print(VarDictGermlineLatest().help())
