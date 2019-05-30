@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-VERSION = "v0.0.6"
+VERSION = "v0.0.7"
 DESCRIPTION = "Bioinformatics tools for Janis; the Pipeline creation helper"
 
 ######## SHOULDN'T NEED EDITS BELOW THIS LINE ########
