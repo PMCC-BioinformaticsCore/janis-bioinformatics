@@ -23,10 +23,10 @@ CORES_TUPLE = [
 MEM_TUPLE = [
     (CaptureType.key(), {
         CaptureType.CHROMOSOME: 8,
-        CaptureType.EXOME: 8,
-        CaptureType.THIRTYX: 8,
-        CaptureType.NINETYX: 12,
-        CaptureType.THREEHUNDREDX: 16
+        CaptureType.EXOME: 32,
+        CaptureType.THIRTYX: 64,
+        CaptureType.NINETYX: 64,
+        CaptureType.THREEHUNDREDX: 64
     })
 ]
 

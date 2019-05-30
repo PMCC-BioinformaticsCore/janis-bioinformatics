@@ -1,2 +1,2 @@
-from .combinevariants.combinevariants_0_0_2 import CombineVariants_0_0_2, CombineVariantsLatest
-from .trimiupac.trimiupac_0_0_2 import TrimIUPAC_0_0_2, TrimIUPACLatest
+from .combinevariants.combinevariants_0_0_4 import CombineVariants_0_0_4, CombineVariantsLatest
+from .trimiupac.trimiupac_0_0_4 import TrimIUPAC_0_0_4, TrimIUPACLatest
