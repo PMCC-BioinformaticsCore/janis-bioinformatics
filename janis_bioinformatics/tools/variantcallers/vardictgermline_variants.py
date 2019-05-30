@@ -1,5 +1,5 @@
 from janis import Step, Input, File, String, Float, Int, Boolean, Output
-from janis_bioinformatics.tools.pmac import TrimIUPAC_0_0_2
+from janis_bioinformatics.tools.pmac import TrimIUPAC_0_0_4
 
 from janis_bioinformatics.data_types import FastaWithDict, BamBai, Bed
 from janis_bioinformatics.tools import BioinformaticsWorkflow
@@ -29,7 +29,7 @@ class VardictVariantCaller(BioinformaticsWorkflow):
         vardict = Step("vardict", VarDictGermline_1_5_8())
         annotate = Step("annotate", BcfToolsAnnotate_1_5())
         split = Step("split", SplitMultiAllele())
-        trim = Step("trim", TrimIUPAC_0_0_2())
+        trim = Step("trim", TrimIUPAC_0_0_4())
 
         # S1: vardict
         self.add_edges([
