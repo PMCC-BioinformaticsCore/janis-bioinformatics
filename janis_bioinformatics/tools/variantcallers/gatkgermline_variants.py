@@ -1,7 +1,7 @@
 from datetime import date
 from janis import Step, Input, Output
 
-import janis_bioinformatics.tools.gatk4 as GATK4
+from janis_bioinformatics.tools import gatk4
 from janis_bioinformatics.data_types import FastaWithDict, BamBai, VcfTabix, Bed
 from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.common import SplitMultiAllele
@@ -44,9 +44,9 @@ It has the following steps:
         known_indels = Input("knownIndels", VcfTabix())
         mills_indels = Input("millsIndels", VcfTabix())
 
-        s1_recal = Step("baseRecalibrator", GATK4.Gatk4BaseRecalibrator_4_0())
-        s2_bqsr = Step("applyBQSR", GATK4.Gatk4ApplyBqsr_4_0())
-        s3_haplo = Step("haplotypeCaller", GATK4.Gatk4HaplotypeCaller_4_0())
+        s1_recal = Step("baseRecalibrator", gatk4.Gatk4BaseRecalibrator_4_0())
+        s2_bqsr = Step("applyBQSR", gatk4.Gatk4ApplyBqsr_4_0())
+        s3_haplo = Step("haplotypeCaller", gatk4.Gatk4HaplotypeCaller_4_0())
         s4_split = Step("splitMultiAllele", SplitMultiAllele())
 
         # S1: BaseRecalibrator
@@ -86,5 +86,5 @@ It has the following steps:
 
 
 if __name__ == "__main__":
-    vc = GatkGermlineVariantCaller()
+    vc = GatkGermlineVariantCaller().translate("wdl", to_console=True)
     # print(vc.translate("cwl"))

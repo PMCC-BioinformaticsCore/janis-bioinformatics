@@ -1,8 +1,8 @@
 # from os.path import dirname, basename, isfile
 # import glob
 
-from .bioinformaticstoolbase import BioinformaticsTool, BioinformaticsWorkflow
-from . import bcftools, bwa, common, gatk4, htslib, igvtools, illumina, samtools, validation, variantcallers, \
+from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool, BioinformaticsWorkflow
+from janis_bioinformatics.tools import bcftools, bwa, common, gatk4, htslib, igvtools, illumina, samtools, validation, variantcallers, \
     babrahambioinformatics, cutadapt, pmac
 
 # directory = dirname(__file__)
