@@ -17,7 +17,7 @@ setup(
     author_email="michael.franklin@petermac.org",
     license="GNU",
     packages=["janis_bioinformatics"] + ["janis_bioinformatics." + p for p in sorted(find_packages('./janis_bioinformatics'))],
-    install_requires=["janis-pipelines"],
+    install_requires=[],
     zip_safe=False,
     long_description=long_description,
     long_description_content_type="text/markdown",
