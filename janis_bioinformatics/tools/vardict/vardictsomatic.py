@@ -6,7 +6,8 @@ from janis.utils import get_value_for_hints_and_ordered_resource_tuple
 
 from janis_bioinformatics.tools import BioinformaticsTool
 from janis_bioinformatics.data_types import BamBai, Bed, FastaFai, Vcf
-from janis import ToolOutput, ToolInput, Filename, ToolArgument, Boolean, Float, Int, String, InputSelector, CaptureType
+from janis import ToolOutput, ToolInput, Array, Filename, ToolArgument, \
+    Boolean, Float, Int, String, InputSelector, CaptureType
 
 from janis_bioinformatics.tools.vardict.vardict import VarDict_1_5_6, VarDict_1_5_7, VarDict_1_5_8
 
@@ -21,7 +22,6 @@ CORES_TUPLE = [
     })
 ]
 
-
 MEM_TUPLE = [
     (CaptureType.key(), {
         CaptureType.TARGETED: 4,
@@ -34,13 +34,13 @@ MEM_TUPLE = [
 ]
 
 
-class VarDictGermlineBase(BioinformaticsTool, ABC):
+class VarDictSomaticBase(BioinformaticsTool, ABC):
     def friendly_name(self) -> str:
-        return "Vardict - Germline"
+        return "Vardict - Somatic"
 
     @staticmethod
     def tool():
-        return "vardictgermline"
+        return "vardictsomatic"
 
     @staticmethod
     def base_command():
@@ -58,15 +58,24 @@ class VarDictGermlineBase(BioinformaticsTool, ABC):
 
     def inputs(self) -> List[ToolInput]:
         return [
-            ToolInput("intervals", Bed(), position=2, shell_quote=False),
-            ToolInput("outputFilename", Filename(extension=".vcf", suffix=".vardict"), prefix=">", position=6, shell_quote=False),
-            ToolInput("bam", BamBai(), prefix="-b", position=1, shell_quote=False, doc="The indexed BAM file"),
+            ToolInput("bed", Bed(), position=2, shell_quote=False),
+            ToolInput("bams", Array(BamBai()), separator="|", prefix="-b", position=1, shell_quote=True,
+                      doc="The indexed BAM file"),
 
             ToolInput("reference", FastaFai(), prefix="-G", position=1, shell_quote=False,
                       doc="The reference fasta. Should be indexed (.fai). "
                           "Defaults to: /ngs/reference_data/genomes/Hsapiens/hg19/seq/hg19.fa"),
-            *VarDictGermlineBase.vardict_inputs,
-            *VarDictGermlineBase.var2vcf_inputs
+
+            ToolInput("tumorName", String(),
+                      doc="The sample name to be used directly.  Will overwrite -n option"),
+            ToolInput("alleleFreqThreshold", Float(optional=True),
+                      doc="The threshold for allele frequency, default: 0.05 or 5%"),
+
+            ToolInput("outputFilename", Filename(extension=".vcf", suffix=".vardict"), prefix=">", position=6,
+                      shell_quote=False),
+
+            *VarDictSomaticBase.vardict_inputs,
+            *VarDictSomaticBase.var2vcf_inputs
         ]
 
     def outputs(self):
@@ -76,10 +85,13 @@ class VarDictGermlineBase(BioinformaticsTool, ABC):
 
     def arguments(self):
         return [
-            # ToolArgument("export VarDict=\"/config/binaries/vardict/1.5.1/bin/VarDict\";", position=0, shell_quote=False),
-            # ToolArgument("", position=0, shell_quote=False),
-            ToolArgument("| teststrandbias.R |", position=3, shell_quote=False),
-            ToolArgument("var2vcf_valid.pl", position=4, shell_quote=False)
+            ToolArgument("| testsomatic.R |", position=3, shell_quote=False),
+            ToolArgument("var2vcf_paired.pl", position=4, shell_quote=False),
+            ToolArgument(InputSelector("tumorName"), prefix="-N", position=1, shell_quote=False),
+            ToolArgument(InputSelector("tumorName"), prefix="-N", position=5, shell_quote=False),
+            ToolArgument(InputSelector("alleleFreqThreshold"), prefix="-f", position=5, shell_quote=False),
+            ToolArgument(InputSelector("alleleFreqThreshold"), prefix="-f", position=1, shell_quote=False)
+
         ]
 
     @staticmethod
@@ -111,8 +123,6 @@ class VarDictGermlineBase(BioinformaticsTool, ABC):
         ToolInput("filter", String(optional=True), prefix="-F", position=1, shell_quote=False,
                   doc="The hexical to filter reads using samtools. Default: 0x500 (filter 2nd alignments and "
                       "duplicates). Use -F 0 to turn it off."),
-        ToolInput("alleleFreqThreshold", Float(optional=True), prefix="-f", position=1, shell_quote=False,
-                  doc="The threshold for allele frequency, default: 0.05 or 5%"),
         ToolInput("geneNameCol", Int(optional=True), prefix="-g", position=1, shell_quote=False,
                   doc="The column for gene name, or segment annotation"),
         # ToolInput("help", Boolean(optional=True), prefix="-H", position=1, shell_quote=False,
@@ -135,8 +145,6 @@ class VarDictGermlineBase(BioinformaticsTool, ABC):
                       "Gaps are not counted as mismatches. Valid only for bowtie2/TopHat or BWA aln "
                       "followed by sampe. BWA mem is calculated as NM - Indels. "
                       "Default: 8, or reads with more than 8 mismatches will not be used."),
-        ToolInput("sampleName", String(), prefix="-N", position=1, shell_quote=False,
-                  doc="The sample name to be used directly.  Will overwrite -n option"),
         ToolInput("regexSampleName", String(optional=True), prefix="-n", position=1, shell_quote=False,
                   doc="The regular expression to extract sample name from BAM filenames. "
                       "Default to: /([^\/\._]+?)_[^\/]*.bam/"),
@@ -199,8 +207,6 @@ class VarDictGermlineBase(BioinformaticsTool, ABC):
     ]
 
     var2vcf_inputs = [
-        ToolInput("var2vcfSampleName", String(), prefix="-N", position=5, shell_quote=False),
-        ToolInput("var2vcfAlleleFreqThreshold", Float(), prefix="-f", position=5, shell_quote=False),
     ]
 
     @staticmethod
@@ -210,7 +216,7 @@ class VarDictGermlineBase(BioinformaticsTool, ABC):
     def doc(self):
         return """
     VarDict
-    
+
     VarDict is an ultra sensitive variant caller for both single and paired sample variant 
     calling from BAM files. VarDict implements several novel features such as amplicon bias 
     aware variant calling from targeted sequencing experiments, rescue of long indels by 
@@ -223,15 +229,15 @@ class VarDictGermlineBase(BioinformaticsTool, ABC):
     filters for VarDict. The script at https://github.com/AstraZeneca-NGS/VarDict/blob/master/vcf2txt.pl 
     can be used to put the variants into a context by including information from dbSNP, Cosmic and ClinVar. 
     We are open to suggestions from the community on how to best narrow down to the variants of most interest.
-    
+
     A Java based drop-in replacement for vardict.pl is being developed at 
     https://github.com/AstraZeneca-NGS/VarDictJava. The Java implementation is approximately 
     10 times faster than the original Perl implementation and does not depend on samtools
-    
+
     To enable amplicon aware variant calling (single sample mode only; not supported in paired 
     variant calling), please make sure the bed file has 8 columns with the 7th and 8th columns 
     containing the insert interval (therefore subset of the 2nd and 3rd column interval). 
-    
+
     Requirements
 
         - Perl (uses /usr/bin/env perl)
@@ -240,20 +246,20 @@ class VarDictGermlineBase(BioinformaticsTool, ABC):
     """
 
 
-class VarDictGermline_1_5_6(VarDictGermlineBase, VarDict_1_5_6):
+class VarDictSomatic_1_5_6(VarDictSomaticBase, VarDict_1_5_6):
     pass
 
 
-class VarDictGermline_1_5_7(VarDictGermlineBase, VarDict_1_5_7):
+class VarDictSomatic_1_5_7(VarDictSomaticBase, VarDict_1_5_7):
     pass
 
 
-class VarDictGermline_1_5_8(VarDictGermlineBase, VarDict_1_5_8):
+class VarDictSomatic_1_5_8(VarDictSomaticBase, VarDict_1_5_8):
     pass
 
 
-VarDictGermlineLatest = VarDictGermline_1_5_8
-
+VarDictSomaticLatest = VarDictSomatic_1_5_8
 
 if __name__ == "__main__":
-    print(VarDictGermlineLatest().help())
+    # print(VarDictSomaticLatest().help())
+    VarDictSomaticLatest().translate("wdl")
