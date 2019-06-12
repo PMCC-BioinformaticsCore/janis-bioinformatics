@@ -1,9 +1,34 @@
 from abc import ABC
+from typing import Dict, Any
 
-from janis import ToolInput, Filename, ToolOutput, String, Float, InputSelector
+from janis import ToolInput, Filename, ToolOutput, String, Float, InputSelector, CaptureType, ToolArgument, \
+    MemorySelector
+from janis.utils import get_value_for_hints_and_ordered_resource_tuple
+
 from janis_bioinformatics.data_types import BamBai, Bed, FastaWithDict, VcfIdx, Vcf, VcfTabix
 from ..gatk4toolbase import Gatk4ToolBase
 from janis.utils.metadata import ToolMetadata
+
+CORES_TUPLE = [
+    # (CaptureType.key(), {
+    #     CaptureType.CHROMOSOME: 2,
+    #     CaptureType.EXOME: 2,
+    #     CaptureType.THIRTYX: 2,
+    #     CaptureType.NINETYX: 2,
+    #     CaptureType.THREEHUNDREDX: 2
+    # })
+]
+
+MEM_TUPLE = [
+    (CaptureType.key(), {
+        CaptureType.TARGETED: 32,
+        CaptureType.CHROMOSOME: 64,
+        CaptureType.EXOME: 64,
+        CaptureType.THIRTYX: 64,
+        CaptureType.NINETYX: 64,
+        CaptureType.THREEHUNDREDX: 64
+    })
+]
 
 
 class Gatk4Mutect2Base(Gatk4ToolBase, ABC):
@@ -17,13 +42,6 @@ class Gatk4Mutect2Base(Gatk4ToolBase, ABC):
 
     def friendly_name(self):
         return "GATK4: MuTect2"
-
-    @staticmethod
-    def requirements():
-        import cwlgen as cwl
-        return [
-            cwl.ResourceRequirement(ram_min="64000")
-        ]
 
     @staticmethod
     def tumor_normal_inputs():
@@ -60,6 +78,16 @@ class Gatk4Mutect2Base(Gatk4ToolBase, ABC):
             ToolOutput("out", VcfTabix(), glob=InputSelector("outputFilename"), doc="To determine type")
         ]
 
+    def cpus(self, hints: Dict[str, Any]):
+        val = get_value_for_hints_and_ordered_resource_tuple(hints, CORES_TUPLE)
+        if val: return val
+        return 1
+
+    def memory(self, hints: Dict[str, Any]):
+        val = get_value_for_hints_and_ordered_resource_tuple(hints, MEM_TUPLE)
+        if val: return val
+        return 8
+
     additional_args = []
 
     def metadata(self):
@@ -85,5 +113,9 @@ for a step-by-step description of the workflow and Article#11127 for an overview
 somatic calling entails. For the latest pipeline scripts, see the Mutect2 WDL scripts directory. 
 Although we present the tool for somatic calling, it may apply to other contexts, 
 such as mitochondrial variant calling.
-""".strip()
-        )
+""".strip())
+
+    def arguments(self):
+        return [
+            # ToolArgument(MemorySelector(prefix="-Xmx", suffix="G", default=8), prefix="--java-options", position=0)
+        ]
