@@ -11,7 +11,7 @@ class Bam(File):
         return "A binary version of a SAM file, http://software.broadinstitute.org/software/igv/bam"
 
 
-class BamBai(File):
+class BamBai(Bam):
 
     @staticmethod
     def name():
