@@ -7,14 +7,14 @@ from janis_bioinformatics.tools.common import SplitMultiAllele
 from janis_bioinformatics.tools.illumina import StrelkaGermline_2_9_10, Manta_1_5_0
 
 
-class StrelkaGermlineVariantCaller(BioinformaticsWorkflow):
+class IlluminaGermlineVariantCaller(BioinformaticsWorkflow):
 
     @staticmethod
     def tool_provider():
         return "Illumina"
 
     def __init__(self):
-        super(StrelkaGermlineVariantCaller, self).__init__("strelkaGermlineVariantCaller",
+        super(IlluminaGermlineVariantCaller, self).__init__("strelkaGermlineVariantCaller",
                                                            "Strelka Germline Variant Caller", doc=None)
 
         bam = Input("bam", BamBai())
@@ -62,5 +62,5 @@ class StrelkaGermlineVariantCaller(BioinformaticsWorkflow):
 
 if __name__ == "__main__":
 
-    wf = StrelkaGermlineVariantCaller()
+    wf = IlluminaGermlineVariantCaller()
     wdl = wf.translate("wdl", to_console=True, to_disk=False, write_inputs_file=False)
