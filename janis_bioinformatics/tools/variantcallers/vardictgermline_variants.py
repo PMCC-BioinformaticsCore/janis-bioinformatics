@@ -8,17 +8,17 @@ from janis_bioinformatics.tools.bcftools import BcfToolsAnnotate_1_5
 from janis_bioinformatics.tools.common import SplitMultiAllele
 
 
-class VardictVariantCaller(BioinformaticsWorkflow):
+class VardictGermlineVariantCaller(BioinformaticsWorkflow):
 
     @staticmethod
     def tool_provider():
         return "PMCC"
 
     def __init__(self):
-        super(VardictVariantCaller, self).__init__("vardictVariantCaller", "Vardict Variant Caller", doc=None)
+        super(VardictGermlineVariantCaller, self).__init__("vardictVariantCaller", "Vardict Variant Caller", doc=None)
 
         bam = Input("bam", BamBai())
-        bed = Input("bed", Bed())
+        intervals = Input("intervals", Bed())
 
         sample_name = Input("sampleName", String())
         allele_freq_threshold = Input("allelFreqThreshold", Float(), 0.05)
@@ -33,7 +33,7 @@ class VardictVariantCaller(BioinformaticsWorkflow):
 
         # S1: vardict
         self.add_edges([
-            (bed, vardict.bed),
+            (intervals, vardict.intervals),
             (bam, vardict.bam),
             (reference, vardict.reference),
             (sample_name, vardict.sampleName),
@@ -72,6 +72,6 @@ class VardictVariantCaller(BioinformaticsWorkflow):
 
 
 if __name__ == "__main__":
-    v = VardictVariantCaller()
+    v = VardictGermlineVariantCaller()
     v.translate("wdl", with_resource_overrides=False)
     # print(v.generate_resources_file("wdl", { "CaptureType": "targeted" }))
