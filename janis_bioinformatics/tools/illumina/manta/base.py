@@ -44,7 +44,7 @@ class MantaBase(BioinformaticsTool, ABC):
 
     @staticmethod
     def tool():
-        return "manta_germline"
+        return "manta"
 
     @staticmethod
     def base_command():
@@ -148,7 +148,7 @@ of capabilities and limitations.""".strip()
         ToolInput("reference", FastaWithDict(), prefix="--referenceFasta", position=1,
                   shell_quote=False, doc="samtools-indexed reference fasta file [required]"),
 
-        ToolInput("tumorBam", Bam(optional=True), prefix="--tumorBam", position=1, shell_quote=False,
+        ToolInput("tumorBam", BamBai(optional=True), prefix="--tumorBam", position=1, shell_quote=False,
                   doc="Tumor sample BAM or CRAM file. Only up to one tumor bam file accepted. [optional=null]"),
         ToolInput("exome", Boolean(optional=True), prefix="--exome", position=1, shell_quote=False,
                   doc="Set options for WES input: turn off depth filters"),

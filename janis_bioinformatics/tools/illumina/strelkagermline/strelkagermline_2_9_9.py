@@ -1,5 +1,3 @@
-import ruamel.yaml
-
 from janis_bioinformatics.tools.illumina.strelka_2_9_9 import Strelka_2_9_9
 from janis_bioinformatics.tools.illumina.strelka_2_9_10 import Strelka_2_9_10
 
