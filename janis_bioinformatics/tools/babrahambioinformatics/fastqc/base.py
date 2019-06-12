@@ -27,7 +27,7 @@ MEM_TUPLE = [
         CaptureType.TARGETED: 2,
         CaptureType.EXOME: 4,
         CaptureType.CHROMOSOME: 8,
-        CaptureType.THIRTYX: 1,
+        CaptureType.THIRTYX: 16,
         CaptureType.NINETYX: 16,
         CaptureType.THREEHUNDREDX: 32
     })
