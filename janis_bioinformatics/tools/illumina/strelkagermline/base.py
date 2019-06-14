@@ -7,7 +7,7 @@ from janis.utils import get_value_for_hints_and_ordered_resource_tuple
 from janis_bioinformatics.data_types import FastaWithDict, VcfTabix, BamBai, Vcf
 from janis_bioinformatics.tools import BioinformaticsTool
 
-from janis import ToolOutput, ToolInput, ToolArgument, Boolean, String, File, InputSelector, Int, CaptureType
+from janis import ToolOutput, ToolInput, ToolArgument, Boolean, String, File, InputSelector, Int, CaptureType, StringFormatter
 from janis.unix.data_types.tsv import Tsv
 from janis.utils.metadata import ToolMetadata
 
@@ -136,23 +136,23 @@ class StrelkaGermlineBase(BioinformaticsTool, ABC):
     def outputs(self) -> List[ToolOutput]:
         return [
             ToolOutput("configPickle", File(),
-                       glob=InputSelector("relativeStrelkaDirectory", suffix="/runWorkflow.py.config.pickle")),
-            ToolOutput("script", File(), glob=InputSelector("relativeStrelkaDirectory", suffix='/runWorkflow.py')),
-            ToolOutput("stats", Tsv(), glob=InputSelector("relativeStrelkaDirectory", suffix='/results/stats/runStats.tsv'),
+                       glob=InputSelector("relativeStrelkaDirectory") + "/runWorkflow.py.config.pickle"),
+            ToolOutput("script", File(), glob=InputSelector("relativeStrelkaDirectory") + '/runWorkflow.py'),
+            ToolOutput("stats", Tsv(), glob=InputSelector("relativeStrelkaDirectory") + '/results/stats/runStats.tsv',
                        doc="A tab-delimited report of various internal statistics from the variant calling process: "
                            "Runtime information accumulated for each genome segment, excluding auxiliary steps such "
                            "as BAM indexing and vcf merging. Indel candidacy statistics"),
             ToolOutput("variants", VcfTabix(),
-                       glob=InputSelector("relativeStrelkaDirectory", suffix='/results/variants/variants.vcf.gz'),
+                       glob=InputSelector("relativeStrelkaDirectory") + '/results/variants/variants.vcf.gz',
                        doc="Primary variant inferences are provided as a series of VCF 4.1 files"),
             ToolOutput("genome", VcfTabix(),
-                       glob=InputSelector("relativeStrelkaDirectory", suffix='/results/variants/genome.vcf.gz')),
+                       glob=InputSelector("relativeStrelkaDirectory") + '/results/variants/genome.vcf.gz'),
         ]
 
     def arguments(self) -> List[ToolArgument]:
         return [
             ToolArgument("configureStrelkaGermlineWorkflow.py", position=0, shell_quote=False),
-            ToolArgument(InputSelector("relativeStrelkaDirectory", prefix=";", suffix="/runWorkflow.py"),
+            ToolArgument(StringFormatter(";") + InputSelector("relativeStrelkaDirectory") + "/runWorkflow.py",
                          position=2, shell_quote=False)
 
         ]

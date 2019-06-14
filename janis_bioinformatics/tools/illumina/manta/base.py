@@ -8,7 +8,7 @@ from janis_bioinformatics.data_types import FastaWithDict, VcfTabix, BamBai, Bam
 from janis_bioinformatics.tools import BioinformaticsTool
 
 from janis import ToolOutput, ToolInput, ToolArgument, Boolean, String, File, Directory, Stdout, Filename, \
-    InputSelector, Int, CaptureType
+    InputSelector, Int, CaptureType, StringFormatter
 from janis.unix.data_types.tsv import Tsv
 from janis.utils.metadata import ToolMetadata
 
@@ -65,29 +65,29 @@ class MantaBase(BioinformaticsTool, ABC):
 
     def outputs(self) -> List[ToolOutput]:
         return [
-            ToolOutput("python", File(), glob=InputSelector("runDir", suffix="/runWorkflow.py")),
-            ToolOutput("pickle", File(), glob=InputSelector("runDir", suffix="/runWorkflow.py.config.pickle")),
+            ToolOutput("python", File(), glob=InputSelector("runDir") + "/runWorkflow.py"),
+            ToolOutput("pickle", File(), glob=InputSelector("runDir") + "/runWorkflow.py.config.pickle"),
 
             ToolOutput("candidateSV", VcfTabix(),
-                       glob=InputSelector("runDir", suffix="/results/variants/candidateSV.vcf.gz")),
+                       glob=InputSelector("runDir") + "/results/variants/candidateSV.vcf.gz"),
             ToolOutput("candidateSmallIndels", VcfTabix(),
-                       glob=InputSelector("runDir", suffix="/results/variants/candidateSmallIndels.vcf.gz")),
+                       glob=InputSelector("runDir") + "/results/variants/candidateSmallIndels.vcf.gz"),
             ToolOutput("diploidSV", VcfTabix(),
-                       glob=InputSelector("runDir", suffix="/results/variants/diploidSV.vcf.gz")),
+                       glob=InputSelector("runDir") + "/results/variants/diploidSV.vcf.gz"),
 
             ToolOutput("alignmentStatsSummary", File(),
-                       glob=InputSelector("runDir", suffix="/results/stats/alignmentStatsSummary.txt")),
+                       glob=InputSelector("runDir") + "/results/stats/alignmentStatsSummary.txt"),
             ToolOutput("svCandidateGenerationStats", Tsv(),
-                       glob=InputSelector("runDir", suffix="/results/stats/svCandidateGenerationStats.tsv")),
+                       glob=InputSelector("runDir") + "/results/stats/svCandidateGenerationStats.tsv"),
             ToolOutput("svLocusGraphStats", Tsv(),
-                       glob=InputSelector("runDir", suffix="/results/stats/svLocusGraphStats.tsv")),
+                       glob=InputSelector("runDir") + "/results/stats/svLocusGraphStats.tsv"),
 
         ]
 
     def arguments(self) -> List[ToolArgument]:
         return [
             ToolArgument("configManta.py", position=0, shell_quote=False),
-            ToolArgument(InputSelector("runDir", prefix="&& ", suffix="/runWorkflow.py"), position=2, shell_quote=False)
+            ToolArgument(StringFormatter(";") + InputSelector("runDir") + "/runWorkflow.py", position=2, shell_quote=False)
         ]
 
     @staticmethod

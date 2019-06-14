@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Dict, Any
 
 from janis import CommandTool, ToolInput, ToolOutput, File, Boolean, String, Int, InputSelector, Filename, ToolMetadata, \
-    CpuSelector, ToolArgument, CaptureType
+    CpuSelector, ToolArgument, CaptureType, StringFormatter
 from janis.unix.data_types.tsv import Tsv
 from janis.utils import get_value_for_hints_and_ordered_resource_tuple
 
@@ -61,7 +61,7 @@ class StrelkaSomaticBase(CommandTool):
     def arguments(self):
         return [
             ToolArgument("configureStrelkaSomaticWorkflow.py", position=0),
-            ToolArgument(InputSelector("rundir", prefix="&& ", suffix="/runWorkflow.py"),
+            ToolArgument(StringFormatter(";") + InputSelector("rundir") + "/runWorkflow.py",
                          position=2, shell_quote=False)
         ]
 
@@ -190,18 +190,18 @@ class StrelkaSomaticBase(CommandTool):
     def outputs(self):
         return [
             ToolOutput("configPickle", File(),
-                       glob=InputSelector("rundir", suffix="/runWorkflow.py.config.pickle")),
-            ToolOutput("script", File(), glob=InputSelector("rundir", suffix='/runWorkflow.py')),
+                       glob=InputSelector("rundir") + "/runWorkflow.py.config.pickle"),
+            ToolOutput("script", File(), glob=InputSelector("rundir") + '/runWorkflow.py'),
             ToolOutput("stats", Tsv(),
-                       glob=InputSelector("rundir", suffix='/results/stats/runStats.tsv'),
+                       glob=InputSelector("rundir") + '/results/stats/runStats.tsv',
                        doc="A tab-delimited report of various internal statistics from the variant calling process: "
                            "Runtime information accumulated for each genome segment, excluding auxiliary steps such "
                            "as BAM indexing and vcf merging. Indel candidacy statistics"),
             ToolOutput("indels", VcfTabix(),
-                       glob=InputSelector("rundir", suffix='/results/variants/somatic.indels.vcf.gz'),
+                       glob=InputSelector("rundir") + '/results/variants/somatic.indels.vcf.gz',
                        doc=""),
             ToolOutput("snvs", VcfTabix(),
-                       glob=InputSelector("rundir", suffix='/results/variants/somatic.snvs.vcf.gz'),
+                       glob=InputSelector("rundir") + '/results/variants/somatic.snvs.vcf.gz',
                        doc=""),
         ]
 

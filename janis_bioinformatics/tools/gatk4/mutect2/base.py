@@ -46,7 +46,7 @@ class Gatk4Mutect2Base(Gatk4ToolBase, ABC):
     @staticmethod
     def tumor_normal_inputs():
         return [
-            ToolInput("tumor", BamBai(), position=5, prefix="-I", doc="BAM/SAM/CRAM file containing reads"),
+            ToolInput("tumor", BamBai(), position=6, prefix="-I", doc="BAM/SAM/CRAM file containing reads"),
             ToolInput("tumorName", String(), position=6, prefix="-tumor",
                       doc="BAM sample name of tumor. May be URL-encoded as output by GetSampleName with -encode."),
             ToolInput("normal", BamBai(), position=5, prefix="-I", doc="BAM/SAM/CRAM file containing reads"),
