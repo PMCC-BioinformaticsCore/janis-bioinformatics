@@ -1,7 +1,7 @@
 from typing import List, Dict, Any
 
 from janis import ToolInput, Int, Float, Boolean, String, ToolOutput, Filename, File, InputSelector, ToolArgument, \
-    CaptureType, CpuSelector, Array
+    CaptureType, CpuSelector, Array, StringFormatter
 from janis.utils import get_value_for_hints_and_ordered_resource_tuple
 
 from janis_bioinformatics.data_types import FastaWithDict, Fastq, Bam, Bed
@@ -55,8 +55,14 @@ class BwaMem_SamToolsView(BioinformaticsTool):
             ToolArgument(CpuSelector(), position=8, shell_quote=False, prefix="--threads",
                   doc="(-@)  Number of additional threads to use [0]"),
             ToolArgument("-h", position=8, shell_quote=False, doc="Include the header in the output."),
-            ToolArgument("-b", position=8, shell_quote=False, doc="Output in the BAM format.")
+            ToolArgument("-b", position=8, shell_quote=False, doc="Output in the BAM format."),
 
+            ToolArgument(StringFormatter("@RG\\tID:{name}\\tSM:{name}\\tLB:{name}\\tPL:ILLUMINA",
+                                         name=InputSelector("sampleName")),
+                         prefix="-R", position=2,
+                         doc="Complete read group header line. ’\\t’ can be used in STR and will be converted to a TAB"
+                             "in the output SAM. The read group ID will be attached to every read in the output. "
+                             "An example is ’@RG\\tID:foo\\tSM:bar’. (Default=null)"),
         ]
 
     def inputs(self) -> List[ToolInput]:
@@ -67,6 +73,18 @@ class BwaMem_SamToolsView(BioinformaticsTool):
 
             ToolInput("outputFilename", Filename(extension=".bam"), position=8, shell_quote=False, prefix="-o",
                       doc="output file name [stdout]"),
+
+
+            # Eventually it would be cool to have like a cascading:
+            #   - If readGroupHeaderLine provided, use that,
+            #   - If sampleName provided, construct based on that
+            #   - Else don't include
+            # but this is probbaly a bit hard to do, and for all our purposes we require a readGroupHeaderLine,
+            # so we're always going to construct it:
+
+            ToolInput("sampleName", String(), doc="Used to construct the readGroupHeaderLine with format: "
+                                                  "'@RG\\tID:{name}\\tSM:{name}\\tLB:{name}\\tPL:ILLUMINA'"),
+
             *self.bwa_additional_inputs,
             *self.samtools_additional_args
         ]
@@ -136,10 +154,6 @@ class BwaMem_SamToolsView(BioinformaticsTool):
                       "It compares these two scores to determine whether we should force pairing. (Default: 9)"),
         ToolInput("assumeInterleavedFirstInput", Boolean(optional=True), prefix="-p", position=2, shell_quote=False,
                   doc="Assume the first input query file is interleaved paired-end FASTA/Q. "),
-        ToolInput("readGroupHeaderLine", String(optional=True), prefix="-R", position=2, shell_quote=False,
-                  doc="Complete read group header line. ’\\t’ can be used in STR and will be converted to a TAB i"
-                      "n the output SAM. The read group ID will be attached to every read in the output. "
-                      "An example is ’@RG\\tID:foo\\tSM:bar’. (Default=null)"),
         ToolInput("outputAlignmentThreshold", Int(optional=True), prefix="-T", position=2, shell_quote=False,
                   doc="Don’t output alignment with score lower than INT. Only affects output. (Default: 30)"),
         ToolInput("outputAllElements", Boolean(optional=True), prefix="-a", position=2, shell_quote=False,

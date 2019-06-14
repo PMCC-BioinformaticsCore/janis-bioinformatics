@@ -25,7 +25,7 @@ class AlignSortedBam(BioinformaticsWorkflow):
         bwasam = Step("bwa_sam", BwaMem_SamToolsView())
         sortsam = Step("sortsam", Gatk4SortSam_4_0())
 
-        read_group_header = Input("readGroupHeaderLine", String())
+        sample_name = Input("sampleName", String())
         reference = Input("reference", FastaWithDict())
         fastqs = Input("fastq", Fastq())
 
@@ -49,7 +49,7 @@ class AlignSortedBam(BioinformaticsWorkflow):
         # S2: BWA mem + Samtools View
         self.add_edges([
             (cutadapt.out, bwasam.reads),
-            (read_group_header, bwasam.readGroupHeaderLine),
+            (sample_name, bwasam.sampleName),
             (reference, bwasam.reference)
         ])
 
