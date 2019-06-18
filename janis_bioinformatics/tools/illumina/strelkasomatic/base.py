@@ -6,7 +6,7 @@ from janis import CommandTool, ToolInput, ToolOutput, File, Boolean, String, Int
 from janis.unix.data_types.tsv import Tsv
 from janis.utils import get_value_for_hints_and_ordered_resource_tuple
 
-from janis_bioinformatics.data_types import BamBai, Bed, FastaWithDict, Vcf, VcfTabix
+from janis_bioinformatics.data_types import BamBai, Bed, FastaWithDict, Vcf, VcfTabix, BedTabix
 
 CORES_TUPLE = [
     (CaptureType.key(), {
@@ -94,7 +94,8 @@ class StrelkaSomaticBase(CommandTool):
                           "is provided multiple times the union of all specified regions will be analyzed. All regions "
                           "must be non-overlapping to get a meaningful result. Examples: '--region chr20' "
                           "(whole chromosome), '--region chr2:100-2000 --region chr3:2500-3000' (two regions)'. "
-                          "If this option is specified (one or more times) together with the"),
+                          "If this option is specified (one or more times) together with the 'callRegions' BED file,"
+                          "then all region arguments will be intersected with the callRegions BED track."),
 
             ToolInput(tag="config", input_type=File(optional=True), prefix="--config=",
                       separate_value_from_prefix=False, position=1,
@@ -124,7 +125,7 @@ class StrelkaSomaticBase(CommandTool):
                       separate_value_from_prefix=True, position=1,
                       doc="(--exome)  Set options for exome or other targeted input: "
                           "note in particular that this flag turns off high-depth filters"),
-            ToolInput(tag="callregions", input_type=VcfTabix(optional=True), prefix="--callRegions=",
+            ToolInput(tag="callregions", input_type=BedTabix(optional=True), prefix="--callRegions=",
                       separate_value_from_prefix=False, position=1,
                       doc="Optionally provide a bgzip-compressed/tabix-indexed BED file containing the set of "
                           "regions to call. No VCF output will be provided outside of these regions. "
@@ -139,9 +140,6 @@ class StrelkaSomaticBase(CommandTool):
                       separate_value_from_prefix=False, position=1,
                       doc="Maximum sequence region size (in megabases) scanned by each "
                           "task during genome variant calling. (default: 12)"),
-
-            ToolInput(tag="callregions", input_type=Bed(optional=True), prefix="--callRegions", position=1,
-                      separate_value_from_prefix=True, doc="(then)  be intersected with the callRegions BED track."),
             ToolInput(tag="callmemmb", input_type=Int(optional=True), prefix="--callMemMb=", position=1,
                       separate_value_from_prefix=False,
                       doc="Set variant calling task memory limit (in megabytes). It is not recommended to change the "

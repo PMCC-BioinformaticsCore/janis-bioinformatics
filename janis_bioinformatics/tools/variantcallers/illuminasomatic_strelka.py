@@ -1,6 +1,6 @@
 from janis import Step, Input, Output, Array, String
 
-from janis_bioinformatics.data_types import FastaWithDict, BamBai
+from janis_bioinformatics.data_types import FastaWithDict, BamBai, BedTabix
 from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.bcftools import BcfToolsView_1_5
 from janis_bioinformatics.tools.common import SplitMultiAllele
@@ -24,6 +24,7 @@ class IlluminaSomaticVariantCaller(BioinformaticsWorkflow):
         tumor = Input("tumorBam", BamBai())
 
         reference = Input("reference", FastaWithDict())
+        strelkaregions = Input("strelkaRegions", BedTabix(optional=True))
 
         manta = Step("manta", Manta_1_5_0())
         strelka = Step("strelka", StrelkaSomatic_2_9_10())
@@ -44,6 +45,7 @@ class IlluminaSomaticVariantCaller(BioinformaticsWorkflow):
             (tumor, strelka.tumorBam),
             (reference, strelka.reference),
             (manta.candidateSmallIndels, strelka.indelCandidates),
+            (strelkaregions, strelka.callregions)
         ])
 
         # S3: BcfTools Filter
