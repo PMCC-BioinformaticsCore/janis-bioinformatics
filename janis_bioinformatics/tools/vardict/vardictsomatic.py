@@ -58,9 +58,10 @@ class VarDictSomaticBase(BioinformaticsTool, ABC):
 
     def inputs(self) -> List[ToolInput]:
         return [
-            ToolInput("bed", Bed(), position=2, shell_quote=False),
-            ToolInput("bams", Array(BamBai()), separator="|", prefix="-b", position=1, shell_quote=True,
-                      doc="The indexed BAM file"),
+            ToolInput("tumorBam", BamBai(), doc="The indexed BAM file"),
+            ToolInput("normalBam", BamBai(), doc="The indexed BAM file"),
+
+            ToolInput("intervals", Bed(), position=2, shell_quote=False),
 
             ToolInput("reference", FastaFai(), prefix="-G", position=1, shell_quote=False,
                       doc="The reference fasta. Should be indexed (.fai). "
@@ -68,6 +69,8 @@ class VarDictSomaticBase(BioinformaticsTool, ABC):
 
             ToolInput("tumorName", String(),
                       doc="The sample name to be used directly.  Will overwrite -n option"),
+            ToolInput("normalName", String(), doc="The normal sample name to use with the -b option"),
+
             ToolInput("alleleFreqThreshold", Float(optional=True),
                       doc="The threshold for allele frequency, default: 0.05 or 5%"),
 
@@ -87,11 +90,16 @@ class VarDictSomaticBase(BioinformaticsTool, ABC):
         return [
             ToolArgument("| testsomatic.R |", position=3, shell_quote=False),
             ToolArgument("var2vcf_paired.pl", position=4, shell_quote=False),
-            ToolArgument(InputSelector("tumorName"), prefix="-N", position=1, shell_quote=False),
-            ToolArgument(InputSelector("tumorName"), prefix="-N", position=5, shell_quote=False),
-            ToolArgument(InputSelector("alleleFreqThreshold"), prefix="-f", position=5, shell_quote=False),
-            ToolArgument(InputSelector("alleleFreqThreshold"), prefix="-f", position=1, shell_quote=False)
 
+            ToolArgument(InputSelector("tumorBam") + "|" + InputSelector("normalBam"),
+                         prefix="-b", position=1, shell_quote=True,),
+
+            ToolArgument(InputSelector("tumorName") + "|" + InputSelector("normalName"),
+                         prefix="-N", position=1, shell_quote=True),
+            ToolArgument(InputSelector("tumorName") + "|" + InputSelector("normalName"),
+                         prefix="-N", position=5, shell_quote=True),
+            ToolArgument(InputSelector("alleleFreqThreshold"), prefix="-f", position=5, shell_quote=False),
+            ToolArgument(InputSelector("alleleFreqThreshold"), prefix="-f", position=1, shell_quote=False),
         ]
 
     @staticmethod
