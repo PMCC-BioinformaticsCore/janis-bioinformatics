@@ -42,8 +42,8 @@ class AlignSortedBam(BioinformaticsWorkflow):
              cutadapt.removeMiddle5Adapter),
             (Input("removeMiddle3Adapter", String(optional=True)),
              cutadapt.removeMiddle3Adapter),
-            (Input("qualityCutoff", Int(), default=15), cutadapt.qualityCutoff),
-            (Input("minReadLength", Int(), default=50), cutadapt.minReadLength),
+            (Input("qualityCutoff", Int(optional=True), default=15), cutadapt.qualityCutoff),
+            (Input("minReadLength", Int(optional=True), default=50), cutadapt.minReadLength),
         ])
 
         # S2: BWA mem + Samtools View
@@ -56,10 +56,10 @@ class AlignSortedBam(BioinformaticsWorkflow):
         # S3: SortSam
         self.add_edge(bwasam.out, sortsam.bam)
         self.add_edges([
-            (Input("sortOrder", String(), default="coordinate"), sortsam.sortOrder),
-            (Input("createIndex", Boolean(), default=True), sortsam.createIndex),
-            (Input("validationStringency", String(), default="SILENT"), sortsam.validationStringency),
-            (Input("maxRecordsInRam", Int(), default=5000000), sortsam.maxRecordsInRam),
+            (Input("sortOrder", String(optional=True), default="coordinate"), sortsam.sortOrder),
+            (Input("createIndex", Boolean(optional=True), default=True), sortsam.createIndex),
+            (Input("validationStringency", String(optional=True), default="SILENT"), sortsam.validationStringency),
+            (Input("maxRecordsInRam", Int(optional=True), default=5000000), sortsam.maxRecordsInRam),
             (Input("sortSamTmpDir", String(optional=True)), sortsam.tmpDir),
         ])
 
