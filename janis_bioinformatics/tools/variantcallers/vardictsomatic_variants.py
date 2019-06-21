@@ -37,10 +37,11 @@ class VardictSomaticVariantCaller(BioinformaticsWorkflow):
 
         # S1: vardict
         self.add_edges([
-            (normalBam, vardict.bams),
-            (tumorBam, vardict.bams),
+            (normalBam, vardict.normalBam),
+            (tumorBam, vardict.tumorBam),
             (intervals, vardict.intervals),
             (reference, vardict.reference),
+            (normalname, vardict.normalName),
             (tumorname, vardict.tumorName),
             (allele_freq_threshold, vardict.alleleFreqThreshold),
 
