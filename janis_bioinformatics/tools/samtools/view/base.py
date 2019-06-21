@@ -118,15 +118,15 @@ Use of region specifications requires a coordinate-sorted and indexed input file
         ToolInput("outputAlignmentsInLibrary", String(optional=True), position=5, prefix="-l", doc="Only output alignments in library STR [null]."),
         ToolInput("outputAlignmentsMeetingCIGARThreshold", Int(optional=True), position=5, prefix="-m",
                   doc="Only output alignments with number of CIGAR bases consuming query sequence ≥ INT [0]"),
-        ToolInput("outputAlignmentsWithBitsSet", Int(optional=True), position=5, prefix="-f",
+        ToolInput("outputAlignmentsWithBitsSet", String(optional=True), position=5, prefix="-f",
                   doc="Only output alignments with all bits set in INT present in the FLAG field. "
                       "INT can be specified in hex by beginning with `0x' (i.e. /^0x[0-9A-F]+/) or "
                       "in octal by beginning with `0' (i.e. /^0[0-7]+/) [0]."),
-        ToolInput("doNotOutputAlignmentsWithBitsSet", Int(optional=True), position=5, prefix="-F",
+        ToolInput("doNotOutputAlignmentsWithBitsSet", String(optional=True), position=5, prefix="-F",
                   doc="Do not output alignments with any bits set in INT present in the FLAG field. "
                       "INT can be specified in hex by beginning with `0x' (i.e. /^0x[0-9A-F]+/) or "
                       "in octal by beginning with `0' (i.e. /^0[0-7]+/) [0]."),
-        ToolInput("doNotOutputAlignmentsWithAllBitsSet", Int(optional=True), position=5, prefix="-G",
+        ToolInput("doNotOutputAlignmentsWithAllBitsSet", String(optional=True), position=5, prefix="-G",
                   doc="Do not output alignments with all bits set in INT present in the FLAG field. "
                       "This is the opposite of -f such that -f12 -G12 is the same as no filtering at all. "
                       "INT can be specified in hex by beginning with `0x' (i.e. /^0x[0-9A-F]+/) or "
