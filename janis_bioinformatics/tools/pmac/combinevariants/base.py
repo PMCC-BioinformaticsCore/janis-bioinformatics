@@ -60,7 +60,7 @@ class CombineVariantsBase(BioinformaticsTool, ABC):
             ToolInput("regions", Filename(extension=".tsv"), prefix="--regions",
                       doc="Region file containing all the variants, used as samtools mpileup"),
 
-            ToolInput("vcfs", Array(Vcf()), prefix="-i",
+            ToolInput("vcfs", Array(Vcf()), prefix="-i", prefix_applies_to_all_elements=True,
                       doc="input vcfs, the priority of the vcfs will be based on the order of the input"),
             ToolInput("type", String(), prefix="--type", doc="germline | somatic"),
 
