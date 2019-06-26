@@ -102,11 +102,13 @@ class StrelkaGermlineBase(BioinformaticsTool, ABC):
             ToolInput("exome", File(optional=True), prefix="--exome", position=1, shell_quote=False,
                       doc="--targeted Set options for exome or other targeted input: "
                           "note in particular that this flag turns off high-depth filters"),
-            ToolInput("callRegions", BedTabix(optional=True), prefix="--callRegions", position=1, shell_quote=False,
+            ToolInput(tag="callRegions", input_type=BedTabix(optional=True), prefix="--callRegions=",
+                      separate_value_from_prefix=False, position=1,
                       doc="Optionally provide a bgzip-compressed/tabix-indexed BED file containing the set of "
-                          "regions to call. No VCF output will be provided outside of these regions. The full "
-                          "genome will still be used to estimate statistics from the input (such as expected depth "
-                          "per chromosome). Only one BED file may be specified. (default: call the entire genome)"),
+                          "regions to call. No VCF output will be provided outside of these regions. "
+                          "The full genome will still be used to estimate statistics from the input "
+                          "(such as expected depth per chromosome). Only one BED file may be specified. "
+                          "(default: call the entire genome)"),
 
             # ToolInput("version", Boolean(optional=True), prefix="--version", position=3, shell_quote=False,
             #           doc="show program's version number and exit"),

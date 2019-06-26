@@ -37,6 +37,7 @@ class IlluminaSomaticVariantCaller(BioinformaticsWorkflow):
             (normal, manta.bam),
             (tumor, manta.tumorBam),
             (reference, manta.reference),
+            (strelkaregions, manta.callRegions)
         ])
 
         # S2: Strelka
@@ -45,7 +46,7 @@ class IlluminaSomaticVariantCaller(BioinformaticsWorkflow):
             (tumor, strelka.tumorBam),
             (reference, strelka.reference),
             (manta.candidateSmallIndels, strelka.indelCandidates),
-            (strelkaregions, strelka.callregions)
+            (strelkaregions, strelka.callRegions)
         ])
 
         # S3: BcfTools Filter

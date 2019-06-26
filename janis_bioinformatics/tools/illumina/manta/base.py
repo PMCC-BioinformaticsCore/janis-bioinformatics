@@ -4,7 +4,7 @@ from typing import List, Dict, Any
 from janis.types import MemorySelector, CpuSelector
 from janis.utils import get_value_for_hints_and_ordered_resource_tuple
 
-from janis_bioinformatics.data_types import FastaWithDict, VcfTabix, BamBai, Bam
+from janis_bioinformatics.data_types import FastaWithDict, VcfTabix, BamBai, Bam, BedTabix
 from janis_bioinformatics.tools import BioinformaticsTool
 
 from janis import ToolOutput, ToolInput, ToolArgument, Boolean, String, File, Directory, Stdout, Filename, \
@@ -158,6 +158,12 @@ of capabilities and limitations.""".strip()
                   doc="Set if RNA-Seq input is unstranded: Allows splice-junctions on either strand"),
         ToolInput("outputContig", File(optional=True), prefix="--outputContig", position=1, shell_quote=False,
                   doc="Output assembled contig sequences in VCF file"),
+
+        ToolInput("callRegions", BedTabix(optional=True), prefix="--callRegions", position=1, shell_quote=False,
+                  doc="Optionally provide a bgzip-compressed/tabix-indexed BED file containing the set of "
+                      "regions to call. No VCF output will be provided outside of these regions. The full "
+                      "genome will still be used to estimate statistics from the input (such as expected depth "
+                      "per chromosome). Only one BED file may be specified. (default: call the entire genome)"),
     ]
 
     running_inputs = [

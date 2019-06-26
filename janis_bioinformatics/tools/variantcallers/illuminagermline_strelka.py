@@ -1,6 +1,6 @@
 from janis import Step, Input, Output, Array, String
 
-from janis_bioinformatics.data_types import FastaWithDict, BamBai
+from janis_bioinformatics.data_types import FastaWithDict, BamBai, BedTabix
 from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.bcftools import BcfToolsView_1_5
 from janis_bioinformatics.tools.common import SplitMultiAllele
@@ -19,6 +19,7 @@ class IlluminaGermlineVariantCaller(BioinformaticsWorkflow):
 
         bam = Input("bam", BamBai())
         reference = Input("reference", FastaWithDict())
+        strelkaregions = Input("strelkaRegions", BedTabix(optional=True))
 
         manta = Step("manta", Manta_1_5_0())
         strelka = Step("strelka", StrelkaGermline_2_9_10())
@@ -30,6 +31,7 @@ class IlluminaGermlineVariantCaller(BioinformaticsWorkflow):
         self.add_edges([
             (bam, manta.bam),
             (reference, manta.reference),
+            (strelkaregions, manta.callRegions)
         ])
 
         # S2: Strelka
@@ -37,6 +39,8 @@ class IlluminaGermlineVariantCaller(BioinformaticsWorkflow):
             (bam, strelka.bam),
             (reference, strelka.reference),
             (manta.candidateSmallIndels, strelka.indelCandidates),
+            (strelkaregions, strelka.callRegions)
+
         ])
 
         # S3: BcfTools Filter

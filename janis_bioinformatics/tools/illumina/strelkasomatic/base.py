@@ -125,7 +125,7 @@ class StrelkaSomaticBase(CommandTool):
                       separate_value_from_prefix=True, position=1,
                       doc="(--exome)  Set options for exome or other targeted input: "
                           "note in particular that this flag turns off high-depth filters"),
-            ToolInput(tag="callregions", input_type=BedTabix(optional=True), prefix="--callRegions=",
+            ToolInput(tag="callRegions", input_type=BedTabix(optional=True), prefix="--callRegions=",
                       separate_value_from_prefix=False, position=1,
                       doc="Optionally provide a bgzip-compressed/tabix-indexed BED file containing the set of "
                           "regions to call. No VCF output will be provided outside of these regions. "
