@@ -57,7 +57,6 @@ class IlluminaSomaticVariantCaller(BioinformaticsWorkflow):
         self.add_edges([
             (reference, split.reference),
             (bcf_view.out, split.vcf),
-            (split.out, Output("splitOut"))
         ])
 
         ## Outputs
