@@ -47,6 +47,10 @@ class FastQCBase(BioinformaticsTool, ABC):
     def base_command():
         return "fastqc"
 
+    @staticmethod
+    def tool_provider():
+        return "FastQC"
+
     def metadata(self):
         return ToolMetadata(
             creator="Simon Andrews",

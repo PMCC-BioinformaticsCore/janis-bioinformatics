@@ -11,7 +11,7 @@ class IlluminaSomaticVariantCaller(BioinformaticsWorkflow):
 
     @staticmethod
     def tool_provider():
-        return "Illumina"
+        return "Variant Callers"
 
     def __init__(self):
         super(IlluminaSomaticVariantCaller, self).__init__(

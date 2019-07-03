@@ -11,7 +11,7 @@ class GatkSomaticVariantCaller(BioinformaticsWorkflow):
 
     @staticmethod
     def tool_provider():
-        return "Broad Institute"
+        return "Variant Callers"
 
     def __init__(self):
         super(GatkSomaticVariantCaller, self).__init__("GATK4_SomaticVariantCaller", "GATK4 Somatic Variant Caller",

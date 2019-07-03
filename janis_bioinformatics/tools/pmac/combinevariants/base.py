@@ -1,3 +1,4 @@
+import datetime
 from abc import ABC
 from typing import List, Dict, Any
 
@@ -36,6 +37,10 @@ class CombineVariantsBase(BioinformaticsTool, ABC):
 
     def friendly_name(self) -> str:
         return "Combine Variants"
+
+    @staticmethod
+    def tool_provider():
+        return "Peter MacCallum Cancer Centre"
 
     @staticmethod
     def base_command():
@@ -77,3 +82,37 @@ class CombineVariantsBase(BioinformaticsTool, ABC):
             ToolOutput("vcf", Vcf(), InputSelector("outputFilename")),
             (ToolOutput("tsv", Tsv(), InputSelector("regions")))
         ]
+
+    def metadata(self):
+        self._metadata.creator = "Jiaan Yu"
+        self._metadata.dateUpdated = datetime.datetime(2019, 7, 4)
+        self._metadata.maintainer = "Michael Franklin"
+        self._metadata.documentation = """
+usage: combine_vcf.py [-h] -i I --columns COLUMNS -o O --type
+                      {germline,somatic} [--regions REGIONS] [--normal NORMAL]
+                      [--tumor TUMOR] [--priority PRIORITY [PRIORITY ...]]
+
+Extracts and combines the information from germline / somatic vcfs into one
+
+required arguments:
+  -i I                  input vcfs, the priority of the vcfs will be based on
+                        the order of the input. This parameter can be
+                        specified more than once
+  --columns COLUMNS     Columns to keep. This parameter can be specified more
+                        than once
+  -o O                  output vcf (unsorted)
+  --type {germline,somatic}
+                        must be either germline or somatic
+  --regions REGIONS     Region file containing all the variants, used as
+                        samtools mpileup
+  --normal NORMAL       Sample id of germline vcf, or normal sample id of
+                        somatic vcf
+  --tumor TUMOR         tumor sample ID, required if inputs are somatic vcfs
+  --priority PRIORITY [PRIORITY ...]
+                        The priority of the callers, must match with the
+                        callers in the source header
+
+optional arguments:
+  -h, --help            show this help message and exit
+"""
+        self._metadata.documentationUrl = "https://github.com/PMCC-BioinformaticsCore/scripts/tree/master/vcf_utils"

@@ -1,3 +1,4 @@
+from abc import ABC
 from datetime import datetime
 from typing import Dict, Any
 
@@ -7,6 +8,7 @@ from janis.unix.data_types.tsv import Tsv
 from janis.utils import get_value_for_hints_and_ordered_resource_tuple
 
 from janis_bioinformatics.data_types import BamBai, Bed, FastaWithDict, Vcf, VcfTabix, BedTabix
+from janis_bioinformatics.tools import BioinformaticsTool
 
 CORES_TUPLE = [
     (CaptureType.key(), {
@@ -31,7 +33,7 @@ MEM_TUPLE = [
 ]
 
 
-class StrelkaSomaticBase(CommandTool):
+class StrelkaSomaticBase(BioinformaticsTool, ABC):
 
     def friendly_name(self) -> str:
         return "Strelka - Somatic Workflow"

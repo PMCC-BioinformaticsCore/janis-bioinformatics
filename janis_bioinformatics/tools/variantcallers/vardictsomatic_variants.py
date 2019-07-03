@@ -12,7 +12,7 @@ class VardictSomaticVariantCaller(BioinformaticsWorkflow):
 
     @staticmethod
     def tool_provider():
-        return "PMCC"
+        return "Variant Callers"
 
     def __init__(self):
         super(VardictSomaticVariantCaller, self).__init__("vardictVariantCaller", "Vardict Variant Caller", doc=None)

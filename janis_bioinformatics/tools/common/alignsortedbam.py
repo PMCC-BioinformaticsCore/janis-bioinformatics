@@ -10,6 +10,10 @@ from janis_bioinformatics.tools.gatk4 import Gatk4SortSam_4_0
 
 class AlignSortedBam(BioinformaticsWorkflow):
 
+    @staticmethod
+    def tool_provider():
+        return "Common"
+
     def __init__(self):
         super(AlignSortedBam, self).__init__("alignsortedbam", friendly_name="Align sorted BAM")
 

@@ -32,6 +32,10 @@ class SplitMultiAllele(BioinformaticsTool):
     def tool():
         return "SplitMultiAllele"
 
+    @staticmethod
+    def tool_provider():
+        return "Peter MacCallum Cancer Centre"
+
     def friendly_name(self):
         return "Split Multiple Alleles"
 

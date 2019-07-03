@@ -1,9 +1,9 @@
-from typing import List
 from datetime import date
+from typing import List
 
-from janis import ToolOutput, ToolInput, Filename, File, String, Float, Int, Boolean, Stdout, CpuSelector, Array
-from janis_bioinformatics.data_types import Bam, FastaWithDict, Bed
+from janis import ToolOutput, ToolInput, Filename, File, String, Float, Int, Boolean, Array, InputSelector
 
+from janis_bioinformatics.data_types import Bam, FastaWithDict, Bed, Vcf
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 
 
@@ -46,7 +46,7 @@ class GridssBase(BioinformaticsTool):
                       doc="(I=File Coordinate-sorted input BAM file. Default value: null. "
                           "This option may be specified 0 or more times."),
 
-            ToolInput("assembly", Filename(suffix=".assembled", extension=".bam"), prefix="ASSEMBLY=",
+            ToolInput("assemblyFilename", Filename(suffix=".assembled", extension=".bam"), prefix="ASSEMBLY=",
                       separate_value_from_prefix=False,
                       doc="Breakend assemblies which have undergone split read identification Required."),
 
@@ -90,14 +90,15 @@ class GridssBase(BioinformaticsTool):
 
     def outputs(self) -> List[ToolOutput]:
         return [
-            ToolOutput("out", Stdout())
+            ToolOutput("vcf", Vcf(), glob=InputSelector("outputFilename")),
+            ToolOutput("assembly", Bam(), glob=InputSelector("assemblyFilename"))
         ]
-
 
     def metadata(self):
 
         self._metadata.maintainer = "Michael Franklin"
-        self._metadata.dateUpdated = date(2019,6,19)
+        self._metadata.dateCreated = date(2019, 6, 19)
+        self._metadata.dateUpdated = date(2019, 7, 3)
         self._metadata.documentationUrl = "https://github.com/PapenfussLab/gridss/wiki/GRIDSS-Documentation"
         self._metadata.documentation = """
 GRIDSS is a module software suite containing tools useful for the detection of genomic rearrangements. 
