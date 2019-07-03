@@ -8,11 +8,11 @@ from janis import ToolOutput, ToolInput, Filename, ToolArgument, InputSelector, 
 
 CORES_TUPLE = [
     (CaptureType.key(), {
-        CaptureType.CHROMOSOME: 2,
-        CaptureType.EXOME: 2,
-        CaptureType.THIRTYX: 2,
-        CaptureType.NINETYX: 2,
-        CaptureType.THREEHUNDREDX: 2
+        CaptureType.CHROMOSOME: 1,
+        CaptureType.EXOME: 1,
+        CaptureType.THIRTYX: 1,
+        CaptureType.NINETYX: 1,
+        CaptureType.THREEHUNDREDX: 1
     })
 ]
 

@@ -1,22 +1,20 @@
 from abc import ABC
 from typing import List, Dict, Any
+
+from janis import ToolOutput, ToolInput, Array, String, Int, Filename, InputSelector, CaptureType
+from janis.unix.data_types.tsv import Tsv
 from janis.utils import get_value_for_hints_and_ordered_resource_tuple
 
-from janis import ToolOutput, ToolInput, Array, File, String, Int, Filename, InputSelector, CaptureType
-from janis.unix.data_types.tsv import Tsv
-
 from janis_bioinformatics.data_types import Vcf
-
 from janis_bioinformatics.tools import BioinformaticsTool
-
 
 CORES_TUPLE = [
     (CaptureType.key(), {
-        CaptureType.CHROMOSOME: 2,
-        CaptureType.EXOME: 2,
-        CaptureType.THIRTYX: 2,
-        CaptureType.NINETYX: 2,
-        CaptureType.THREEHUNDREDX: 2
+        CaptureType.CHROMOSOME: 1,
+        CaptureType.EXOME: 1,
+        CaptureType.THIRTYX: 1,
+        CaptureType.NINETYX: 1,
+        CaptureType.THREEHUNDREDX: 1
     })
 ]
 

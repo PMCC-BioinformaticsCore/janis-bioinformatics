@@ -60,7 +60,7 @@ class AlignSortedBam(BioinformaticsWorkflow):
             (Input("createIndex", Boolean(optional=True), default=True), sortsam.createIndex),
             (Input("validationStringency", String(optional=True), default="SILENT"), sortsam.validationStringency),
             (Input("maxRecordsInRam", Int(optional=True), default=5000000), sortsam.maxRecordsInRam),
-            (Input("sortSamTmpDir", String(optional=True)), sortsam.tmpDir),
+            # (Input("sortSamTmpDir", String(optional=True)), sortsam.tmpDir),
         ])
 
         # connect to output

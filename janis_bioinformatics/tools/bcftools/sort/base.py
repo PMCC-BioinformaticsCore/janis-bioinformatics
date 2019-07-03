@@ -1,20 +1,20 @@
 from abc import ABC
+from datetime import datetime
 from typing import Dict, Any
 
-from datetime import datetime
-from janis import CommandTool, ToolInput, ToolOutput, File, Boolean, String, Int, InputSelector, Filename, ToolMetadata, \
+from janis import CommandTool, ToolInput, ToolOutput, String, InputSelector, Filename, ToolMetadata, \
     CaptureType
 from janis.utils import get_value_for_hints_and_ordered_resource_tuple
-from janis_bioinformatics.data_types import Vcf
 
+from janis_bioinformatics.data_types import Vcf
 
 CORES_TUPLE = [
     (CaptureType.key(), {
-        CaptureType.CHROMOSOME: 2,
-        CaptureType.EXOME: 2,
-        CaptureType.THIRTYX: 2,
-        CaptureType.NINETYX: 2,
-        CaptureType.THREEHUNDREDX: 2
+        CaptureType.CHROMOSOME: 1,
+        CaptureType.EXOME: 1,
+        CaptureType.THIRTYX: 1,
+        CaptureType.NINETYX: 1,
+        CaptureType.THREEHUNDREDX: 1
     })
 ]
 
