@@ -1,14 +1,14 @@
 from abc import ABC
 from typing import Dict, Any
-from janis.utils import get_value_for_hints_and_ordered_resource_tuple
 
-from janis import ToolInput, Filename, ToolOutput, File, Array, String, Int, Boolean, Directory, InputSelector, \
+from janis import ToolInput, Filename, ToolOutput, File, Array, String, Int, Boolean, InputSelector, \
     CaptureType
-from janis_bioinformatics.data_types import BamBai
-from ..gatk4toolbase import Gatk4ToolBase
 from janis.unix.data_types.tsv import Tsv
+from janis.utils import get_value_for_hints_and_ordered_resource_tuple
 from janis.utils.metadata import ToolMetadata
 
+from janis_bioinformatics.data_types import BamBai
+from ..gatk4toolbase import Gatk4ToolBase
 
 CORES_TUPLE = [
     (CaptureType.key(), {
@@ -170,3 +170,4 @@ If desired, duplicates can be removed using the REMOVE_DUPLICATE and REMOVE_SEQU
                   doc="The --verbosity argument is an enumerated type (LogLevel), which can have "
                       "one of the following values: [ERROR, WARNING, INFO, DEBUG]")
     ]
+

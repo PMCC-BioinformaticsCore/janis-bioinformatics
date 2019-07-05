@@ -44,7 +44,7 @@ class StrelkaSomaticBase(BioinformaticsTool, ABC):
 
     @staticmethod
     def tool() -> str:
-        return "StrelkaSomaticBase"
+        return "StrelkaSomatic"
 
     def cpus(self, hints: Dict[str, Any]):
         val = get_value_for_hints_and_ordered_resource_tuple(hints, CORES_TUPLE)

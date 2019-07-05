@@ -40,7 +40,7 @@ class MantaBase(BioinformaticsTool, ABC):
 
     @staticmethod
     def tool_provider():
-        return "illumina"
+        return "Illumina"
 
     @staticmethod
     def tool():

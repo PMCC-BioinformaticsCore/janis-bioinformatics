@@ -39,10 +39,6 @@ class CombineVariantsBase(BioinformaticsTool, ABC):
         return "Combine Variants"
 
     @staticmethod
-    def tool_provider():
-        return "Peter MacCallum Cancer Centre"
-
-    @staticmethod
     def base_command():
         return "combine_vcf.py"
 
