@@ -1,17 +1,20 @@
 from setuptools import setup, find_packages
 
-VERSION = "v0.0.8"
-DESCRIPTION = "Bioinformatics tools for Janis; the Pipeline creation helper"
-
 ######## SHOULDN'T NEED EDITS BELOW THIS LINE ########
+
+vsn = {}
+with open("./janis_bioinformatics/__meta__.py") as fp:
+    exec(fp.read(), vsn)
+version = vsn["__version__"]
+description = vsn["description"]
 
 with open("./README.md") as readme:
     long_description = readme.read()
 
 setup(
     name="janis-pipelines.bioinformatics",
-    version=VERSION,
-    description=DESCRIPTION,
+    version=version,
+    description=description,
     url="https://github.com/PMCC-BioinformaticsCore/janis-bioinformatics",
     author="Michael Franklin, Evan Thomas, Mohammad Bhuyan",
     author_email="michael.franklin@petermac.org",
