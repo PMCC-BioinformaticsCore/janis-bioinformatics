@@ -13,12 +13,12 @@ from janis_bioinformatics.tools.vardict.vardict import VarDict_1_5_6, VarDict_1_
 
 CORES_TUPLE = [
     (CaptureType.key(), {
-        CaptureType.TARGETED: 4,
-        CaptureType.CHROMOSOME: 8,
-        CaptureType.EXOME: 8,
-        CaptureType.THIRTYX: 16,
-        CaptureType.NINETYX: 16,
-        CaptureType.THREEHUNDREDX: 16
+        CaptureType.TARGETED: 2,
+        CaptureType.CHROMOSOME: 4,
+        CaptureType.EXOME: 4,
+        CaptureType.THIRTYX: 4,
+        CaptureType.NINETYX: 4,
+        CaptureType.THREEHUNDREDX: 4
     })
 ]
 

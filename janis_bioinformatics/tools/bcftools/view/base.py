@@ -10,11 +10,11 @@ from janis.utils.metadata import ToolMetadata
 
 CORES_TUPLE = [
     (CaptureType.key(), {
-        CaptureType.CHROMOSOME: 4,
-        CaptureType.EXOME: 4,
-        CaptureType.THIRTYX: 8,
-        CaptureType.NINETYX: 12,
-        CaptureType.THREEHUNDREDX: 16
+        CaptureType.CHROMOSOME: 1,
+        CaptureType.EXOME: 1,
+        CaptureType.THIRTYX: 1,
+        CaptureType.NINETYX: 1,
+        CaptureType.THREEHUNDREDX: 1
     })
 ]
 

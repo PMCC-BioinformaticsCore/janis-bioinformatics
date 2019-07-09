@@ -40,11 +40,11 @@ class AlignSortedBam(BioinformaticsWorkflow):
         self.add_edge(fastqs, cutadapt.fastq)
         # Step 1 with defaults
         self.add_edges([
-            (Input("adapter", String(optional=True)), cutadapt.adapter),
-            (Input("adapter_g", String(optional=True)), cutadapt.adapter_g),
-            (Input("removeMiddle5Adapter", String(optional=True)),
+            (Input("adapter", String(optional=True), include_in_inputs_file_if_none=False), cutadapt.adapter),
+            (Input("adapter_g", String(optional=True), include_in_inputs_file_if_none=False), cutadapt.adapter_g),
+            (Input("removeMiddle5Adapter", String(optional=True), include_in_inputs_file_if_none=False),
              cutadapt.removeMiddle5Adapter),
-            (Input("removeMiddle3Adapter", String(optional=True)),
+            (Input("removeMiddle3Adapter", String(optional=True), include_in_inputs_file_if_none=False),
              cutadapt.removeMiddle3Adapter),
             (Input("qualityCutoff", Int(optional=True), default=15), cutadapt.qualityCutoff),
             (Input("minReadLength", Int(optional=True), default=50), cutadapt.minReadLength),
@@ -64,7 +64,7 @@ class AlignSortedBam(BioinformaticsWorkflow):
             (Input("createIndex", Boolean(optional=True), default=True), sortsam.createIndex),
             (Input("validationStringency", String(optional=True), default="SILENT"), sortsam.validationStringency),
             (Input("maxRecordsInRam", Int(optional=True), default=5000000), sortsam.maxRecordsInRam),
-            # (Input("sortSamTmpDir", String(optional=True)), sortsam.tmpDir),
+            (Input("sortSamTmpDir", String(optional=True), include_in_inputs_file_if_none=False), sortsam.tmpDir),
         ])
 
         # connect to output

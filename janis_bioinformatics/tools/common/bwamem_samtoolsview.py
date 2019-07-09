@@ -61,7 +61,7 @@ class BwaMem_SamToolsView(BioinformaticsTool):
             ToolArgument("-h", position=8, shell_quote=False, doc="Include the header in the output."),
             ToolArgument("-b", position=8, shell_quote=False, doc="Output in the BAM format."),
 
-            ToolArgument(StringFormatter("@RG\\\\tID:{name}\\\\tSM:{name}\\\\tLB:{name}\\\\tPL:ILLUMINA",
+            ToolArgument(StringFormatter("@RG\\tID:{name}\\tSM:{name}\\tLB:{name}\\tPL:ILLUMINA",
                                          name=InputSelector("sampleName")),
                          prefix="-R", position=2,
                          doc="Complete read group header line. ’\\t’ can be used in STR and will be converted to a TAB"

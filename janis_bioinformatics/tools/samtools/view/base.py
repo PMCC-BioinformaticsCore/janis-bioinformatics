@@ -144,3 +144,20 @@ Use of region specifications requires a coordinate-sorted and indexed input file
                   doc="Number of BAM compression threads to use in addition to main thread [0].")
 
     ]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
