@@ -4,40 +4,64 @@ from typing import List, Dict, Any
 from janis.types import MemorySelector, CpuSelector
 from janis.utils import get_value_for_hints_and_ordered_resource_tuple
 
-from janis_bioinformatics.data_types import FastaWithDict, VcfTabix, BamBai, Bam, BedTabix
+from janis_bioinformatics.data_types import (
+    FastaWithDict,
+    VcfTabix,
+    BamBai,
+    Bam,
+    BedTabix,
+)
 from janis_bioinformatics.tools import BioinformaticsTool
 
-from janis import ToolOutput, ToolInput, ToolArgument, Boolean, String, File, Directory, Stdout, Filename, \
-    InputSelector, Int, CaptureType, StringFormatter
+from janis import (
+    ToolOutput,
+    ToolInput,
+    ToolArgument,
+    Boolean,
+    String,
+    File,
+    Directory,
+    Stdout,
+    Filename,
+    InputSelector,
+    Int,
+    CaptureType,
+    StringFormatter,
+)
 from janis.unix.data_types.tsv import Tsv
 from janis.utils.metadata import ToolMetadata
 
 
 CORES_TUPLE = [
-    (CaptureType.key(), {
-        CaptureType.TARGETED: 4,
-        CaptureType.CHROMOSOME: 8,
-        CaptureType.EXOME: 8,
-        CaptureType.THIRTYX: 16,
-        CaptureType.NINETYX: 80,
-        CaptureType.THREEHUNDREDX: 80
-    })
+    (
+        CaptureType.key(),
+        {
+            CaptureType.TARGETED: 4,
+            CaptureType.CHROMOSOME: 8,
+            CaptureType.EXOME: 8,
+            CaptureType.THIRTYX: 16,
+            CaptureType.NINETYX: 80,
+            CaptureType.THREEHUNDREDX: 80,
+        },
+    )
 ]
 
 MEM_TUPLE = [
-    (CaptureType.key(), {
-        CaptureType.TARGETED: 4,
-        CaptureType.CHROMOSOME: 32,
-        CaptureType.EXOME: 32,
-        CaptureType.THIRTYX: 64,
-        CaptureType.NINETYX: 64,
-        CaptureType.THREEHUNDREDX: 64
-    })
+    (
+        CaptureType.key(),
+        {
+            CaptureType.TARGETED: 4,
+            CaptureType.CHROMOSOME: 32,
+            CaptureType.EXOME: 32,
+            CaptureType.THIRTYX: 64,
+            CaptureType.NINETYX: 64,
+            CaptureType.THREEHUNDREDX: 64,
+        },
+    )
 ]
 
 
 class MantaBase(BioinformaticsTool, ABC):
-
     @staticmethod
     def tool_provider():
         return "Illumina"
@@ -52,12 +76,14 @@ class MantaBase(BioinformaticsTool, ABC):
 
     def cpus(self, hints: Dict[str, Any]):
         val = get_value_for_hints_and_ordered_resource_tuple(hints, CORES_TUPLE)
-        if val: return val
+        if val:
+            return val
         return 4
 
     def memory(self, hints: Dict[str, Any]):
         val = get_value_for_hints_and_ordered_resource_tuple(hints, CORES_TUPLE)
-        if val: return val
+        if val:
+            return val
         return 4
 
     def inputs(self) -> List[ToolInput]:
@@ -65,34 +91,71 @@ class MantaBase(BioinformaticsTool, ABC):
 
     def outputs(self) -> List[ToolOutput]:
         return [
-            ToolOutput("python", File(), glob=InputSelector("runDir") + "/runWorkflow.py"),
-            ToolOutput("pickle", File(), glob=InputSelector("runDir") + "/runWorkflow.py.config.pickle"),
-
-            ToolOutput("candidateSV", VcfTabix(),
-                       glob=InputSelector("runDir") + "/results/variants/candidateSV.vcf.gz"),
-            ToolOutput("candidateSmallIndels", VcfTabix(),
-                       glob=InputSelector("runDir") + "/results/variants/candidateSmallIndels.vcf.gz"),
-            ToolOutput("diploidSV", VcfTabix(),
-                       glob=InputSelector("runDir") + "/results/variants/diploidSV.vcf.gz"),
-
-            ToolOutput("alignmentStatsSummary", File(),
-                       glob=InputSelector("runDir") + "/results/stats/alignmentStatsSummary.txt"),
-            ToolOutput("svCandidateGenerationStats", Tsv(),
-                       glob=InputSelector("runDir") + "/results/stats/svCandidateGenerationStats.tsv"),
-            ToolOutput("svLocusGraphStats", Tsv(),
-                       glob=InputSelector("runDir") + "/results/stats/svLocusGraphStats.tsv"),
-
+            ToolOutput(
+                "python", File(), glob=InputSelector("runDir") + "/runWorkflow.py"
+            ),
+            ToolOutput(
+                "pickle",
+                File(),
+                glob=InputSelector("runDir") + "/runWorkflow.py.config.pickle",
+            ),
+            ToolOutput(
+                "candidateSV",
+                VcfTabix(),
+                glob=InputSelector("runDir") + "/results/variants/candidateSV.vcf.gz",
+            ),
+            ToolOutput(
+                "candidateSmallIndels",
+                VcfTabix(),
+                glob=InputSelector("runDir")
+                + "/results/variants/candidateSmallIndels.vcf.gz",
+            ),
+            ToolOutput(
+                "diploidSV",
+                VcfTabix(),
+                glob=InputSelector("runDir") + "/results/variants/diploidSV.vcf.gz",
+            ),
+            ToolOutput(
+                "alignmentStatsSummary",
+                File(),
+                glob=InputSelector("runDir")
+                + "/results/stats/alignmentStatsSummary.txt",
+            ),
+            ToolOutput(
+                "svCandidateGenerationStats",
+                Tsv(),
+                glob=InputSelector("runDir")
+                + "/results/stats/svCandidateGenerationStats.tsv",
+            ),
+            ToolOutput(
+                "svLocusGraphStats",
+                Tsv(),
+                glob=InputSelector("runDir") + "/results/stats/svLocusGraphStats.tsv",
+            ),
         ]
 
     def arguments(self) -> List[ToolArgument]:
         return [
             ToolArgument("configManta.py", position=0, shell_quote=False),
-            ToolArgument(StringFormatter(";") + InputSelector("runDir") + "/runWorkflow.py", position=2, shell_quote=False)
+            ToolArgument(
+                StringFormatter(";") + InputSelector("runDir") + "/runWorkflow.py",
+                position=2,
+                shell_quote=False,
+            ),
+            ToolArgument(
+                CpuSelector(None),
+                position=3,
+                shell_quote=False,
+                prefix="-j",
+                doc="(-j) number of jobs, must be an integer or 'unlimited' "
+                "(default: Estimate total cores on this node for local mode, 128 for sge mode)",
+            ),
         ]
 
     @staticmethod
     def requirements():
         from cwlgen import ShellCommandRequirement
+
         return [ShellCommandRequirement()]
 
     @staticmethod
@@ -105,6 +168,7 @@ class MantaBase(BioinformaticsTool, ABC):
 
     def metadata(self):
         from datetime import date
+
         return ToolMetadata(
             creator="Michael Franklin",
             maintainer="Michael Franklin",
@@ -114,7 +178,7 @@ class MantaBase(BioinformaticsTool, ABC):
             institution="Illumina",
             doi=" doi:10.1093/bioinformatics/btv710",
             citation="Chen, X. et al. (2016) Manta: rapid detection of structural variants and indels for germline and "
-                     "cancer sequencing applications. Bioinformatics, 32, 1220-1222. doi:10.1093/bioinformatics/btv710",
+            "cancer sequencing applications. Bioinformatics, 32, 1220-1222. doi:10.1093/bioinformatics/btv710",
             keywords=["illumina", "manta", "variant caller"],
             documentationUrl="https://github.com/Illumina/manta",
             documentation="""
@@ -132,59 +196,145 @@ It provides scoring models for germline variants in small sets of diploid sample
 variants in matched tumor/normal sample pairs. There is experimental support for analysis of 
 unmatched tumor samples as well. Manta accepts input read mappings from BAM or CRAM files and 
 reports all SV and indel inferences in VCF 4.1 format. See the user guide for a full description 
-of capabilities and limitations.""".strip()
+of capabilities and limitations.""".strip(),
         )
 
     config_inputs = [
-        ToolInput("config", File(optional=True), prefix="--config", position=1, shell_quote=False,
-                  doc="provide a configuration file to override defaults in global config file "
-                      "(/opt/conda/share/manta-1.2.1-0/bin/configManta.py.ini)"),
-        ToolInput("bam", BamBai(), prefix="--bam", position=1, shell_quote=False,
-                  doc="FILE Normal sample BAM or CRAM file. May be specified more than once, multiple inputs "
-                      "will be treated as each BAM file representing a different sample. [optional] (no default)"),
-        ToolInput("runDir", Filename(), prefix="--runDir", position=1, shell_quote=False,
-                  doc="Run script and run output will be written to this directory [required] "
-                      "(default: MantaWorkflow)"),
-        ToolInput("reference", FastaWithDict(), prefix="--referenceFasta", position=1,
-                  shell_quote=False, doc="samtools-indexed reference fasta file [required]"),
-
-        ToolInput("tumorBam", BamBai(optional=True), prefix="--tumorBam", position=1, shell_quote=False,
-                  doc="Tumor sample BAM or CRAM file. Only up to one tumor bam file accepted. [optional=null]"),
-        ToolInput("exome", Boolean(optional=True), prefix="--exome", position=1, shell_quote=False,
-                  doc="Set options for WES input: turn off depth filters"),
-        ToolInput("rna", Bam(optional=True), prefix="--rna", position=1, shell_quote=False,
-                  doc="Set options for RNA-Seq input. Must specify exactly one bam input file"),
-        ToolInput("unstrandedRNA", File(optional=True), prefix="--unstrandedRNA", position=1, shell_quote=False,
-                  doc="Set if RNA-Seq input is unstranded: Allows splice-junctions on either strand"),
-        ToolInput("outputContig", File(optional=True), prefix="--outputContig", position=1, shell_quote=False,
-                  doc="Output assembled contig sequences in VCF file"),
-
-        ToolInput("callRegions", BedTabix(optional=True), prefix="--callRegions", position=1, shell_quote=False,
-                  doc="Optionally provide a bgzip-compressed/tabix-indexed BED file containing the set of "
-                      "regions to call. No VCF output will be provided outside of these regions. The full "
-                      "genome will still be used to estimate statistics from the input (such as expected depth "
-                      "per chromosome). Only one BED file may be specified. (default: call the entire genome)"),
+        ToolInput(
+            "config",
+            File(optional=True),
+            prefix="--config",
+            position=1,
+            shell_quote=False,
+            doc="provide a configuration file to override defaults in global config file "
+            "(/opt/conda/share/manta-1.2.1-0/bin/configManta.py.ini)",
+        ),
+        ToolInput(
+            "bam",
+            BamBai(),
+            prefix="--bam",
+            position=1,
+            shell_quote=False,
+            doc="FILE Normal sample BAM or CRAM file. May be specified more than once, multiple inputs "
+            "will be treated as each BAM file representing a different sample. [optional] (no default)",
+        ),
+        ToolInput(
+            "runDir",
+            Filename(),
+            prefix="--runDir",
+            position=1,
+            shell_quote=False,
+            doc="Run script and run output will be written to this directory [required] "
+            "(default: MantaWorkflow)",
+        ),
+        ToolInput(
+            "reference",
+            FastaWithDict(),
+            prefix="--referenceFasta",
+            position=1,
+            shell_quote=False,
+            doc="samtools-indexed reference fasta file [required]",
+        ),
+        ToolInput(
+            "tumorBam",
+            BamBai(optional=True),
+            prefix="--tumorBam",
+            position=1,
+            shell_quote=False,
+            doc="Tumor sample BAM or CRAM file. Only up to one tumor bam file accepted. [optional=null]",
+        ),
+        ToolInput(
+            "exome",
+            Boolean(optional=True),
+            prefix="--exome",
+            position=1,
+            shell_quote=False,
+            doc="Set options for WES input: turn off depth filters",
+        ),
+        ToolInput(
+            "rna",
+            Bam(optional=True),
+            prefix="--rna",
+            position=1,
+            shell_quote=False,
+            doc="Set options for RNA-Seq input. Must specify exactly one bam input file",
+        ),
+        ToolInput(
+            "unstrandedRNA",
+            File(optional=True),
+            prefix="--unstrandedRNA",
+            position=1,
+            shell_quote=False,
+            doc="Set if RNA-Seq input is unstranded: Allows splice-junctions on either strand",
+        ),
+        ToolInput(
+            "outputContig",
+            File(optional=True),
+            prefix="--outputContig",
+            position=1,
+            shell_quote=False,
+            doc="Output assembled contig sequences in VCF file",
+        ),
+        ToolInput(
+            "callRegions",
+            BedTabix(optional=True),
+            prefix="--callRegions",
+            position=1,
+            shell_quote=False,
+            doc="Optionally provide a bgzip-compressed/tabix-indexed BED file containing the set of "
+            "regions to call. No VCF output will be provided outside of these regions. The full "
+            "genome will still be used to estimate statistics from the input (such as expected depth "
+            "per chromosome). Only one BED file may be specified. (default: call the entire genome)",
+        ),
     ]
 
     running_inputs = [
-        ToolInput("mode", String(optional=True), default="local", prefix="--mode", position=3, shell_quote=False,
-                  doc="(-m) select run mode (local|sge)"),
-        ToolInput("jobs", Int(optional=True), prefix="--jobs", default=CpuSelector(), position=3, shell_quote=False,
-                  doc="(-j) number of jobs, must be an integer or 'unlimited' "
-                      "(default: Estimate total cores on this node for local mode, 128 for sge mode)"),
-        ToolInput("quiet", Boolean(optional=True), default=True, prefix="--quiet", position=3, shell_quote=False,
-                  doc="Don't write any log output to stderr "
-                      "(but still write to workspace/pyflow.data/logs/pyflow_log.txt)"),
-        ToolInput("queue", String(optional=True), prefix="--queue", position=3, shell_quote=False,
-                  doc="(-q) specify scheduler queue name"),
-
-        ToolInput("memgb", Int(optional=True), prefix="--memGb", position=3, shell_quote=False,
-                  doc="(-g) gigabytes of memory available to run workflow -- only meaningful in local mode, "
-                      "must be an integer (default: Estimate the total memory for this node for local  mode, "
-                      "'unlimited' for sge mode)"),
+        ToolInput(
+            "mode",
+            String(optional=True),
+            default="local",
+            prefix="--mode",
+            position=3,
+            shell_quote=False,
+            doc="(-m) select run mode (local|sge)",
+        ),
+        ToolInput(
+            "quiet",
+            Boolean(optional=True),
+            default=True,
+            prefix="--quiet",
+            position=3,
+            shell_quote=False,
+            doc="Don't write any log output to stderr "
+            "(but still write to workspace/pyflow.data/logs/pyflow_log.txt)",
+        ),
+        ToolInput(
+            "queue",
+            String(optional=True),
+            prefix="--queue",
+            position=3,
+            shell_quote=False,
+            doc="(-q) specify scheduler queue name",
+        ),
+        ToolInput(
+            "memgb",
+            Int(optional=True),
+            prefix="--memGb",
+            position=3,
+            shell_quote=False,
+            doc="(-g) gigabytes of memory available to run workflow -- only meaningful in local mode, "
+            "must be an integer (default: Estimate the total memory for this node for local  mode, "
+            "'unlimited' for sge mode)",
+        ),
         # ToolInput("dryRun", Boolean(optional=True), prefix="--dryRun", position=3, shell_quote=False,
         #           doc="(-d) dryRun workflow code without actually running command - tasks"),
-        ToolInput("maxTaskRuntime", String(optional=True), prefix="--maxTaskRuntime", position=3, shell_quote=False,
-                  doc="(format: hh:mm:ss) Specify scheduler max runtime per task, argument is "
-                      "provided to the 'h_rt' resource limit if using SGE (no default)"),
+        ToolInput(
+            "maxTaskRuntime",
+            String(optional=True),
+            prefix="--maxTaskRuntime",
+            position=3,
+            shell_quote=False,
+            doc="(format: hh:mm:ss) Specify scheduler max runtime per task, argument is "
+            "provided to the 'h_rt' resource limit if using SGE (no default)",
+        ),
     ]

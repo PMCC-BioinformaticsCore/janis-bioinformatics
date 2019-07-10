@@ -130,7 +130,7 @@ does not work with split alignments. One may consider to use option -M to flag s
         ToolInput(
             "threads",
             Int(optional=True),
-            default=CpuSelector(default=1),
+            default=CpuSelector(),
             prefix="-t",
             doc="Number of threads. (default = 1)",
         ),
