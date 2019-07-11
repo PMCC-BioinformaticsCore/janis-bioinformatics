@@ -13,6 +13,7 @@ from janis import (
     CaptureType,
 )
 from janis.utils import get_value_for_hints_and_ordered_resource_tuple
+from janis_bioinformatics.tools.bcftools.bcftoolstoolbase import BcfToolsToolBase
 
 from janis_bioinformatics.data_types import Vcf
 from janis_bioinformatics.tools import BioinformaticsTool
@@ -44,17 +45,13 @@ MEM_TUPLE = [
 ]
 
 
-class BCFToolsSortBase(BioinformaticsTool, ABC):
+class BcfToolsSortBase(BcfToolsToolBase, ABC):
     def friendly_name(self) -> str:
         return "BCFTools Sort"
 
     @staticmethod
-    def tool_provider():
-        return "BCFTools"
-
-    @staticmethod
     def tool() -> str:
-        return "BCFToolsSort"
+        return "BCFTools: Sort"
 
     @staticmethod
     def base_command():
@@ -75,7 +72,6 @@ class BCFToolsSortBase(BioinformaticsTool, ABC):
     def inputs(self):
         return [
             ToolInput("vcf", Vcf(), position=1, doc="The VCF file to sort"),
-            # ToolInput("maxMem", String(optional=True), default=MemorySelector() + "G", prefix="--max-mem", doc="(-m) maximum memory to use [768M]"),
             ToolInput(
                 "outputFilename",
                 Filename(),
@@ -105,11 +101,11 @@ class BCFToolsSortBase(BioinformaticsTool, ABC):
             maintainer=None,
             maintainerEmail=None,
             dateCreated=datetime(2019, 5, 9),
-            dateUpdated=datetime(2019, 5, 9),
+            dateUpdated=datetime(2019, 7, 11),
             institution=None,
             doi=None,
             citation=None,
-            keywords=["BCFToolsSort"],
+            keywords=["BCFTools", "sort"],
             documentationUrl="",
             documentation="""About:   Sort VCF/BCF file.
 Usage:   bcftools sort [OPTIONS] <FILE.vcf>""",

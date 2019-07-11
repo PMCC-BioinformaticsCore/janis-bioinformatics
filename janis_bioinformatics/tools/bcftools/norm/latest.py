@@ -1,10 +1,3 @@
-from janis_bioinformatics.tools.bcftools.bcftools_latest import BcfToolsLatest
-from janis_bioinformatics.tools.bcftools.norm.base import BcfToolsNormBase
+from .norm_1_5 import BcfToolsNorm_1_5
 
-
-class BcfToolsNormLatest(BcfToolsLatest, BcfToolsNormBase):
-    pass
-
-
-if __name__ == "__main__":
-    print(BcfToolsNormLatest().help())
+BcfToolsNormLatest = BcfToolsNorm_1_5

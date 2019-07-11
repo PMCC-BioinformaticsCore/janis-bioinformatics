@@ -1,10 +1,3 @@
-from ..bcftools_latest import BcfToolsLatest
-from .base import BcfToolsViewBase
+from .view_1_5 import BcfToolsView_1_5
 
-
-class BcfToolsViewLatest(BcfToolsLatest, BcfToolsViewBase):
-    pass
-
-
-if __name__ == "__main__":
-    print(BcfToolsViewLatest().help())
+BcfToolsViewLatest = BcfToolsView_1_5

@@ -1,8 +1,6 @@
-from janis_bioinformatics.tools.bcftools.sort.base import BCFToolsSortBase
+from .base import BcfToolsSortBase
+from ..bcftools_1_9 import BcfTools_1_9
 
 
-class BcfToolsSort_1_9(BCFToolsSortBase):
-
-    @staticmethod
-    def docker():
-        return "michaelfranklin/bcftools:1.9"
+class BcfToolsSort_1_9(BcfTools_1_9, BcfToolsSortBase):
+    pass
