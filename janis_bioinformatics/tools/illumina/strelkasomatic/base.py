@@ -49,7 +49,7 @@ MEM_TUPLE = [
     (
         CaptureType.key(),
         {
-            CaptureType.TARGETED: 4,
+            CaptureType.TARGETED: 8,
             CaptureType.CHROMOSOME: 32,
             CaptureType.EXOME: 32,
             CaptureType.THIRTYX: 64,
@@ -96,7 +96,7 @@ class StrelkaSomaticBase(BioinformaticsTool, ABC):
                 position=2,
                 shell_quote=False,
             ),
-            ToolInput(
+            ToolArgument(
                 CpuSelector(None),
                 prefix="--jobs",
                 position=3,
@@ -322,7 +322,6 @@ class StrelkaSomaticBase(BioinformaticsTool, ABC):
             ToolInput(
                 "quiet",
                 Boolean(optional=True),
-                default=True,
                 prefix="--quiet",
                 position=3,
                 shell_quote=False,

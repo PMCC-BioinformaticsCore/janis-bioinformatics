@@ -50,7 +50,7 @@ MEM_TUPLE = [
     (
         CaptureType.key(),
         {
-            CaptureType.TARGETED: 4,
+            CaptureType.TARGETED: 8,
             CaptureType.CHROMOSOME: 32,
             CaptureType.EXOME: 32,
             CaptureType.THIRTYX: 64,
@@ -81,7 +81,7 @@ class MantaBase(BioinformaticsTool, ABC):
         return 4
 
     def memory(self, hints: Dict[str, Any]):
-        val = get_value_for_hints_and_ordered_resource_tuple(hints, CORES_TUPLE)
+        val = get_value_for_hints_and_ordered_resource_tuple(hints, MEM_TUPLE)
         if val:
             return val
         return 4
@@ -301,7 +301,6 @@ of capabilities and limitations.""".strip(),
         ToolInput(
             "quiet",
             Boolean(optional=True),
-            default=True,
             prefix="--quiet",
             position=3,
             shell_quote=False,

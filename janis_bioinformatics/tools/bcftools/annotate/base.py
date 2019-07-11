@@ -81,7 +81,7 @@ class BcfToolsAnnotateBase(BcfToolsToolBase, ABC):
         val = get_value_for_hints_and_ordered_resource_tuple(hints, CORES_TUPLE)
         if val:
             return val
-        return 2
+        return 1
 
     def memory(self, hints: Dict[str, Any]):
         val = get_value_for_hints_and_ordered_resource_tuple(hints, MEM_TUPLE)

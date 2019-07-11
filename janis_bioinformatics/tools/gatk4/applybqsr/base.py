@@ -9,23 +9,29 @@ from janis.unix.data_types.tsv import Tsv
 from janis.utils.metadata import ToolMetadata
 
 CORES_TUPLE = [
-    (CaptureType.key(), {
-        CaptureType.CHROMOSOME: 1,
-        CaptureType.EXOME: 1,
-        CaptureType.THIRTYX: 1,
-        CaptureType.NINETYX: 1,
-        CaptureType.THREEHUNDREDX: 1
-    })
+    (
+        CaptureType.key(),
+        {
+            CaptureType.CHROMOSOME: 1,
+            CaptureType.EXOME: 1,
+            CaptureType.THIRTYX: 1,
+            CaptureType.NINETYX: 1,
+            CaptureType.THREEHUNDREDX: 1,
+        },
+    )
 ]
 
 MEM_TUPLE = [
-    (CaptureType.key(), {
-        CaptureType.CHROMOSOME: 16,
-        CaptureType.EXOME: 16,
-        CaptureType.THIRTYX: 16,
-        CaptureType.NINETYX: 64,
-        CaptureType.THREEHUNDREDX: 64
-    })
+    (
+        CaptureType.key(),
+        {
+            CaptureType.CHROMOSOME: 16,
+            CaptureType.EXOME: 16,
+            CaptureType.THIRTYX: 16,
+            CaptureType.NINETYX: 64,
+            CaptureType.THREEHUNDREDX: 64,
+        },
+    )
 ]
 
 
@@ -43,35 +49,56 @@ class Gatk4ApplyBqsrBase(Gatk4ToolBase, ABC):
 
     def cpus(self, hints: Dict[str, Any]):
         val = get_value_for_hints_and_ordered_resource_tuple(hints, CORES_TUPLE)
-        if val: return val
-        return 2
+        if val:
+            return val
+        return 1
 
     def memory(self, hints: Dict[str, Any]):
         val = get_value_for_hints_and_ordered_resource_tuple(hints, MEM_TUPLE)
-        if val: return val
+        if val:
+            return val
         return 8
 
     def inputs(self):
         return [
             *super(Gatk4ApplyBqsrBase, self).inputs(),
-
-            ToolInput("bam", BamBai(), prefix="-I", doc="The SAM/BAM/CRAM file containing reads.", position=10),
-            ToolInput("reference", FastaWithDict(), prefix="-R", doc="Reference sequence"),
-            ToolInput("outputFilename", Filename(extension=".bam"), prefix="-O", doc="Write output to this file"),
-            ToolInput("recalFile", Tsv(optional=True), prefix="--bqsr-recal-file",
-                      doc="Input recalibration table for BQSR"),
-            ToolInput("intervals", Bed(optional=True), prefix="--intervals",
-                      doc="-L (BASE) One or more genomic intervals over which to operate"),
-            *self.additional_args
+            ToolInput(
+                "bam",
+                BamBai(),
+                prefix="-I",
+                doc="The SAM/BAM/CRAM file containing reads.",
+                position=10,
+            ),
+            ToolInput(
+                "reference", FastaWithDict(), prefix="-R", doc="Reference sequence"
+            ),
+            ToolInput(
+                "outputFilename",
+                Filename(extension=".bam"),
+                prefix="-O",
+                doc="Write output to this file",
+            ),
+            ToolInput(
+                "recalFile",
+                Tsv(optional=True),
+                prefix="--bqsr-recal-file",
+                doc="Input recalibration table for BQSR",
+            ),
+            ToolInput(
+                "intervals",
+                Bed(optional=True),
+                prefix="--intervals",
+                doc="-L (BASE) One or more genomic intervals over which to operate",
+            ),
+            *self.additional_args,
         ]
 
     def outputs(self):
-        return [
-            ToolOutput("out", BamBai(), glob=InputSelector("outputFilename"))
-        ]
+        return [ToolOutput("out", BamBai(), glob=InputSelector("outputFilename"))]
 
     def metadata(self):
         from datetime import date
+
         return ToolMetadata(
             creator="Michael Franklin",
             maintainer="Michael Franklin",
@@ -102,11 +129,17 @@ and write out the recalibrated data to a new BAM or CRAM file.
 - You should only run ApplyBQSR with the covariates table created from the input BAM or CRAM file(s).
 - Original qualities can be retained in the output file under the "OQ" tag if desired. 
     See the `--emit-original-quals` argument for details.
-""".strip()
+""".strip(),
         )
 
     additional_args = [
         # Put more detail in here from documentation
-        ToolInput("tmpDir", String(optional=True), prefix="--tmp-dir", position=11, default="/tmp/",
-                  doc="Temp directory to use."),
+        ToolInput(
+            "tmpDir",
+            String(optional=True),
+            prefix="--tmp-dir",
+            position=11,
+            default="/tmp/",
+            doc="Temp directory to use.",
+        )
     ]

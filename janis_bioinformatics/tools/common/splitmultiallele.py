@@ -3,27 +3,40 @@ from janis.utils import get_value_for_hints_and_ordered_resource_tuple
 from janis_bioinformatics.data_types import FastaWithDict
 from janis_bioinformatics.data_types import Vcf
 from janis_bioinformatics.tools import BioinformaticsTool
-from janis import ToolOutput, ToolInput, Filename, ToolArgument, InputSelector, CaptureType
+from janis import (
+    ToolOutput,
+    ToolInput,
+    Filename,
+    ToolArgument,
+    InputSelector,
+    CaptureType,
+)
 
 
 CORES_TUPLE = [
-    (CaptureType.key(), {
-        CaptureType.CHROMOSOME: 1,
-        CaptureType.EXOME: 1,
-        CaptureType.THIRTYX: 1,
-        CaptureType.NINETYX: 1,
-        CaptureType.THREEHUNDREDX: 1
-    })
+    (
+        CaptureType.key(),
+        {
+            CaptureType.CHROMOSOME: 1,
+            CaptureType.EXOME: 1,
+            CaptureType.THIRTYX: 1,
+            CaptureType.NINETYX: 1,
+            CaptureType.THREEHUNDREDX: 1,
+        },
+    )
 ]
 
 MEM_TUPLE = [
-    (CaptureType.key(), {
-        CaptureType.CHROMOSOME: 8,
-        CaptureType.EXOME: 8,
-        CaptureType.THIRTYX: 8,
-        CaptureType.NINETYX: 12,
-        CaptureType.THREEHUNDREDX: 16
-    })
+    (
+        CaptureType.key(),
+        {
+            CaptureType.CHROMOSOME: 8,
+            CaptureType.EXOME: 8,
+            CaptureType.THIRTYX: 8,
+            CaptureType.NINETYX: 12,
+            CaptureType.THREEHUNDREDX: 16,
+        },
+    )
 ]
 
 
@@ -45,47 +58,60 @@ class SplitMultiAllele(BioinformaticsTool):
 
     @staticmethod
     def docker():
-        return "heuermh/vt"     # "SEE (mfranklin's notes in) DOCUMENTATION"
+        return "heuermh/vt"  # "SEE (mfranklin's notes in) DOCUMENTATION"
 
     def cpus(self, hints: Dict[str, Any]):
         val = get_value_for_hints_and_ordered_resource_tuple(hints, CORES_TUPLE)
-        if val: return val
-        return 2
+        if val:
+            return val
+        return 1
 
     def memory(self, hints: Dict[str, Any]):
         val = get_value_for_hints_and_ordered_resource_tuple(hints, MEM_TUPLE)
-        if val: return val
+        if val:
+            return val
         return 8
 
     def inputs(self) -> List[ToolInput]:
         return [
             ToolInput("vcf", Vcf(), position=2, shell_quote=False),
-            ToolInput("reference", FastaWithDict(), prefix="-r", position=7, shell_quote=False),
-            ToolInput("outputFilename", Filename(extension=".vcf", suffix=".norm"), prefix=">", position=10, shell_quote=False),
+            ToolInput(
+                "reference", FastaWithDict(), prefix="-r", position=7, shell_quote=False
+            ),
+            ToolInput(
+                "outputFilename",
+                Filename(extension=".vcf", suffix=".norm"),
+                prefix=">",
+                position=10,
+                shell_quote=False,
+            ),
         ]
 
     def arguments(self):
         return [
-            ToolArgument("sed 's/ID=AD,Number=./ID=AD,Number=R/' <", position=1, shell_quote=False),
+            ToolArgument(
+                "sed 's/ID=AD,Number=./ID=AD,Number=R/' <",
+                position=1,
+                shell_quote=False,
+            ),
             ToolArgument("|", position=3, shell_quote=False),
             ToolArgument("vt decompose -s - -o -", position=4, shell_quote=False),
             ToolArgument("|", position=5, shell_quote=False),
             ToolArgument("vt normalize -n -q - -o -", position=6, shell_quote=False),
             ToolArgument("|", position=8, shell_quote=False),
-            ToolArgument("sed 's/ID=AD,Number=./ID=AD,Number=1/'", position=9, shell_quote=False),
-
+            ToolArgument(
+                "sed 's/ID=AD,Number=./ID=AD,Number=1/'", position=9, shell_quote=False
+            ),
         ]
 
     def outputs(self) -> List[ToolOutput]:
-        return [
-            ToolOutput("out", Vcf(), glob=InputSelector("outputFilename"))
-        ]
+        return [ToolOutput("out", Vcf(), glob=InputSelector("outputFilename"))]
 
     @staticmethod
     def requirements():
         from cwlgen import ShellCommandRequirement
-        return [ShellCommandRequirement()]
 
+        return [ShellCommandRequirement()]
 
     def doc(self):
         return """
@@ -174,6 +200,7 @@ class SplitMultiAllele(BioinformaticsTool):
               -r  reference sequence fasta file []
               -?  displays help 
         """.strip()
+
 
 if __name__ == "__main__":
     print(SplitMultiAllele().help())
