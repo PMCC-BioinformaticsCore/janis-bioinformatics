@@ -9,19 +9,17 @@ from janis import (
     String,
     ToolOutput,
     Filename,
-    File,
     InputSelector,
 )
-from janis.hints import HINTS, CaptureType
+from janis.hints import CaptureType
 from janis.types import CpuSelector
-
-from janis_bioinformatics.data_types.fastq import Fastq
-from janis_bioinformatics.data_types import Sam, FastaWithDict
-from janis_bioinformatics.tools.bwa.bwatoolbase import BwaToolBase
 from janis.types.common_data_types import Stdout
 from janis.utils import get_value_for_hints_and_ordered_resource_tuple
 from janis.utils.metadata import ToolMetadata
 
+from janis_bioinformatics.data_types import Sam, FastaWithDict
+from janis_bioinformatics.data_types.fastq import Fastq
+from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 
 BWA_MEM_TUPLE = [
     (
@@ -52,61 +50,29 @@ BWA_CORES_TUPLE = [
 ]
 
 
-class BwaMemBase(BwaToolBase, ABC):
-    def friendly_name(self):
-        return "BWA-MEM"
-
-    def metadata(self):
-        from datetime import date
-
-        return ToolMetadata(
-            creator="Michael Franklin",
-            maintainer="Michael Franklin",
-            maintainerEmail="michael.franklin@petermac.org",
-            dateCreated=date(2018, 12, 24),
-            dateUpdated=date(2019, 1, 24),
-            institution="Sanger Institute",
-            doi=None,
-            citation="The BWA-MEM algorithm has not been published yet.",
-            keywords=["bwa", "mem", "align"],
-            documentationUrl="http://bio-bwa.sourceforge.net/bwa.shtml#3",
-            documentation="""bwa - Burrows-Wheeler Alignment Tool
-
-Align 70bp-1Mbp query sequences with the BWA-MEM algorithm. Briefly, the algorithm works by seeding alignments 
-with maximal exact matches (MEMs) and then extending seeds with the affine-gap Smith-Waterman algorithm (SW).
-
-If mates.fq file is absent and option -p is not set, this command regards input reads are single-end. If 'mates.fq' 
-is present, this command assumes the i-th read in reads.fq and the i-th read in mates.fq constitute a read pair. 
-If -p is used, the command assumes the 2i-th and the (2i+1)-th read in reads.fq constitute a read pair (such input 
-file is said to be interleaved). In this case, mates.fq is ignored. In the paired-end mode, the mem command will 
-infer the read orientation and the insert size distribution from a batch of reads.
-
-The BWA-MEM algorithm performs local alignment. It may produce multiple primary alignments for different part of a 
-query sequence. This is a crucial feature for long sequences. However, some tools such as Picard’s markDuplicates 
-does not work with split alignments. One may consider to use option -M to flag shorter split hits as secondary.
-""".strip(),
-        )
-
+class BwaMemBase(BioinformaticsTool, ABC):
     @staticmethod
     def tool():
         return "BwaMem"
 
+    def friendly_name(self):
+        return "BWA-MEM"
+
+    @staticmethod
+    def tool_provider():
+        return "BWA"
+
     @staticmethod
     def base_command():
-        # lol python: https://stackoverflow.com/a/26807879
-        bc = super(BwaMemBase, BwaMemBase).base_command()
-        if isinstance(bc, str):
-            bc = [bc]
-        return [*bc, "mem"]
+        return ["bwa", "mem"]
 
     def inputs(self):
         return [
-            *super(BwaMemBase, self).inputs(),
-            *BwaMemBase.additional_inputs,
             ToolInput("reference", FastaWithDict(), position=9),
             ToolInput("reads", Fastq(), position=10, doc=None),
             ToolInput("mates", Fastq(optional=True), position=11, doc=None),
             ToolInput("outputFilename", Filename(extension=".sam")),
+            *BwaMemBase.additional_inputs,
         ]
 
     def outputs(self):
@@ -125,6 +91,43 @@ does not work with split alignments. One may consider to use option -M to flag s
         if val:
             return val
         return 16
+
+    def metadata(self):
+        from datetime import date
+
+        return ToolMetadata(
+            creator="Michael Franklin",
+            maintainer="Michael Franklin",
+            maintainerEmail="michael.franklin@petermac.org",
+            dateCreated=date(2018, 12, 24),
+            dateUpdated=date(2019, 1, 24),
+            institution="Sanger Institute",
+            doi=None,
+            citation="The BWA-MEM algorithm has not been published yet.",
+            keywords=["bwa", "mem", "align"],
+            documentationUrl="http://bio-bwa.sourceforge.net/bwa.shtml#3",
+            documentation="""bwa - Burrows-Wheeler Alignment Tool
+BWA is a software package for mapping low-divergent sequences against a large reference genome, such as the human 
+genome. It consists of three algorithms: BWA-backtrack, BWA-SW and BWA-MEM. The first algorithm is designed for 
+Illumina sequence reads up to 100bp, while the rest two for longer sequences ranged from 70bp to 1Mbp. 
+BWA-MEM and BWA-SW share similar features such as long-read support and split alignment, but BWA-MEM, which is 
+the latest, is generally recommended for high-quality queries as it is faster and more accurate. 
+BWA-MEM also has better performance than BWA-backtrack for 70-100bp Illumina reads.
+
+Align 70bp-1Mbp query sequences with the BWA-MEM algorithm. Briefly, the algorithm works by seeding alignments 
+with maximal exact matches (MEMs) and then extending seeds with the affine-gap Smith-Waterman algorithm (SW).
+
+If mates.fq file is absent and option -p is not set, this command regards input reads are single-end. If 'mates.fq' 
+is present, this command assumes the i-th read in reads.fq and the i-th read in mates.fq constitute a read pair. 
+If -p is used, the command assumes the 2i-th and the (2i+1)-th read in reads.fq constitute a read pair (such input 
+file is said to be interleaved). In this case, mates.fq is ignored. In the paired-end mode, the mem command will 
+infer the read orientation and the insert size distribution from a batch of reads.
+
+The BWA-MEM algorithm performs local alignment. It may produce multiple primary alignments for different part of a 
+query sequence. This is a crucial feature for long sequences. However, some tools such as Picard’s markDuplicates 
+does not work with split alignments. One may consider to use option -M to flag shorter split hits as secondary.
+""".strip(),
+        )
 
     additional_inputs = [
         ToolInput(
