@@ -74,7 +74,7 @@ class BcfToolsSortBase(BcfToolsToolBase, ABC):
             ToolInput("vcf", Vcf(), position=1, doc="The VCF file to sort"),
             ToolInput(
                 "outputFilename",
-                Filename(),
+                Filename(suffix=".sorted", extension=".vcf"),
                 prefix="--output-file",
                 doc="(-o) output file name [stdout]",
             ),
