@@ -72,7 +72,7 @@ class BcfToolsViewBase(BcfToolsToolBase, ABC):
         metadata.documentationUrl = (
             "https://samtools.github.io/bcftools/bcftools.html#view"
         )
-        metadata.documentation += """________________________________\n 
+        metadata.documentation = """________________________________\n 
 View, subset and filter VCF or BCF files by position and filtering expression
 Convert between VCF and BCF. Former bcftools subset."""
 
