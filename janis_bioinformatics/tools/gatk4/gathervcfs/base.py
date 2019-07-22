@@ -1,7 +1,7 @@
 from abc import ABC
 from typing import Dict, Any
-from janis.utils import get_value_for_hints_and_ordered_resource_tuple
-from janis import (
+from janis_core import get_value_for_hints_and_ordered_resource_tuple
+from janis_core import (
     ToolInput,
     Filename,
     ToolOutput,
@@ -13,7 +13,7 @@ from janis import (
     Int,
     CaptureType,
 )
-from janis.utils.metadata import ToolMetadata
+from janis_core import ToolMetadata
 
 from janis_bioinformatics.data_types import Vcf
 from ..gatk4toolbase import Gatk4ToolBase

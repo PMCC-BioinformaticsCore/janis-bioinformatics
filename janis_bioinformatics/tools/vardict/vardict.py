@@ -1,5 +1,5 @@
 from abc import ABC
-from janis import CommandTool
+from janis_core import CommandTool
 
 
 class VarDict_1_5_6(CommandTool, ABC):

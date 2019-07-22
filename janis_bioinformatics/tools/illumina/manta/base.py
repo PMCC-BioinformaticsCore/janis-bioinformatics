@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 from typing import List, Dict, Any
 
-from janis.types import MemorySelector, CpuSelector
-from janis.utils import get_value_for_hints_and_ordered_resource_tuple
+from janis_core import MemorySelector, CpuSelector
+from janis_core import get_value_for_hints_and_ordered_resource_tuple
 
 from janis_bioinformatics.data_types import (
     FastaWithDict,
@@ -13,7 +13,7 @@ from janis_bioinformatics.data_types import (
 )
 from janis_bioinformatics.tools import BioinformaticsTool
 
-from janis import (
+from janis_core import (
     ToolOutput,
     ToolInput,
     ToolArgument,
@@ -27,9 +27,9 @@ from janis import (
     Int,
     CaptureType,
     StringFormatter,
+    ToolMetadata,
 )
-from janis.unix.data_types.tsv import Tsv
-from janis.utils.metadata import ToolMetadata
+from janis_unix import Tsv
 
 
 CORES_TUPLE = [

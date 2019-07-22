@@ -1,14 +1,13 @@
 from abc import ABC
 from typing import List
 
-from janis import ToolOutput, ToolInput, Filename, InputSelector
+from janis_core import ToolOutput, ToolInput, Filename, InputSelector
 from janis_bioinformatics.data_types.bam import Bam, BamBai
 from ..gatk4toolbase import Gatk4ToolBase
-from janis.utils.metadata import ToolMetadata
+from janis_core import ToolMetadata
 
 
 class Gatk4PrintReadsBase(Gatk4ToolBase, ABC):
-
     @classmethod
     def gatk_command(cls):
         return "PrintReads"
@@ -21,18 +20,14 @@ class Gatk4PrintReadsBase(Gatk4ToolBase, ABC):
         return "GATK4: Print Reads"
 
     def inputs(self):
-        return [
-            ToolInput("bam", Bam()),
-            ToolInput("outputFilename", Filename())
-        ]
+        return [ToolInput("bam", Bam()), ToolInput("outputFilename", Filename())]
 
     def outputs(self) -> List[ToolOutput]:
-        return [
-            ToolOutput("out", BamBai(), glob=InputSelector("outputFilename"))
-        ]
+        return [ToolOutput("out", BamBai(), glob=InputSelector("outputFilename"))]
 
     def metadata(self):
         from datetime import date
+
         return ToolMetadata(
             creator="Michael Franklin",
             maintainer="Michael Franklin",
@@ -60,5 +55,5 @@ with the --read-filter argument. See documentation category 'Read Filters' for a
  disable the filter with --disable-read-filter or disable all default filters with 
  ``--disable-tool-default-read-filters``.
 
-The reference is strictly required when handling CRAM files."""
+The reference is strictly required when handling CRAM files.""",
         )

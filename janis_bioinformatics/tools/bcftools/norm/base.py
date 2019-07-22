@@ -1,6 +1,6 @@
 from abc import ABC
 
-from janis import (
+from janis_core import (
     ToolInput,
     String,
     Boolean,
@@ -14,7 +14,7 @@ from janis import (
 from janis_bioinformatics.data_types import FastaWithDict
 from janis_bioinformatics.data_types import Vcf
 from janis_bioinformatics.tools.bcftools.bcftoolstoolbase import BcfToolsToolBase
-from janis.utils.metadata import ToolMetadata
+from janis_core import ToolMetadata
 
 
 class BcfToolsNormBase(BcfToolsToolBase, ABC):

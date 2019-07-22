@@ -1,7 +1,7 @@
-from janis import ToolInput
+from janis_core import ToolInput
 from janis_bioinformatics.data_types import VcfIdx
 from ..igvtoolstoolbase import IgvToolsToolBase
-from janis.utils.metadata import ToolMetadata
+from janis_core import ToolMetadata
 
 
 class IgvToolsIndexBase(IgvToolsToolBase):
@@ -15,19 +15,22 @@ class IgvToolsIndexBase(IgvToolsToolBase):
 
     def inputs(self):
         return [
-            ToolInput("vcf", VcfIdx(), doc="The alignment or feature file for which an index will be created")
+            ToolInput(
+                "vcf",
+                VcfIdx(),
+                doc="The alignment or feature file for which an index will be created",
+            )
         ]
 
     def outputs(self):
-        return [
-
-        ]
+        return []
 
     def friendly_name(self):
         return "IGVTools: Index"
 
     def metadata(self):
         from datetime import date
+
         return ToolMetadata(
             creator="Michael Franklin",
             maintainer="Michael Franklin",
@@ -36,7 +39,7 @@ class IgvToolsIndexBase(IgvToolsToolBase):
             dateUpdated=date(2019, 1, 24),
             institution="Broad Institute",
             doi=None,
-            citation=None, # find citation
+            citation=None,  # find citation
             keywords=["broad", "igvtools", "index"],
             documentationUrl="https://software.broadinstitute.org/software/igv/igvtools_commandline#index",
             documentation="""
@@ -53,5 +56,5 @@ class IgvToolsIndexBase(IgvToolsToolBase):
 
     Supported input file formats are: .sam, .bam, .aligned, .vcf, .psl, and .bed.
     
-    Note: The "sai" index is an IGV format, it does not work with samtools or any other application."""
+    Note: The "sai" index is an IGV format, it does not work with samtools or any other application.""",
         )

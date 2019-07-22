@@ -1,12 +1,19 @@
 from abc import ABC
 from typing import Dict, Any
-from janis.utils import get_value_for_hints_and_ordered_resource_tuple
+from janis_core import get_value_for_hints_and_ordered_resource_tuple
 from ..gatk4toolbase import Gatk4ToolBase
 from janis_bioinformatics.data_types import BamBai, FastaWithDict, Bed
 
-from janis import ToolInput, Filename, ToolOutput, String, InputSelector, CaptureType
-from janis.unix.data_types.tsv import Tsv
-from janis.utils.metadata import ToolMetadata
+from janis_core import (
+    ToolInput,
+    Filename,
+    ToolOutput,
+    String,
+    InputSelector,
+    CaptureType,
+    ToolMetadata,
+)
+from janis_unix import Tsv
 
 CORES_TUPLE = [
     (

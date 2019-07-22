@@ -1,9 +1,21 @@
 from abc import ABC
 
-from janis import ToolInput, Filename, ToolOutput, File, Array, String, Boolean, Int, Float, Directory, WildcardSelector
+from janis_core import (
+    ToolInput,
+    Filename,
+    ToolOutput,
+    File,
+    Array,
+    String,
+    Boolean,
+    Int,
+    Float,
+    Directory,
+    WildcardSelector,
+)
 from janis_bioinformatics.data_types import VcfIdx, VcfTabix, Vcf
 from ..gatk4toolbase import Gatk4ToolBase
-from janis.utils.metadata import ToolMetadata
+from janis_core import ToolMetadata
 
 
 class Gatk4GenotypeConcordanceBase(Gatk4ToolBase, ABC):
@@ -20,27 +32,54 @@ class Gatk4GenotypeConcordanceBase(Gatk4ToolBase, ABC):
 
     def inputs(self):
         return [
-            ToolInput("callVCF", VcfTabix(), prefix="--CALL_VCF", doc="The VCF containing the call sample"),
-            ToolInput("truthVCF", VcfIdx(), prefix="--TRUTH_VCF", doc="The VCF containing the truth sample"),
-            ToolInput("outputBasename", Filename(), prefix="--OUTPUT",
-                      doc="Basename for the three metrics files that are to be written. Resulting files will be:"
-                          "(1) .genotype_concordance_summary_metrics, "
-                          "(2) .genotype_concordance_detail_metrics, "
-                          "(3) .genotype_concordance_contingency_metrics."),
+            ToolInput(
+                "callVCF",
+                VcfTabix(),
+                prefix="--CALL_VCF",
+                doc="The VCF containing the call sample",
+            ),
+            ToolInput(
+                "truthVCF",
+                VcfIdx(),
+                prefix="--TRUTH_VCF",
+                doc="The VCF containing the truth sample",
+            ),
+            ToolInput(
+                "outputBasename",
+                Filename(),
+                prefix="--OUTPUT",
+                doc="Basename for the three metrics files that are to be written. Resulting files will be:"
+                "(1) .genotype_concordance_summary_metrics, "
+                "(2) .genotype_concordance_detail_metrics, "
+                "(3) .genotype_concordance_contingency_metrics.",
+            ),
             # *super(Gatk4GenotypeConcordanceBase, self).inputs(),
-            *self.additional_args
+            *self.additional_args,
         ]
 
     def outputs(self):
         return [
-            ToolOutput("summaryMetrics", File(), glob=WildcardSelector("*.genotype_concordance_summary_metrics")),
-            ToolOutput("detailMetrics", File(), glob=WildcardSelector("*.genotype_concordance_detail_metrics")),
-            ToolOutput("contingencyMetrics", File(), glob=WildcardSelector("*.genotype_concordance_contingency_metrics")),
+            ToolOutput(
+                "summaryMetrics",
+                File(),
+                glob=WildcardSelector("*.genotype_concordance_summary_metrics"),
+            ),
+            ToolOutput(
+                "detailMetrics",
+                File(),
+                glob=WildcardSelector("*.genotype_concordance_detail_metrics"),
+            ),
+            ToolOutput(
+                "contingencyMetrics",
+                File(),
+                glob=WildcardSelector("*.genotype_concordance_contingency_metrics"),
+            ),
             # ToolOutput("vcf", VcfIdx(optional=True), glob=WildcardSelector("*.vcf"))
         ]
 
     def metadata(self):
         from datetime import date
+
         return ToolMetadata(
             creator="Michael Franklin",
             maintainer="Michael Franklin",
@@ -97,69 +136,173 @@ Useful definitions applicable to alleles and genotypes:
 VCF Output:
     - The concordance state will be stored in the CONC_ST tag in the INFO field
     - The truth sample name will be \"truth\" and call sample name will be \"call\"  
-""".strip()
+""".strip(),
         )
 
     additional_args = [
-        ToolInput("argumentsFile", Array(File(), optional=True), prefix="--arguments_file", position=10,
-                  doc="read one or more arguments files and add them to the command line"),
-        ToolInput("callSample", String(optional=True), prefix="--CALL_SAMPLE", position=10,
-                  doc="The name of the call sample within the call VCF. Not required if only one sample exists."),
-
-        ToolInput("ignoreFilterStatus", Boolean(optional=True), prefix="--IGNORE_FILTER_STATUS",
-                  doc="Default is false. If true, filter status of sites will be ignored so that we "
-                      "include filtered sites when calculating genotype concordance."),
-        ToolInput("intersectIntervals", Boolean(optional=True), prefix="--INTERSECT_INTERVALS",
-                  doc="If true, multiple interval lists will be intersected. If false multiple lists will be unioned."),
-        ToolInput("intervals", Array(Vcf(), optional=True), prefix="--INTERVALS",
-                  doc="One or more interval list files that will be used to limit the genotype concordance. "
-                      "Note - if intervals are specified, the VCF files must be indexed."),
-        ToolInput("minDP", Float(optional=True), prefix="--MIN_DP",
-                  doc="Genotypes below this depth will have genotypes classified as LowDp."),
-        ToolInput("minGQ", Float(optional=True), prefix="--MIN_GQ",
-                  doc="Genotypes below this genotype quality will have genotypes classified as LowGq."),
-        ToolInput("treatMissingSitesAsHomeRef", Boolean(optional=True), prefix="--MISSING_SITES_HOM_REF",
-                  doc="Default is false, which follows the GA4GH Scheme. If true, missing sites in the truth \n"
-                      "set will be treated as HOM_REF sites and sites missing in both the truth and call sets "
-                      "will be true negatives. Useful when hom ref sites are left out of the truth set. "
-                      "This flag can only be used with a high confidence interval list."),
-        ToolInput("outputAllRows", Boolean(optional=True), prefix="--OUTPUT_ALL_ROWS",
-                  doc="If true, output all rows in detailed statistics even when count == 0. When false only "
-                      "output rows with non-zero counts."),
-        ToolInput("outputVcf", Boolean(optional=True), prefix="--OUTPUT_VCF",
-                  doc="Output a VCF annotated with concordance information."),
-        ToolInput("truthSample", String(optional=True), prefix="--TRUTH_SAMPLE",
-                  doc="The name of the truth sample within the truth VCF. Not required if only one sample exists."),
-        ToolInput("useVcfIndex", Boolean(optional=True), prefix="--USE_VCF_INDEX",
-                  doc="If true, use the VCF index, else iterate over the entire VCF"),
-
-        ToolInput("compressionLevel", Int(optional=True), prefix="--COMPRESSION_LEVEL", position=11,
-                  doc="Compression level for all compressed files created (e.g. BAM and GELI)."),
-        ToolInput("createIndex", Boolean(optional=True), prefix="--CREATE_INDEX", position=11,
-                  doc="Whether to create a BAM index when writing a coordinate-sorted BAM file."),
-        ToolInput("createMd5File", Boolean(optional=True), prefix="--CREATE_MD5_FILE", position=11,
-                  doc="Whether to create an MD5 digest for any BAM or FASTQ files created."),
-        ToolInput("maxRecordsInRam", Int(optional=True), prefix="--MAX_RECORDS_IN_RAM", position=11,
-                  doc="When writing SAM files that need to be sorted, this will specify the number of "
-                      "records stored in RAM before spilling to disk. Increasing this number reduces "
-                      "the number of file handles needed to sort a SAM file, and increases the amount of RAM needed."),
-        ToolInput("quiet", Boolean(optional=True), prefix="--QUIET", position=11,
-                  doc="Whether to suppress job-summary info on System.err."),
-        ToolInput("reference", File(optional=True), prefix="--REFERENCE=SEQUENCE", position=11,
-                  doc="Reference sequence file."),
-        ToolInput("tmpDir", String(optional=True), prefix="--TMP_DIR", position=11, default="/tmp/",
-                  doc="Undocumented option"),
-        ToolInput("useJdkDeflater", Boolean(optional=True), prefix="--use_jdk_deflater", position=11,
-                  doc="Whether to use the JdkDeflater (as opposed to IntelDeflater)"),
-        ToolInput("useJdkInflater", Boolean(optional=True), prefix="--use_jdk_inflater", position=11,
-                  doc="Whether to use the JdkInflater (as opposed to IntelInflater)"),
-        ToolInput("validationStringency", String(optional=True), prefix="--VALIDATION_STRINGENCY", position=11,
-                  doc="Validation stringency for all SAM files read by this program. Setting stringency to SILENT "
-                      "can improve performance when processing a BAM file in which variable-length data "
-                      "(read, qualities, tags) do not otherwise need to be decoded."
-                      "The --VALIDATION_STRINGENCY argument is an enumerated type (ValidationStringency), "
-                      "which can have one of the following values: [STRICT, LENIENT, SILENT]"),
-        ToolInput("verbosity", String(optional=True), prefix="--verbosity", position=11,
-                  doc="The --verbosity argument is an enumerated type (LogLevel), which can have "
-                      "one of the following values: [ERROR, WARNING, INFO, DEBUG]")
+        ToolInput(
+            "argumentsFile",
+            Array(File(), optional=True),
+            prefix="--arguments_file",
+            position=10,
+            doc="read one or more arguments files and add them to the command line",
+        ),
+        ToolInput(
+            "callSample",
+            String(optional=True),
+            prefix="--CALL_SAMPLE",
+            position=10,
+            doc="The name of the call sample within the call VCF. Not required if only one sample exists.",
+        ),
+        ToolInput(
+            "ignoreFilterStatus",
+            Boolean(optional=True),
+            prefix="--IGNORE_FILTER_STATUS",
+            doc="Default is false. If true, filter status of sites will be ignored so that we "
+            "include filtered sites when calculating genotype concordance.",
+        ),
+        ToolInput(
+            "intersectIntervals",
+            Boolean(optional=True),
+            prefix="--INTERSECT_INTERVALS",
+            doc="If true, multiple interval lists will be intersected. If false multiple lists will be unioned.",
+        ),
+        ToolInput(
+            "intervals",
+            Array(Vcf(), optional=True),
+            prefix="--INTERVALS",
+            doc="One or more interval list files that will be used to limit the genotype concordance. "
+            "Note - if intervals are specified, the VCF files must be indexed.",
+        ),
+        ToolInput(
+            "minDP",
+            Float(optional=True),
+            prefix="--MIN_DP",
+            doc="Genotypes below this depth will have genotypes classified as LowDp.",
+        ),
+        ToolInput(
+            "minGQ",
+            Float(optional=True),
+            prefix="--MIN_GQ",
+            doc="Genotypes below this genotype quality will have genotypes classified as LowGq.",
+        ),
+        ToolInput(
+            "treatMissingSitesAsHomeRef",
+            Boolean(optional=True),
+            prefix="--MISSING_SITES_HOM_REF",
+            doc="Default is false, which follows the GA4GH Scheme. If true, missing sites in the truth \n"
+            "set will be treated as HOM_REF sites and sites missing in both the truth and call sets "
+            "will be true negatives. Useful when hom ref sites are left out of the truth set. "
+            "This flag can only be used with a high confidence interval list.",
+        ),
+        ToolInput(
+            "outputAllRows",
+            Boolean(optional=True),
+            prefix="--OUTPUT_ALL_ROWS",
+            doc="If true, output all rows in detailed statistics even when count == 0. When false only "
+            "output rows with non-zero counts.",
+        ),
+        ToolInput(
+            "outputVcf",
+            Boolean(optional=True),
+            prefix="--OUTPUT_VCF",
+            doc="Output a VCF annotated with concordance information.",
+        ),
+        ToolInput(
+            "truthSample",
+            String(optional=True),
+            prefix="--TRUTH_SAMPLE",
+            doc="The name of the truth sample within the truth VCF. Not required if only one sample exists.",
+        ),
+        ToolInput(
+            "useVcfIndex",
+            Boolean(optional=True),
+            prefix="--USE_VCF_INDEX",
+            doc="If true, use the VCF index, else iterate over the entire VCF",
+        ),
+        ToolInput(
+            "compressionLevel",
+            Int(optional=True),
+            prefix="--COMPRESSION_LEVEL",
+            position=11,
+            doc="Compression level for all compressed files created (e.g. BAM and GELI).",
+        ),
+        ToolInput(
+            "createIndex",
+            Boolean(optional=True),
+            prefix="--CREATE_INDEX",
+            position=11,
+            doc="Whether to create a BAM index when writing a coordinate-sorted BAM file.",
+        ),
+        ToolInput(
+            "createMd5File",
+            Boolean(optional=True),
+            prefix="--CREATE_MD5_FILE",
+            position=11,
+            doc="Whether to create an MD5 digest for any BAM or FASTQ files created.",
+        ),
+        ToolInput(
+            "maxRecordsInRam",
+            Int(optional=True),
+            prefix="--MAX_RECORDS_IN_RAM",
+            position=11,
+            doc="When writing SAM files that need to be sorted, this will specify the number of "
+            "records stored in RAM before spilling to disk. Increasing this number reduces "
+            "the number of file handles needed to sort a SAM file, and increases the amount of RAM needed.",
+        ),
+        ToolInput(
+            "quiet",
+            Boolean(optional=True),
+            prefix="--QUIET",
+            position=11,
+            doc="Whether to suppress job-summary info on System.err.",
+        ),
+        ToolInput(
+            "reference",
+            File(optional=True),
+            prefix="--REFERENCE=SEQUENCE",
+            position=11,
+            doc="Reference sequence file.",
+        ),
+        ToolInput(
+            "tmpDir",
+            String(optional=True),
+            prefix="--TMP_DIR",
+            position=11,
+            default="/tmp/",
+            doc="Undocumented option",
+        ),
+        ToolInput(
+            "useJdkDeflater",
+            Boolean(optional=True),
+            prefix="--use_jdk_deflater",
+            position=11,
+            doc="Whether to use the JdkDeflater (as opposed to IntelDeflater)",
+        ),
+        ToolInput(
+            "useJdkInflater",
+            Boolean(optional=True),
+            prefix="--use_jdk_inflater",
+            position=11,
+            doc="Whether to use the JdkInflater (as opposed to IntelInflater)",
+        ),
+        ToolInput(
+            "validationStringency",
+            String(optional=True),
+            prefix="--VALIDATION_STRINGENCY",
+            position=11,
+            doc="Validation stringency for all SAM files read by this program. Setting stringency to SILENT "
+            "can improve performance when processing a BAM file in which variable-length data "
+            "(read, qualities, tags) do not otherwise need to be decoded."
+            "The --VALIDATION_STRINGENCY argument is an enumerated type (ValidationStringency), "
+            "which can have one of the following values: [STRICT, LENIENT, SILENT]",
+        ),
+        ToolInput(
+            "verbosity",
+            String(optional=True),
+            prefix="--verbosity",
+            position=11,
+            doc="The --verbosity argument is an enumerated type (LogLevel), which can have "
+            "one of the following values: [ERROR, WARNING, INFO, DEBUG]",
+        ),
     ]

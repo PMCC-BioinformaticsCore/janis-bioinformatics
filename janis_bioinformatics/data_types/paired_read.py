@@ -1,5 +1,5 @@
 from typing import Dict, List
-from janis import DataType
+from janis_core import DataType
 
 
 class SequenceReadArchivePaired(DataType):
@@ -17,7 +17,7 @@ class SequenceReadArchivePaired(DataType):
     def schema(cls) -> Dict:
         return {
             "forward-pattern": {"type": "string", "required": True},
-            "backward-pattern": {"type": "string", "required": True}
+            "backward-pattern": {"type": "string", "required": True},
         }
 
 

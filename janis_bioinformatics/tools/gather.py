@@ -1,5 +1,5 @@
 from ..data_types.bam import Bam
-from janis import File, CommandTool, ToolOutput, ToolInput
+from janis_core import File, CommandTool, ToolOutput, ToolInput
 
 
 class Gather(CommandTool):

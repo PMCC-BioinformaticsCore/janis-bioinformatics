@@ -2,7 +2,7 @@ from abc import ABC
 from datetime import datetime
 from typing import List, Dict, Any
 
-from janis import (
+from janis_core import (
     ToolOutput,
     ToolInput,
     ToolMetadata,
@@ -16,8 +16,8 @@ from janis import (
     CaptureType,
     CpuSelector,
 )
-from janis.utils import get_value_for_hints_and_ordered_resource_tuple
-from janis.unix.data_types.zipfile import ZipFile
+from janis_core import get_value_for_hints_and_ordered_resource_tuple
+from janis_unix import ZipFile
 
 from janis_bioinformatics.data_types import Fastq
 from janis_bioinformatics.tools import BioinformaticsTool
@@ -241,7 +241,7 @@ class FastQCBase(BioinformaticsTool, ABC):
 
 # from typing import Dict
 #
-# from janis import Step, ToolInput, ToolOutput
+# from janis_core import Step, ToolInput, ToolOutput
 #
 #
 # class FastQCFactory(StepFactory):

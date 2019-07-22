@@ -1,6 +1,6 @@
 from typing import List, Dict, Any
 
-from janis import (
+from janis_core import (
     ToolInput,
     Int,
     Float,
@@ -16,7 +16,7 @@ from janis import (
     Array,
     StringFormatter,
 )
-from janis.utils import get_value_for_hints_and_ordered_resource_tuple
+from janis_core import get_value_for_hints_and_ordered_resource_tuple
 
 from janis_bioinformatics.data_types import FastaWithDict, Fastq, Bam, Bed
 

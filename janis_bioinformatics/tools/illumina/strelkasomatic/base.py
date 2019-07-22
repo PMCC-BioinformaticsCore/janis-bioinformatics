@@ -2,7 +2,7 @@ from abc import ABC
 from datetime import datetime
 from typing import Dict, Any
 
-from janis import (
+from janis_core import (
     CommandTool,
     ToolInput,
     ToolOutput,
@@ -18,8 +18,8 @@ from janis import (
     CaptureType,
     StringFormatter,
 )
-from janis.unix.data_types.tsv import Tsv
-from janis.utils import get_value_for_hints_and_ordered_resource_tuple
+from janis_unix import Tsv
+from janis import get_value_for_hints_and_ordered_resource_tuple
 
 from janis_bioinformatics.data_types import (
     BamBai,

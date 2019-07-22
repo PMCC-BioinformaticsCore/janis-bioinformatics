@@ -3,11 +3,10 @@ from abc import ABC, abstractmethod
 from janis_bioinformatics.data_types import Bed
 
 from .. import BioinformaticsTool
-from janis import ToolInput, Boolean
+from janis_core import ToolInput, Boolean
 
 
 class Gatk4ToolBase(BioinformaticsTool, ABC):
-
     @staticmethod
     def tool_provider():
         return "GATK4"
@@ -23,7 +22,6 @@ class Gatk4ToolBase(BioinformaticsTool, ABC):
 
     def inputs(self):
         return [
-
             # ToolInput("pg-tag", Boolean(optional=True), prefix="--add-output-sam-program-record",
             #           doc="If true, adds a PG tag to created SAM/BAM/CRAM files.")
         ]
@@ -31,12 +29,12 @@ class Gatk4ToolBase(BioinformaticsTool, ABC):
     @staticmethod
     @abstractmethod
     def docker():
-        raise Exception("An error likely occurred when resolving the method order for docker for the Gatk classes "
-                        "or you're trying to execute the docker method of the base class (ie, don't do that). "
-                        "The method order resolution must preference Gatkbase subclasses, "
-                        "and the subclass must contain a definition for docker.")
+        raise Exception(
+            "An error likely occurred when resolving the method order for docker for the Gatk classes "
+            "or you're trying to execute the docker method of the base class (ie, don't do that). "
+            "The method order resolution must preference Gatkbase subclasses, "
+            "and the subclass must contain a definition for docker."
+        )
 
     def arguments(self):
-        return [
-
-        ]
+        return []

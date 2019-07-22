@@ -1,4 +1,4 @@
-from janis import Step, Input, Output, Array, String
+from janis_core import Step, Input, Output, Array, String
 
 from janis_bioinformatics.data_types import FastaWithDict, BamBai, BedTabix
 from janis_bioinformatics.tools import BioinformaticsWorkflow
@@ -8,14 +8,14 @@ from janis_bioinformatics.tools.illumina import StrelkaGermline_2_9_10, Manta_1_
 
 
 class IlluminaGermlineVariantCaller(BioinformaticsWorkflow):
-
     @staticmethod
     def tool_provider():
         return "Variant Callers"
 
     def __init__(self):
-        super(IlluminaGermlineVariantCaller, self).__init__("strelkaGermlineVariantCaller",
-                                                           "Strelka Germline Variant Caller", doc=None)
+        super(IlluminaGermlineVariantCaller, self).__init__(
+            "strelkaGermlineVariantCaller", "Strelka Germline Variant Caller", doc=None
+        )
 
         bam = Input("bam", BamBai())
         reference = Input("reference", FastaWithDict())
@@ -26,40 +26,42 @@ class IlluminaGermlineVariantCaller(BioinformaticsWorkflow):
         bcf_view = Step("bcf_view", BcfToolsView_1_5())
         split = Step("splitMultiAllele", SplitMultiAllele())
 
-
         # S1: Manta
-        self.add_edges([
-            (bam, manta.bam),
-            (reference, manta.reference),
-            (strelkaregions, manta.callRegions)
-        ])
+        self.add_edges(
+            [
+                (bam, manta.bam),
+                (reference, manta.reference),
+                (strelkaregions, manta.callRegions),
+            ]
+        )
 
         # S2: Strelka
-        self.add_edges([
-            (bam, strelka.bam),
-            (reference, strelka.reference),
-            (manta.candidateSmallIndels, strelka.indelCandidates),
-            (strelkaregions, strelka.callRegions)
-
-        ])
+        self.add_edges(
+            [
+                (bam, strelka.bam),
+                (reference, strelka.reference),
+                (manta.candidateSmallIndels, strelka.indelCandidates),
+                (strelkaregions, strelka.callRegions),
+            ]
+        )
 
         # S3: BcfTools Filter
         self.add_edge(strelka.variants, bcf_view.file)
-        self.add_edge(Input("filters", Array(String()), default=["PASS"]), bcf_view.applyFilters)
-
+        self.add_edge(
+            Input("filters", Array(String()), default=["PASS"]), bcf_view.applyFilters
+        )
 
         # S4: SplitMultiAllele
-        self.add_edges([
-            (reference, split.reference),
-            (bcf_view.out, split.vcf),
-        ])
+        self.add_edges([(reference, split.reference), (bcf_view.out, split.vcf)])
 
         ## Outputs
-        self.add_edges([
-            (manta.diploidSV, Output("diploid")),
-            (strelka.variants, Output("variants")),
-            (split.out, Output("out"))
-        ])
+        self.add_edges(
+            [
+                (manta.diploidSV, Output("diploid")),
+                (strelka.variants, Output("variants")),
+                (split.out, Output("out")),
+            ]
+        )
 
 
 if __name__ == "__main__":

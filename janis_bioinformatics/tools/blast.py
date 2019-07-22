@@ -1,4 +1,4 @@
-from janis import CommandTool, ToolInput, File, String, ToolOutput, Directory, Int
+from janis_core import CommandTool, ToolInput, File, String, ToolOutput, Directory, Int
 
 
 class Blast(CommandTool):

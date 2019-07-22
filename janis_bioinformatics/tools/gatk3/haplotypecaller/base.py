@@ -1,7 +1,17 @@
 from abc import ABC
 
-from janis import String, Int, File, ToolOutput, ToolInput, \
-    ToolArgument, Boolean, Double, Array, Filename
+from janis_core import (
+    String,
+    Int,
+    File,
+    ToolOutput,
+    ToolInput,
+    ToolArgument,
+    Boolean,
+    Double,
+    Array,
+    Filename,
+)
 from janis_bioinformatics.data_types.bam import Bam
 from janis_bioinformatics.data_types import Bed
 from janis_bioinformatics.data_types import FastaWithDict
@@ -10,7 +20,6 @@ from janis_bioinformatics.tools import Gatk3ToolBase
 
 
 class Gatk3HaplotypeCallerBase(Gatk3ToolBase, ABC):
-
     @staticmethod
     def analysis_type():
         return "HaplotypeCaller"
@@ -23,36 +32,69 @@ class Gatk3HaplotypeCallerBase(Gatk3ToolBase, ABC):
         return [
             *super(Gatk3HaplotypeCallerBase, self).inputs(),
             *Gatk3HaplotypeCallerBase.optional_args,
-            ToolInput("inputRead", Bam(), doc="BAM/SAM/CRAM file containing reads", prefix="--input"),
-            ToolInput("reference", FastaWithDict(), position=5, prefix="-R", doc="Reference sequence file"),
-            ToolInput("outputFilename", String(optional=True), position=8, prefix="-o",
-                      doc="File to which variants should be written"),
-            ToolInput("bamOutput", Filename(), position=48, prefix="--bamout",
-                      doc="File to which assembled haplotypes should be written (prefix previously --bam-output)"),
-            ToolInput("dbsnp", VcfIdx(), position=7, prefix="--dbsnp", doc="A dbSNP VCF file."),
-            ToolInput("intervals", Bed(), position=60, prefix="-L",
-                      doc="(Previously: .bedFile) One or more genomic intervals over which to operate")
+            ToolInput(
+                "inputRead",
+                Bam(),
+                doc="BAM/SAM/CRAM file containing reads",
+                prefix="--input",
+            ),
+            ToolInput(
+                "reference",
+                FastaWithDict(),
+                position=5,
+                prefix="-R",
+                doc="Reference sequence file",
+            ),
+            ToolInput(
+                "outputFilename",
+                String(optional=True),
+                position=8,
+                prefix="-o",
+                doc="File to which variants should be written",
+            ),
+            ToolInput(
+                "bamOutput",
+                Filename(),
+                position=48,
+                prefix="--bamout",
+                doc="File to which assembled haplotypes should be written (prefix previously --bam-output)",
+            ),
+            ToolInput(
+                "dbsnp", VcfIdx(), position=7, prefix="--dbsnp", doc="A dbSNP VCF file."
+            ),
+            ToolInput(
+                "intervals",
+                Bed(),
+                position=60,
+                prefix="-L",
+                doc="(Previously: .bedFile) One or more genomic intervals over which to operate",
+            ),
         ]
 
     def outputs(self):
         return [
-            ToolOutput("out", Vcf(), glob='$(inputs.outputFilename)',
-                       doc="""
+            ToolOutput(
+                "out",
+                Vcf(),
+                glob="$(inputs.outputFilename)",
+                doc="""
     Either a VCF or GVCF file with raw, unfiltered SNP and indel calls. Regular VCFs must be filtered 
     either by variant recalibration (Best Practice) or hard-filtering before use in downstream analyses. 
     If using the GVCF workflow, the output is a GVCF file that must first be run through GenotypeGVCFs 
-    and then filtering before further analysis""".strip()),
-
-            ToolOutput("bamOut", Bam(), glob='$(inputs.bamOutput)',
-                       doc="File to which assembled haplotypes should be written")
+    and then filtering before further analysis""".strip(),
+            ),
+            ToolOutput(
+                "bamOut",
+                Bam(),
+                glob="$(inputs.bamOutput)",
+                doc="File to which assembled haplotypes should be written",
+            ),
         ]
-
 
     # def base_command(self):
     #     base = super(GatkHaplotypeCallerBase, self).base_command()
     #     if isinstance(base, list): base = base[0]
     #     return [base, "haplotypecaller"]
-
 
     def doc(self):
         return """
@@ -83,147 +125,377 @@ class Gatk3HaplotypeCallerBase(Gatk3ToolBase, ABC):
 """.strip()
 
     def arguments(self):
-        return [*super(Gatk3HaplotypeCallerBase, self).arguments(),
-                ToolArgument("HaplotypeCaller", position=4, prefix="-T")]
+        return [
+            *super(Gatk3HaplotypeCallerBase, self).arguments(),
+            ToolArgument("HaplotypeCaller", position=4, prefix="-T"),
+        ]
 
     optional_args = [
-        ToolInput("max_alternate_alleles", Int(optional=True), position=25,
-                  prefix="--max_alternate_alleles",
-                  doc="Maximum number of alternate alleles to genotype"),
-        ToolInput("activeProbabilityThreshold", Double(optional=True), position=58,
-                  prefix="--activeProbabilityThreshold",
-                  doc="Threshold for the probability of a profile state being active."),
-        ToolInput("alleles", Array(String(), optional=True), position=53,
-                  doc="The set of alleles at which to genotype when --genotyping_mode is GENOTYPE_GIVEN_ALLELES"),
-
-        ToolInput("stand_emit_conf", Double(optional=True), position=11,
-                  prefix="--standard_min_confidence_threshold_for_emitting",
-                  doc="The minimum phred-scaled confidence threshold at which variants should be emitted "
-                      "(and filtered with LowQual if less than the calling threshold)"),
-        ToolInput("kmerSize", Array(Int(), optional=True), position=26,
-                  doc="Kmer size to use in the read threading assembler"),
-        ToolInput("minDanglingBranchLength", Int(optional=True), position=21,
-                  prefix="--minDanglingBranchLength",
-                  doc="Minimum length of a dangling branch to attempt recovery"),
-        ToolInput("bandPassSigma", Double(optional=True), position=46, prefix="--consensus",
-                  doc="The sigma of the band pass filter Gaussian kernel; "
-                      "if not provided defaults to Walker annotated default"),
-        ToolInput("maxReadsInRegionPerSample", Int(optional=True), position=23,
-                  prefix="--maxReadsInRegionPerSample", doc="Maximum reads in an active region"),
-        ToolInput("dontIncreaseKmerSizesForCycles", Boolean(optional=True), position=39,
-                  prefix="--dontIncreaseKmerSizesForCycles",
-                  doc="Disable iterating over kmer sizes when graph cycles are detected"),
-        ToolInput("globalMAPQ", Int(optional=True), position=15,
-                  prefix="--phredScaledGlobalReadMismappingRate",
-                  doc="The global assumed mismapping rate for reads"),
+        ToolInput(
+            "max_alternate_alleles",
+            Int(optional=True),
+            position=25,
+            prefix="--max_alternate_alleles",
+            doc="Maximum number of alternate alleles to genotype",
+        ),
+        ToolInput(
+            "activeProbabilityThreshold",
+            Double(optional=True),
+            position=58,
+            prefix="--activeProbabilityThreshold",
+            doc="Threshold for the probability of a profile state being active.",
+        ),
+        ToolInput(
+            "alleles",
+            Array(String(), optional=True),
+            position=53,
+            doc="The set of alleles at which to genotype when --genotyping_mode is GENOTYPE_GIVEN_ALLELES",
+        ),
+        ToolInput(
+            "stand_emit_conf",
+            Double(optional=True),
+            position=11,
+            prefix="--standard_min_confidence_threshold_for_emitting",
+            doc="The minimum phred-scaled confidence threshold at which variants should be emitted "
+            "(and filtered with LowQual if less than the calling threshold)",
+        ),
+        ToolInput(
+            "kmerSize",
+            Array(Int(), optional=True),
+            position=26,
+            doc="Kmer size to use in the read threading assembler",
+        ),
+        ToolInput(
+            "minDanglingBranchLength",
+            Int(optional=True),
+            position=21,
+            prefix="--minDanglingBranchLength",
+            doc="Minimum length of a dangling branch to attempt recovery",
+        ),
+        ToolInput(
+            "bandPassSigma",
+            Double(optional=True),
+            position=46,
+            prefix="--consensus",
+            doc="The sigma of the band pass filter Gaussian kernel; "
+            "if not provided defaults to Walker annotated default",
+        ),
+        ToolInput(
+            "maxReadsInRegionPerSample",
+            Int(optional=True),
+            position=23,
+            prefix="--maxReadsInRegionPerSample",
+            doc="Maximum reads in an active region",
+        ),
+        ToolInput(
+            "dontIncreaseKmerSizesForCycles",
+            Boolean(optional=True),
+            position=39,
+            prefix="--dontIncreaseKmerSizesForCycles",
+            doc="Disable iterating over kmer sizes when graph cycles are detected",
+        ),
+        ToolInput(
+            "globalMAPQ",
+            Int(optional=True),
+            position=15,
+            prefix="--phredScaledGlobalReadMismappingRate",
+            doc="The global assumed mismapping rate for reads",
+        ),
         ToolInput("java_arg", String(optional=True), position=1, default="-Xmx4g"),
-        ToolInput("min_base_quality_score", Int(optional=True), position=22,
-                  prefix="--min_base_quality_score",
-                  doc="Minimum base quality required to consider a base for calling"),
-        ToolInput("excludeAnnotation", Array(String(), optional=True), position=37,
-                  doc="One or more specific annotations to exclude"),
-        ToolInput("allowNonUniqueKmersInRef", Boolean(optional=True), position=52,
-                  prefix="--allowNonUniqueKmersInRef",
-                  doc="Allow graphs that have non-unique kmers in the reference"),
-        ToolInput("group", Array(String(), optional=True), position=32, doc="Input prior for calls"),
-        ToolInput("pcr_indel_model", String(optional=True), position=16, prefix="--pcr_indel_model",
-                  doc="The PCR indel model to use"),
-        ToolInput("stand_call_conf", Double(optional=True), position=12,
-                  prefix="--standard_min_confidence_threshold_for_calling",
-                  doc="The minimum phred-scaled confidence threshold at which variants should be called"),
-        ToolInput("activeRegionExtension", Int(optional=True), position=57,
-                  prefix="--activeRegionExtension",
-                  doc="The active region extension; "
-                      "if not provided defaults to Walker annotated default"),
-        ToolInput("activeRegionOut", File(optional=True), position=55, prefix="--activeRegionOut",
-                  doc="Output the active region to this IGV formatted file"),
-        ToolInput("useAllelesTrigger", Boolean(optional=True), position=10,
-                  prefix="--useAllelesTrigger",
-                  doc="Use additional trigger on variants found in an external alleles file"),
-        ToolInput("forceActive", Boolean(optional=True), position=36, prefix="--forceActive",
-                  doc="If provided, all bases will be tagged as active"),
-        ToolInput("sample_name", String(optional=True), position=14, prefix="--sample_name",
-                  doc="Use additional trigger on variants found in an external alleles file"),
-        ToolInput("useFilteredReadsForAnnotations", Boolean(optional=True), position=9,
-                  prefix="--useFilteredReadsForAnnotations",
-                  doc="Use the contamination-filtered read maps for the"
-                      " purposes of annotating variants"),
-        ToolInput("disableOptimizations", Boolean(optional=True), position=41,
-                  prefix="--disableOptimizations",
-                  doc="Dont skip calculations in ActiveRegions with no variants"),
-        ToolInput("minPruning", Int(optional=True), position=20, prefix="--minPruning",
-                  doc="Minimum support to not prune paths in the graph"),
-        ToolInput("activeRegionMaxSize", Int(optional=True), position=56,
-                  prefix="--activeRegionMaxSize",
-                  doc="The active region maximum size; "
-                      "if not provided defaults to Walker annotated default"),
-        ToolInput("output_mode", String(optional=True), position=17, prefix="--output_mode",
-                  doc="The PCR indel model to use"),
-        ToolInput("annotateNDA", Boolean(optional=True), position=50, prefix="--annotateNDA",
-                  doc="If provided, we will annotate records with the number of alternate alleles that "
-                      "were discovered (but not necessarily genotyped) at a given site"),
-        ToolInput("ERCIS", Int(optional=True), position=28, prefix="--indelSizeToEliminateInRefModel",
-                  doc="The size of an indel to check for in the reference model"),
-        ToolInput("GVCFGQBands", Array(Int(), optional=True), position=31, doc="Input prior for calls"),
-        ToolInput("allSitePLs", Boolean(optional=True), position=51, prefix="--allSitePLs",
-                  doc="Annotate all sites with PLs"),
-        ToolInput("numPruningSamples", Int(optional=True), position=18, prefix="--numPruningSamples",
-                  doc="Number of samples that must pass the minPruning threshold"),
-        ToolInput("gcpHMM", Int(optional=True), position=35, prefix="--gcpHMM",
-                  doc="Flat gap continuation penalty for use in the Pair HMM"),
-        ToolInput("contamination", File(optional=True), position=43,
-                  prefix="--contamination_fraction_to_filter",
-                  doc="Tab-separated File containing fraction of contamination in sequencing data "
-                      "(per sample) to aggressively remove. "
-                      "Format should be (Contamination is double) per line; No header."),
-        ToolInput("graphOutput", File(optional=True), position=33, prefix="--graphOutput",
-                  doc="Write debug assembly graph information to this file"),
-        ToolInput("dontTrimActiveRegions", Boolean(optional=True), position=39,
-                  prefix="--dontTrimActiveRegions",
-                  doc="If specified, we will not trim down the active region from the full "
-                      "region (active + extension) to just the active interval for genotyping"),
-        ToolInput("annotation", Array(String(), optional=True), position=49,
-                  doc="One or more specific annotations to apply to variant calls"),
-        ToolInput("bamWriterType", String(optional=True), position=47, prefix="--bamWriterType",
-                  doc="Which haplotypes should be written to the BAM."),
-        ToolInput("genotyping_mode", String(optional=True), position=34, prefix="--genotyping_mode",
-                  doc="The --genotyping_mode argument is an enumerated type (GenotypingOutputMode), "
-                      "which can have one of the following values"),
-        ToolInput("activityProfileOut", File(optional=True), position=54,
-                  prefix="--activityProfileOut",
-                  doc="Output the raw activity profile results in IGV format"),
-        ToolInput("input_prior", Array(Double(), optional=True), position=27, doc="Input prior for calls"),
-        ToolInput("indel_heterozygosity", Double(optional=True), position=29,
-                  prefix="--indel_heterozygosity", doc="Heterozygosity for indel calling"),
-        ToolInput("emitRefConfidenceDBSN", String(optional=True), position=38,
-                  prefix="--emitRefConfidenceDBSN",
-                  doc="Mode for emitting reference confidence scores"),
-        ToolInput("consensus", Boolean(optional=True), position=44, prefix="--consensus",
-                  doc="Print out very verbose debug information about each triggering active region"),
-        ToolInput("heterozygosity", Double(optional=True), position=30, prefix="--heterozygosity",
-                  doc="Heterozygosity for indel calling"),
-        ToolInput("minReadsPerAlignmentStart", Int(optional=True), position=19,
-                  prefix="--minReadsPerAlignmentStart",
-                  doc="Minimum number of reads sharing the same alignment start for each "
-                      "genomic location in an active region"),
-        ToolInput("sample_ploidy", Int(optional=True), position=13, prefix="--sample_ploidy",
-                  doc="Use additional trigger on variants found in an external alleles file"),
-        ToolInput("debug", Boolean(optional=True), position=42, prefix="--debug",
-                  doc="Print out very verbose debug information about each triggering active region"),
-        ToolInput("doNotRunPhysicalPhasing", Boolean(optional=True), position=40,
-                  prefix="--doNotRunPhysicalPhasing",
-                  doc="As of GATK 3.3, HaplotypeCaller outputs physical (read-based) information "
-                      "(see version 3.3 release notes and documentation for details). "
-                      "This argument disables that behavior."),
-        ToolInput("comp", Array(String(), optional=True), position=45,
-                  doc="comp binds reference ordered data. "
-                      "This argument supports ROD files of the following types BCF2, VCF, VCF3"),
-        ToolInput("maxNumHaplotypesInPopulation", Int(optional=True), position=24,
-                  prefix="--maxNumHaplotypesInPopulation",
-                  doc="Maximum number of haplotypes to consider for your population"),
+        ToolInput(
+            "min_base_quality_score",
+            Int(optional=True),
+            position=22,
+            prefix="--min_base_quality_score",
+            doc="Minimum base quality required to consider a base for calling",
+        ),
+        ToolInput(
+            "excludeAnnotation",
+            Array(String(), optional=True),
+            position=37,
+            doc="One or more specific annotations to exclude",
+        ),
+        ToolInput(
+            "allowNonUniqueKmersInRef",
+            Boolean(optional=True),
+            position=52,
+            prefix="--allowNonUniqueKmersInRef",
+            doc="Allow graphs that have non-unique kmers in the reference",
+        ),
+        ToolInput(
+            "group",
+            Array(String(), optional=True),
+            position=32,
+            doc="Input prior for calls",
+        ),
+        ToolInput(
+            "pcr_indel_model",
+            String(optional=True),
+            position=16,
+            prefix="--pcr_indel_model",
+            doc="The PCR indel model to use",
+        ),
+        ToolInput(
+            "stand_call_conf",
+            Double(optional=True),
+            position=12,
+            prefix="--standard_min_confidence_threshold_for_calling",
+            doc="The minimum phred-scaled confidence threshold at which variants should be called",
+        ),
+        ToolInput(
+            "activeRegionExtension",
+            Int(optional=True),
+            position=57,
+            prefix="--activeRegionExtension",
+            doc="The active region extension; "
+            "if not provided defaults to Walker annotated default",
+        ),
+        ToolInput(
+            "activeRegionOut",
+            File(optional=True),
+            position=55,
+            prefix="--activeRegionOut",
+            doc="Output the active region to this IGV formatted file",
+        ),
+        ToolInput(
+            "useAllelesTrigger",
+            Boolean(optional=True),
+            position=10,
+            prefix="--useAllelesTrigger",
+            doc="Use additional trigger on variants found in an external alleles file",
+        ),
+        ToolInput(
+            "forceActive",
+            Boolean(optional=True),
+            position=36,
+            prefix="--forceActive",
+            doc="If provided, all bases will be tagged as active",
+        ),
+        ToolInput(
+            "sample_name",
+            String(optional=True),
+            position=14,
+            prefix="--sample_name",
+            doc="Use additional trigger on variants found in an external alleles file",
+        ),
+        ToolInput(
+            "useFilteredReadsForAnnotations",
+            Boolean(optional=True),
+            position=9,
+            prefix="--useFilteredReadsForAnnotations",
+            doc="Use the contamination-filtered read maps for the"
+            " purposes of annotating variants",
+        ),
+        ToolInput(
+            "disableOptimizations",
+            Boolean(optional=True),
+            position=41,
+            prefix="--disableOptimizations",
+            doc="Dont skip calculations in ActiveRegions with no variants",
+        ),
+        ToolInput(
+            "minPruning",
+            Int(optional=True),
+            position=20,
+            prefix="--minPruning",
+            doc="Minimum support to not prune paths in the graph",
+        ),
+        ToolInput(
+            "activeRegionMaxSize",
+            Int(optional=True),
+            position=56,
+            prefix="--activeRegionMaxSize",
+            doc="The active region maximum size; "
+            "if not provided defaults to Walker annotated default",
+        ),
+        ToolInput(
+            "output_mode",
+            String(optional=True),
+            position=17,
+            prefix="--output_mode",
+            doc="The PCR indel model to use",
+        ),
+        ToolInput(
+            "annotateNDA",
+            Boolean(optional=True),
+            position=50,
+            prefix="--annotateNDA",
+            doc="If provided, we will annotate records with the number of alternate alleles that "
+            "were discovered (but not necessarily genotyped) at a given site",
+        ),
+        ToolInput(
+            "ERCIS",
+            Int(optional=True),
+            position=28,
+            prefix="--indelSizeToEliminateInRefModel",
+            doc="The size of an indel to check for in the reference model",
+        ),
+        ToolInput(
+            "GVCFGQBands",
+            Array(Int(), optional=True),
+            position=31,
+            doc="Input prior for calls",
+        ),
+        ToolInput(
+            "allSitePLs",
+            Boolean(optional=True),
+            position=51,
+            prefix="--allSitePLs",
+            doc="Annotate all sites with PLs",
+        ),
+        ToolInput(
+            "numPruningSamples",
+            Int(optional=True),
+            position=18,
+            prefix="--numPruningSamples",
+            doc="Number of samples that must pass the minPruning threshold",
+        ),
+        ToolInput(
+            "gcpHMM",
+            Int(optional=True),
+            position=35,
+            prefix="--gcpHMM",
+            doc="Flat gap continuation penalty for use in the Pair HMM",
+        ),
+        ToolInput(
+            "contamination",
+            File(optional=True),
+            position=43,
+            prefix="--contamination_fraction_to_filter",
+            doc="Tab-separated File containing fraction of contamination in sequencing data "
+            "(per sample) to aggressively remove. "
+            "Format should be (Contamination is double) per line; No header.",
+        ),
+        ToolInput(
+            "graphOutput",
+            File(optional=True),
+            position=33,
+            prefix="--graphOutput",
+            doc="Write debug assembly graph information to this file",
+        ),
+        ToolInput(
+            "dontTrimActiveRegions",
+            Boolean(optional=True),
+            position=39,
+            prefix="--dontTrimActiveRegions",
+            doc="If specified, we will not trim down the active region from the full "
+            "region (active + extension) to just the active interval for genotyping",
+        ),
+        ToolInput(
+            "annotation",
+            Array(String(), optional=True),
+            position=49,
+            doc="One or more specific annotations to apply to variant calls",
+        ),
+        ToolInput(
+            "bamWriterType",
+            String(optional=True),
+            position=47,
+            prefix="--bamWriterType",
+            doc="Which haplotypes should be written to the BAM.",
+        ),
+        ToolInput(
+            "genotyping_mode",
+            String(optional=True),
+            position=34,
+            prefix="--genotyping_mode",
+            doc="The --genotyping_mode argument is an enumerated type (GenotypingOutputMode), "
+            "which can have one of the following values",
+        ),
+        ToolInput(
+            "activityProfileOut",
+            File(optional=True),
+            position=54,
+            prefix="--activityProfileOut",
+            doc="Output the raw activity profile results in IGV format",
+        ),
+        ToolInput(
+            "input_prior",
+            Array(Double(), optional=True),
+            position=27,
+            doc="Input prior for calls",
+        ),
+        ToolInput(
+            "indel_heterozygosity",
+            Double(optional=True),
+            position=29,
+            prefix="--indel_heterozygosity",
+            doc="Heterozygosity for indel calling",
+        ),
+        ToolInput(
+            "emitRefConfidenceDBSN",
+            String(optional=True),
+            position=38,
+            prefix="--emitRefConfidenceDBSN",
+            doc="Mode for emitting reference confidence scores",
+        ),
+        ToolInput(
+            "consensus",
+            Boolean(optional=True),
+            position=44,
+            prefix="--consensus",
+            doc="Print out very verbose debug information about each triggering active region",
+        ),
+        ToolInput(
+            "heterozygosity",
+            Double(optional=True),
+            position=30,
+            prefix="--heterozygosity",
+            doc="Heterozygosity for indel calling",
+        ),
+        ToolInput(
+            "minReadsPerAlignmentStart",
+            Int(optional=True),
+            position=19,
+            prefix="--minReadsPerAlignmentStart",
+            doc="Minimum number of reads sharing the same alignment start for each "
+            "genomic location in an active region",
+        ),
+        ToolInput(
+            "sample_ploidy",
+            Int(optional=True),
+            position=13,
+            prefix="--sample_ploidy",
+            doc="Use additional trigger on variants found in an external alleles file",
+        ),
+        ToolInput(
+            "debug",
+            Boolean(optional=True),
+            position=42,
+            prefix="--debug",
+            doc="Print out very verbose debug information about each triggering active region",
+        ),
+        ToolInput(
+            "doNotRunPhysicalPhasing",
+            Boolean(optional=True),
+            position=40,
+            prefix="--doNotRunPhysicalPhasing",
+            doc="As of GATK 3.3, HaplotypeCaller outputs physical (read-based) information "
+            "(see version 3.3 release notes and documentation for details). "
+            "This argument disables that behavior.",
+        ),
+        ToolInput(
+            "comp",
+            Array(String(), optional=True),
+            position=45,
+            doc="comp binds reference ordered data. "
+            "This argument supports ROD files of the following types BCF2, VCF, VCF3",
+        ),
+        ToolInput(
+            "maxNumHaplotypesInPopulation",
+            Int(optional=True),
+            position=24,
+            prefix="--maxNumHaplotypesInPopulation",
+            doc="Maximum number of haplotypes to consider for your population",
+        ),
         ToolInput("threads", Int(optional=True), position=56, prefix="-nct"),
-        ToolInput("emitRefConfidence", String(optional=True), position=61, prefix="--emitRefConfidence",
-                  default="NONE")
+        ToolInput(
+            "emitRefConfidence",
+            String(optional=True),
+            position=61,
+            prefix="--emitRefConfidence",
+            default="NONE",
+        ),
     ]
 
 

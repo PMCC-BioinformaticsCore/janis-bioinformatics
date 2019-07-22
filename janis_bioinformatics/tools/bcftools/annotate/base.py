@@ -2,10 +2,10 @@ from abc import ABC
 from typing import Dict, Any
 
 from ..bcftoolstoolbase import BcfToolsToolBase
-from janis.utils import get_value_for_hints_and_ordered_resource_tuple
+from janis_core import get_value_for_hints_and_ordered_resource_tuple
 from janis_bioinformatics.data_types import Vcf
 
-from janis import (
+from janis_core import (
     ToolInput,
     File,
     Boolean,

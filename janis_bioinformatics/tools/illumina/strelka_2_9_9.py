@@ -1,9 +1,8 @@
 from abc import ABC
-from janis import CommandTool
+from janis_core import CommandTool
 
 
 class Strelka_2_9_9(CommandTool):
-
     @staticmethod
     def tool_provider():
         return "Illumina"

@@ -1,13 +1,22 @@
 from abc import ABC
 
-from janis import ToolInput, Filename, Int, String, Boolean, ToolOutput, Array, InputSelector, WildcardSelector
+from janis_core import (
+    ToolInput,
+    Filename,
+    Int,
+    String,
+    Boolean,
+    ToolOutput,
+    Array,
+    InputSelector,
+    WildcardSelector,
+)
 from janis_bioinformatics.data_types.bam import Bam
 from janis_bioinformatics.tools.samtools.samtoolstoolbase import SamToolsToolBase
-from janis.utils.metadata import ToolMetadata
+from janis_core import ToolMetadata
 
 
 class SamToolsSortBase(SamToolsToolBase, ABC):
-
     @staticmethod
     def tool():
         return "SamToolsSort"
@@ -20,20 +29,27 @@ class SamToolsSortBase(SamToolsToolBase, ABC):
         return [
             *super(SamToolsSortBase, self).inputs(),
             *SamToolsSortBase.additional_inputs,
-
             ToolInput("bam", Bam(), position=10),
-
-            ToolInput("outputFilename", Filename(extension=".bam"), position=5, prefix="-o",
-                      doc="Output to FILE [stdout]."),
+            ToolInput(
+                "outputFilename",
+                Filename(extension=".bam"),
+                position=5,
+                prefix="-o",
+                doc="Output to FILE [stdout].",
+            ),
         ]
 
     def outputs(self):
         return [
             ToolOutput("out", Bam(), glob=InputSelector("outputFilename")),
-            ToolOutput("temporaryOutputs", Array(Bam(), optional=True), glob=WildcardSelector("*.tmp.*.bam"),
-                       doc="By default, any temporary files are written alongside the output file, "
-                           "as out.bam.tmp.nnnn.bam, or if output is to standard output, "
-                           "in the current directory as samtools.mmm.mmm.tmp.nnnn.bam.")
+            ToolOutput(
+                "temporaryOutputs",
+                Array(Bam(), optional=True),
+                glob=WildcardSelector("*.tmp.*.bam"),
+                doc="By default, any temporary files are written alongside the output file, "
+                "as out.bam.tmp.nnnn.bam, or if output is to standard output, "
+                "in the current directory as samtools.mmm.mmm.tmp.nnnn.bam.",
+            ),
         ]
 
     def friendly_name(self):
@@ -41,6 +57,7 @@ class SamToolsSortBase(SamToolsToolBase, ABC):
 
     def metadata(self):
         from datetime import date
+
         return ToolMetadata(
             creator="Michael Franklin",
             maintainer="Michael Franklin",
@@ -49,7 +66,7 @@ class SamToolsSortBase(SamToolsToolBase, ABC):
             dateUpdated=date(2019, 1, 24),
             institution="Samtools",
             doi=None,
-            citation=None, # find citation
+            citation=None,  # find citation
             keywords=["samtools", "sort"],
             documentationUrl="http://www.htslib.org/doc/samtools.html#DESCRIPTION",
             documentation="""Ensure SAMTOOLS.SORT is inheriting from parent metadata
@@ -98,33 +115,57 @@ When the -n option is not present, reads are sorted by reference (according to t
     
     This has now been removed. The previous out.prefix argument (and -f option, if any) 
     should be changed to an appropriate combination of -T PREFIX and -o FILE. The previous -o 
-    option should be removed, as output defaults to standard output."""
+    option should be removed, as output defaults to standard output.""",
         )
 
     additional_inputs = [
-        ToolInput("compression", Int(optional=True), prefix="-l",
-                  doc="Set the desired compression level for the final output file, ranging from "
-                      "0 (uncompressed) or 1 (fastest but minimal compression) to 9 (best compression "
-                      "but slowest to write), similarly to gzip(1)'s compression level setting.\n"
-                      "If -l is not used, the default compression level will apply."),
-        ToolInput("maximumMemory", String(optional=True), prefix="-m",
-                  doc="Approximately the maximum required memory per thread, specified  either in bytes or "
-                      "with a K, M, or G suffix [768 MiB]. "
-                      "To prevent sort from creating a huge number of temporary files, "
-                      "it enforces a minimum value of 1M for this setting."),
-        ToolInput("sortByReadNames", Boolean(optional=True), prefix="-n",
-                  doc="Sort by read names (i.e., the QNAME field) rather than by chromosomal coordinates."),
-        ToolInput("outputType", String(optional=True), prefix="-O",
-                  doc="Write the final output as sam, bam, or cram. By default, samtools tries "
-                      "to select a format based on the -o filename extension; if output is to "
-                      "standard output or no format can be deduced, bam is selected."),
-        ToolInput("temporaryFilesPrefix", String(optional=True), prefix="-T",
-                  doc="Write temporary files to PREFIX.nnnn.bam, or if the specified PREFIX is an "
-                      "existing directory, to PREFIX/samtools.mmm.mmm.tmp.nnnn.bam, where mmm is unique "
-                      "to this invocation of the sort command.\n"
-                      "By default, any temporary files are written alongside the output file, "
-                      "as out.bam.tmp.nnnn.bam, or if output is to standard output, in the current "
-                      "directory as samtools.mmm.mmm.tmp.nnnn.bam."),
-        ToolInput("threads", Int(optional=True), prefix="-@",
-                  doc="Set number of sorting and compression threads. By default, operation is single-threaded.")
+        ToolInput(
+            "compression",
+            Int(optional=True),
+            prefix="-l",
+            doc="Set the desired compression level for the final output file, ranging from "
+            "0 (uncompressed) or 1 (fastest but minimal compression) to 9 (best compression "
+            "but slowest to write), similarly to gzip(1)'s compression level setting.\n"
+            "If -l is not used, the default compression level will apply.",
+        ),
+        ToolInput(
+            "maximumMemory",
+            String(optional=True),
+            prefix="-m",
+            doc="Approximately the maximum required memory per thread, specified  either in bytes or "
+            "with a K, M, or G suffix [768 MiB]. "
+            "To prevent sort from creating a huge number of temporary files, "
+            "it enforces a minimum value of 1M for this setting.",
+        ),
+        ToolInput(
+            "sortByReadNames",
+            Boolean(optional=True),
+            prefix="-n",
+            doc="Sort by read names (i.e., the QNAME field) rather than by chromosomal coordinates.",
+        ),
+        ToolInput(
+            "outputType",
+            String(optional=True),
+            prefix="-O",
+            doc="Write the final output as sam, bam, or cram. By default, samtools tries "
+            "to select a format based on the -o filename extension; if output is to "
+            "standard output or no format can be deduced, bam is selected.",
+        ),
+        ToolInput(
+            "temporaryFilesPrefix",
+            String(optional=True),
+            prefix="-T",
+            doc="Write temporary files to PREFIX.nnnn.bam, or if the specified PREFIX is an "
+            "existing directory, to PREFIX/samtools.mmm.mmm.tmp.nnnn.bam, where mmm is unique "
+            "to this invocation of the sort command.\n"
+            "By default, any temporary files are written alongside the output file, "
+            "as out.bam.tmp.nnnn.bam, or if output is to standard output, in the current "
+            "directory as samtools.mmm.mmm.tmp.nnnn.bam.",
+        ),
+        ToolInput(
+            "threads",
+            Int(optional=True),
+            prefix="-@",
+            doc="Set number of sorting and compression threads. By default, operation is single-threaded.",
+        ),
     ]

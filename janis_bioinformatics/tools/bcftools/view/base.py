@@ -1,8 +1,8 @@
 from abc import ABC
 from typing import List, Dict, Any
 
-from janis.utils import get_value_for_hints_and_ordered_resource_tuple
-from janis import (
+from janis_core import get_value_for_hints_and_ordered_resource_tuple
+from janis_core import (
     ToolOutput,
     ToolInput,
     Boolean,
@@ -16,7 +16,7 @@ from janis import (
 )
 from janis_bioinformatics.data_types import Vcf
 from ..bcftoolstoolbase import BcfToolsToolBase
-from janis.utils.metadata import ToolMetadata
+from janis_core import ToolMetadata
 
 
 CORES_TUPLE = [

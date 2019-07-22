@@ -1,7 +1,7 @@
 from abc import ABC
 from typing import Dict, Any
 
-from janis import (
+from janis_core import (
     ToolInput,
     Filename,
     ToolOutput,
@@ -12,10 +12,10 @@ from janis import (
     Boolean,
     InputSelector,
     CaptureType,
+    get_value_for_hints_and_ordered_resource_tuple,
+    ToolMetadata,
 )
-from janis.unix.data_types.tsv import Tsv
-from janis.utils import get_value_for_hints_and_ordered_resource_tuple
-from janis.utils.metadata import ToolMetadata
+from janis_unix import Tsv
 
 from janis_bioinformatics.data_types import BamBai
 from ..gatk4toolbase import Gatk4ToolBase

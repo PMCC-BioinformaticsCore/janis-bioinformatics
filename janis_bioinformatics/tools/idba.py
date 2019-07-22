@@ -1,4 +1,4 @@
-from janis import CommandTool, ToolInput, File, String, ToolOutput
+from janis_core import CommandTool, ToolInput, File, String, ToolOutput
 
 
 class Idba(CommandTool):

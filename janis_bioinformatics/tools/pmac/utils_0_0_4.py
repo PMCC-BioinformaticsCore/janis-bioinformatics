@@ -1,5 +1,5 @@
 from abc import ABC
-from janis import CommandTool
+from janis_core import CommandTool
 
 
 class PeterMacUtils_0_0_4(CommandTool, ABC):

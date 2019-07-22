@@ -1,6 +1,15 @@
 from abc import ABC
 
-from janis import ToolInput, File, ToolOutput, ToolArgument, Array, String, Boolean, Int
+from janis_core import (
+    ToolInput,
+    File,
+    ToolOutput,
+    ToolArgument,
+    Array,
+    String,
+    Boolean,
+    Int,
+)
 from janis_bioinformatics.data_types.bampair import BamPair
 from janis_bioinformatics.data_types import Bed
 from janis_bioinformatics.data_types import FastaWithDict
@@ -8,7 +17,6 @@ from janis_bioinformatics.tools import Gatk3ToolBase
 
 
 class Gatk3PrintReadsBase(Gatk3ToolBase, ABC):
-
     @staticmethod
     def analysis_type():
         return "PrintReads"
@@ -20,15 +28,23 @@ class Gatk3PrintReadsBase(Gatk3ToolBase, ABC):
     def inputs(self):
         return [
             *super(Gatk3PrintReadsBase, self).inputs(),
-            ToolInput("inputBam", BamPair(), position=6, prefix="-I",
-                      doc="BAM/SAM/CRAM file containing reads"),
-
+            ToolInput(
+                "inputBam",
+                BamPair(),
+                position=6,
+                prefix="-I",
+                doc="BAM/SAM/CRAM file containing reads",
+            ),
             ToolInput("reference", FastaWithDict(), position=5, prefix="-R"),
-            ToolInput("input_baseRecalibrator", File(), position=7, prefix="-BQSR",
-                      doc="the recalibration table produced by BaseRecalibration"),
-
+            ToolInput(
+                "input_baseRecalibrator",
+                File(),
+                position=7,
+                prefix="-BQSR",
+                doc="the recalibration table produced by BaseRecalibration",
+            ),
             ToolInput("bedFile", Bed(), position=15, prefix="-L"),
-            *Gatk3PrintReadsBase.additional_args
+            *Gatk3PrintReadsBase.additional_args,
         ]
 
     def outputs(self):
@@ -36,8 +52,12 @@ class Gatk3PrintReadsBase(Gatk3ToolBase, ABC):
             # ToolOutput("output_printReads", Bam(), glob='$(inputs.outputfile_printReads)'),
             # ToolOutput("printreads_index_output", Bai(),
             #            glob='$(inputs.outputfile_printReads.replace(".bam", ".bai"))'),
-            ToolOutput("pairedOutput", BamPair(), glob='$(inputs.outputFilename)', doc="Write output to this file")
-
+            ToolOutput(
+                "pairedOutput",
+                BamPair(),
+                glob="$(inputs.outputFilename)",
+                doc="Write output to this file",
+            )
         ]
 
     def doc(self):
@@ -66,29 +86,68 @@ Documentation: https://software.broadinstitute.org/gatk/documentation/tooldocs/c
 
     def arguments(self):
         return [
-            ToolArgument("./test/test-files", position=2, prefix="-Djava.io.tmpdir=", separate_value_from_prefix=False),
+            ToolArgument(
+                "./test/test-files",
+                position=2,
+                prefix="-Djava.io.tmpdir=",
+                separate_value_from_prefix=False,
+            ),
             ToolArgument("PrintReads", position=4, prefix="-T"),
-            ToolArgument("--filter_bases_not_stored", position=20)
+            ToolArgument("--filter_bases_not_stored", position=20),
         ]
 
     additional_args = [
         ToolInput("sample_file", Array(File(), optional=True), position=11),
-        ToolInput("platform", String(optional=True), position=13, prefix="--platform",
-                             doc="Exclude all reads with this platform from the output"),
-        ToolInput("number", String(optional=True), position=13, prefix="--number",
-                           doc="Exclude all reads with this platform from the output"),
-        ToolInput("simplify", Boolean(optional=True), position=9, prefix="--simplify",
-                             doc="Erase all extra attributes in the read but keep the read group information"),
-        ToolInput("readGroup", String(optional=True), position=12, prefix="--readGroup",
-                              doc="Exclude all reads with this read group from the output"),
-        ToolInput("sample_name", Array(String(), optional=True), position=10,
-                                doc="Sample name to be included in the analysis. Can be specified multiple times."),
-        ToolInput("outputFilename", String(optional=True), position=8, prefix="-o",
-                                          doc="name of the output file from indelRealigner"),
+        ToolInput(
+            "platform",
+            String(optional=True),
+            position=13,
+            prefix="--platform",
+            doc="Exclude all reads with this platform from the output",
+        ),
+        ToolInput(
+            "number",
+            String(optional=True),
+            position=13,
+            prefix="--number",
+            doc="Exclude all reads with this platform from the output",
+        ),
+        ToolInput(
+            "simplify",
+            Boolean(optional=True),
+            position=9,
+            prefix="--simplify",
+            doc="Erase all extra attributes in the read but keep the read group information",
+        ),
+        ToolInput(
+            "readGroup",
+            String(optional=True),
+            position=12,
+            prefix="--readGroup",
+            doc="Exclude all reads with this read group from the output",
+        ),
+        ToolInput(
+            "sample_name",
+            Array(String(), optional=True),
+            position=10,
+            doc="Sample name to be included in the analysis. Can be specified multiple times.",
+        ),
+        ToolInput(
+            "outputFilename",
+            String(optional=True),
+            position=8,
+            prefix="-o",
+            doc="name of the output file from indelRealigner",
+        ),
         ToolInput("java_arg", String(), position=1, default="-Xmx4g"),
         ToolInput("threads", Int(), position=14, prefix="-nct", default=4),
-        ToolInput("downsamplingType", String(optional=True), position=16, prefix="--downsampling_type",
-                                     default="none")
+        ToolInput(
+            "downsamplingType",
+            String(optional=True),
+            position=16,
+            prefix="--downsampling_type",
+            default="none",
+        ),
     ]
 
 

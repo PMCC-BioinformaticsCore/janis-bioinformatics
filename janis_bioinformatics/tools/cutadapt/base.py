@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import List
 
-from janis import (
+from janis_core import (
     ToolOutput,
     ToolInput,
     File,
@@ -14,8 +14,8 @@ from janis import (
     ToolMetadata,
     WildcardSelector,
 )
-from janis.hints import CaptureType
-from janis.utils import get_value_for_hints_and_ordered_resource_tuple
+from janis_core import CaptureType
+from janis_core import get_value_for_hints_and_ordered_resource_tuple
 
 from janis_bioinformatics.data_types import Bam, Fastq
 

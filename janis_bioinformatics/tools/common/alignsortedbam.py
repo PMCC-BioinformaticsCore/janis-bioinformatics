@@ -1,5 +1,5 @@
-from janis import Step, String, Input, Output, Int, Boolean
-from janis.utils.metadata import WorkflowMetadata
+from janis_core import Step, String, Input, Output, Int, Boolean
+from janis_core import WorkflowMetadata
 
 from janis_bioinformatics.data_types import Fastq, FastaWithDict
 from janis_bioinformatics.tools import BioinformaticsWorkflow
@@ -9,13 +9,14 @@ from janis_bioinformatics.tools.gatk4 import Gatk4SortSam_4_0
 
 
 class AlignSortedBam(BioinformaticsWorkflow):
-
     @staticmethod
     def tool_provider():
         return "Common"
 
     def __init__(self):
-        super(AlignSortedBam, self).__init__("alignsortedbam", friendly_name="Align sorted BAM")
+        super(AlignSortedBam, self).__init__(
+            "alignsortedbam", friendly_name="Align sorted BAM"
+        )
 
         if not self._metadata:
             self._metadata = WorkflowMetadata()
@@ -39,33 +40,92 @@ class AlignSortedBam(BioinformaticsWorkflow):
         # S1: Cutadapt
         self.add_edge(fastqs, cutadapt.fastq)
         # Step 1 with defaults
-        self.add_edges([
-            (Input("adapter", String(optional=True), include_in_inputs_file_if_none=False), cutadapt.adapter),
-            (Input("adapter_g", String(optional=True), include_in_inputs_file_if_none=False), cutadapt.adapter_g),
-            (Input("removeMiddle5Adapter", String(optional=True), include_in_inputs_file_if_none=False),
-             cutadapt.removeMiddle5Adapter),
-            (Input("removeMiddle3Adapter", String(optional=True), include_in_inputs_file_if_none=False),
-             cutadapt.removeMiddle3Adapter),
-            (Input("qualityCutoff", Int(optional=True), default=15), cutadapt.qualityCutoff),
-            (Input("minReadLength", Int(optional=True), default=50), cutadapt.minReadLength),
-        ])
+        self.add_edges(
+            [
+                (
+                    Input(
+                        "adapter",
+                        String(optional=True),
+                        include_in_inputs_file_if_none=False,
+                    ),
+                    cutadapt.adapter,
+                ),
+                (
+                    Input(
+                        "adapter_g",
+                        String(optional=True),
+                        include_in_inputs_file_if_none=False,
+                    ),
+                    cutadapt.adapter_g,
+                ),
+                (
+                    Input(
+                        "removeMiddle5Adapter",
+                        String(optional=True),
+                        include_in_inputs_file_if_none=False,
+                    ),
+                    cutadapt.removeMiddle5Adapter,
+                ),
+                (
+                    Input(
+                        "removeMiddle3Adapter",
+                        String(optional=True),
+                        include_in_inputs_file_if_none=False,
+                    ),
+                    cutadapt.removeMiddle3Adapter,
+                ),
+                (
+                    Input("qualityCutoff", Int(optional=True), default=15),
+                    cutadapt.qualityCutoff,
+                ),
+                (
+                    Input("minReadLength", Int(optional=True), default=50),
+                    cutadapt.minReadLength,
+                ),
+            ]
+        )
 
         # S2: BWA mem + Samtools View
-        self.add_edges([
-            (cutadapt.out, bwasam.reads),
-            (sample_name, bwasam.sampleName),
-            (reference, bwasam.reference)
-        ])
+        self.add_edges(
+            [
+                (cutadapt.out, bwasam.reads),
+                (sample_name, bwasam.sampleName),
+                (reference, bwasam.reference),
+            ]
+        )
 
         # S3: SortSam
         self.add_edge(bwasam.out, sortsam.bam)
-        self.add_edges([
-            (Input("sortOrder", String(optional=True), default="coordinate"), sortsam.sortOrder),
-            (Input("createIndex", Boolean(optional=True), default=True), sortsam.createIndex),
-            (Input("validationStringency", String(optional=True), default="SILENT"), sortsam.validationStringency),
-            (Input("maxRecordsInRam", Int(optional=True), default=5000000), sortsam.maxRecordsInRam),
-            (Input("sortSamTmpDir", String(optional=True), include_in_inputs_file_if_none=False), sortsam.tmpDir),
-        ])
+        self.add_edges(
+            [
+                (
+                    Input("sortOrder", String(optional=True), default="coordinate"),
+                    sortsam.sortOrder,
+                ),
+                (
+                    Input("createIndex", Boolean(optional=True), default=True),
+                    sortsam.createIndex,
+                ),
+                (
+                    Input(
+                        "validationStringency", String(optional=True), default="SILENT"
+                    ),
+                    sortsam.validationStringency,
+                ),
+                (
+                    Input("maxRecordsInRam", Int(optional=True), default=5000000),
+                    sortsam.maxRecordsInRam,
+                ),
+                (
+                    Input(
+                        "sortSamTmpDir",
+                        String(optional=True),
+                        include_in_inputs_file_if_none=False,
+                    ),
+                    sortsam.tmpDir,
+                ),
+            ]
+        )
 
         # connect to output
         self.add_edge(bwasam.out, out_bam)

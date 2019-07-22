@@ -1,7 +1,7 @@
 from abc import ABC
 from typing import Any, Dict
 
-from janis import (
+from janis_core import (
     ToolInput,
     Int,
     Float,
@@ -11,11 +11,11 @@ from janis import (
     Filename,
     InputSelector,
 )
-from janis.hints import CaptureType
-from janis.types import CpuSelector
-from janis.types.common_data_types import Stdout
-from janis.utils import get_value_for_hints_and_ordered_resource_tuple
-from janis.utils.metadata import ToolMetadata
+from janis_core import CaptureType
+from janis_core import CpuSelector
+from janis_core import Stdout
+from janis_core import get_value_for_hints_and_ordered_resource_tuple
+from janis_core import ToolMetadata
 
 from janis_bioinformatics.data_types import Sam, FastaWithDict
 from janis_bioinformatics.data_types.fastq import Fastq

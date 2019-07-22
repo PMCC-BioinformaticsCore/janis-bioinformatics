@@ -1,8 +1,7 @@
-from janis import File
+from janis_core import File
 
 
 class Sam(File):
-
     @staticmethod
     def name():
         return "SAM"

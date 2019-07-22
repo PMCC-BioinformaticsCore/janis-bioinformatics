@@ -1,6 +1,6 @@
 from abc import ABC
 
-from janis import File
+from janis_core import File
 
 
 class Vcf(File):
@@ -20,7 +20,6 @@ class Vcf(File):
 
 
 class VcfIdx(Vcf):
-
     @staticmethod
     def name():
         return "VCFIDX"

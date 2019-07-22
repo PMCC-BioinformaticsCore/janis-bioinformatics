@@ -1,8 +1,7 @@
-from janis import File
+from janis_core import File
 
 
 class Bam(File):
-
     @staticmethod
     def name():
         return "BAM"
@@ -12,7 +11,6 @@ class Bam(File):
 
 
 class BamBai(Bam):
-
     @staticmethod
     def name():
         return "BamPair"
@@ -23,4 +21,3 @@ class BamBai(Bam):
 
     def doc(self):
         return "A Bam and bai as the secondary"
-

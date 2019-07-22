@@ -1,4 +1,4 @@
-from janis import File
+from janis_core import File
 
 
 class Bed(File):

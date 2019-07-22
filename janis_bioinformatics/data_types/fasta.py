@@ -1,4 +1,4 @@
-from janis import File
+from janis_core import File
 
 
 class FastaFai(File):
@@ -12,7 +12,6 @@ class FastaFai(File):
 
 
 class Fasta(FastaFai):
-
     @staticmethod
     def name():
         return "Fasta"
@@ -23,7 +22,6 @@ class Fasta(FastaFai):
 
 
 class FastaWithDict(Fasta):
-
     @staticmethod
     def name():
         return "FastaWithDict"

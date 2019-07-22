@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from datetime import date
 
 from ..bioinformaticstoolbase import BioinformaticsTool
-from janis.utils.metadata import ToolMetadata
+from janis_core import ToolMetadata
 
 
 class BcfToolsToolBase(BioinformaticsTool, ABC):

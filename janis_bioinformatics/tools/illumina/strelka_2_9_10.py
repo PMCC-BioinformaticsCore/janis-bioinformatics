@@ -1,5 +1,5 @@
 from abc import ABC
-from janis import CommandTool
+from janis_core import CommandTool
 
 
 class Strelka_2_9_10(CommandTool, ABC):

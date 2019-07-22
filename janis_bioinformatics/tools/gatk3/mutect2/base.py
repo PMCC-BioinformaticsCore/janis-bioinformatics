@@ -1,6 +1,6 @@
 from abc import ABC
 
-from janis import ToolInput, Array, Filename, ToolOutput, File, InputSelector
+from janis_core import ToolInput, Array, Filename, ToolOutput, File, InputSelector
 from janis_bioinformatics.data_types.bampair import BamPair
 from janis_bioinformatics.data_types import Bed
 from janis_bioinformatics.data_types import FastaWithDict
@@ -9,7 +9,6 @@ from janis_bioinformatics.tools import Gatk3ToolBase
 
 
 class Gatk3Mutect2Base(Gatk3ToolBase, ABC):
-
     @staticmethod
     def analysis_type():
         return "MuTect2"
@@ -22,28 +21,57 @@ class Gatk3Mutect2Base(Gatk3ToolBase, ABC):
         return [
             *super(Gatk3Mutect2Base, self).inputs(),
             *Gatk3Mutect2Base.additional_args,
-            ToolInput("inputBam_tumor", BamPair(), position=5, prefix="-I:Tumor",
-                      doc="BAM/SAM/CRAM file containing reads, tagged as a 'Tumor'"),
-            ToolInput("inputBam_normal", BamPair(), position=6, prefix="-I:Normal",
-                      doc="BAM/SAM/CRAM file containing reads, tagged as a 'Normal'"),
-            ToolInput("intervals", Bed(), position=7, prefix="-L",
-                      doc="One or more genomic intervals over which to operate (previously, .bedFile)"),
-            ToolInput("reference", FastaWithDict(), position=8, prefix="-R", doc="Reference sequence file"),
+            ToolInput(
+                "inputBam_tumor",
+                BamPair(),
+                position=5,
+                prefix="-I:Tumor",
+                doc="BAM/SAM/CRAM file containing reads, tagged as a 'Tumor'",
+            ),
+            ToolInput(
+                "inputBam_normal",
+                BamPair(),
+                position=6,
+                prefix="-I:Normal",
+                doc="BAM/SAM/CRAM file containing reads, tagged as a 'Normal'",
+            ),
+            ToolInput(
+                "intervals",
+                Bed(),
+                position=7,
+                prefix="-L",
+                doc="One or more genomic intervals over which to operate (previously, .bedFile)",
+            ),
+            ToolInput(
+                "reference",
+                FastaWithDict(),
+                position=8,
+                prefix="-R",
+                doc="Reference sequence file",
+            ),
             ToolInput("dbsnp", Array(VcfIdx()), position=10, prefix="--dbsnp"),
-            ToolInput("cosmic", Array(VcfIdx()), position=11, prefix="--cosmic",
-                      doc="MuTect2 has the ability to use COSMIC data in conjunction with dbSNP to adjust the "
-                          "threshold for evidence of a variant in the normal. If a variant is present in dbSNP, "
-                          "but not in COSMIC, then more evidence is required from the normal sample to prove the "
-                          "variant is not present in germline. This argument supports reference-ordered data (ROD) "
-                          "files in the following formats: BCF2, VCF, VCF3"),
-            ToolInput("outputFilename", Filename(), position=9, prefix="-o",
-                      doc="File to which variants should be written (default: stdout)")
+            ToolInput(
+                "cosmic",
+                Array(VcfIdx()),
+                position=11,
+                prefix="--cosmic",
+                doc="MuTect2 has the ability to use COSMIC data in conjunction with dbSNP to adjust the "
+                "threshold for evidence of a variant in the normal. If a variant is present in dbSNP, "
+                "but not in COSMIC, then more evidence is required from the normal sample to prove the "
+                "variant is not present in germline. This argument supports reference-ordered data (ROD) "
+                "files in the following formats: BCF2, VCF, VCF3",
+            ),
+            ToolInput(
+                "outputFilename",
+                Filename(),
+                position=9,
+                prefix="-o",
+                doc="File to which variants should be written (default: stdout)",
+            ),
         ]
 
     def outputs(self):
-        return [
-            ToolOutput("out", File(), glob=InputSelector("outputFilename"))
-        ]
+        return [ToolOutput("out", File(), glob=InputSelector("outputFilename"))]
 
     additional_args = []
 
@@ -58,7 +86,6 @@ class Gatk3Mutect2Base(Gatk3ToolBase, ABC):
 
 if __name__ == "__main__":
     print(Gatk3Mutect2Base().help())
-
 
 
 # class GatkMutect2(CommandTool):

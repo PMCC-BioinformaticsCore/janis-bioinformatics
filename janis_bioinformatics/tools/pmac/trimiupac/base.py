@@ -4,8 +4,8 @@ from typing import Dict, Any, List
 from janis_bioinformatics.data_types import Vcf
 
 from janis_bioinformatics.tools import BioinformaticsTool
-from janis import CaptureType, ToolInput, Filename, ToolOutput, InputSelector
-from janis.utils import get_value_for_hints_and_ordered_resource_tuple
+from janis_core import CaptureType, ToolInput, Filename, ToolOutput, InputSelector
+from janis_core import get_value_for_hints_and_ordered_resource_tuple
 
 
 CORES_TUPLE = [
