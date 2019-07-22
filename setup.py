@@ -19,15 +19,20 @@ setup(
     author="Michael Franklin, Evan Thomas, Mohammad Bhuyan",
     author_email="michael.franklin@petermac.org",
     license="GNU",
-    packages=["janis_bioinformatics"] + ["janis_bioinformatics." + p for p in sorted(find_packages('./janis_bioinformatics'))],
-    install_requires=[],
+    packages=["janis_bioinformatics"]
+    + [
+        "janis_bioinformatics." + p
+        for p in sorted(find_packages("./janis_bioinformatics"))
+    ],
+    entry_points={"janis.extension": ["bioinformatics=janis_bioinformatics"]},
+    install_requires=["janis-pipelines.core"],
     zip_safe=False,
     long_description=long_description,
     long_description_content_type="text/markdown",
     classifiers=[
-        'Development Status :: 2 - Pre-Alpha',
-        'Intended Audience :: Developers',
-        'Intended Audience :: Science/Research',
-        'Topic :: Scientific/Engineering :: Bio-Informatics'
-    ]
+        "Development Status :: 2 - Pre-Alpha",
+        "Intended Audience :: Developers",
+        "Intended Audience :: Science/Research",
+        "Topic :: Scientific/Engineering :: Bio-Informatics",
+    ],
 )
