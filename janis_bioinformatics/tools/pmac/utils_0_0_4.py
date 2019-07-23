@@ -10,3 +10,7 @@ class PeterMacUtils_0_0_4(CommandTool, ABC):
     @staticmethod
     def docker():
         return "michaelfranklin/pmacutil:0.0.4"
+
+    @staticmethod
+    def version():
+        return "0.0.4"
