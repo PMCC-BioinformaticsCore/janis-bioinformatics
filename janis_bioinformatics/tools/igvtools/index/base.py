@@ -39,7 +39,8 @@ class IgvToolsIndexBase(IgvToolsToolBase):
             dateUpdated=date(2019, 1, 24),
             institution="Broad Institute",
             doi=None,
-            citation=None,  # find citation
+            citation="James T. Robinson, Helga Thorvaldsdóttir, Wendy Winckler, Mitchell Guttman, Eric S. Lander, "
+                     "Gad Getz, Jill P. Mesirov. Integrative Genomics Viewer. Nature Biotechnology 29, 24–26 (2011)",
             keywords=["broad", "igvtools", "index"],
             documentationUrl="https://software.broadinstitute.org/software/igv/igvtools_commandline#index",
             documentation="""
