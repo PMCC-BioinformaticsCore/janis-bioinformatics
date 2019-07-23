@@ -18,10 +18,14 @@ from janis_bioinformatics.data_types import Bam, FastaWithDict, Bed, Vcf
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 
 
-class GridssBase(BioinformaticsTool):
+class GridssBase_2_2(BioinformaticsTool):
     @staticmethod
     def tool() -> str:
         return "gridss"
+
+    @staticmethod
+    def tool_provider():
+        return "Papenfuss Labs"
 
     def friendly_name(self) -> str:
         return "Gridss"
@@ -171,7 +175,14 @@ class GridssBase(BioinformaticsTool):
         self._metadata.documentationUrl = (
             "https://github.com/PapenfussLab/gridss/wiki/GRIDSS-Documentation"
         )
-        self._metadata.documentation = """
+        self._metadata.doi = "10.1101/gr.222109.117"
+        self._metadata.citation = "Daniel L. Cameron, Jan Schröder, Jocelyn Sietsma Penington, Hongdo Do, " \
+                                  "Ramyar Molania, Alexander Dobrovic, Terence P. Speed and Anthony T. Papenfuss. " \
+                                  "GRIDSS: sensitive and specific genomic rearrangement detection using positional " \
+                                  "de Bruijn graph assembly. Genome Research, 2017 doi: 10.1101/gr.222109.117"
+        self._metadata.documentation = """\
+GRIDSS: the Genomic Rearrangement IDentification Software Suite
+
 GRIDSS is a module software suite containing tools useful for the detection of genomic rearrangements. 
 GRIDSS includes a genome-wide break-end assembler, as well as a structural variation caller for Illumina 
 sequencing data. GRIDSS calls variants based on alignment-guided positional de Bruijn graph genome-wide 
