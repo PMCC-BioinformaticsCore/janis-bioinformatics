@@ -1,26 +1,22 @@
 from datetime import datetime
 from typing import List
 
+from janis_core import CaptureType
 from janis_core import (
     ToolOutput,
     ToolInput,
-    File,
     Boolean,
     String,
     Float,
     Int,
-    InputSelector,
     Filename,
     ToolMetadata,
     WildcardSelector,
 )
-from janis_core import CaptureType
 from janis_core import get_value_for_hints_and_ordered_resource_tuple
 
-from janis_bioinformatics.data_types import Bam, Fastq
-
+from janis_bioinformatics.data_types import Fastq
 from janis_bioinformatics.tools import BioinformaticsTool
-
 
 MEM_TUPLE = [
     (
@@ -51,7 +47,7 @@ CPU_TUPLE = [
 ]
 
 
-class CutAdaptBase(BioinformaticsTool):
+class CutAdaptBase_1(BioinformaticsTool):
     def friendly_name(self) -> str:
         return "Cutadapt"
 
