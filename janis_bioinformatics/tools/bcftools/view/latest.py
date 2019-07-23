@@ -1,3 +1,3 @@
-from .view_1_5 import BcfToolsView_1_5
+from .view_1_9 import BcfToolsView_1_9
 
-BcfToolsViewLatest = BcfToolsView_1_5
+BcfToolsViewLatest = BcfToolsView_1_9

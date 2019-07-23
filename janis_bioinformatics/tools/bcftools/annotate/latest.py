@@ -1,4 +1,4 @@
-from .annotate_1_5 import BcfToolsAnnotate_1_5
+from .annotate_1_9 import BcfToolsAnnotate_1_9
 
 
-BcfToolsAnnotateLatest = BcfToolsAnnotate_1_5
+BcfToolsAnnotateLatest = BcfToolsAnnotate_1_9

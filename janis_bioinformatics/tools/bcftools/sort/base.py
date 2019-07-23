@@ -3,7 +3,6 @@ from datetime import datetime
 from typing import Dict, Any
 
 from janis_core import (
-    CommandTool,
     ToolInput,
     ToolOutput,
     String,
@@ -13,10 +12,9 @@ from janis_core import (
     CaptureType,
 )
 from janis_core import get_value_for_hints_and_ordered_resource_tuple
-from janis_bioinformatics.tools.bcftools.bcftoolstoolbase import BcfToolsToolBase
 
 from janis_bioinformatics.data_types import Vcf
-from janis_bioinformatics.tools import BioinformaticsTool
+from janis_bioinformatics.tools.bcftools.bcftoolstoolbase import BcfToolsToolBase
 
 CORES_TUPLE = [
     (
