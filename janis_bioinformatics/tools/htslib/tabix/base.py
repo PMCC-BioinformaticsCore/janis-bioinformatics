@@ -1,13 +1,13 @@
 from abc import ABC
 from typing import List
 
+from janis_core import ToolMetadata, ToolOutput, ToolInput, Boolean, Int, String, File, InputSelector
+
 from janis_bioinformatics.data_types import VcfTabix, CompressedVcf
-from janis_bioinformatics.tools import BioinformaticsTool
-from janis_core import ToolOutput, ToolInput, Boolean, Int, String, File, InputSelector
-from janis_core import ToolMetadata
+from ..htslibbase import HtsLibBase
 
 
-class TabixBase(BioinformaticsTool, ABC):
+class TabixBase(HtsLibBase, ABC):
     @staticmethod
     def tool_provider():
         return "htslib"

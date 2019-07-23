@@ -1,14 +1,15 @@
 from abc import abstractmethod, ABC
 from typing import List
 
-from janis_bioinformatics.data_types import Vcf, CompressedVcf
-from janis_bioinformatics.tools import BioinformaticsTool
-from janis_core import ToolOutput, ToolInput, Boolean, Int, File
 from janis_core import Stdout
 from janis_core import ToolMetadata
+from janis_core import ToolOutput, ToolInput, Boolean, Int, File
+
+from janis_bioinformatics.data_types import Vcf, CompressedVcf
+from janis_bioinformatics.tools.htslib.htslibbase import HtsLibBase
 
 
-class BGZipBase(BioinformaticsTool, ABC):
+class BGZipBase(HtsLibBase, ABC):
     @staticmethod
     def tool_provider():
         return "htslib"
