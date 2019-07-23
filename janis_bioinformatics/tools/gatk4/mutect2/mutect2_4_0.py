@@ -1,8 +1,8 @@
 from .base import Gatk4Mutect2Base
-from ..gatk_4_0 import Gatk_4_0
+from ..gatk_4_0_12 import Gatk_4_0_12
 
 
-class GatkMutect2_4_0(Gatk_4_0, Gatk4Mutect2Base):
+class GatkMutect2_4_0(Gatk_4_0_12, Gatk4Mutect2Base):
     pass
 
 

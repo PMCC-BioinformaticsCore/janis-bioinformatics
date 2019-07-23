@@ -1,8 +1,8 @@
 from .base import Gatk4MarkDuplicatesBase
-from ..gatk_4_0 import Gatk_4_0
+from ..gatk_4_0_12 import Gatk_4_0_12
 
 
-class Gatk4MarkDuplicates_4_0(Gatk_4_0, Gatk4MarkDuplicatesBase):
+class Gatk4MarkDuplicates_4_0(Gatk_4_0_12, Gatk4MarkDuplicatesBase):
     pass
 
 

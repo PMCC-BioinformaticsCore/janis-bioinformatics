@@ -1,8 +1,8 @@
 from .base import Gatk4ApplyBqsrBase
-from ..gatk_4_0 import Gatk_4_0
+from ..gatk_4_0_12 import Gatk_4_0_12
 
 
-class Gatk4ApplyBqsr_4_0(Gatk_4_0, Gatk4ApplyBqsrBase):
+class Gatk4ApplyBqsr_4_0(Gatk_4_0_12, Gatk4ApplyBqsrBase):
     pass
 
 
