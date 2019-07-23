@@ -1,8 +1,23 @@
 from abc import ABC, abstractmethod
 from typing import List, Dict, Any
 
-from janis_core import MemorySelector, CpuSelector
+from janis_core import CpuSelector
+from janis_core import (
+    ToolOutput,
+    ToolInput,
+    ToolArgument,
+    Boolean,
+    String,
+    File,
+    Filename,
+    InputSelector,
+    Int,
+    CaptureType,
+    StringFormatter,
+    ToolMetadata,
+)
 from janis_core import get_value_for_hints_and_ordered_resource_tuple
+from janis_unix import Tsv
 
 from janis_bioinformatics.data_types import (
     FastaWithDict,
@@ -11,26 +26,7 @@ from janis_bioinformatics.data_types import (
     Bam,
     BedTabix,
 )
-from janis_bioinformatics.tools import BioinformaticsTool
-
-from janis_core import (
-    ToolOutput,
-    ToolInput,
-    ToolArgument,
-    Boolean,
-    String,
-    File,
-    Directory,
-    Stdout,
-    Filename,
-    InputSelector,
-    Int,
-    CaptureType,
-    StringFormatter,
-    ToolMetadata,
-)
-from janis_unix import Tsv
-
+from janis_bioinformatics.tools.illumina.illuminabase import IlluminaToolBase
 
 CORES_TUPLE = [
     (
@@ -61,11 +57,7 @@ MEM_TUPLE = [
 ]
 
 
-class MantaBase(BioinformaticsTool, ABC):
-    @staticmethod
-    def tool_provider():
-        return "Illumina"
-
+class MantaBase(IlluminaToolBase, ABC):
     @staticmethod
     def tool():
         return "manta"

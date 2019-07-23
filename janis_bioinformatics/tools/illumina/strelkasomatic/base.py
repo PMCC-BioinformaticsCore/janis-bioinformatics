@@ -2,8 +2,8 @@ from abc import ABC
 from datetime import datetime
 from typing import Dict, Any
 
+from janis import get_value_for_hints_and_ordered_resource_tuple
 from janis_core import (
-    CommandTool,
     ToolInput,
     ToolOutput,
     File,
@@ -19,17 +19,15 @@ from janis_core import (
     StringFormatter,
 )
 from janis_unix import Tsv
-from janis import get_value_for_hints_and_ordered_resource_tuple
 
 from janis_bioinformatics.data_types import (
     BamBai,
     Bed,
     FastaWithDict,
-    Vcf,
     VcfTabix,
     BedTabix,
 )
-from janis_bioinformatics.tools import BioinformaticsTool
+from janis_bioinformatics.tools.illumina.illuminabase import IlluminaToolBase
 
 CORES_TUPLE = [
     (
@@ -60,17 +58,15 @@ MEM_TUPLE = [
 ]
 
 
-class StrelkaSomaticBase(BioinformaticsTool, ABC):
-    def friendly_name(self) -> str:
-        return "Strelka - Somatic Workflow"
+class StrelkaSomaticBase(IlluminaToolBase, ABC):
 
-    @staticmethod
-    def tool_provider():
-        return "Illumina"
 
     @staticmethod
     def tool() -> str:
-        return "StrelkaSomatic"
+        return "strelka_somatic"
+
+    def friendly_name(self) -> str:
+        return "Strelka (Somatic)"
 
     def cpus(self, hints: Dict[str, Any]):
         val = get_value_for_hints_and_ordered_resource_tuple(hints, CORES_TUPLE)

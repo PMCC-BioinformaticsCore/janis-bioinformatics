@@ -1,18 +1,7 @@
-from abc import ABC, abstractmethod
+from abc import ABC
 from typing import List, Any, Dict
 
 from janis_core import CpuSelector
-from janis_core import get_value_for_hints_and_ordered_resource_tuple
-
-from janis_bioinformatics.data_types import (
-    FastaWithDict,
-    VcfTabix,
-    BamBai,
-    Vcf,
-    BedTabix,
-)
-from janis_bioinformatics.tools import BioinformaticsTool
-
 from janis_core import (
     ToolOutput,
     ToolInput,
@@ -21,13 +10,20 @@ from janis_core import (
     String,
     File,
     InputSelector,
-    Int,
     CaptureType,
     StringFormatter,
     ToolMetadata,
 )
+from janis_core import get_value_for_hints_and_ordered_resource_tuple
 from janis_unix import Tsv
 
+from janis_bioinformatics.data_types import (
+    FastaWithDict,
+    VcfTabix,
+    BamBai,
+    BedTabix,
+)
+from janis_bioinformatics.tools.illumina.illuminabase import IlluminaToolBase
 
 CORES_TUPLE = [
     (
@@ -58,14 +54,13 @@ MEM_TUPLE = [
 ]
 
 
-class StrelkaGermlineBase(BioinformaticsTool, ABC):
-    @staticmethod
-    def tool_provider():
-        return "illumina"
-
+class StrelkaGermlineBase(IlluminaToolBase, ABC):
     @staticmethod
     def tool():
         return "strelka_germline"
+
+    def friendly_name(self):
+        return "Strelka (Germline)"
 
     @staticmethod
     def base_command():
@@ -313,13 +308,6 @@ class StrelkaGermlineBase(BioinformaticsTool, ABC):
 
         return [ShellCommandRequirement()]
 
-    @staticmethod
-    @abstractmethod
-    def docker():
-        raise Exception("Strelka version must override docker command")
-
-    def friendly_name(self):
-        return "Strelka (Germline)"
 
     def metadata(self):
         from datetime import date
