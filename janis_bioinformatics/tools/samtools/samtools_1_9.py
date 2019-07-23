@@ -1,8 +1,4 @@
-from abc import ABC
-from .samtoolstoolbase import SamToolsToolBase
-
-
-class SamTools_1_9(SamToolsToolBase, ABC):
+class SamTools_1_9:
     @staticmethod
     def docker():
         return "quay.io/biocontainers/samtools:1.9--h8571acd_11"

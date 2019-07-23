@@ -7,7 +7,7 @@ class SamToolsToolBase(BioinformaticsTool, ABC):
 
     @staticmethod
     def tool_provider():
-        return "samtools"
+        return "Samtools"
 
     @classmethod
     @abstractmethod
