@@ -13,6 +13,10 @@ class AlignSortedBam(BioinformaticsWorkflow):
     def tool_provider():
         return "Common"
 
+    @staticmethod
+    def version():
+        return "1.0.0"
+
     def __init__(self):
         super(AlignSortedBam, self).__init__(
             "alignsortedbam", friendly_name="Align sorted BAM"

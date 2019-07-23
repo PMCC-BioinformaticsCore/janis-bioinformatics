@@ -60,6 +60,10 @@ class SplitMultiAllele(BioinformaticsTool):
     def docker():
         return "heuermh/vt"  # "SEE (mfranklin's notes in) DOCUMENTATION"
 
+    @staticmethod
+    def version():
+        return "v0.5772"
+
     def cpus(self, hints: Dict[str, Any]):
         val = get_value_for_hints_and_ordered_resource_tuple(hints, CORES_TUPLE)
         if val:
