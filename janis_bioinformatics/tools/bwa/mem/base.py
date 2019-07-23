@@ -53,7 +53,7 @@ BWA_CORES_TUPLE = [
 class BwaMemBase(BioinformaticsTool, ABC):
     @staticmethod
     def tool():
-        return "BwaMem"
+        return "bwamem"
 
     def friendly_name(self):
         return "BWA-MEM"
@@ -100,7 +100,7 @@ class BwaMemBase(BioinformaticsTool, ABC):
             maintainer="Michael Franklin",
             maintainerEmail="michael.franklin@petermac.org",
             dateCreated=date(2018, 12, 24),
-            dateUpdated=date(2019, 1, 24),
+            dateUpdated=date(2019, 7, 23),
             institution="Sanger Institute",
             doi=None,
             citation="The BWA-MEM algorithm has not been published yet.",
