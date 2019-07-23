@@ -1,7 +1,7 @@
-from .htslibbase import HTSLibBase
+from .htslibbase import HtsLibBase
 
 
-class HTSLib_1_2_1(HTSLibBase):
+class HTSLib_1_2_1(HtsLibBase):
 
     @staticmethod
     def docker():

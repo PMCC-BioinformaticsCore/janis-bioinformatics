@@ -1,7 +1,7 @@
-from janis_bioinformatics.tools.cutadapt.base_1 import CutAdaptBase
+from janis_bioinformatics.tools.cutadapt.base_1 import CutAdaptBase_1
 
 
-class CutAdapt_1_18(CutAdaptBase):
+class CutAdapt_1_18(CutAdaptBase_1):
 
     @staticmethod
     def docker():
