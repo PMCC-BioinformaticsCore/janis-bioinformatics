@@ -5,4 +5,4 @@ class SamTools_1_7:
 
     @staticmethod
     def version():
-        return "v1.7.0"
+        return "1.7.0"

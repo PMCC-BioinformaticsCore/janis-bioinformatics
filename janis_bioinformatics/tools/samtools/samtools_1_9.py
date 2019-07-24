@@ -5,4 +5,4 @@ class SamTools_1_9:
 
     @staticmethod
     def version():
-        return "1.9"
+        return "1.9.0"
