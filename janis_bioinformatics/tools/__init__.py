@@ -10,7 +10,6 @@ from janis_bioinformatics.tools import (
     cutadapt,
     gatk4,
     htslib,
-    igvtools,
     illumina,
     pappenfuss,
     pmac,
