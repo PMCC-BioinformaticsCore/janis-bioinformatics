@@ -57,11 +57,11 @@ MEM_TUPLE = [
 
 class VarDictGermlineBase(BioinformaticsTool, ABC):
     def friendly_name(self) -> str:
-        return "VarDict Germline"
+        return "VarDict (Germline)"
 
     @staticmethod
     def tool():
-        return "vardictgermline"
+        return "vardict_germline"
 
     @staticmethod
     def tool_provider():
