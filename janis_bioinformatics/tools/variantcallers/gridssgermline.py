@@ -1,13 +1,9 @@
-from janis_core import Step, Input, Output, Array, String
-
-from janis_bioinformatics.tools.pappenfuss import Gridss_2_2_3
-from janis_bioinformatics.tools.samtools import SamToolsView_1_7
+from janis_core import Step, Input, Output, String
 
 from janis_bioinformatics.data_types import FastaWithDict, BamBai, Bed
 from janis_bioinformatics.tools import BioinformaticsWorkflow
-from janis_bioinformatics.tools.bcftools import BcfToolsView_1_5
-from janis_bioinformatics.tools.common import SplitMultiAllele
-from janis_bioinformatics.tools.illumina import StrelkaGermline_2_9_10, Manta_1_5_0
+from janis_bioinformatics.tools.pappenfuss import Gridss_2_4_0
+from janis_bioinformatics.tools.samtools import SamToolsView_1_7
 
 
 class GridssGermlineVariantCaller(BioinformaticsWorkflow):
@@ -31,7 +27,7 @@ class GridssGermlineVariantCaller(BioinformaticsWorkflow):
         )
 
         samtools = Step("samtools", SamToolsView_1_7())
-        gridss = Step("gridss", Gridss_2_2_3())
+        gridss = Step("gridss", Gridss_2_4_0())
 
         self.add_edges(
             [
@@ -52,7 +48,7 @@ class GridssGermlineVariantCaller(BioinformaticsWorkflow):
         )
 
         self.add_edges(
-            [(Output("vcf"), gridss.vcf), (Output("assembly"), gridss.assembly)]
+            [(gridss.out, Output("vcf")), (gridss.assembly, Output("assembly"))]
         )
 
 
