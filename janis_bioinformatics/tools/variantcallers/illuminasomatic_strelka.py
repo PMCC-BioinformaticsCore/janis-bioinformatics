@@ -25,7 +25,7 @@ class IlluminaSomaticVariantCaller(BioinformaticsWorkflow):
         tumor = Input("tumorBam", BamBai())
 
         reference = Input("reference", FastaWithDict())
-        strelkaregions = Input("strelkaRegions", BedTabix(optional=True))
+        intervals = Input("intervals", BedTabix(optional=True))
 
         manta = Step("manta", Manta_1_5_0())
         strelka = Step("strelka", StrelkaSomatic_2_9_10())
@@ -38,7 +38,7 @@ class IlluminaSomaticVariantCaller(BioinformaticsWorkflow):
                 (normal, manta.bam),
                 (tumor, manta.tumorBam),
                 (reference, manta.reference),
-                (strelkaregions, manta.callRegions),
+                (intervals, manta.callRegions),
             ]
         )
 
@@ -49,7 +49,7 @@ class IlluminaSomaticVariantCaller(BioinformaticsWorkflow):
                 (tumor, strelka.tumorBam),
                 (reference, strelka.reference),
                 (manta.candidateSmallIndels, strelka.indelCandidates),
-                (strelkaregions, strelka.callRegions),
+                (intervals, strelka.callRegions),
             ]
         )
 

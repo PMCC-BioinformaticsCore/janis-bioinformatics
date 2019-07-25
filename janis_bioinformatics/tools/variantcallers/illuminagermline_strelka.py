@@ -19,7 +19,7 @@ class IlluminaGermlineVariantCaller(BioinformaticsWorkflow):
 
         bam = Input("bam", BamBai())
         reference = Input("reference", FastaWithDict())
-        strelkaregions = Input("strelkaRegions", BedTabix(optional=True))
+        intervals = Input("intervals", BedTabix(optional=True))
 
         manta = Step("manta", Manta_1_5_0())
         strelka = Step("strelka", StrelkaGermline_2_9_10())
@@ -31,7 +31,7 @@ class IlluminaGermlineVariantCaller(BioinformaticsWorkflow):
             [
                 (bam, manta.bam),
                 (reference, manta.reference),
-                (strelkaregions, manta.callRegions),
+                (intervals, manta.callRegions),
             ]
         )
 
@@ -41,7 +41,7 @@ class IlluminaGermlineVariantCaller(BioinformaticsWorkflow):
                 (bam, strelka.bam),
                 (reference, strelka.reference),
                 (manta.candidateSmallIndels, strelka.indelCandidates),
-                (strelkaregions, strelka.callRegions),
+                (intervals, strelka.callRegions),
             ]
         )
 
