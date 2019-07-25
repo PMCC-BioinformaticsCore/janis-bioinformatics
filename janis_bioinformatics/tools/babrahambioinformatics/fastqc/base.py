@@ -231,7 +231,7 @@ class FastQCBase(BioinformaticsTool, ABC):
         ),
         ToolInput(
             "dir",
-            Directory(optional=True),
+            String(optional=True),
             prefix="--dir",
             doc="(-d) Selects a directory to be used for temporary files written when generating report images."
             "Defaults to system temp directory if not specified.",
