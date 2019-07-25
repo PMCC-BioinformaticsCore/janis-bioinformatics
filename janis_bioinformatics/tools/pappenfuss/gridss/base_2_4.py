@@ -39,14 +39,15 @@ class GridssBase_2_4(BioinformaticsTool):
             ToolInput("bams", Array(Bam()), position=1),
             ToolInput("reference", FastaWithDict(), prefix="--reference"),
             ToolInput("outputFilename", Filename(extension=".vcf"), prefix="--output"),
-            ToolInput("assembly", Bam(), prefix="--assembly"),
+            ToolInput("assemblyFilename", Filename(extension=".bam"), prefix="--assembly"),
             ToolInput("threads", Int(optional=True), default=CpuSelector(), prefix="--threads"),
             ToolInput("blacklist", Bed(optional=True), prefix="--blacklist"),
         ]
 
     def outputs(self):
         return [
-            ToolOutput("out", Vcf(), glob=InputSelector("bams"))
+            ToolOutput("out", Vcf(), glob=InputSelector("outputFilename")),
+            ToolOutput("assembly", Bam(), glob=InputSelector("assemblyFilename"))
         ]
 
     def metadata(self):
