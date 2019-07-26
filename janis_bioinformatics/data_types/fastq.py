@@ -5,7 +5,7 @@ from janis_core import File, Array, Logger
 
 class Fastq(Array):
     def __init__(self, optional=False):
-        super().__init__(File(optional=False), optional=optional)
+        super().__init__(File(optional=False, extension=".fastq"), optional=optional)
 
     def id(self):
         if self.optional:

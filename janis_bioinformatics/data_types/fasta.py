@@ -2,6 +2,9 @@ from janis_core import File
 
 
 class FastaFai(File):
+    def __init__(self, optional=False):
+        super().__init__(optional=optional, extension=".fasta")
+
     @staticmethod
     def name():
         return "FastaFai"

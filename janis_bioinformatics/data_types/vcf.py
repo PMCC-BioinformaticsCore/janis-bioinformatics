@@ -4,6 +4,9 @@ from janis_core import File
 
 
 class Vcf(File):
+    def __init__(self, optional=False):
+        super().__init__(optional=optional, extension=".vcf")
+
     @staticmethod
     def name():
         return "VCF"
@@ -30,6 +33,9 @@ class VcfIdx(Vcf):
 
 
 class CompressedVcf(File):
+    def __init__(self, optional=False):
+        super().__init__(optional=optional, extension=".vcf.gz")
+
     @staticmethod
     def name():
         return "compressed-vcf-gz"

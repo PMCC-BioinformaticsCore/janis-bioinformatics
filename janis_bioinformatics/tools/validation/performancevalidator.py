@@ -1,5 +1,3 @@
-from WDL.Expr import Boolean
-
 from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_core import Step, Input, Output, Array, Boolean
 from janis_bioinformatics.data_types import Vcf, VcfIdx
