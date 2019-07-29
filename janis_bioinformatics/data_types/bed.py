@@ -11,7 +11,7 @@ class Bed(File):
 
 
 class BedTabix(File):
-    def __init__(self, optional):
+    def __init__(self, optional=False):
         super().__init__(optional=optional, extension=".bed.gz")
 
     @staticmethod
