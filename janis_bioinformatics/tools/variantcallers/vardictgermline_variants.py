@@ -13,6 +13,10 @@ class VardictGermlineVariantCaller(BioinformaticsWorkflow):
     def tool_provider():
         return "Variant Callers"
 
+    @staticmethod
+    def version():
+        return "v0.1.0"
+
     def __init__(self):
         super(VardictGermlineVariantCaller, self).__init__(
             "vardictGermlineVariantCaller", "Vardict Germline Variant Caller", doc=None

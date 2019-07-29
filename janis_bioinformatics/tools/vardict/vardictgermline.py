@@ -125,12 +125,6 @@ class VarDictGermlineBase(BioinformaticsTool, ABC):
             ToolArgument("var2vcf_valid.pl", position=4, shell_quote=False),
         ]
 
-    @staticmethod
-    def requirements():
-        from cwlgen import ShellCommandRequirement
-
-        return [ShellCommandRequirement()]
-
     vardict_inputs = [
         ToolInput(
             "indels3prime",

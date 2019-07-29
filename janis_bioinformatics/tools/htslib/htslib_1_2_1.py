@@ -4,7 +4,7 @@ from .htslibbase import HtsLibBase
 class HTSLib_1_2_1(HtsLibBase):
 
     @staticmethod
-    def docker():
+    def container():
         return "biodckrdev/htslib:1.2.1"
 
     @staticmethod

@@ -65,7 +65,7 @@ class BwaMem_SamToolsView(BioinformaticsTool):
         return "0.7.17|1.9"
 
     @staticmethod
-    def docker():
+    def container():
         return "michaelfranklin/bwasamtools:0.7.17-1.9"
 
     @staticmethod

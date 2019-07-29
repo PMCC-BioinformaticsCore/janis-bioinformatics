@@ -16,6 +16,10 @@ class IlluminaSomaticVariantCaller(BioinformaticsWorkflow):
     def tool_provider():
         return "Variant Callers"
 
+    @staticmethod
+    def version():
+        return "v0.1.0"
+
     def __init__(self):
         super(IlluminaSomaticVariantCaller, self).__init__(
             "strelkaSomaticVariantCaller", "Strelka Somatic Variant Caller", doc=None

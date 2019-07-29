@@ -8,7 +8,7 @@ class PeterMacUtils_0_0_4(CommandTool, ABC):
         return "Peter MacCallum Cancer Centre"
 
     @staticmethod
-    def docker():
+    def container():
         return "michaelfranklin/pmacutil:0.0.4"
 
     @staticmethod

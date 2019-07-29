@@ -155,12 +155,6 @@ class VarDictSomaticBase(BioinformaticsTool, ABC):
             ),
         ]
 
-    @staticmethod
-    def requirements():
-        from cwlgen import ShellCommandRequirement
-
-        return [ShellCommandRequirement()]
-
     vardict_inputs = [
         ToolInput(
             "indels3prime",

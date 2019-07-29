@@ -102,7 +102,7 @@ if __name__ == "__main__":
 #         return ['java']
 #
 #     @staticmethod
-#     def docker():
+#     def container():
 #         return "broadinstitute/gatk3:3.7-0"
 #
 #     @staticmethod

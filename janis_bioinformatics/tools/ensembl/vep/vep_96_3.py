@@ -3,7 +3,7 @@ from janis_bioinformatics.tools.ensembl.vep.basecache import VepCacheBase
 
 class Vep_96_3:
     @staticmethod
-    def docker():
+    def container():
         return "ensemblorg/ensembl-vep:release_96.3"
 
 

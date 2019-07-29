@@ -8,7 +8,7 @@ class FastQC_0_11_5(FastQCBase):
         return "v0.11.5"
 
     @staticmethod
-    def docker():
+    def container():
         return "biocontainers/fastqc:v0.11.5_cv3"
 
 

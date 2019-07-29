@@ -8,7 +8,7 @@ class Strelka_2_9_10(CommandTool, ABC):
         return "Illumina"
 
     @staticmethod
-    def docker():
+    def container():
         return "michaelfranklin/strelka:2.9.10"
 
     @staticmethod

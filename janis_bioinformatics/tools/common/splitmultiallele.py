@@ -57,7 +57,7 @@ class SplitMultiAllele(BioinformaticsTool):
         return None
 
     @staticmethod
-    def docker():
+    def container():
         return "heuermh/vt"  # "SEE (mfranklin's notes in) DOCUMENTATION"
 
     @staticmethod
@@ -110,12 +110,6 @@ class SplitMultiAllele(BioinformaticsTool):
 
     def outputs(self) -> List[ToolOutput]:
         return [ToolOutput("out", Vcf(), glob=InputSelector("outputFilename"))]
-
-    @staticmethod
-    def requirements():
-        from cwlgen import ShellCommandRequirement
-
-        return [ShellCommandRequirement()]
 
     def doc(self):
         return """

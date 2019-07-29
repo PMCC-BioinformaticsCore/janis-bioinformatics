@@ -145,14 +145,8 @@ class MantaBase(IlluminaToolBase, ABC):
         ]
 
     @staticmethod
-    def requirements():
-        from cwlgen import ShellCommandRequirement
-
-        return [ShellCommandRequirement()]
-
-    @staticmethod
     @abstractmethod
-    def docker():
+    def container():
         raise Exception("Strelka version must override docker command")
 
     def friendly_name(self):

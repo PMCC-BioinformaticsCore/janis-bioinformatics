@@ -8,6 +8,6 @@ class FastQC_0_11_8(FastQCBase):
         return "v0.11.8"
 
     @staticmethod
-    def docker():
+    def container():
         return "quay.io/biocontainers/fastqc:0.11.8--1"
 

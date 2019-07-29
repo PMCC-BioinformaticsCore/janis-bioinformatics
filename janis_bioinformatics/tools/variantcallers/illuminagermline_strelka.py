@@ -12,6 +12,10 @@ class IlluminaGermlineVariantCaller(BioinformaticsWorkflow):
     def tool_provider():
         return "Variant Callers"
 
+    @staticmethod
+    def version():
+        return "v0.1.0"
+
     def __init__(self):
         super(IlluminaGermlineVariantCaller, self).__init__(
             "strelkaGermlineVariantCaller", "Strelka Germline Variant Caller", doc=None

@@ -302,13 +302,6 @@ class StrelkaGermlineBase(IlluminaToolBase, ABC):
             ),
         ]
 
-    @staticmethod
-    def requirements():
-        from cwlgen import ShellCommandRequirement
-
-        return [ShellCommandRequirement()]
-
-
     def metadata(self):
         from datetime import date
 

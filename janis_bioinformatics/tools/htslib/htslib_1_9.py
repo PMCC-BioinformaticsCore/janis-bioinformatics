@@ -6,7 +6,7 @@ from .htslibbase import HtsLibBase
 class HTSLib_1_9(HtsLibBase, ABC):
 
     @staticmethod
-    def docker():
+    def container():
         return "quay.io/biocontainers/htslib:1.9--ha228f0b_7"
 
     @staticmethod

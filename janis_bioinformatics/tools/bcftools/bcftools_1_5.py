@@ -1,6 +1,6 @@
 class BcfTools_1_5:
     @staticmethod
-    def docker():
+    def container():
         # Todo: Create a docker container with 1_9
         return "biocontainers/bcftools:v1.5_cv2"
 

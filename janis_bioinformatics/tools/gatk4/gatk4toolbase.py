@@ -28,7 +28,7 @@ class Gatk4ToolBase(BioinformaticsTool, ABC):
 
     @staticmethod
     @abstractmethod
-    def docker():
+    def container():
         raise Exception(
             "An error likely occurred when resolving the method order for docker for the Gatk classes "
             "or you're trying to execute the docker method of the base class (ie, don't do that). "

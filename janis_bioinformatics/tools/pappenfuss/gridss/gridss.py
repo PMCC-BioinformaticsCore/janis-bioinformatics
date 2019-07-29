@@ -13,7 +13,7 @@ class Gridss_2_2_3(GridssBase_2_2):
         ]
 
     @staticmethod
-    def docker():
+    def container():
         return "gridss/gridss:v2.2.3"
 
     @staticmethod
@@ -24,7 +24,7 @@ class Gridss_2_2_3(GridssBase_2_2):
 class Gridss_2_4_0(GridssBase_2_4):
 
     @staticmethod
-    def docker():
+    def container():
         return "gridss/gridss:2.4.0"
 
     @staticmethod

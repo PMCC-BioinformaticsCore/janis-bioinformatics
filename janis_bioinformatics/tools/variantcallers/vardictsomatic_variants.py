@@ -13,6 +13,10 @@ class VardictSomaticVariantCaller(BioinformaticsWorkflow):
     def tool_provider():
         return "Variant Callers"
 
+    @staticmethod
+    def version():
+        return "v0.1.0"
+
     def __init__(self):
         super(VardictSomaticVariantCaller, self).__init__(
             "vardictSomaticVariantCaller", "Vardict Somatic Variant Caller", doc=None
