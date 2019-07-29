@@ -15,7 +15,7 @@ class VardictGermlineVariantCaller(BioinformaticsWorkflow):
 
     def __init__(self):
         super(VardictGermlineVariantCaller, self).__init__(
-            "vardictVariantCaller", "Vardict Variant Caller", doc=None
+            "vardictGermlineVariantCaller", "Vardict Germline Variant Caller", doc=None
         )
 
         bam = Input("bam", BamBai())

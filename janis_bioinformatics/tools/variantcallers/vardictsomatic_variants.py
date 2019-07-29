@@ -15,7 +15,7 @@ class VardictSomaticVariantCaller(BioinformaticsWorkflow):
 
     def __init__(self):
         super(VardictSomaticVariantCaller, self).__init__(
-            "vardictVariantCaller", "Vardict Variant Caller", doc=None
+            "vardictSomaticVariantCaller", "Vardict Somatic Variant Caller", doc=None
         )
 
         normalBam = Input("normalBam", BamBai())

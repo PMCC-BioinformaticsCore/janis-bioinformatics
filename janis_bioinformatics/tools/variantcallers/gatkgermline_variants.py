@@ -14,8 +14,8 @@ class GatkGermlineVariantCaller(BioinformaticsWorkflow):
 
     def __init__(self):
         super(GatkGermlineVariantCaller, self).__init__(
-            "GATK4_VariantCaller",
-            "GATK4 Variant Caller",
+            "GATK4_GermlineVariantCaller",
+            "GATK4 Germline Variant Caller",
             doc="GATK4 based variant caller: (BaseRecal + ApplyBQSR + Haplotype)",
         )
 
