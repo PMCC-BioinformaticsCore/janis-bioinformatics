@@ -1,4 +1,6 @@
+.DS_Store
 .idea/
+**/.DS_Store
 build/
 dist/
 __pycache__/
