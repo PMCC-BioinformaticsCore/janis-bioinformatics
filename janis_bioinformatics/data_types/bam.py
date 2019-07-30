@@ -2,6 +2,9 @@ from janis_core import File
 
 
 class Bam(File):
+    def __init__(self, optional=False):
+        super().__init__(optional, extension=".bam")
+
     @staticmethod
     def name():
         return "BAM"
