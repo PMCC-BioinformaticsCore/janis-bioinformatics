@@ -62,7 +62,7 @@ class VardictGermlineVariantCaller(BioinformaticsWorkflow):
             ]
         )
         # S2: annotate
-        self.add_edges([(vardict.out, annotate), (header_lines, annotate.headerLines)])
+        self.add_edges([(vardict.out, annotate.file), (header_lines, annotate.headerLines)])
 
         # S3: split
         self.add_edges([(reference, split.reference), (annotate.out, split.vcf)])
