@@ -24,7 +24,11 @@ setup(
         "janis_bioinformatics." + p
         for p in sorted(find_packages("./janis_bioinformatics"))
     ],
-    entry_points={"janis.extension": ["bioinformatics=janis_bioinformatics"]},
+    entry_points={
+        "janis.extension": ["bioinformatics=janis_bioinformatics"],
+        "janis.tools": ["bioinformatics=janis_bioinformatics.tools"],
+        "janis.types": ["bioinformatics=janis_bioinformatics.data_types"],
+    },
     install_requires=["janis-pipelines.core>=0.5.0"],
     zip_safe=False,
     long_description=long_description,
