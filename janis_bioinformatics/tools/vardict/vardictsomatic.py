@@ -60,6 +60,10 @@ class VarDictSomaticBase(BioinformaticsTool, ABC):
         return "Vardict (Somatic)"
 
     @staticmethod
+    def tool_provider():
+        return "VarDict"
+
+    @staticmethod
     def tool():
         return "vardict_somatic"
 
