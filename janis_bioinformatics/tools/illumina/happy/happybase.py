@@ -49,7 +49,6 @@ class HapPyValidatorBase(IlluminaToolBase, ABC):
     def base_command():
         return "/opt/hap.py/bin/hap.py"
 
-
     def cpus(self, hints: Dict[str, Any]):
         val = j.get_value_for_hints_and_ordered_resource_tuple(hints, CORES_TUPLE)
         if val:
