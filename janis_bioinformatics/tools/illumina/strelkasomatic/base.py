@@ -2,7 +2,6 @@ from abc import ABC
 from datetime import datetime
 from typing import Dict, Any
 
-from janis import get_value_for_hints_and_ordered_resource_tuple
 from janis_core import (
     ToolInput,
     ToolOutput,
@@ -17,6 +16,7 @@ from janis_core import (
     ToolArgument,
     CaptureType,
     StringFormatter,
+    get_value_for_hints_and_ordered_resource_tuple
 )
 from janis_unix import Tsv
 

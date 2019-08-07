@@ -2,7 +2,7 @@ from abc import ABC
 from datetime import datetime
 from typing import List, Dict, Any
 
-import janis as j
+import janis_core as j
 from janis_unix.data_types.csv import Csv
 from janis_unix.data_types.json import JsonFile
 from janis_unix.data_types.tsv import Tsv
