@@ -34,7 +34,6 @@ class GridssBase_2_2(BioinformaticsTool):
     def base_command():
         return [
             "java",
-            "-ea",
             "-XX:+UnlockExperimentalVMOptions",
             "-XX:+UseCGroupMemoryLimitForHeap",
             "-XX:MaxRAMFraction=1",
@@ -70,6 +69,7 @@ class GridssBase_2_2(BioinformaticsTool):
                 Array(Bam()),
                 prefix="INPUT=",
                 separate_value_from_prefix=False,
+                prefix_applies_to_all_elements=True,
                 doc="(I=File Coordinate-sorted input BAM file. Default value: null. "
                 "This option may be specified 0 or more times.",
             ),
