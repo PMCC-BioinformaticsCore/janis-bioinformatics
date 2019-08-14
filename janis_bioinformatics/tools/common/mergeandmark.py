@@ -1,16 +1,21 @@
+from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsWorkflow
 from janis_core import Workflow, Step, Input, Output, Array, String, Boolean, Int
 
 import janis_bioinformatics.tools.gatk4 as GATK4
 from janis_bioinformatics.data_types import BamBai
 
 
-class MergeAndMarkBams_4_0(Workflow):
+class MergeAndMarkBams_4_0(BioinformaticsWorkflow):
     @staticmethod
     def version():
         return "4.0.12"
 
+    @staticmethod
+    def tool_provider():
+        return "common"
+
     def __init__(self):
-        Workflow.__init__(self, "processbamfiles", friendly_name="Process BAM Files")
+        super().__init__("mergeAndMarkBams", friendly_name="Merge and Mark Duplicates")
 
         inp = Input("bams", Array(BamBai()))
 
