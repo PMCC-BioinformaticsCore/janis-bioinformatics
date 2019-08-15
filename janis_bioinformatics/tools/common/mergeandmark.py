@@ -1,7 +1,7 @@
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsWorkflow
 from janis_core import Workflow, Step, Input, Output, Array, String, Boolean, Int
 
-import janis_bioinformatics.tools.gatk4 as GATK4
+from janis_bioinformatics.tools.gatk4 import Gatk4MergeSamFiles_4_0, Gatk4MarkDuplicates_4_0
 from janis_bioinformatics.data_types import BamBai
 
 
@@ -19,8 +19,8 @@ class MergeAndMarkBams_4_0(BioinformaticsWorkflow):
 
         inp = Input("bams", Array(BamBai()))
 
-        s1_merge = Step("mergeSamFiles", GATK4.Gatk4MergeSamFiles_4_0())
-        s2_mark = Step("markDuplicates", GATK4.Gatk4MarkDuplicates_4_0())
+        s1_merge = Step("mergeSamFiles", Gatk4MergeSamFiles_4_0())
+        s2_mark = Step("markDuplicates", Gatk4MarkDuplicates_4_0())
 
         gatk_create_index = Input("createIndex", Boolean(), default=True)
         max_recs_in_ram = Input("maxRecordsInRam", Int(), default=5000000)
@@ -50,7 +50,3 @@ class MergeAndMarkBams_4_0(BioinformaticsWorkflow):
 
         # Outputs
         self.add_edges([(s2_mark.out, Output("out"))])
-
-
-if __name__ == "__main__":
-    MergeAndMarkBams_4_0().translate("wdl")
