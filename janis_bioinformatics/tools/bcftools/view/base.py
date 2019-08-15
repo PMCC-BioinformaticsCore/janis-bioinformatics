@@ -14,7 +14,7 @@ from janis_core import (
     Stdout,
     CaptureType,
 )
-from janis_bioinformatics.data_types import Vcf
+from janis_bioinformatics.data_types import Vcf, CompressedVcf
 from ..bcftoolstoolbase import BcfToolsToolBase
 from janis_core import ToolMetadata
 
@@ -89,7 +89,7 @@ Convert between VCF and BCF. Former bcftools subset."""
         return 8
 
     def inputs(self) -> List[ToolInput]:
-        return [ToolInput("file", Vcf(), position=2), *self.additional_inputs]
+        return [ToolInput("file", CompressedVcf(), position=2), *self.additional_inputs]
 
     def outputs(self) -> List[ToolOutput]:
         return [ToolOutput("out", Stdout(Vcf()))]
