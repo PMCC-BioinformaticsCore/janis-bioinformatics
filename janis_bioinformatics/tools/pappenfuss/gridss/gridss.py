@@ -1,4 +1,5 @@
 from janis_bioinformatics.tools.pappenfuss.gridss.base_2_2 import GridssBase_2_2
+from janis_bioinformatics.tools.pappenfuss.gridss.base_2_4 import GridssBase_2_4
 
 
 class Gridss_2_2_3(GridssBase_2_2):
@@ -25,7 +26,7 @@ class Gridss_2_4_0(GridssBase_2_2):
     @staticmethod
     def base_command():
         return [
-            *super(Gridss_2_2_3, Gridss_2_2_3).base_command(),
+            *super(Gridss_2_4_0, Gridss_2_4_0).base_command(),
             "/data/gridss/gridss-2.4.0-gridss-jar-with-dependencies.jar",
             "gridss.CallVariants"
         ]
@@ -39,4 +40,19 @@ class Gridss_2_4_0(GridssBase_2_2):
         return "v2.4.0"
 
 
-GridssLatest = Gridss_2_4_0
+class Gridss_2_5_1(GridssBase_2_4):
+
+    @staticmethod
+    def base_command():
+        return "gridss.sh"
+
+    @staticmethod
+    def container():
+        return "michaelfranklin/gridss:2.5.1-dev"
+
+    @staticmethod
+    def version():
+        return "v2.5.1-dev"
+
+
+GridssLatest = Gridss_2_5_1
