@@ -83,13 +83,13 @@ class GridssBase_2_4(BioinformaticsTool):
         val = get_value_for_hints_and_ordered_resource_tuple(hints, CORES_TUPLE)
         if val:
             return val
-        return 4
+        return 8
 
     def memory(self, hints: Dict[str, Any]):
         val = get_value_for_hints_and_ordered_resource_tuple(hints, MEM_TUPLE)
         if val:
             return val
-        return 4
+        return 31
 
     def metadata(self):
 
