@@ -48,7 +48,7 @@ class Gridss_2_5_1(GridssBase_2_4):
 
     @staticmethod
     def container():
-        return "michaelfranklin/gridss:2.5.1-dev"
+        return "michaelfranklin/gridss:2.5.1-dev2"
 
     @staticmethod
     def version():
