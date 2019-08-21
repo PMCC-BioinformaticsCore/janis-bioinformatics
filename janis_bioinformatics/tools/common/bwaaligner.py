@@ -8,18 +8,18 @@ from janis_bioinformatics.tools.cutadapt.cutadapt_1_18 import CutAdapt_1_18
 from janis_bioinformatics.tools.gatk4 import Gatk4SortSam_4_0
 
 
-class AlignSortedBam(BioinformaticsWorkflow):
+class BwaAligner(BioinformaticsWorkflow):
     @staticmethod
     def tool_provider():
-        return "Common"
+        return "common"
 
     @staticmethod
     def version():
         return "1.0.0"
 
     def __init__(self):
-        super(AlignSortedBam, self).__init__(
-            "alignsortedbam", friendly_name="Align sorted BAM"
+        super(BwaAligner, self).__init__(
+            "BwaAligner", friendly_name="Align and sort reads"
         )
 
         if not self._metadata:
@@ -28,7 +28,7 @@ class AlignSortedBam(BioinformaticsWorkflow):
         self._metadata.documentation = "Align sorted bam with this subworkflow consisting of BWA Mem + SamTools + Gatk4SortSam"
         self._metadata.creator = "Michael Franklin"
         self._metadata.dateCreated = "2018-12-24"
-        self._metadata.version = "1.0.0"
+        self._metadata.version = "1.1"
 
         cutadapt = Step("cutadapt", CutAdapt_1_18())
         bwasam = Step("bwa_sam", BwaMem_SamToolsView())
@@ -137,7 +137,7 @@ class AlignSortedBam(BioinformaticsWorkflow):
 
 
 if __name__ == "__main__":
-    w = AlignSortedBam()
+    w = BwaAligner()
 
     w.translate("wdl", with_resource_overrides=True)
 
