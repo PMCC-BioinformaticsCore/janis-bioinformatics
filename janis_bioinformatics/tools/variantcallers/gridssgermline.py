@@ -1,4 +1,4 @@
-from janis_core import Step, Input, Output, String, Logger
+from janis_core import Step, Input, Output, String, Logger, Array
 
 from janis_bioinformatics.data_types import FastaWithDict, BamBai, Bed
 from janis_bioinformatics.tools import BioinformaticsWorkflow
@@ -46,7 +46,7 @@ class GridssGermlineVariantCaller(BioinformaticsWorkflow):
 
         self.add_edges(
             [
-                (bam, gridss.bams),
+                (samtools.out, gridss.bams),
                 (reference, gridss.reference),
                 (blacklist, gridss.blacklist),
             ]
