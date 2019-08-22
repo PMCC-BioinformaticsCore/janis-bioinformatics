@@ -53,7 +53,7 @@ class GridssGermlineVariantCaller(BioinformaticsWorkflow):
         )
 
         self.add_edges(
-            [(gridss.out, Output("vcf")), (gridss.assembly, Output("assembly"))]
+            [(gridss.out, Output("out")), (gridss.assembly, Output("assembly"))]
         )
 
 
