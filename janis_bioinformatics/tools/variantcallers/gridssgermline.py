@@ -1,8 +1,8 @@
-from janis_core import Step, Input, Output, String
+from janis_core import Step, Input, Output, String, Logger
 
 from janis_bioinformatics.data_types import FastaWithDict, BamBai, Bed
 from janis_bioinformatics.tools import BioinformaticsWorkflow
-from janis_bioinformatics.tools.pappenfuss import Gridss_2_4_0
+from janis_bioinformatics.tools.pappenfuss import Gridss_2_5_1
 from janis_bioinformatics.tools.samtools import SamToolsView_1_7
 
 
@@ -27,7 +27,10 @@ class GridssGermlineVariantCaller(BioinformaticsWorkflow):
         )
 
         samtools = Step("samtools", SamToolsView_1_7())
-        gridss = Step("gridss", Gridss_2_4_0())
+        gridss = Step("gridss", Gridss_2_5_1())
+
+        Logger.__TEMP_CONSOLE_LEVEL = Logger.CONSOLE_LEVEL
+        Logger.set_console_level(None)
 
         self.add_edges(
             [
@@ -38,6 +41,8 @@ class GridssGermlineVariantCaller(BioinformaticsWorkflow):
                 ),
             ]
         )
+
+        Logger.unmute()
 
         self.add_edges(
             [
@@ -55,4 +60,4 @@ class GridssGermlineVariantCaller(BioinformaticsWorkflow):
 if __name__ == "__main__":
     w = GridssGermlineVariantCaller()
 
-    w.translate("wdl", to_disk=True, should_validate=True)
+    w.translate("wdl")
