@@ -1,5 +1,3 @@
-from janis_core import WorkflowMetadata
-
 from janis_bioinformatics.data_types import Fastq, FastaWithDict
 from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.common.bwamem_samtoolsview import BwaMem_SamToolsView
@@ -17,17 +15,12 @@ class BwaAligner(BioinformaticsWorkflow):
         return "1.0.0"
 
     def __init__(self):
-        super(BwaAligner, self).__init__(
-            "BwaAligner", name="Align and sort reads"
-        )
+        super().__init__("BwaAligner", name="Align and sort reads")
 
-        if not self._metadata:
-            self._metadata = WorkflowMetadata()
-
-        self._metadata.documentation = "Align sorted bam with this subworkflow consisting of BWA Mem + SamTools + Gatk4SortSam"
-        self._metadata.creator = "Michael Franklin"
-        self._metadata.dateCreated = "2018-12-24"
-        self._metadata.version = "1.1"
+        self.metadata.documentation = "Align sorted bam with this subworkflow consisting of BWA Mem + SamTools + Gatk4SortSam"
+        self.metadata.creator = "Michael Franklin"
+        self.metadata.dateCreated = "2018-12-24"
+        self.metadata.version = "1.1"
 
         # Inputs
         self.input("name", str)
@@ -40,7 +33,7 @@ class BwaAligner(BioinformaticsWorkflow):
             CutAdapt_1_18,
             fastq=self.fastq,
             adapter=None,
-            adapater_g=None,
+            adapter_g=None,
             removeMiddle5Adapter=None,
             removeMiddle3Adapter=None,
             qualityCutoff=15,
@@ -73,7 +66,7 @@ class BwaAligner(BioinformaticsWorkflow):
 if __name__ == "__main__":
     w = BwaAligner()
 
-    w.translate("wdl", with_resource_overrides=True)
+    w.translate("cwl", with_resource_overrides=True)
 
     # print(build_resources_input(w, "wdl", {CaptureType.KEY: CaptureType.CHROMOSOME}))
 

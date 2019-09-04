@@ -26,7 +26,7 @@ class VardictGermlineVariantCaller(BioinformaticsWorkflow):
         self.input("intervals", Bed)
 
         self.input("sampleName", String)
-        self.input("allelFreqThreshold", Float, default=0.5)
+        self.input("alleleFreqThreshold", Float, default=0.5)
         self.input("headerLines", File)
 
         self.input("reference", FastaWithDict)
@@ -39,8 +39,8 @@ class VardictGermlineVariantCaller(BioinformaticsWorkflow):
             reference=self.reference,
             sampleName=self.sampleName,
             var2vcfSampleName=self.sampleName,
-            alleleFreqThreshold=self.allelFreqThreshold,
-            var2vcfAlleleFreqThreshold=self.allelFreqThreshold,
+            alleleFreqThreshold=self.alleleFreqThreshold,
+            var2vcfAlleleFreqThreshold=self.alleleFreqThreshold,
             chromNamesAreNumbers=True,
             vcfFormat=True,
             chromColumn=1,

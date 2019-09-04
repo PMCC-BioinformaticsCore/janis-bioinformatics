@@ -36,7 +36,7 @@ class IlluminaGermlineVariantCaller(BioinformaticsWorkflow):
         self.step(
             "strelka",
             StrelkaGermline_2_9_10,
-            bam=self.manta.bam,
+            bam=self.bam,
             reference=self.reference,
             indelCandidates=self.manta.candidateSmallIndels,
             callRegions=self.intervals,
@@ -58,7 +58,7 @@ class IlluminaGermlineVariantCaller(BioinformaticsWorkflow):
 
         self.output("diploid", source=self.manta.diploidSV)
         self.output("variants", source=self.strelka.variants)
-        self.output("out", source=self.split.out)
+        self.output("out", source=self.splitMultiAllele.out)
 
 
 if __name__ == "__main__":
