@@ -1,5 +1,6 @@
 from abc import ABC
 from typing import Dict, Any
+from datetime import date
 
 from ..bcftoolstoolbase import BcfToolsToolBase
 from janis_core import get_value_for_hints_and_ordered_resource_tuple
@@ -48,6 +49,22 @@ MEM_TUPLE = [
 
 
 class BcfToolsAnnotateBase(BcfToolsToolBase, ABC):
+    def __init__(self):
+        super().__init__()
+        self.metadata.dateUpdated = date(2019, 1, 24)
+        self.metadata.doi = "http://www.ncbi.nlm.nih.gov/pubmed/19505943"
+        self.metadata.citation = (
+            "Li H, Handsaker B, Wysoker A, Fennell T, Ruan J, Homer N, Marth G, Abecasis G, Durbin R, "
+            "and 1000 Genome Project Data Processing Subgroup, The Sequence alignment/map (SAM) "
+            "format and SAMtools, Bioinformatics (2009) 25(16) 2078-9"
+        )
+        self.metadata.documentationUrl = (
+            "https://samtools.github.io/bcftools/bcftools.html#annotate"
+        )
+        self.metadata.documentation = (
+            self.metadata.documentation if self.metadata.documentation else ""
+        ) + "------------------------------------\n\nAdd or remove annotations."
+
     @staticmethod
     def tool():
         return "bcftoolsAnnotate"
@@ -58,24 +75,6 @@ class BcfToolsAnnotateBase(BcfToolsToolBase, ABC):
     @staticmethod
     def base_command():
         return ["bcftools", "annotate"]
-
-    def metadata(self):
-        from datetime import date
-
-        metadata = self._metadata
-        metadata.dateUpdated = date(2019, 1, 24)
-        metadata.doi = "http://www.ncbi.nlm.nih.gov/pubmed/19505943"
-        metadata.citation = (
-            "Li H, Handsaker B, Wysoker A, Fennell T, Ruan J, Homer N, Marth G, Abecasis G, Durbin R, "
-            "and 1000 Genome Project Data Processing Subgroup, The Sequence alignment/map (SAM) "
-            "format and SAMtools, Bioinformatics (2009) 25(16) 2078-9"
-        )
-        metadata.documentationUrl = (
-            "https://samtools.github.io/bcftools/bcftools.html#annotate"
-        )
-        metadata.documentation = (
-            metadata.documentation if metadata.documentation else ""
-        ) + "------------------------------------\n\nAdd or remove annotations."
 
     def cpus(self, hints: Dict[str, Any]):
         val = get_value_for_hints_and_ordered_resource_tuple(hints, CORES_TUPLE)
