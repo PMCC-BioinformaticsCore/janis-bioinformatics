@@ -168,7 +168,7 @@ class Gatk4Mutect2Base(Gatk4ToolBase, ABC):
 
     additional_args = []
 
-    def metadata(self):
+    def bind_metadata(self):
         from datetime import date
 
         return ToolMetadata(

@@ -434,7 +434,7 @@ class CutAdaptBase_2(BioinformaticsTool):
         ),
     ]
 
-    def metadata(self):
+    def bind_metadata(self):
         return ToolMetadata(
             creator=None,
             maintainer="Michael Franklin",

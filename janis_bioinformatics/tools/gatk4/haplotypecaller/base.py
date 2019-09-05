@@ -120,7 +120,7 @@ class Gatk4HaplotypeCallerBase(Gatk4ToolBase, ABC):
             )
         ]
 
-    def metadata(self):
+    def bind_metadata(self):
         from datetime import date
 
         return ToolMetadata(

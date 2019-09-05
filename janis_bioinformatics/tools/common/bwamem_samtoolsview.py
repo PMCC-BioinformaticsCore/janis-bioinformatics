@@ -121,9 +121,16 @@ class BwaMem_SamToolsView(BioinformaticsTool):
     def inputs(self) -> List[ToolInput]:
         return [
             ToolInput("reference", FastaWithDict(), position=2, shell_quote=False),
-            ToolInput("reads", Fastq(), position=3, shell_quote=False, doc=None),
             ToolInput(
-                "mates", Fastq(optional=True), position=4, shell_quote=False, doc=None
+                "reads", Fastq(), separator=" ", position=3, shell_quote=False, doc=None
+            ),
+            ToolInput(
+                "mates",
+                Fastq(optional=True),
+                separator=" ",
+                position=4,
+                shell_quote=False,
+                doc=None,
             ),
             ToolInput(
                 "outputFilename",
@@ -426,6 +433,7 @@ class BwaMem_SamToolsView(BioinformaticsTool):
             position=8,
             shell_quote=False,
             prefix="-f",
+            separator=" ",
             doc="only include reads with all of the FLAGs in INT present [0]",
         ),
         ToolInput(
@@ -434,6 +442,7 @@ class BwaMem_SamToolsView(BioinformaticsTool):
             position=8,
             shell_quote=False,
             prefix="-F",
+            separator=" ",
             doc="only include reads with none of the FLAGS in INT present [0]",
         ),
         ToolInput(
@@ -442,6 +451,7 @@ class BwaMem_SamToolsView(BioinformaticsTool):
             position=8,
             shell_quote=False,
             prefix="-G",
+            separator=" ",
             doc="only EXCLUDE reads with all of the FLAGs in INT present [0] "
             "fraction of templates/read pairs to keep; INT part sets seed)",
         ),

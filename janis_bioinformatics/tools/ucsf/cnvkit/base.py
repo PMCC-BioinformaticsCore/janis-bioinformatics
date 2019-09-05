@@ -96,16 +96,16 @@ class CNVKitBase(BioinformaticsTool):
     def outputs(self) -> List[ToolOutput]:
         return []
 
-    def metadata(self):
-        self._metadata.dateCreated = datetime(2019, 7, 3)
-        self._metadata.dateUpdated = datetime(2019, 7, 3)
-        self._metadata.documentationUrl = "https://github.com/etal/cnvkit"
-        self._metadata.documentation = """
+    def bind_metadata(self):
+        self.metadata.dateCreated = datetime(2019, 7, 3)
+        self.metadata.dateUpdated = datetime(2019, 7, 3)
+        self.metadata.documentationUrl = "https://github.com/etal/cnvkit"
+        self.metadata.documentation = """
         A command-line toolkit and Python library for detecting copy number variants 
         and alterations genome-wide from high-throughput sequencing."""
 
-        self._metadata.doi = "10.1371/journal.pcbi.1004873"
-        self._metadata.citation = (
+        self.metadata.doi = "10.1371/journal.pcbi.1004873"
+        self.metadata.citation = (
             "Talevich, E., Shain, A.H., Botton, T., & Bastian, B.C. (2014). "
             "CNVkit: Genome-wide copy number detection and visualization from targeted "
             "sequencing. PLOS Computational Biology 12(4):e1004873"

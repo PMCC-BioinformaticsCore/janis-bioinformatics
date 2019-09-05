@@ -45,21 +45,20 @@ class BcfToolsNormBase(BcfToolsToolBase, ABC):
     def outputs(self):
         return [ToolOutput("out", Vcf(), glob=InputSelector("outputFilename"))]
 
-    def metadata(self):
+    def bind_metadata(self):
         from datetime import date
 
-        metadata: ToolMetadata = self._metadata
-        metadata.dateUpdated = date(2019, 1, 24)
-        metadata.doi = "http://www.ncbi.nlm.nih.gov/pubmed/19505943"
-        metadata.citation = (
+        self.metadata.dateUpdated = date(2019, 1, 24)
+        self.metadata.doi = "http://www.ncbi.nlm.nih.gov/pubmed/19505943"
+        self.metadata.citation = (
             "Li H, Handsaker B, Wysoker A, Fennell T, Ruan J, Homer N, Marth G, Abecasis G, Durbin R, "
             "and 1000 Genome Project Data Processing Subgroup, The Sequence alignment/map (SAM) "
             "format and SAMtools, Bioinformatics (2009) 25(16) 2078-9"
         )
-        metadata.documentationUrl = (
+        self.metadata.documentationUrl = (
             "https://samtools.github.io/bcftools/bcftools.html#norm"
         )
-        metadata.documentation = """\
+        self.metadata.documentation = """\
 Left-align and normalize indels, check if REF alleles match the reference, 
 split multiallelic sites into multiple rows; recover multiallelics from 
 multiple rows. Left-alignment and normalization will only be applied if 

@@ -77,7 +77,7 @@ class Gatk4GenotypeConcordanceBase(Gatk4ToolBase, ABC):
             # ToolOutput("vcf", VcfIdx(optional=True), glob=WildcardSelector("*.vcf"))
         ]
 
-    def metadata(self):
+    def bind_metadata(self):
         from datetime import date
 
         return ToolMetadata(

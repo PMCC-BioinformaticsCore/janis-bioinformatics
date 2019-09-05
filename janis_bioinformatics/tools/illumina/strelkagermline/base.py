@@ -17,12 +17,7 @@ from janis_core import (
 from janis_core import get_value_for_hints_and_ordered_resource_tuple
 from janis_unix import Tsv
 
-from janis_bioinformatics.data_types import (
-    FastaWithDict,
-    VcfTabix,
-    BamBai,
-    BedTabix,
-)
+from janis_bioinformatics.data_types import FastaWithDict, VcfTabix, BamBai, BedTabix
 from janis_bioinformatics.tools.illumina.illuminabase import IlluminaToolBase
 
 CORES_TUPLE = [
@@ -302,7 +297,7 @@ class StrelkaGermlineBase(IlluminaToolBase, ABC):
             ),
         ]
 
-    def metadata(self):
+    def bind_metadata(self):
         from datetime import date
 
         return ToolMetadata(

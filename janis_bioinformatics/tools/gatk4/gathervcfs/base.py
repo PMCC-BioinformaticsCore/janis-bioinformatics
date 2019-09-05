@@ -90,7 +90,7 @@ class Gatk4GatherVcfsBase(Gatk4ToolBase, ABC):
     def outputs(self):
         return [ToolOutput("out", Vcf(), glob=InputSelector("outputFilename"))]
 
-    def metadata(self):
+    def bind_metadata(self):
         from datetime import date
 
         return ToolMetadata(

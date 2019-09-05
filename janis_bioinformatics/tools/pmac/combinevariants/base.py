@@ -11,7 +11,7 @@ from janis_core import (
     Filename,
     InputSelector,
     CaptureType,
-    get_value_for_hints_and_ordered_resource_tuple
+    get_value_for_hints_and_ordered_resource_tuple,
 )
 from janis_unix import Tsv
 
@@ -123,11 +123,11 @@ class CombineVariantsBase(BioinformaticsTool, ABC):
             (ToolOutput("tsv", Tsv(), InputSelector("regions"))),
         ]
 
-    def metadata(self):
-        self._metadata.creator = "Jiaan Yu"
-        self._metadata.dateUpdated = datetime.datetime(2019, 7, 4)
-        self._metadata.maintainer = "Michael Franklin"
-        self._metadata.documentation = """
+    def bind_metadata(self):
+        self.metadata.creator = "Jiaan Yu"
+        self.metadata.dateUpdated = datetime.datetime(2019, 7, 4)
+        self.metadata.maintainer = "Michael Franklin"
+        self.metadata.documentation = """
 usage: combine_vcf.py [-h] -i I --columns COLUMNS -o O --type
                       {germline,somatic} [--regions REGIONS] [--normal NORMAL]
                       [--tumor TUMOR] [--priority PRIORITY [PRIORITY ...]]
@@ -155,6 +155,6 @@ required arguments:
 optional arguments:
   -h, --help            show this help message and exit
 """
-        self._metadata.documentationUrl = (
+        self.metadata.documentationUrl = (
             "https://github.com/PMCC-BioinformaticsCore/scripts/tree/master/vcf_utils"
         )

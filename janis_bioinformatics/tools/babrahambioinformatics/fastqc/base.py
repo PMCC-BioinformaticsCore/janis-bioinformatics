@@ -68,7 +68,7 @@ class FastQCBase(BioinformaticsTool, ABC):
     def tool_provider():
         return "FastQC"
 
-    def metadata(self):
+    def bind_metadata(self):
         return ToolMetadata(
             creator="Simon Andrews",
             maintainer="Michael Franklin",

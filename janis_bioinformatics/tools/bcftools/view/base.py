@@ -47,6 +47,24 @@ MEM_TUPLE = [
 
 
 class BcfToolsViewBase(BcfToolsToolBase, ABC):
+    def __init__(self):
+        super().__init__()
+        from datetime import date
+
+        self.metadata.dateUpdated = date(2019, 1, 24)
+        self.metadata.doi = "http://www.ncbi.nlm.nih.gov/pubmed/19505943"
+        self.metadata.citation = (
+            "Li H, Handsaker B, Wysoker A, Fennell T, Ruan J, Homer N, Marth G, Abecasis G, Durbin R, "
+            "and 1000 Genome Project Data Processing Subgroup, The Sequence alignment/map (SAM) "
+            "format and SAMtools, Bioinformatics (2009) 25(16) 2078-9"
+        )
+        self.metadata.documentationUrl = (
+            "https://samtools.github.io/bcftools/bcftools.html#view"
+        )
+        self.metadata.documentation = """________________________________\n 
+        View, subset and filter VCF or BCF files by position and filtering expression
+        Convert between VCF and BCF. Former bcftools subset."""
+
     @staticmethod
     def tool():
         return "bcftoolsview"
@@ -57,24 +75,6 @@ class BcfToolsViewBase(BcfToolsToolBase, ABC):
     @staticmethod
     def base_command():
         return ["bcftools", "view"]
-
-    def metadata(self):
-        from datetime import date
-
-        metadata = self._metadata
-        metadata.dateUpdated = date(2019, 1, 24)
-        metadata.doi = "http://www.ncbi.nlm.nih.gov/pubmed/19505943"
-        metadata.citation = (
-            "Li H, Handsaker B, Wysoker A, Fennell T, Ruan J, Homer N, Marth G, Abecasis G, Durbin R, "
-            "and 1000 Genome Project Data Processing Subgroup, The Sequence alignment/map (SAM) "
-            "format and SAMtools, Bioinformatics (2009) 25(16) 2078-9"
-        )
-        metadata.documentationUrl = (
-            "https://samtools.github.io/bcftools/bcftools.html#view"
-        )
-        metadata.documentation = """________________________________\n 
-View, subset and filter VCF or BCF files by position and filtering expression
-Convert between VCF and BCF. Former bcftools subset."""
 
     def cpus(self, hints: Dict[str, Any]):
         val = get_value_for_hints_and_ordered_resource_tuple(hints, CORES_TUPLE)

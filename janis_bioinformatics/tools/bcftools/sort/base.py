@@ -93,7 +93,7 @@ class BcfToolsSortBase(BcfToolsToolBase, ABC):
     def outputs(self):
         return [ToolOutput("out", Vcf(), glob=InputSelector("outputFilename"))]
 
-    def metadata(self):
+    def bind_metadata(self):
         return ToolMetadata(
             creator=None,
             maintainer=None,

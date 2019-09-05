@@ -92,7 +92,7 @@ class BwaMemBase(BioinformaticsTool, ABC):
             return val
         return 16
 
-    def metadata(self):
+    def bind_metadata(self):
         from datetime import date
 
         return ToolMetadata(

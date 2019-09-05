@@ -16,7 +16,7 @@ from janis_core import (
     ToolArgument,
     CaptureType,
     StringFormatter,
-    get_value_for_hints_and_ordered_resource_tuple
+    get_value_for_hints_and_ordered_resource_tuple,
 )
 from janis_unix import Tsv
 
@@ -59,8 +59,6 @@ MEM_TUPLE = [
 
 
 class StrelkaSomaticBase(IlluminaToolBase, ABC):
-
-
     @staticmethod
     def tool() -> str:
         return "strelka_somatic"
@@ -362,7 +360,7 @@ class StrelkaSomaticBase(IlluminaToolBase, ABC):
             ),
         ]
 
-    def metadata(self):
+    def bind_metadata(self):
         return ToolMetadata(
             dateCreated=datetime(2019, 5, 27, 15, 7, 45),
             dateUpdated=datetime(2019, 5, 27, 15, 7, 45),

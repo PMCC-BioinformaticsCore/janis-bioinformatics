@@ -12,7 +12,10 @@ from janis_core import (
     Boolean,
     Array,
     InputSelector,
-    CpuSelector, CaptureType, get_value_for_hints_and_ordered_resource_tuple)
+    CpuSelector,
+    CaptureType,
+    get_value_for_hints_and_ordered_resource_tuple,
+)
 
 from janis_bioinformatics.data_types import Bam, FastaWithDict, Bed, Vcf
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
@@ -47,6 +50,7 @@ MEM_TUPLE = [
     )
 ]
 
+
 class GridssBase_2_4(BioinformaticsTool):
     @staticmethod
     def tool() -> str:
@@ -67,16 +71,30 @@ class GridssBase_2_4(BioinformaticsTool):
         return [
             ToolInput("bams", Array(Bam()), position=10),
             ToolInput("reference", FastaWithDict(), position=1, prefix="--reference"),
-            ToolInput("outputFilename", Filename(extension=".vcf"), position=2, prefix="--output"),
-            ToolInput("assemblyFilename", Filename(extension=".bam"), position=3, prefix="--assembly"),
-            ToolInput("threads", Int(optional=True), default=CpuSelector(), prefix="--threads"),
-            ToolInput("blacklist", Bed(optional=True), position=4, prefix="--blacklist"),
+            ToolInput(
+                "outputFilename",
+                Filename(extension=".vcf"),
+                position=2,
+                prefix="--output",
+            ),
+            ToolInput(
+                "assemblyFilename",
+                Filename(extension=".bam"),
+                position=3,
+                prefix="--assembly",
+            ),
+            ToolInput(
+                "threads", Int(optional=True), default=CpuSelector(), prefix="--threads"
+            ),
+            ToolInput(
+                "blacklist", Bed(optional=True), position=4, prefix="--blacklist"
+            ),
         ]
 
     def outputs(self):
         return [
             ToolOutput("out", Vcf(), glob=InputSelector("outputFilename")),
-            ToolOutput("assembly", Bam(), glob=InputSelector("assemblyFilename"))
+            ToolOutput("assembly", Bam(), glob=InputSelector("assemblyFilename")),
         ]
 
     def cpus(self, hints: Dict[str, Any]):
@@ -91,20 +109,22 @@ class GridssBase_2_4(BioinformaticsTool):
             return val
         return 31
 
-    def metadata(self):
+    def bind_metadata(self):
 
-        self._metadata.maintainer = "Michael Franklin"
-        self._metadata.dateCreated = date(2019, 6, 19)
-        self._metadata.dateUpdated = date(2019, 8, 20)
-        self._metadata.documentationUrl = (
+        self.metadata.maintainer = "Michael Franklin"
+        self.metadata.dateCreated = date(2019, 6, 19)
+        self.metadata.dateUpdated = date(2019, 8, 20)
+        self.metadata.documentationUrl = (
             "https://github.com/PapenfussLab/gridss/wiki/GRIDSS-Documentation"
         )
-        self._metadata.doi = "10.1101/gr.222109.117"
-        self._metadata.citation = "Daniel L. Cameron, Jan Schröder, Jocelyn Sietsma Penington, Hongdo Do, " \
-                                  "Ramyar Molania, Alexander Dobrovic, Terence P. Speed and Anthony T. Papenfuss. " \
-                                  "GRIDSS: sensitive and specific genomic rearrangement detection using positional " \
-                                  "de Bruijn graph assembly. Genome Research, 2017 doi: 10.1101/gr.222109.117"
-        self._metadata.documentation = """\
+        self.metadata.doi = "10.1101/gr.222109.117"
+        self.metadata.citation = (
+            "Daniel L. Cameron, Jan Schröder, Jocelyn Sietsma Penington, Hongdo Do, "
+            "Ramyar Molania, Alexander Dobrovic, Terence P. Speed and Anthony T. Papenfuss. "
+            "GRIDSS: sensitive and specific genomic rearrangement detection using positional "
+            "de Bruijn graph assembly. Genome Research, 2017 doi: 10.1101/gr.222109.117"
+        )
+        self.metadata.documentation = """\
 GRIDSS: the Genomic Rearrangement IDentification Software Suite
 
 GRIDSS is a module software suite containing tools useful for the detection of genomic rearrangements.
