@@ -1,14 +1,8 @@
-from janis_core import Array, String
-
 from janis_bioinformatics.data_types import FastaWithDict, BamBai, BedTabix
 from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.bcftools import BcfToolsView_1_5
 from janis_bioinformatics.tools.common import SplitMultiAllele
-from janis_bioinformatics.tools.illumina import (
-    StrelkaGermline_2_9_10,
-    Manta_1_5_0,
-    StrelkaSomatic_2_9_10,
-)
+from janis_bioinformatics.tools.illumina import Manta_1_5_0, StrelkaSomatic_2_9_10
 
 
 class IlluminaSomaticVariantCaller(BioinformaticsWorkflow):

@@ -6,18 +6,17 @@ from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.common import SplitMultiAllele
 
 
-class GatkSomaticVariantCaller(BioinformaticsWorkflow):
+class GatkSomaticVariantCaller_4_1_3(BioinformaticsWorkflow):
     @staticmethod
     def tool_provider():
         return "Variant Callers"
 
     def __init__(self):
-        super(GatkSomaticVariantCaller, self).__init__(
-            "GATK4_SomaticVariantCaller", "GATK4 Somatic Variant Caller"
-        )
+        super().__init__("GATK4_SomaticVariantCaller", "GATK4 Somatic Variant Caller")
 
-        self.metadata.version = "4.0.12.0"
-        self.metadata.dateCreated = date(2019, 2, 1)
+        self.metadata.version = "4.1.3.0"
+        self.metadata.dateCreated = date(2019, 9, 9)
+        self.metadata.dateUpdated = date(2019, 9, 9)
         self.metadata.maintainer = "Michael Franklin"
         self.metadata.maintainerEmail = "michael.franklin@petermac.org"
         self.metadata.keywords = [

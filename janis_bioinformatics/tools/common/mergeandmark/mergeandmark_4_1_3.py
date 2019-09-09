@@ -1,17 +1,17 @@
-from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsWorkflow
-from janis_core import Workflow, Array, String, Boolean, Int
+from janis_core import Array, Boolean, Int
 
-from janis_bioinformatics.tools.gatk4 import (
-    Gatk4MergeSamFiles_4_0,
-    Gatk4MarkDuplicates_4_0,
-)
 from janis_bioinformatics.data_types import BamBai
+from janis_bioinformatics.tools.gatk4 import (
+    Gatk4MarkDuplicates_4_1_3,
+    Gatk4MergeSamFiles_4_1_3,
+)
+from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsWorkflow
 
 
-class MergeAndMarkBams_4_0(BioinformaticsWorkflow):
+class MergeAndMarkBams_4_1_3(BioinformaticsWorkflow):
     @staticmethod
     def version():
-        return "4.0.12"
+        return "4.1.3"
 
     @staticmethod
     def tool_provider():
@@ -26,7 +26,7 @@ class MergeAndMarkBams_4_0(BioinformaticsWorkflow):
 
         self.step(
             "mergeSamFiles",
-            Gatk4MergeSamFiles_4_0,
+            Gatk4MergeSamFiles_4_1_3,
             bams=self.bams,
             useThreading=True,
             createIndex=self.createIndex,
@@ -36,7 +36,7 @@ class MergeAndMarkBams_4_0(BioinformaticsWorkflow):
 
         self.step(
             "markDuplicates",
-            Gatk4MarkDuplicates_4_0,
+            Gatk4MarkDuplicates_4_1_3,
             bam=self.mergeSamFiles.out,
             createIndex=self.createIndex,
             maxRecordsInRam=self.maxRecordsInRam,
@@ -45,4 +45,4 @@ class MergeAndMarkBams_4_0(BioinformaticsWorkflow):
 
 
 if __name__ == "__main__":
-    MergeAndMarkBams_4_0().translate("wdl")
+    MergeAndMarkBams_4_1_3().translate("wdl")

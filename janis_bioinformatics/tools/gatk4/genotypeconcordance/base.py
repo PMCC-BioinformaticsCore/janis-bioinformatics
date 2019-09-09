@@ -260,7 +260,7 @@ VCF Output:
         ToolInput(
             "reference",
             File(optional=True),
-            prefix="--REFERENCE=SEQUENCE",
+            prefix="--REFERENCE_SEQUENCE",
             position=11,
             doc="Reference sequence file.",
         ),

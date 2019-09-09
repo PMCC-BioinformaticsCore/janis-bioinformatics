@@ -58,7 +58,7 @@ class BwaMem_SamToolsView(BioinformaticsTool):
 
     @staticmethod
     def tool_provider():
-        return "BWA"
+        return "common"
 
     @staticmethod
     def version():

@@ -6,7 +6,7 @@ from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.common import SplitMultiAllele
 
 
-class GatkGermlineVariantCaller(BioinformaticsWorkflow):
+class GatkGermlineVariantCaller_4_0_12(BioinformaticsWorkflow):
     @staticmethod
     def tool_provider():
         return "Variant Callers"
