@@ -10,11 +10,26 @@ from .baserecalibrator.versions import (
     Gatk4BaseRecalibrator_4_1_3,
     Gatk4BaseRecalibratorLatest,
 )
+from .calculatecontaminations.versions import (
+    Gatk4CalculateContamination_4_1_2,
+    Gatk4CalculateContamination_4_1_3,
+    Gatk4CalculateContaminationLatest,
+)
+from .filtermutectcalls.versions import (
+    Gatk4FilterMutectCalls_4_1_2,
+    Gatk4FilterMutectCalls_4_1_3,
+    Gatk4FilterMutectCallsLatest,
+)
 from .genotypeconcordance.versions import (
     Gatk4GenotypeConcordance_4_0,
     Gatk4GenotypeConcordance_4_1_2,
     Gatk4GenotypeConcordance_4_1_3,
     Gatk4GenotypeConcordanceLatest,
+)
+from .getpileupsummaries.versions import (
+    Gatk4GetPileUpSummaries_4_1_2,
+    Gatk4GetPileUpSummaries_4_1_3,
+    Gatk4GetPileUpSummariesLatest,
 )
 from .haplotypecaller.versions import (
     Gatk4HaplotypeCaller_4_0,
@@ -22,11 +37,21 @@ from .haplotypecaller.versions import (
     Gatk4HaplotypeCaller_4_1_3,
     Gatk4HaplotypeCallerLatest,
 )
+from .learnreadorientationmodel.versions import (
+    Gatk4LearnReadOrientationModel_4_1_2,
+    Gatk4LearnReadOrientationModel_4_1_3,
+    Gatk4LearnReadOrientationModelLatest,
+)
 from .markduplicates.versions import (
     Gatk4MarkDuplicates_4_0,
     Gatk4MarkDuplicates_4_1_2,
     Gatk4MarkDuplicates_4_1_3,
     Gatk4MarkDuplicatesLatest,
+)
+from .mergemutectstats.versions import (
+    Gatk4MergeMutectStats_4_1_2,
+    Gatk4MergeMutectStats_4_1_3,
+    Gatk4MergeMutectStatsLatest,
 )
 from .mergesamfiles.versions import (
     Gatk4MergeSamFiles_4_0,
@@ -34,7 +59,7 @@ from .mergesamfiles.versions import (
     Gatk4MergeSamFiles_4_1_3,
     Gatk4MergeSamFilesLatest,
 )
-from .mutect2.mutect2_4_0 import (
+from .mutect2.versions import (
     GatkMutect2_4_0,
     GatkMutect2_4_1_2,
     GatkMutect2_4_1_3,

@@ -50,7 +50,7 @@ MEM_TUPLE = [
 ]
 
 
-class Gatk4Mutect2Base(Gatk4ToolBase, ABC):
+class Gatk4Mutect2Base_4_0(Gatk4ToolBase, ABC):
     @classmethod
     def gatk_command(cls):
         return "Mutect2"
@@ -97,9 +97,9 @@ class Gatk4Mutect2Base(Gatk4ToolBase, ABC):
 
     def inputs(self):
         return [
-            *super(Gatk4Mutect2Base, self).inputs(),
-            *Gatk4Mutect2Base.additional_args,
-            *Gatk4Mutect2Base.tumor_normal_inputs(),
+            *super(Gatk4Mutect2Base_4_0, self).inputs(),
+            *Gatk4Mutect2Base_4_0.additional_args,
+            *Gatk4Mutect2Base_4_0.tumor_normal_inputs(),
             ToolInput(
                 "intervals",
                 Bed(optional=True),
