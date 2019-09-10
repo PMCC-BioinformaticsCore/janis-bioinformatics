@@ -56,6 +56,7 @@ class BcfToolsIndexBase(BcfToolsToolBase, ABC):
             ToolInput(
                 tag="tbi",
                 input_type=Boolean(optional=True),
+                default=True,
                 prefix="--tbi",
                 doc="(-t) generate TBI-format index for VCF files",
             ),

@@ -70,7 +70,7 @@ class Gatk4FilterMutectCallsBase(Gatk4ToolBase, ABC):
         return [
             ToolOutput(
                 "out",
-                TextFile,
+                VcfTabix,
                 glob=InputSelector("outputFilename"),
                 doc="vcf containing filtered calls",
             )

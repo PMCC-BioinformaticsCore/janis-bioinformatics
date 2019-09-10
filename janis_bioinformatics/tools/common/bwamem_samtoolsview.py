@@ -121,9 +121,7 @@ class BwaMem_SamToolsView(BioinformaticsTool):
     def inputs(self) -> List[ToolInput]:
         return [
             ToolInput("reference", FastaWithDict(), position=2, shell_quote=False),
-            ToolInput(
-                "reads", Fastq(), separator=" ", position=3, shell_quote=False, doc=None
-            ),
+            ToolInput("reads", Fastq(), position=3, shell_quote=False, doc=None),
             ToolInput(
                 "mates",
                 Fastq(optional=True),

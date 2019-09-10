@@ -9,11 +9,12 @@ from janis_core import (
     CaptureType,
     Array,
     ToolMetadata,
+    String,
     get_value_for_hints_and_ordered_resource_tuple,
 )
 from janis_unix import TextFile
 
-from janis_bioinformatics.data_types import BamBai, VcfIdx, Bed
+from janis_bioinformatics.data_types import BamBai, VcfIdx, Bed, VcfTabix
 from ..gatk4toolbase import Gatk4ToolBase
 
 CORES_TUPLE = [
@@ -65,11 +66,14 @@ class Gatk4GetPileUpSummariesBase(Gatk4ToolBase, ABC):
                 position=0,
             ),
             ToolInput(
-                "sites", VcfIdx(), prefix="-V", doc="sites of common biallelic variants"
+                "sites",
+                VcfTabix(),
+                prefix="-V",
+                doc="sites of common biallelic variants",
             ),
             ToolInput(
                 "intervals",
-                Bed(optional=True),
+                VcfTabix(optional=True),
                 prefix="--intervals",
                 doc="-L (BASE) One or more genomic intervals over which to operate",
             ),

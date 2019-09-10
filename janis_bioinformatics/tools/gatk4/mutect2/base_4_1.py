@@ -29,6 +29,7 @@ from janis_bioinformatics.data_types import (
     VcfIdx,
     Vcf,
     VcfTabix,
+    CompressedVcf,
 )
 from ..gatk4toolbase import Gatk4ToolBase
 
@@ -303,7 +304,7 @@ class Gatk4Mutect2Base_4_1(Gatk4ToolBase, ABC):
             ),
             ToolInput(
                 tag="germlineResource",
-                input_type=Vcf(optional=True),
+                input_type=VcfTabix(optional=True),
                 prefix="--germline-resource",
                 doc=" Population vcf of germline sequencing containing allele fractions.  Default value: null. ",
             ),
@@ -418,7 +419,7 @@ class Gatk4Mutect2Base_4_1(Gatk4ToolBase, ABC):
             ),
             ToolInput(
                 tag="panelOfNormals",
-                input_type=Vcf(optional=True),
+                input_type=VcfTabix(optional=True),
                 prefix="--panel-of-normals",
                 doc="(--panel-of-normals)  VCF file of sites observed in normal.  Default value: null. ",
             ),
@@ -878,7 +879,7 @@ class Gatk4Mutect2Base_4_1(Gatk4ToolBase, ABC):
         return [
             ToolOutput(
                 "out",
-                VcfTabix(),
+                VcfTabix,
                 glob=InputSelector("outputFilename"),
                 doc="To determine type",
             ),
