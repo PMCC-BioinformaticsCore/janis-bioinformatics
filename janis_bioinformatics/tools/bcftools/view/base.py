@@ -92,7 +92,7 @@ class BcfToolsViewBase(BcfToolsToolBase, ABC):
         return [ToolInput("file", CompressedVcf(), position=2), *self.additional_inputs]
 
     def outputs(self) -> List[ToolOutput]:
-        return [ToolOutput("out", Stdout(Vcf()))]
+        return [ToolOutput("out", Stdout(CompressedVcf()))]
 
     additional_inputs = [
         ToolInput(
@@ -131,7 +131,7 @@ class BcfToolsViewBase(BcfToolsToolBase, ABC):
             doc="do not append version and command line to the header",
         ),
         ToolInput(
-            "outputFile",
+            "outputFilename",
             File(optional=True),
             prefix="--output-file",
             position=1,

@@ -11,7 +11,7 @@ from janis_core import (
     ToolOutput,
     InputSelector,
 )
-from janis_bioinformatics.data_types import FastaWithDict
+from janis_bioinformatics.data_types import FastaWithDict, CompressedVcf
 from janis_bioinformatics.data_types import Vcf
 from janis_bioinformatics.tools.bcftools.bcftoolstoolbase import BcfToolsToolBase
 from janis_core import ToolMetadata
@@ -31,10 +31,10 @@ class BcfToolsNormBase(BcfToolsToolBase, ABC):
 
     def inputs(self):
         return [
-            ToolInput("vcf", Vcf(), position=10),
+            ToolInput("vcf", CompressedVcf, position=10),
             ToolInput(
                 "outputFilename",
-                Filename(extension=".vcf"),
+                Filename(extension=".vcf.gz"),
                 prefix="-o",
                 doc="--output: When output consists of a single stream, "
                 "write it to FILE rather than to standard output, where it is written by default.",
@@ -43,7 +43,7 @@ class BcfToolsNormBase(BcfToolsToolBase, ABC):
         ]
 
     def outputs(self):
-        return [ToolOutput("out", Vcf(), glob=InputSelector("outputFilename"))]
+        return [ToolOutput("out", CompressedVcf, glob=InputSelector("outputFilename"))]
 
     def bind_metadata(self):
         from datetime import date

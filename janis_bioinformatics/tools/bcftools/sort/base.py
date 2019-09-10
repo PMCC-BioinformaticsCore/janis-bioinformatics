@@ -13,7 +13,7 @@ from janis_core import (
 )
 from janis_core import get_value_for_hints_and_ordered_resource_tuple
 
-from janis_bioinformatics.data_types import Vcf
+from janis_bioinformatics.data_types import Vcf, CompressedVcf
 from janis_bioinformatics.tools.bcftools.bcftoolstoolbase import BcfToolsToolBase
 
 CORES_TUPLE = [
@@ -69,10 +69,10 @@ class BcfToolsSortBase(BcfToolsToolBase, ABC):
 
     def inputs(self):
         return [
-            ToolInput("vcf", Vcf(), position=1, doc="The VCF file to sort"),
+            ToolInput("vcf", CompressedVcf, position=1, doc="The VCF file to sort"),
             ToolInput(
                 "outputFilename",
-                Filename(suffix=".sorted", extension=".vcf"),
+                Filename(suffix=".sorted", extension=".vcf.gz"),
                 prefix="--output-file",
                 doc="(-o) output file name [stdout]",
             ),
@@ -91,7 +91,7 @@ class BcfToolsSortBase(BcfToolsToolBase, ABC):
         ]
 
     def outputs(self):
-        return [ToolOutput("out", Vcf(), glob=InputSelector("outputFilename"))]
+        return [ToolOutput("out", CompressedVcf, glob=InputSelector("outputFilename"))]
 
     def bind_metadata(self):
         return ToolMetadata(
