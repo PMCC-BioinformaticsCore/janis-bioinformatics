@@ -25,7 +25,7 @@ class Vcf(File):
 class VcfIdx(Vcf):
     @staticmethod
     def name():
-        return "VCFIDX"
+        return "IndexedVCF"
 
     @staticmethod
     def secondary_files():
@@ -38,7 +38,7 @@ class CompressedVcf(File):
 
     @staticmethod
     def name():
-        return "compressed-vcf-gz"
+        return "CompressedVCF"
 
     def doc(self):
         return ".vcf.gz"
@@ -47,7 +47,7 @@ class CompressedVcf(File):
 class VcfTabix(CompressedVcf):
     @staticmethod
     def name():
-        return "vcf-gz-tbi"
+        return "CompressedIndexedVCF"
 
     @staticmethod
     def secondary_files():
@@ -57,13 +57,13 @@ class VcfTabix(CompressedVcf):
         return ".vcf.gz with .vcf.gz.tbi file"
 
 
-class GVCF(Vcf):
-    @staticmethod
-    def name():
-        return "gVCF"
-
-    def doc(self):
-        return """
-Section 5.5: Representing unspecified alleles and REF only blocks (gVCF)
-Documentation: https://samtools.github.io/hts-specs/VCFv4.3.pdf
-        """
+# class GVCF(Vcf):
+#     @staticmethod
+#     def name():
+#         return "gVCF"
+#
+#     def doc(self):
+#         return """
+# Section 5.5: Representing unspecified alleles and REF only blocks (gVCF)
+# Documentation: https://samtools.github.io/hts-specs/VCFv4.3.pdf
+#         """
