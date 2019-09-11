@@ -10,15 +10,14 @@ from janis_core import (
     ToolOutput,
     Filename,
     InputSelector,
+    CaptureType,
+    CpuSelector,
+    Stdout,
+    get_value_for_hints_and_ordered_resource_tuple,
+    ToolMetadata,
 )
-from janis_core import CaptureType
-from janis_core import CpuSelector
-from janis_core import Stdout
-from janis_core import get_value_for_hints_and_ordered_resource_tuple
-from janis_core import ToolMetadata
 
-from janis_bioinformatics.data_types import Sam, FastaWithDict
-from janis_bioinformatics.data_types.fastq import Fastq
+from janis_bioinformatics.data_types import Sam, FastaWithDict, FastqGzPair
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 
 BWA_MEM_TUPLE = [
@@ -69,8 +68,8 @@ class BwaMemBase(BioinformaticsTool, ABC):
     def inputs(self):
         return [
             ToolInput("reference", FastaWithDict(), position=9),
-            ToolInput("reads", Fastq(), position=10, doc=None),
-            ToolInput("mates", Fastq(optional=True), position=11, doc=None),
+            ToolInput("reads", FastqGzPair, position=10, doc=None),
+            ToolInput("mates", FastqGzPair(optional=True), position=11, doc=None),
             ToolInput("outputFilename", Filename(extension=".sam")),
             *BwaMemBase.additional_inputs,
         ]

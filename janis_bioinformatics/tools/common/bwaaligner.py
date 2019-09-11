@@ -1,4 +1,4 @@
-from janis_bioinformatics.data_types import Fastq, FastaWithDict
+from janis_bioinformatics.data_types import FastqGzPair, FastaWithDict
 from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.common.bwamem_samtoolsview import BwaMem_SamToolsView
 from janis_bioinformatics.tools.cutadapt import CutAdapt_1_18
@@ -25,7 +25,7 @@ class BwaAligner(BioinformaticsWorkflow):
         # Inputs
         self.input("name", str)
         self.input("reference", FastaWithDict)
-        self.input("fastq", Fastq)
+        self.input("fastq", FastqGzPair)
 
         # Steps
         self.step(

@@ -18,7 +18,7 @@ from janis_core import (
 )
 from janis_core import get_value_for_hints_and_ordered_resource_tuple
 
-from janis_bioinformatics.data_types import FastaWithDict, Fastq, Bam, Bed
+from janis_bioinformatics.data_types import FastaWithDict, FastqGzPair, Bam, Bed
 
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 
@@ -100,14 +100,16 @@ class BwaMem_SamToolsView(BioinformaticsTool):
             ),
             ToolArgument(
                 StringFormatter(
-                    "@RG\\tID:{name}\\tSM:{name}\\tLB:{name}\\tPL:ILLUMINA",
+                    "@RG\\tID:{name}\\tSM:{name}\\tLB:{name}\\tPL:{pl}",
                     name=InputSelector("sampleName"),
+                    pl=InputSelector("platformTechnology"),
                 ),
                 prefix="-R",
                 position=2,
                 doc="Complete read group header line. ’\\t’ can be used in STR and will be converted to a TAB"
                 "in the output SAM. The read group ID will be attached to every read in the output. "
-                "An example is ’@RG\\tID:foo\\tSM:bar’. (Default=null)",
+                "An example is ’@RG\\tID:foo\\tSM:bar’. (Default=null) "
+                "https://gatkforums.broadinstitute.org/gatk/discussion/6472/read-groups",
             ),
             ToolArgument(
                 CpuSelector(),
@@ -121,10 +123,10 @@ class BwaMem_SamToolsView(BioinformaticsTool):
     def inputs(self) -> List[ToolInput]:
         return [
             ToolInput("reference", FastaWithDict(), position=2, shell_quote=False),
-            ToolInput("reads", Fastq(), position=3, shell_quote=False, doc=None),
+            ToolInput("reads", FastqGzPair, position=3, shell_quote=False, doc=None),
             ToolInput(
                 "mates",
-                Fastq(optional=True),
+                FastqGzPair(optional=True),
                 separator=" ",
                 position=4,
                 shell_quote=False,
@@ -149,6 +151,12 @@ class BwaMem_SamToolsView(BioinformaticsTool):
                 String(),
                 doc="Used to construct the readGroupHeaderLine with format: "
                 "'@RG\\tID:{name}\\tSM:{name}\\tLB:{name}\\tPL:ILLUMINA'",
+            ),
+            ToolInput(
+                "platformTechnology",
+                String,
+                doc="(ReadGroup: PL) Used to construct the readGroupHeaderLine, defaults: ILLUMINA",
+                default="ILLUMINA",
             ),
             *self.bwa_additional_inputs,
             *self.samtools_additional_args,
