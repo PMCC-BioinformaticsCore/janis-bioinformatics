@@ -1,7 +1,7 @@
 from janis_bioinformatics.data_types import Fastq, FastaWithDict
 from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.common.bwamem_samtoolsview import BwaMem_SamToolsView
-from janis_bioinformatics.tools.cutadapt.cutadapt_1_18 import CutAdapt_1_18
+from janis_bioinformatics.tools.cutadapt import CutAdapt_1_18
 from janis_bioinformatics.tools.gatk4 import Gatk4SortSam_4_1_3
 
 
