@@ -62,6 +62,7 @@ class Gatk4GetPileUpSummariesBase(Gatk4ToolBase, ABC):
                 "bam",
                 Array(BamBai()),
                 prefix="-I",
+		prefix_applies_to_all_elements=True,
                 doc="The SAM/BAM/CRAM file containing reads.",
                 position=0,
             ),
@@ -102,7 +103,7 @@ class Gatk4GetPileUpSummariesBase(Gatk4ToolBase, ABC):
         val = get_value_for_hints_and_ordered_resource_tuple(hints, MEM_TUPLE)
         if val:
             return val
-        return 8
+        return 64
 
     additional_args = []
 
