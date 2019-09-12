@@ -49,8 +49,7 @@ MEM_TUPLE = [
 
 
 class BcfToolsAnnotateBase(BcfToolsToolBase, ABC):
-    def __init__(self):
-        super().__init__()
+    def bind_metadata(self):
         self.metadata.dateUpdated = date(2019, 1, 24)
         self.metadata.doi = "http://www.ncbi.nlm.nih.gov/pubmed/19505943"
         self.metadata.citation = (

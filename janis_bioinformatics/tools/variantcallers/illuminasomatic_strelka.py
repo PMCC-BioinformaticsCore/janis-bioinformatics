@@ -6,6 +6,12 @@ from janis_bioinformatics.tools.illumina import Manta_1_5_0, StrelkaSomatic_2_9_
 
 
 class IlluminaSomaticVariantCaller(BioinformaticsWorkflow):
+    def id(self):
+        return "strelkaSomaticVariantCaller"
+
+    def friendly_name(self):
+        return "Strelka Somatic Variant Caller"
+
     @staticmethod
     def tool_provider():
         return "Variant Callers"
@@ -14,10 +20,7 @@ class IlluminaSomaticVariantCaller(BioinformaticsWorkflow):
     def version():
         return "v0.1.0"
 
-    def __init__(self):
-        super().__init__(
-            "strelkaSomaticVariantCaller", "Strelka Somatic Variant Caller"
-        )
+    def constructor(self):
 
         self.input("normalBam", BamBai)
         self.input("tumorBam", BamBai)
@@ -27,29 +30,29 @@ class IlluminaSomaticVariantCaller(BioinformaticsWorkflow):
 
         self.step(
             "manta",
-            Manta_1_5_0,
-            bam=self.normalBam,
-            tumorBam=self.tumorBam,
-            reference=self.reference,
-            callRegions=self.intervals,
+            Manta_1_5_0(
+                bam=self.normalBam,
+                tumorBam=self.tumorBam,
+                reference=self.reference,
+                callRegions=self.intervals,
+            ),
         )
         self.step(
             "strelka",
-            StrelkaSomatic_2_9_10,
-            indelCandidates=self.manta.candidateSmallIndels,
-            normalBam=self.normalBam,
-            tumorBam=self.tumorBam,
-            reference=self.reference,
-            callRegions=self.intervals,
+            StrelkaSomatic_2_9_10(
+                indelCandidates=self.manta.candidateSmallIndels,
+                normalBam=self.normalBam,
+                tumorBam=self.tumorBam,
+                reference=self.reference,
+                callRegions=self.intervals,
+            ),
         )
         self.step(
-            "bcf_view", BcfToolsView_1_5, file=self.strelka.snvs, applyFilters=["PASS"]
+            "bcf_view", BcfToolsView_1_5(file=self.strelka.snvs, applyFilters=["PASS"])
         )
         self.step(
             "splitMultiAllele",
-            SplitMultiAllele,
-            vcf=self.bcf_view.out,
-            reference=self.reference,
+            SplitMultiAllele(vcf=self.bcf_view.out, reference=self.reference),
         )
 
         self.output("diploid", source=self.manta.diploidSV)

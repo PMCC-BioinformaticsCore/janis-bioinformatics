@@ -154,7 +154,7 @@ class BwaMem_SamToolsView(BioinformaticsTool):
             ),
             ToolInput(
                 "platformTechnology",
-                String,
+                String(optional=True),
                 doc="(ReadGroup: PL) Used to construct the readGroupHeaderLine, defaults: ILLUMINA",
                 default="ILLUMINA",
             ),

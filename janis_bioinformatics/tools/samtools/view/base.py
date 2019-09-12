@@ -58,8 +58,7 @@ class SamToolsViewBase(SamToolsToolBase, ABC):
     def friendly_name(self):
         return "SamTools: View"
 
-    def __init__(self):
-        super().__init__()
+    def bind_metadata(self):
         self.metadata = ToolMetadata(
             creator="Michael Franklin",
             maintainer="Michael Franklin",
@@ -82,6 +81,7 @@ You may specify one or more space-separated region specifications after the inpu
 restrict output to only those alignments which overlap the specified region(s). 
 Use of region specifications requires a coordinate-sorted and indexed input file (in BAM or CRAM format).""".strip(),
         )
+        return self.metadata
 
     def arguments(self):
         return [

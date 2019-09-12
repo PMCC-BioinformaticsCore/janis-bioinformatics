@@ -9,6 +9,12 @@ from janis_bioinformatics.tools.gatk4 import (
 
 
 class MergeAndMarkBams_4_0(BioinformaticsWorkflow):
+    def id(self):
+        return "mergeAndMarkBams"
+
+    def friendly_name(self):
+        return "Merge and Mark Duplicates"
+
     @staticmethod
     def version():
         return "4.0.12"
@@ -17,8 +23,7 @@ class MergeAndMarkBams_4_0(BioinformaticsWorkflow):
     def tool_provider():
         return "common"
 
-    def __init__(self):
-        super().__init__("mergeAndMarkBams", name="Merge and Mark Duplicates")
+    def constructor(self):
 
         self.input("bams", Array(BamBai()))
         self.input("createIndex", Boolean, default=True)
@@ -26,20 +31,22 @@ class MergeAndMarkBams_4_0(BioinformaticsWorkflow):
 
         self.step(
             "mergeSamFiles",
-            Gatk4MergeSamFiles_4_0,
-            bams=self.bams,
-            useThreading=True,
-            createIndex=self.createIndex,
-            maxRecordsInRam=self.maxRecordsInRam,
-            validationStringency="SILENT",
+            Gatk4MergeSamFiles_4_0(
+                bams=self.bams,
+                useThreading=True,
+                createIndex=self.createIndex,
+                maxRecordsInRam=self.maxRecordsInRam,
+                validationStringency="SILENT",
+            ),
         )
 
         self.step(
             "markDuplicates",
-            Gatk4MarkDuplicates_4_0,
-            bam=self.mergeSamFiles.out,
-            createIndex=self.createIndex,
-            maxRecordsInRam=self.maxRecordsInRam,
+            Gatk4MarkDuplicates_4_0(
+                bam=self.mergeSamFiles.out,
+                createIndex=self.createIndex,
+                maxRecordsInRam=self.maxRecordsInRam,
+            ),
         )
         self.output("out", source=self.markDuplicates.out)
 

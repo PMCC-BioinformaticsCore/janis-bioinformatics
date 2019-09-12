@@ -9,6 +9,12 @@ from janis_bioinformatics.tools.common import SplitMultiAllele
 
 
 class VardictGermlineVariantCaller(BioinformaticsWorkflow):
+    def id(self):
+        return "vardictGermlineVariantCaller"
+
+    def friendly_name(self):
+        return "Vardict Germline Variant Caller"
+
     @staticmethod
     def tool_provider():
         return "Variant Callers"
@@ -17,10 +23,7 @@ class VardictGermlineVariantCaller(BioinformaticsWorkflow):
     def version():
         return "v0.1.0"
 
-    def __init__(self):
-        super().__init__(
-            "vardictGermlineVariantCaller", name="Vardict Germline Variant Caller"
-        )
+    def constructor(self):
 
         self.input("bam", BamBai)
         self.input("intervals", Bed)
@@ -33,30 +36,29 @@ class VardictGermlineVariantCaller(BioinformaticsWorkflow):
 
         self.step(
             "vardict",
-            VarDictGermline_1_5_8,
-            intervals=self.intervals,
-            bam=self.bam,
-            reference=self.reference,
-            sampleName=self.sampleName,
-            var2vcfSampleName=self.sampleName,
-            alleleFreqThreshold=self.alleleFreqThreshold,
-            var2vcfAlleleFreqThreshold=self.alleleFreqThreshold,
-            chromNamesAreNumbers=True,
-            vcfFormat=True,
-            chromColumn=1,
-            regStartCol=2,
-            geneEndCol=3,
+            VarDictGermline_1_5_8(
+                intervals=self.intervals,
+                bam=self.bam,
+                reference=self.reference,
+                sampleName=self.sampleName,
+                var2vcfSampleName=self.sampleName,
+                alleleFreqThreshold=self.alleleFreqThreshold,
+                var2vcfAlleleFreqThreshold=self.alleleFreqThreshold,
+                chromNamesAreNumbers=True,
+                vcfFormat=True,
+                chromColumn=1,
+                regStartCol=2,
+                geneEndCol=3,
+            ),
         )
         self.step(
             "annotate",
-            BcfToolsAnnotate_1_5,
-            file=self.vardict.out,
-            headerLines=self.headerLines,
+            BcfToolsAnnotate_1_5(file=self.vardict.out, headerLines=self.headerLines),
         )
         self.step(
-            "split", SplitMultiAllele, vcf=self.annotate.out, reference=self.reference
+            "split", SplitMultiAllele(vcf=self.annotate.out, reference=self.reference)
         )
-        self.step("trim", TrimIUPAC_0_0_4, vcf=self.split.out)
+        self.step("trim", TrimIUPAC_0_0_4(vcf=self.split.out))
 
         self.output("vardictVariants", source=self.vardict.out)
         self.output("out", source=self.trim.out)

@@ -7,14 +7,17 @@ from janis_bioinformatics.tools.samtools import SamToolsView_1_7
 
 
 class GridssGermlineVariantCaller(BioinformaticsWorkflow):
+    def id(self):
+        return "gridssGermlineVariantCaller"
+
+    def friendly_name(self):
+        return "Gridss Germline Variant Caller"
+
     @staticmethod
     def tool_provider():
         return "Variant Callers"
 
-    def __init__(self):
-        super().__init__(
-            "gridssGermlineVariantCaller", "Gridss Germline Variant Caller"
-        )
+    def constructor(self):
 
         self.input("bam", BamBai)
         self.input("reference", FastaWithDict)
@@ -24,16 +27,15 @@ class GridssGermlineVariantCaller(BioinformaticsWorkflow):
 
         self.step(
             "samtools",
-            SamToolsView_1_7,
-            sam=self.bam,
-            doNotOutputAlignmentsWithBitsSet="0x100",
+            SamToolsView_1_7(sam=self.bam, doNotOutputAlignmentsWithBitsSet="0x100"),
         )
         self.step(
             "gridss",
-            Gridss_2_5_1,
-            bams=[self.samtools.out],
-            reference=self.reference,
-            blacklist=self.blacklist,
+            Gridss_2_5_1(
+                bams=[self.samtools.out],
+                reference=self.reference,
+                blacklist=self.blacklist,
+            ),
         )
 
         self.output("out", source=self.gridss.out)

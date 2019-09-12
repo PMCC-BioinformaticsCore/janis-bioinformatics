@@ -47,8 +47,7 @@ MEM_TUPLE = [
 
 
 class BcfToolsViewBase(BcfToolsToolBase, ABC):
-    def __init__(self):
-        super().__init__()
+    def bind_metadata(self):
         from datetime import date
 
         self.metadata.dateUpdated = date(2019, 1, 24)

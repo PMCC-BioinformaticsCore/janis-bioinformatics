@@ -6,22 +6,22 @@ from janis_bioinformatics.tools.htslib import BGZip_1_2_1, Tabix_1_2_1
 
 
 class PerformanceValidator_1_2_1(BioinformaticsWorkflow):
-    def __init__(self):
-        super().__init__("performanceValidator", name="Performance Validator")
+    def constructor(self):
 
         self.input("vcf", Vcf)
         self.input("truth", VcfIdx)
         self.input("intervals", Array(Vcf()))
 
-        self.step("bgzip", BGZip_1_2_1, file=self.vcf)
-        self.step("tabix", Tabix_1_2_1, file=self.bgzip)
+        self.step("bgzip", BGZip_1_2_1(file=self.vcf))
+        self.step("tabix", Tabix_1_2_1(file=self.bgzip))
         self.step(
             "genotypeConcord",
-            Gatk4GenotypeConcordanceLatest,
-            callVCF=self.tabix,
-            truthVCF=self.truth,
-            intervals=self.intervals,
-            treatMissingSitesAsHomeRef=True,
+            Gatk4GenotypeConcordanceLatest(
+                callVCF=self.tabix,
+                truthVCF=self.truth,
+                intervals=self.intervals,
+                treatMissingSitesAsHomeRef=True,
+            ),
         )
 
         self.output("summaryMetrics", source=self.genotypeConcord.summaryMetrics)
@@ -29,6 +29,12 @@ class PerformanceValidator_1_2_1(BioinformaticsWorkflow):
         self.output(
             "contingencyMetrics", source=self.genotypeConcord.contingencyMetrics
         )
+
+    def id(self):
+        return "performanceValidator"
+
+    def friendly_name(self):
+        return "Performance Validator"
 
     @staticmethod
     def version():

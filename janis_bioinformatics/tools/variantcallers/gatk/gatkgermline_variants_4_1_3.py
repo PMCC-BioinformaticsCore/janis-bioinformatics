@@ -7,28 +7,36 @@ from janis_bioinformatics.tools.common import SplitMultiAllele
 
 
 class GatkGermlineVariantCaller_4_1_3(BioinformaticsWorkflow):
+    def id(self):
+        return "GATK4_GermlineVariantCaller"
+
+    def friendly_name(self):
+        return "GATK4 Germline Variant Caller"
+
     @staticmethod
     def tool_provider():
         return "Variant Callers"
 
-    def __init__(self):
-        super().__init__("GATK4_GermlineVariantCaller", "GATK4 Germline Variant Caller")
-
+    def bind_metadata(self):
         self.metadata.version = "4.1.3.0"
-        self.metadata.dateCreated = date(2019, 9, 9)
+        self.metadata.dateCreated = date(2019, 9, 1)
+        self.metadata.dateUpdated = date(2019, 9, 13)
+
         self.metadata.maintainer = "Michael Franklin"
         self.metadata.maintainerEmail = "michael.franklin@petermac.org"
         self.metadata.keywords = ["variants", "gatk", "gatk4", "variant caller"]
         self.metadata.documentation = """
-This is a VariantCaller based on the GATK Best Practice pipelines. It uses the GATK4 toolkit, specifically 4.0.12.0.
+        This is a VariantCaller based on the GATK Best Practice pipelines. It uses the GATK4 toolkit, specifically 4.0.12.0.
 
-It has the following steps:
+        It has the following steps:
 
-1. BaseRecalibrator
-2. ApplyBQSR
-3. HaplotypeCaller
-4. SplitMultiAllele
-        """.strip()
+        1. BaseRecalibrator
+        2. ApplyBQSR
+        3. HaplotypeCaller
+        4. SplitMultiAllele
+                """.strip()
+
+    def constructor(self):
 
         self.input("bam", BamBai)
         self.input(
@@ -47,38 +55,39 @@ It has the following steps:
 
         self.step(
             "baseRecalibrator",
-            gatk4.Gatk4BaseRecalibrator_4_1_3,
-            bam=self.bam,
-            intervals=self.intervals,
-            reference=self.reference,
-            knownSites=[
-                self.snps_dbsnp,
-                self.snps_1000gp,
-                self.knownIndels,
-                self.millsIndels,
-            ],
+            gatk4.Gatk4BaseRecalibrator_4_1_3(
+                bam=self.bam,
+                intervals=self.intervals,
+                reference=self.reference,
+                knownSites=[
+                    self.snps_dbsnp,
+                    self.snps_1000gp,
+                    self.knownIndels,
+                    self.millsIndels,
+                ],
+            ),
         )
         self.step(
             "applyBQSR",
-            gatk4.Gatk4ApplyBqsr_4_1_3,
-            bam=self.bam,
-            intervals=self.intervals,
-            recalFile=self.baseRecalibrator.out,
-            reference=self.reference,
+            gatk4.Gatk4ApplyBqsr_4_1_3(
+                bam=self.bam,
+                intervals=self.intervals,
+                recalFile=self.baseRecalibrator.out,
+                reference=self.reference,
+            ),
         )
         self.step(
             "haplotypeCaller",
-            gatk4.Gatk4HaplotypeCaller_4_1_3,
-            inputRead=self.applyBQSR,
-            intervals=self.intervals,
-            reference=self.reference,
-            dbsnp=self.snps_dbsnp,
+            gatk4.Gatk4HaplotypeCaller_4_1_3(
+                inputRead=self.applyBQSR,
+                intervals=self.intervals,
+                reference=self.reference,
+                dbsnp=self.snps_dbsnp,
+            ),
         )
         self.step(
             "splitMultiAllele",
-            SplitMultiAllele,
-            reference=self.reference,
-            vcf=self.haplotypeCaller,
+            SplitMultiAllele(reference=self.reference, vcf=self.haplotypeCaller),
         )
 
         self.output("out", source=self.splitMultiAllele)

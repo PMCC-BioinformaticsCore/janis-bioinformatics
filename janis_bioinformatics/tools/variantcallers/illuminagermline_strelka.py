@@ -6,6 +6,12 @@ from janis_bioinformatics.tools.illumina import StrelkaGermline_2_9_10, Manta_1_
 
 
 class IlluminaGermlineVariantCaller(BioinformaticsWorkflow):
+    def id(self):
+        return "strelkaGermlineVariantCaller"
+
+    def friendly_name(self):
+        return "Strelka Germline Variant Caller"
+
     @staticmethod
     def tool_provider():
         return "Variant Callers"
@@ -14,10 +20,7 @@ class IlluminaGermlineVariantCaller(BioinformaticsWorkflow):
     def version():
         return "v0.1.0"
 
-    def __init__(self):
-        super(IlluminaGermlineVariantCaller, self).__init__(
-            "strelkaGermlineVariantCaller", "Strelka Germline Variant Caller"
-        )
+    def constructor(self):
 
         self.input("bam", BamBai)
         self.input("reference", FastaWithDict)
@@ -25,33 +28,29 @@ class IlluminaGermlineVariantCaller(BioinformaticsWorkflow):
 
         self.step(
             "manta",
-            Manta_1_5_0,
-            bam=self.bam,
-            reference=self.reference,
-            callRegions=self.intervals,
+            Manta_1_5_0(
+                bam=self.bam, reference=self.reference, callRegions=self.intervals
+            ),
         )
 
         self.step(
             "strelka",
-            StrelkaGermline_2_9_10,
-            bam=self.bam,
-            reference=self.reference,
-            indelCandidates=self.manta.candidateSmallIndels,
-            callRegions=self.intervals,
+            StrelkaGermline_2_9_10(
+                bam=self.bam,
+                reference=self.reference,
+                indelCandidates=self.manta.candidateSmallIndels,
+                callRegions=self.intervals,
+            ),
         )
 
         self.step(
             "bcfview",
-            BcfToolsView_1_5,
-            file=self.strelka.variants,
-            applyFilters=["PASS"],
+            BcfToolsView_1_5(file=self.strelka.variants, applyFilters=["PASS"]),
         )
 
         self.step(
             "splitMultiAllele",
-            SplitMultiAllele,
-            vcf=self.bcfview.out,
-            reference=self.reference,
+            SplitMultiAllele(vcf=self.bcfview.out, reference=self.reference),
         )
 
         self.output("diploid", source=self.manta.diploidSV)
