@@ -634,12 +634,6 @@ class Gatk4Mutect2Base_4_1(Gatk4ToolBase, ABC):
                 doc="(-LODB) Exclusive upper bounds for reference confidence LOD bands (must be specified in increasing order)  This argument may be specified 0 or more times. Default value: [-2.5, -2.0, -1.5,",
             ),
             ToolInput(
-                tag="gvcfLodBand",
-                input_type=String(optional=True),
-                prefix="--gvcf-lod-band",
-                doc="(-LODB) Exclusive upper bounds for reference confidence LOD bands (must be specified in increasing order)  This argument may be specified 0 or more times. Default value: [-2.5, -2.0, -1.5,",
-            ),
-            ToolInput(
                 tag="kmerSize",
                 input_type=Int(optional=True),
                 prefix="--kmer-size",

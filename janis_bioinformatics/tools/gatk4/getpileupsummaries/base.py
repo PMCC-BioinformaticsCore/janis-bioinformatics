@@ -62,7 +62,7 @@ class Gatk4GetPileUpSummariesBase(Gatk4ToolBase, ABC):
                 "bam",
                 Array(BamBai()),
                 prefix="-I",
-		prefix_applies_to_all_elements=True,
+                prefix_applies_to_all_elements=True,
                 doc="The SAM/BAM/CRAM file containing reads.",
                 position=0,
             ),
