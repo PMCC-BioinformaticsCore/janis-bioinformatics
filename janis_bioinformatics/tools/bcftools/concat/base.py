@@ -34,7 +34,7 @@ class BcfToolsConcatBase(BcfToolsToolBase, ABC):
             ToolInput("vcf", Array(CompressedVcf()), position=15),
             ToolInput(
                 "outputFilename",
-                Filename(extension=".vcf"),
+                Filename(extension=".vcf.gz"),
                 prefix="-o",
                 doc="--output: When output consists of a single stream, "
                 "write it to FILE rather than to standard output, where it is written by default.",
@@ -121,6 +121,7 @@ if the BCF headers differ.
             "outputType",
             String(optional=True),
             prefix="-O",
+            default="z",
             doc="--output-type b|u|z|v: Output compressed BCF (b), uncompressed BCF (u), "
             "compressed VCF (z), uncompressed VCF (v). Use the -Ou option when piping "
             "between bcftools subcommands to speed up performance by removing "

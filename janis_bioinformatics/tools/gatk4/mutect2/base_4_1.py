@@ -89,7 +89,7 @@ class Gatk4Mutect2Base_4_1(Gatk4ToolBase, ABC):
             ToolInput(
                 tag="normalSample",
                 input_type=String,
-                prefix="-normalBAM",
+                prefix="--normal-sample",
                 doc="(--normal-sample, if) May be URL-encoded as output by GetSampleName with",
             ),
             ToolInput(
@@ -896,6 +896,18 @@ class Gatk4Mutect2Base_4_1(Gatk4ToolBase, ABC):
                 doc="To determine type",
             ),
         ]
+
+    def cpus(self, hints: Dict[str, Any]):
+        val = get_value_for_hints_and_ordered_resource_tuple(hints, CORES_TUPLE)
+        if val:
+            return val
+        return 4
+
+    def memory(self, hints: Dict[str, Any]):
+        val = get_value_for_hints_and_ordered_resource_tuple(hints, MEM_TUPLE)
+        if val:
+            return val
+        return 8
 
     def bind_metadata(self):
         from datetime import date
