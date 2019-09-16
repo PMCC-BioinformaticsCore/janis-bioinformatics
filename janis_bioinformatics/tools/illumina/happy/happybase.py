@@ -66,7 +66,7 @@ class HapPyValidatorBase(IlluminaToolBase, ABC):
             j.ToolInput("compareVCF", Vcf(), position=2),
             j.ToolInput(
                 "reportPrefix",
-                j.String(),
+                j.Filename(),
                 prefix="--report-prefix",
                 doc="(-o)  Filename prefix for report output.",
             ),
