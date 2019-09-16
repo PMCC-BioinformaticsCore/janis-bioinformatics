@@ -83,3 +83,9 @@ from .gathervcfs.versions import (
     Gatk4GatherVcfs_4_1_3,
     Gatk4GatherVcfsLatest,
 )
+
+from .splitreads.versions import (
+    Gatk4SplitReads_4_1_2,
+    Gatk4SplitReads_4_1_3,
+    Gatk4SortSamLatest,
+)

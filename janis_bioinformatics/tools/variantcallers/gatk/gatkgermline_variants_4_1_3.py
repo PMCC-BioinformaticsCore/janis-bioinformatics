@@ -54,9 +54,14 @@ class GatkGermlineVariantCaller_4_1_3(BioinformaticsWorkflow):
         self.input("millsIndels", VcfTabix)
 
         self.step(
+            "splitBams",
+            gatk4.Gatk4SplitReads_4_1_3(bam=self.bam, intervals=self.intervals),
+        )
+
+        self.step(
             "baseRecalibrator",
             gatk4.Gatk4BaseRecalibrator_4_1_3(
-                bam=self.bam,
+                bam=self.splitBams,
                 intervals=self.intervals,
                 reference=self.reference,
                 knownSites=[
