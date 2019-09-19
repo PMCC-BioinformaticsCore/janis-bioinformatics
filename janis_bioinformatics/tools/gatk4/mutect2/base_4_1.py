@@ -907,7 +907,7 @@ class Gatk4Mutect2Base_4_1(Gatk4ToolBase, ABC):
         val = get_value_for_hints_and_ordered_resource_tuple(hints, MEM_TUPLE)
         if val:
             return val
-        return 8
+        return 16
 
     def bind_metadata(self):
         from datetime import date
