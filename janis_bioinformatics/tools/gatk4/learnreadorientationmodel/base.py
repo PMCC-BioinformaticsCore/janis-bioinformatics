@@ -98,7 +98,7 @@ class Gatk4LearnReadOrientationModelBase(Gatk4ToolBase, ABC):
         val = get_value_for_hints_and_ordered_resource_tuple(hints, MEM_TUPLE)
         if val:
             return val
-        return 8
+        return 32
 
     additional_args = []
 

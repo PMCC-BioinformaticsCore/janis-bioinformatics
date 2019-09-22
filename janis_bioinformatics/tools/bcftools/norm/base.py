@@ -103,6 +103,7 @@ the --fasta-ref option is supplied.
             "multiallelics",
             String(optional=True),
             prefix="-m",
+            default="-",
             doc="--multiallelics -|+[snps|indels|both|any]: split multiallelic sites into "
             "biallelic records (-) or join biallelic sites into multiallelic records (+). "
             "An optional type string can follow which controls variant types which should "
@@ -127,6 +128,7 @@ the --fasta-ref option is supplied.
             "outputType",
             String(optional=True),
             prefix="-O",
+            default="z",
             doc="--output-type b|u|z|v: Output compressed BCF (b), uncompressed BCF (u), "
             "compressed VCF (z), uncompressed VCF (v). Use the -Ou option when piping "
             "between bcftools subcommands to speed up performance by removing "

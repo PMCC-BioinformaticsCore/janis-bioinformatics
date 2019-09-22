@@ -62,7 +62,7 @@ class Gatk4FilterMutectCallsBase(Gatk4ToolBase, ABC):
                 "reference", FastaWithDict, prefix="-R", doc="Reference sequence file"
             ),
             ToolInput(
-                "outputFilename", Filename(extension=".txt"), position=2, prefix="-O"
+                "outputFilename", Filename(extension=".vcf.gz"), position=2, prefix="-O"
             ),
         ]
 
@@ -86,7 +86,7 @@ class Gatk4FilterMutectCallsBase(Gatk4ToolBase, ABC):
         val = get_value_for_hints_and_ordered_resource_tuple(hints, MEM_TUPLE)
         if val:
             return val
-        return 8
+        return 16
 
     additional_args = [
         ToolInput(
