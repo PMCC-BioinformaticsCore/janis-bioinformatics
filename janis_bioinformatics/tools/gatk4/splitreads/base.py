@@ -32,8 +32,9 @@ class Gatk4SplitReadsBase(Gatk4ToolBase):
         return [
             ToolInput(
                 "outputFilename",
-                Filename(extension=".bam"),
+                String,
                 prefix="--output",
+                default=".",
                 doc="The directory to output SAM/BAM/CRAM files. Default value: '.' ",
             ),
             ToolInput(
@@ -55,10 +56,7 @@ class Gatk4SplitReadsBase(Gatk4ToolBase):
     def outputs(self):
         return [
             ToolOutput(
-                "out",
-                BamBai,
-                glob=InputSelector("outputFilename", use_basename=True),
-                doc="Bam",
+                "out", BamBai, glob=InputSelector("bam", use_basename=True), doc="Bam"
             )
         ]
 

@@ -75,7 +75,7 @@ class GatkGermlineVariantCaller_4_1_3(BioinformaticsWorkflow):
         self.step(
             "applyBQSR",
             gatk4.Gatk4ApplyBqsr_4_1_3(
-                bam=self.bam,
+                bam=self.splitBams,
                 intervals=self.intervals,
                 recalFile=self.baseRecalibrator.out,
                 reference=self.reference,
