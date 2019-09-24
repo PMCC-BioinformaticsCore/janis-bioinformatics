@@ -2,14 +2,9 @@ from abc import ABC
 from typing import List, Dict, Any
 
 from janis_core import CpuSelector
-from janis_core import get_value_for_hints_and_ordered_resource_tuple
-
-from janis_bioinformatics.tools import BioinformaticsTool
-from janis_bioinformatics.data_types import BamBai, Bed, FastaFai, Vcf
 from janis_core import (
     ToolOutput,
     ToolInput,
-    Array,
     Filename,
     ToolArgument,
     Boolean,
@@ -19,12 +14,11 @@ from janis_core import (
     InputSelector,
     CaptureType,
 )
+from janis_core import get_value_for_hints_and_ordered_resource_tuple
 
-from janis_bioinformatics.tools.vardict.vardict import (
-    VarDict_1_5_6,
-    VarDict_1_5_7,
-    VarDict_1_5_8,
-)
+from janis_bioinformatics.data_types import BamBai, Bed, FastaFai, Vcf, CompressedVcf
+from janis_bioinformatics.tools import BioinformaticsTool
+from janis_bioinformatics.tools.vardict.vardict import VarDict_1_6_0
 
 CORES_TUPLE = [
     (
@@ -55,7 +49,7 @@ MEM_TUPLE = [
 ]
 
 
-class VarDictSomaticBase(BioinformaticsTool, ABC):
+class VarDictSomaticCompressedBase(BioinformaticsTool, ABC):
     def friendly_name(self) -> str:
         return "Vardict (Somatic)"
 
@@ -116,15 +110,15 @@ class VarDictSomaticBase(BioinformaticsTool, ABC):
                 "outputFilename",
                 Filename(extension=".vcf", suffix=".vardict"),
                 prefix=">",
-                position=6,
+                position=10,
                 shell_quote=False,
             ),
-            *VarDictSomaticBase.vardict_inputs,
-            *VarDictSomaticBase.var2vcf_inputs,
+            *VarDictSomaticCompressedBase.vardict_inputs,
+            *VarDictSomaticCompressedBase.var2vcf_inputs,
         ]
 
     def outputs(self):
-        return [ToolOutput("out", Vcf(), glob=InputSelector("outputFilename"))]
+        return [ToolOutput("out", CompressedVcf, glob=InputSelector("outputFilename"))]
 
     def arguments(self):
         return [
@@ -157,6 +151,7 @@ class VarDictSomaticBase(BioinformaticsTool, ABC):
                 position=1,
                 shell_quote=False,
             ),
+            ToolArgument(" | bcftools view -O z", position=6, shell_quote=False),
         ]
 
     vardict_inputs = [
@@ -541,13 +536,5 @@ class VarDictSomaticBase(BioinformaticsTool, ABC):
     """
 
 
-class VarDictSomatic_1_5_6(VarDictSomaticBase, VarDict_1_5_6):
-    pass
-
-
-class VarDictSomatic_1_5_7(VarDictSomaticBase, VarDict_1_5_7):
-    pass
-
-
-class VarDictSomatic_1_5_8(VarDictSomaticBase, VarDict_1_5_8):
+class VarDictSomatic_1_6_0(VarDictSomaticCompressedBase, VarDict_1_6_0):
     pass

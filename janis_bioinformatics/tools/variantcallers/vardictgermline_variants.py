@@ -1,11 +1,11 @@
-from janis_core import File, String, Float, Int, Boolean
-from janis_bioinformatics.tools.pmac import TrimIUPAC_0_0_4
+from janis_core import File, String, Float
 
 from janis_bioinformatics.data_types import FastaWithDict, BamBai, Bed
 from janis_bioinformatics.tools import BioinformaticsWorkflow
-from janis_bioinformatics.tools.vardict import VarDictGermline_1_5_8
 from janis_bioinformatics.tools.bcftools import BcfToolsAnnotate_1_5
 from janis_bioinformatics.tools.common import SplitMultiAllele
+from janis_bioinformatics.tools.pmac import TrimIUPAC_0_0_4
+from janis_bioinformatics.tools.vardict import VarDictGermline_1_6_0
 
 
 class VardictGermlineVariantCaller(BioinformaticsWorkflow):
@@ -36,7 +36,7 @@ class VardictGermlineVariantCaller(BioinformaticsWorkflow):
 
         self.step(
             "vardict",
-            VarDictGermline_1_5_8(
+            VarDictGermline_1_6_0(
                 intervals=self.intervals,
                 bam=self.bam,
                 reference=self.reference,

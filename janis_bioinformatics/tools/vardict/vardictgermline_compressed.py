@@ -2,14 +2,9 @@ from abc import ABC
 from typing import List, Dict, Any
 
 from janis_core import CpuSelector
-from janis_core import get_value_for_hints_and_ordered_resource_tuple
-
-from janis_bioinformatics.tools import BioinformaticsTool
-from janis_bioinformatics.data_types import BamBai, Bed, FastaFai, Vcf
 from janis_core import (
     ToolOutput,
     ToolInput,
-    Array,
     Filename,
     ToolArgument,
     Boolean,
@@ -19,23 +14,22 @@ from janis_core import (
     InputSelector,
     CaptureType,
 )
+from janis_core import get_value_for_hints_and_ordered_resource_tuple
 
-from janis_bioinformatics.tools.vardict.vardict import (
-    VarDict_1_5_6,
-    VarDict_1_5_7,
-    VarDict_1_5_8,
-)
+from janis_bioinformatics.data_types import BamBai, Bed, FastaFai, Vcf, CompressedVcf
+from janis_bioinformatics.tools import BioinformaticsTool
+from janis_bioinformatics.tools.vardict.vardict import VarDict_1_6_0
 
 CORES_TUPLE = [
     (
         CaptureType.key(),
         {
-            CaptureType.TARGETED: 2,
-            CaptureType.CHROMOSOME: 4,
-            CaptureType.EXOME: 4,
-            CaptureType.THIRTYX: 4,
-            CaptureType.NINETYX: 4,
-            CaptureType.THREEHUNDREDX: 4,
+            CaptureType.TARGETED: 4,
+            CaptureType.CHROMOSOME: 8,
+            CaptureType.EXOME: 8,
+            CaptureType.THIRTYX: 16,
+            CaptureType.NINETYX: 16,
+            CaptureType.THREEHUNDREDX: 16,
         },
     )
 ]
@@ -55,17 +49,17 @@ MEM_TUPLE = [
 ]
 
 
-class VarDictSomaticBase(BioinformaticsTool, ABC):
+class VarDictGermlineCompressedBase(BioinformaticsTool, ABC):
     def friendly_name(self) -> str:
-        return "Vardict (Somatic)"
+        return "VarDict (Germline)"
+
+    @staticmethod
+    def tool():
+        return "vardict_germline"
 
     @staticmethod
     def tool_provider():
         return "VarDict"
-
-    @staticmethod
-    def tool():
-        return "vardict_somatic"
 
     @staticmethod
     def base_command():
@@ -85,9 +79,22 @@ class VarDictSomaticBase(BioinformaticsTool, ABC):
 
     def inputs(self) -> List[ToolInput]:
         return [
-            ToolInput("tumorBam", BamBai(), doc="The indexed BAM file"),
-            ToolInput("normalBam", BamBai(), doc="The indexed BAM file"),
             ToolInput("intervals", Bed(), position=2, shell_quote=False),
+            ToolInput(
+                "outputFilename",
+                Filename(extension=".vcf.gz", suffix=".vardict"),
+                prefix=">",
+                position=10,
+                shell_quote=False,
+            ),
+            ToolInput(
+                "bam",
+                BamBai(),
+                prefix="-b",
+                position=1,
+                shell_quote=False,
+                doc="The indexed BAM file",
+            ),
             ToolInput(
                 "reference",
                 FastaFai(),
@@ -97,66 +104,20 @@ class VarDictSomaticBase(BioinformaticsTool, ABC):
                 doc="The reference fasta. Should be indexed (.fai). "
                 "Defaults to: /ngs/reference_data/genomes/Hsapiens/hg19/seq/hg19.fa",
             ),
-            ToolInput(
-                "tumorName",
-                String(),
-                doc="The sample name to be used directly.  Will overwrite -n option",
-            ),
-            ToolInput(
-                "normalName",
-                String(),
-                doc="The normal sample name to use with the -b option",
-            ),
-            ToolInput(
-                "alleleFreqThreshold",
-                Float(optional=True),
-                doc="The threshold for allele frequency, default: 0.05 or 5%",
-            ),
-            ToolInput(
-                "outputFilename",
-                Filename(extension=".vcf", suffix=".vardict"),
-                prefix=">",
-                position=6,
-                shell_quote=False,
-            ),
-            *VarDictSomaticBase.vardict_inputs,
-            *VarDictSomaticBase.var2vcf_inputs,
+            *VarDictGermlineCompressedBase.vardict_inputs,
+            *VarDictGermlineCompressedBase.var2vcf_inputs,
         ]
 
     def outputs(self):
-        return [ToolOutput("out", Vcf(), glob=InputSelector("outputFilename"))]
+        return [ToolOutput("out", CompressedVcf, glob=InputSelector("outputFilename"))]
 
     def arguments(self):
         return [
-            ToolArgument("| testsomatic.R |", position=3, shell_quote=False),
-            ToolArgument("var2vcf_paired.pl", position=4, shell_quote=False),
-            ToolArgument(
-                InputSelector("tumorBam") + "|" + InputSelector("normalBam"),
-                prefix="-b",
-                position=1,
-                shell_quote=True,
-            ),
-            ToolArgument(
-                InputSelector("tumorName"), prefix="-N", position=1, shell_quote=True
-            ),
-            ToolArgument(
-                InputSelector("tumorName") + "|" + InputSelector("normalName"),
-                prefix="-N",
-                position=5,
-                shell_quote=True,
-            ),
-            ToolArgument(
-                InputSelector("alleleFreqThreshold"),
-                prefix="-f",
-                position=5,
-                shell_quote=False,
-            ),
-            ToolArgument(
-                InputSelector("alleleFreqThreshold"),
-                prefix="-f",
-                position=1,
-                shell_quote=False,
-            ),
+            # ToolArgument("export VarDict=\"/config/binaries/vardict/1.5.1/bin/VarDict\";", position=0, shell_quote=False),
+            # ToolArgument("", position=0, shell_quote=False),
+            ToolArgument("| teststrandbias.R |", position=3, shell_quote=False),
+            ToolArgument("var2vcf_valid.pl", position=4, shell_quote=False),
+            ToolArgument(" | bcftools view -O z", position=6, shell_quote=False),
         ]
 
     vardict_inputs = [
@@ -244,6 +205,14 @@ class VarDictSomaticBase(BioinformaticsTool, ABC):
             "duplicates). Use -F 0 to turn it off.",
         ),
         ToolInput(
+            "alleleFreqThreshold",
+            Float(optional=True),
+            prefix="-f",
+            position=1,
+            shell_quote=False,
+            doc="The threshold for allele frequency, default: 0.05 or 5%",
+        ),
+        ToolInput(
             "geneNameCol",
             Int(optional=True),
             prefix="-g",
@@ -306,6 +275,14 @@ class VarDictSomaticBase(BioinformaticsTool, ABC):
             "Gaps are not counted as mismatches. Valid only for bowtie2/TopHat or BWA aln "
             "followed by sampe. BWA mem is calculated as NM - Indels. "
             "Default: 8, or reads with more than 8 mismatches will not be used.",
+        ),
+        ToolInput(
+            "sampleName",
+            String(),
+            prefix="-N",
+            position=1,
+            shell_quote=False,
+            doc="The sample name to be used directly.  Will overwrite -n option",
         ),
         ToolInput(
             "regexSampleName",
@@ -502,7 +479,18 @@ class VarDictSomaticBase(BioinformaticsTool, ABC):
         ),
     ]
 
-    var2vcf_inputs = []
+    var2vcf_inputs = [
+        ToolInput(
+            "var2vcfSampleName", String(), prefix="-N", position=5, shell_quote=False
+        ),
+        ToolInput(
+            "var2vcfAlleleFreqThreshold",
+            Float(),
+            prefix="-f",
+            position=5,
+            shell_quote=False,
+        ),
+    ]
 
     @staticmethod
     def docurl():
@@ -541,13 +529,5 @@ class VarDictSomaticBase(BioinformaticsTool, ABC):
     """
 
 
-class VarDictSomatic_1_5_6(VarDictSomaticBase, VarDict_1_5_6):
-    pass
-
-
-class VarDictSomatic_1_5_7(VarDictSomaticBase, VarDict_1_5_7):
-    pass
-
-
-class VarDictSomatic_1_5_8(VarDictSomaticBase, VarDict_1_5_8):
+class VarDictGermline_1_6_0(VarDictGermlineCompressedBase, VarDict_1_6_0):
     pass

@@ -46,10 +46,10 @@ MEM_TUPLE = [
 ]
 
 
-class Gatk4GatherVcfsBase(Gatk4ToolBase, ABC):
+class Gatk4GatherCompressedVcfsBase(Gatk4ToolBase, ABC):
     @classmethod
     def gatk_command(cls):
-        return "GatherVcfs"
+        return "GatherCompressedVcfs"
 
     @staticmethod
     def tool():
@@ -74,14 +74,14 @@ class Gatk4GatherVcfsBase(Gatk4ToolBase, ABC):
         return [
             ToolInput(
                 "vcfs",
-                Array(Vcf),
+                Array(CompressedVcf),
                 prefix="--INPUT",
                 doc="[default: []] (-I) Input VCF file(s).",
                 prefix_applies_to_all_elements=True,
             ),
             ToolInput(
                 "outputFilename",
-                Filename(extension=".vcf", suffix=".gathered"),
+                Filename(extension=".vcf.gz", suffix=".gathered"),
                 prefix="--OUTPUT",
                 doc="[default: null] (-O) Output VCF file.",
             ),
@@ -89,7 +89,9 @@ class Gatk4GatherVcfsBase(Gatk4ToolBase, ABC):
         ]
 
     def outputs(self):
-        return [ToolOutput("out", Vcf, glob=InputSelector("outputFilename"))]
+        return [
+            ToolOutput("out", CompressedVcf(), glob=InputSelector("outputFilename"))
+        ]
 
     def bind_metadata(self):
         from datetime import date

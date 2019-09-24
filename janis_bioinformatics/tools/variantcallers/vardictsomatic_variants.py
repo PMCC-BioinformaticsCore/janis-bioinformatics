@@ -5,7 +5,7 @@ from janis_bioinformatics.data_types import FastaWithDict, BamBai, Bed
 from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.bcftools import BcfToolsAnnotate_1_5
 from janis_bioinformatics.tools.common import SplitMultiAllele
-from janis_bioinformatics.tools.vardict.vardictsomatic import VarDictSomatic_1_5_8
+from janis_bioinformatics.tools.vardict import VarDictSomatic_1_6_0
 
 
 class VardictSomaticVariantCaller(BioinformaticsWorkflow):
@@ -40,7 +40,7 @@ class VardictSomaticVariantCaller(BioinformaticsWorkflow):
 
         self.step(
             "vardict",
-            VarDictSomatic_1_5_8(
+            VarDictSomatic_1_6_0(
                 normalBam=self.normalBam,
                 tumorBam=self.tumorBam,
                 intervals=self.intervals,

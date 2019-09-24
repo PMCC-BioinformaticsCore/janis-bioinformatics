@@ -1,5 +1,6 @@
 from datetime import date
 
+from janis_core import String
 from janis_bioinformatics.tools import gatk4
 from janis_bioinformatics.data_types import FastaWithDict, BamBai, VcfTabix, Bed
 from janis_bioinformatics.tools import BioinformaticsWorkflow
@@ -41,8 +42,8 @@ class GatkGermlineVariantCaller_4_1_3(BioinformaticsWorkflow):
         self.input("bam", BamBai)
         self.input(
             "intervals",
-            Bed(optional=True),
-            doc="This optional intervals file supports processing by regions. If this file resolves "
+            String(optional=True),
+            doc="This optional interval supports processing by regions. If this input resolves "
             "to null, then GATK will process the whole genome per each tool's spec",
         )
 
