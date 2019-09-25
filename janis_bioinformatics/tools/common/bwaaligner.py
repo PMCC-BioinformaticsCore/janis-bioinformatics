@@ -44,7 +44,10 @@ class BwaAligner(BioinformaticsWorkflow):
         self.step(
             "bwamem",
             BwaMem_SamToolsView(
-                reads=self.cutadapt.out, sampleName=self.name, reference=self.reference
+                reads=self.cutadapt.out,
+                sampleName=self.name,
+                reference=self.reference,
+                markShorterSplits=True,
             ),
         )
 
