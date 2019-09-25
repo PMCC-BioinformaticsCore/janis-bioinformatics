@@ -358,7 +358,7 @@ class Gatk4Mutect2Base_4_1(Gatk4ToolBase, ABC):
             ),
             ToolInput(
                 tag="intervals",
-                input_type=String(optional=True),
+                input_type=Bed(optional=True),
                 prefix="--intervals",
                 doc="(-L) One or more genomic intervals over which to operate This argument may be specified 0 or more times. Default value: null. ",
             ),

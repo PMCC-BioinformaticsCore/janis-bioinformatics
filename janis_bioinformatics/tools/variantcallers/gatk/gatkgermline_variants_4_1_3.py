@@ -42,7 +42,7 @@ class GatkGermlineVariantCaller_4_1_3(BioinformaticsWorkflow):
         self.input("bam", BamBai)
         self.input(
             "intervals",
-            String(optional=True),
+            Bed(optional=True),
             doc="This optional interval supports processing by regions. If this input resolves "
             "to null, then GATK will process the whole genome per each tool's spec",
         )

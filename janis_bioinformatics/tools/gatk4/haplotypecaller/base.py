@@ -110,7 +110,7 @@ class Gatk4HaplotypeCallerBase(Gatk4ToolBase, ABC):
             ),
             ToolInput(
                 "intervals",
-                String(optional=True),
+                Bed(optional=True),
                 prefix="--intervals",
                 doc="-L (BASE) One or more genomic intervals over which to operate",
             ),

@@ -46,7 +46,7 @@ class Gatk4SplitReadsBase(Gatk4ToolBase):
             ),
             ToolInput(
                 tag="intervals",
-                input_type=String(optional=True),
+                input_type=Bed(optional=True),
                 prefix="--intervals",
                 doc="(-L:String) One or more genomic intervals over which to operate This argument may be specified 0 or more times. Default value: null. ",
             ),
