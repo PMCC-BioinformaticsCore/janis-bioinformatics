@@ -103,7 +103,7 @@ class Gatk4ApplyBqsrBase(Gatk4ToolBase, ABC):
     def outputs(self):
         return [ToolOutput("out", BamBai(), glob=InputSelector("outputFilename"))]
 
-    def metadata(self):
+    def bind_metadata(self):
         from datetime import date
 
         return ToolMetadata(

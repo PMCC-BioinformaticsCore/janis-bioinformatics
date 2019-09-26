@@ -167,20 +167,22 @@ class GridssBase_2_2(BioinformaticsTool):
             ToolOutput("assembly", Bam(), glob=InputSelector("assemblyFilename")),
         ]
 
-    def metadata(self):
+    def bind_metadata(self):
 
-        self._metadata.maintainer = "Michael Franklin"
-        self._metadata.dateCreated = date(2019, 6, 19)
-        self._metadata.dateUpdated = date(2019, 7, 3)
-        self._metadata.documentationUrl = (
+        self.metadata.maintainer = "Michael Franklin"
+        self.metadata.dateCreated = date(2019, 6, 19)
+        self.metadata.dateUpdated = date(2019, 7, 3)
+        self.metadata.documentationUrl = (
             "https://github.com/PapenfussLab/gridss/wiki/GRIDSS-Documentation"
         )
-        self._metadata.doi = "10.1101/gr.222109.117"
-        self._metadata.citation = "Daniel L. Cameron, Jan Schröder, Jocelyn Sietsma Penington, Hongdo Do, " \
-                                  "Ramyar Molania, Alexander Dobrovic, Terence P. Speed and Anthony T. Papenfuss. " \
-                                  "GRIDSS: sensitive and specific genomic rearrangement detection using positional " \
-                                  "de Bruijn graph assembly. Genome Research, 2017 doi: 10.1101/gr.222109.117"
-        self._metadata.documentation = """\
+        self.metadata.doi = "10.1101/gr.222109.117"
+        self.metadata.citation = (
+            "Daniel L. Cameron, Jan Schröder, Jocelyn Sietsma Penington, Hongdo Do, "
+            "Ramyar Molania, Alexander Dobrovic, Terence P. Speed and Anthony T. Papenfuss. "
+            "GRIDSS: sensitive and specific genomic rearrangement detection using positional "
+            "de Bruijn graph assembly. Genome Research, 2017 doi: 10.1101/gr.222109.117"
+        )
+        self.metadata.documentation = """\
 GRIDSS: the Genomic Rearrangement IDentification Software Suite
 
 GRIDSS is a module software suite containing tools useful for the detection of genomic rearrangements. 

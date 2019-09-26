@@ -55,7 +55,7 @@ class SamToolsSortBase(SamToolsToolBase, ABC):
     def friendly_name(self):
         return "SamTools: Sort"
 
-    def metadata(self):
+    def bind_metadata(self):
         from datetime import date
 
         return ToolMetadata(

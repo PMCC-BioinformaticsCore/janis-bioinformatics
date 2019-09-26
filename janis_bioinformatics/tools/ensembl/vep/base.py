@@ -345,8 +345,8 @@ class VepBase(BioinformaticsTool):
             *VepBase.identifiers,
         ]
 
-    def metadata(self):
-        self._metadata.documentation = """\
+    def bind_metadata(self):
+        self.metadata.documentation = """\
 
 
 Getting VEP to run faster: https://asia.ensembl.org/info/docs/tools/vep/script/vep_other.html#faster

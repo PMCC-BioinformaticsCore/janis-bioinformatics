@@ -104,7 +104,7 @@ class Gatk4MarkDuplicatesBase(Gatk4ToolBase, ABC):
             ToolOutput("metrics", Tsv(), glob=InputSelector("metricsFilename")),
         ]
 
-    def metadata(self):
+    def bind_metadata(self):
         from datetime import date
 
         return ToolMetadata(

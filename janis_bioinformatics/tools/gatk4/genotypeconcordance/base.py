@@ -77,7 +77,7 @@ class Gatk4GenotypeConcordanceBase(Gatk4ToolBase, ABC):
             # ToolOutput("vcf", VcfIdx(optional=True), glob=WildcardSelector("*.vcf"))
         ]
 
-    def metadata(self):
+    def bind_metadata(self):
         from datetime import date
 
         return ToolMetadata(
@@ -260,7 +260,7 @@ VCF Output:
         ToolInput(
             "reference",
             File(optional=True),
-            prefix="--REFERENCE=SEQUENCE",
+            prefix="--REFERENCE_SEQUENCE",
             position=11,
             doc="Reference sequence file.",
         ),

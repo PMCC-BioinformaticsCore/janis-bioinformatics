@@ -1,4 +1,5 @@
 from abc import ABC
+from datetime import date
 
 from janis_core import (
     ToolInput,
@@ -57,10 +58,8 @@ class SamToolsViewBase(SamToolsToolBase, ABC):
     def friendly_name(self):
         return "SamTools: View"
 
-    def metadata(self):
-        from datetime import date
-
-        return ToolMetadata(
+    def bind_metadata(self):
+        self.metadata = ToolMetadata(
             creator="Michael Franklin",
             maintainer="Michael Franklin",
             maintainerEmail="michael.franklin@petermac.org",
@@ -82,6 +81,7 @@ You may specify one or more space-separated region specifications after the inpu
 restrict output to only those alignments which overlap the specified region(s). 
 Use of region specifications requires a coordinate-sorted and indexed input file (in BAM or CRAM format).""".strip(),
         )
+        return self.metadata
 
     def arguments(self):
         return [

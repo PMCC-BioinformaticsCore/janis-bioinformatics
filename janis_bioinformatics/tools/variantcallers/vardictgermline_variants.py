@@ -1,14 +1,20 @@
-from janis_core import Step, Input, File, String, Float, Int, Boolean, Output
-from janis_bioinformatics.tools.pmac import TrimIUPAC_0_0_4
+from janis_core import File, String, Float
 
 from janis_bioinformatics.data_types import FastaWithDict, BamBai, Bed
 from janis_bioinformatics.tools import BioinformaticsWorkflow
-from janis_bioinformatics.tools.vardict import VarDictGermline_1_5_8
 from janis_bioinformatics.tools.bcftools import BcfToolsAnnotate_1_5
 from janis_bioinformatics.tools.common import SplitMultiAllele
+from janis_bioinformatics.tools.pmac import TrimIUPAC_0_0_4
+from janis_bioinformatics.tools.vardict import VarDictGermline_1_6_0
 
 
 class VardictGermlineVariantCaller(BioinformaticsWorkflow):
+    def id(self):
+        return "vardictGermlineVariantCaller"
+
+    def friendly_name(self):
+        return "Vardict Germline Variant Caller"
+
     @staticmethod
     def tool_provider():
         return "Variant Callers"
@@ -17,62 +23,45 @@ class VardictGermlineVariantCaller(BioinformaticsWorkflow):
     def version():
         return "v0.1.0"
 
-    def __init__(self):
-        super(VardictGermlineVariantCaller, self).__init__(
-            "vardictGermlineVariantCaller", "Vardict Germline Variant Caller", doc=None
+    def constructor(self):
+
+        self.input("bam", BamBai)
+        self.input("intervals", Bed)
+
+        self.input("sampleName", String)
+        self.input("alleleFreqThreshold", Float, default=0.5)
+        self.input("headerLines", File)
+
+        self.input("reference", FastaWithDict)
+
+        self.step(
+            "vardict",
+            VarDictGermline_1_6_0(
+                intervals=self.intervals,
+                bam=self.bam,
+                reference=self.reference,
+                sampleName=self.sampleName,
+                var2vcfSampleName=self.sampleName,
+                alleleFreqThreshold=self.alleleFreqThreshold,
+                var2vcfAlleleFreqThreshold=self.alleleFreqThreshold,
+                chromNamesAreNumbers=True,
+                vcfFormat=True,
+                chromColumn=1,
+                regStartCol=2,
+                geneEndCol=3,
+            ),
         )
-
-        bam = Input("bam", BamBai())
-        intervals = Input("intervals", Bed())
-
-        sample_name = Input("sampleName", String())
-        allele_freq_threshold = Input("allelFreqThreshold", Float(), 0.05)
-        header_lines = Input("headerLines", File())
-
-        reference = Input("reference", FastaWithDict())
-
-        vardict = Step("vardict", VarDictGermline_1_5_8())
-        annotate = Step("annotate", BcfToolsAnnotate_1_5())
-        split = Step("split", SplitMultiAllele())
-        trim = Step("trim", TrimIUPAC_0_0_4())
-
-        # S1: vardict
-        self.add_edges(
-            [
-                (intervals, vardict.intervals),
-                (bam, vardict.bam),
-                (reference, vardict.reference),
-                (sample_name, vardict.sampleName),
-                (sample_name, vardict.var2vcfSampleName),
-                (allele_freq_threshold, vardict.alleleFreqThreshold),
-                (allele_freq_threshold, vardict.var2vcfAlleleFreqThreshold),
-            ]
+        self.step(
+            "annotate",
+            BcfToolsAnnotate_1_5(file=self.vardict.out, headerLines=self.headerLines),
         )
-
-        self.add_edges(
-            [
-                (
-                    Input("chromNamesAreNumbers", Boolean(), default=True),
-                    vardict.chromNamesAreNumbers,
-                ),
-                (Input("vcfFormat", Boolean(), default=True), vardict.vcfFormat),
-                (Input("chromColumn", Int(), default=1), vardict.chromColumn),
-                (Input("regStartCol", Int(), default=2), vardict.regStartCol),
-                (Input("geneEndCol", Int(), default=3), vardict.geneEndCol),
-            ]
+        self.step(
+            "split", SplitMultiAllele(vcf=self.annotate.out, reference=self.reference)
         )
-        # S2: annotate
-        self.add_edges([(vardict.out, annotate.file), (header_lines, annotate.headerLines)])
+        self.step("trim", TrimIUPAC_0_0_4(vcf=self.split.out))
 
-        # S3: split
-        self.add_edges([(reference, split.reference), (annotate.out, split.vcf)])
-
-        # S4: trim
-        self.add_edge(split.out, trim.vcf)
-
-        self.add_edges(
-            [(vardict.out, Output("vardictVariants")), (trim.out, Output("out"))]
-        )
+        self.output("vardictVariants", source=self.vardict.out)
+        self.output("out", source=self.trim.out)
 
 
 if __name__ == "__main__":

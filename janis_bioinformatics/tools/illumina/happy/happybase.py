@@ -44,7 +44,6 @@ class HapPyValidatorBase(IlluminaToolBase, ABC):
     def friendly_name(self) -> str:
         return "Hap.py validation"
 
-
     @staticmethod
     def base_command():
         return "/opt/hap.py/bin/hap.py"
@@ -67,7 +66,7 @@ class HapPyValidatorBase(IlluminaToolBase, ABC):
             j.ToolInput("compareVCF", Vcf(), position=2),
             j.ToolInput(
                 "reportPrefix",
-                j.String(),
+                j.Filename(),
                 prefix="--report-prefix",
                 doc="(-o)  Filename prefix for report output.",
             ),
@@ -406,7 +405,9 @@ class HapPyValidatorBase(IlluminaToolBase, ABC):
     def outputs(self) -> List[j.ToolOutput]:
         return [
             j.ToolOutput(
-                "extended", Csv(), glob=j.InputSelector("reportPrefix") + ".extended.csv"
+                "extended",
+                Csv(),
+                glob=j.InputSelector("reportPrefix") + ".extended.csv",
             ),
             j.ToolOutput(
                 "summary", Csv(), glob=j.InputSelector("reportPrefix") + ".summary.csv"
@@ -425,7 +426,9 @@ class HapPyValidatorBase(IlluminaToolBase, ABC):
                 glob=j.InputSelector("reportPrefix") + ".runinfo.json",
             ),
             j.ToolOutput(
-                "rocOut", j.File(), glob=j.InputSelector("reportPrefix") + ".roc.all.csv.gz"
+                "rocOut",
+                j.File(),
+                glob=j.InputSelector("reportPrefix") + ".roc.all.csv.gz",
             ),
             j.ToolOutput(
                 "indelLocations",
@@ -435,7 +438,8 @@ class HapPyValidatorBase(IlluminaToolBase, ABC):
             j.ToolOutput(
                 "indelPassLocations",
                 j.File(),
-                glob=j.InputSelector("reportPrefix") + ".roc.Locations.INDEL.PASS.csv.gz",
+                glob=j.InputSelector("reportPrefix")
+                + ".roc.Locations.INDEL.PASS.csv.gz",
             ),
             j.ToolOutput(
                 "snpLocations",
@@ -449,7 +453,7 @@ class HapPyValidatorBase(IlluminaToolBase, ABC):
             ),
         ]
 
-    def metadata(self):
+    def bind_metadata(self):
         return j.ToolMetadata(
             creator=None,
             maintainer="Michael Franklin",

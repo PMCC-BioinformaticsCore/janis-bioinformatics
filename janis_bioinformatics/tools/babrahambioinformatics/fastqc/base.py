@@ -19,7 +19,7 @@ from janis_core import (
 from janis_core import get_value_for_hints_and_ordered_resource_tuple
 from janis_unix import ZipFile
 
-from janis_bioinformatics.data_types import Fastq
+from janis_bioinformatics.data_types import FastqGzPair
 from janis_bioinformatics.tools import BioinformaticsTool
 
 
@@ -68,7 +68,7 @@ class FastQCBase(BioinformaticsTool, ABC):
     def tool_provider():
         return "FastQC"
 
-    def metadata(self):
+    def bind_metadata(self):
         return ToolMetadata(
             creator="Simon Andrews",
             maintainer="Michael Franklin",
@@ -101,7 +101,7 @@ class FastQCBase(BioinformaticsTool, ABC):
         return 8
 
     def inputs(self) -> List[ToolInput]:
-        return [ToolInput("reads", Fastq(), position=5), *self.additional_inputs]
+        return [ToolInput("reads", FastqGzPair, position=5), *self.additional_inputs]
 
     def outputs(self) -> List[ToolOutput]:
         return [
