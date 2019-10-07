@@ -23,7 +23,7 @@ class BwaAligner(BioinformaticsWorkflow):
     def constructor(self):
 
         # Inputs
-        self.input("name", str)
+        self.input("sampleName", str)
         self.input("reference", FastaWithDict)
         self.input("fastq", FastqGzPair)
 
@@ -45,7 +45,7 @@ class BwaAligner(BioinformaticsWorkflow):
             "bwamem",
             BwaMem_SamToolsView(
                 reads=self.cutadapt.out,
-                sampleName=self.name,
+                sampleName=self.sampleName,
                 reference=self.reference,
                 markShorterSplits=True,
             ),
