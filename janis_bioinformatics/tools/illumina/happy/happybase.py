@@ -369,6 +369,12 @@ class HapPyValidatorBase(IlluminaToolBase, ABC):
             #           doc=" This parameter should give the path to the \"rtg\" executable. "
             #               "The default is /opt/hap.py/lib/python27/Haplo/../../../libexec/rtg- tools-install/rtg"),
             j.ToolInput(
+                "engine",
+                j.String(optional=True),
+                prefix="--engine",
+                doc=" {xcmp,vcfeval,scmp-somatic,scmp-distance} Comparison engine to use.",
+            ),
+            j.ToolInput(
                 "engineVcfevalTemplate",
                 j.String(optional=True),
                 prefix="--engine-vcfeval-template",
