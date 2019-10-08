@@ -1,7 +1,16 @@
 from abc import ABC
 from typing import List
 
-from janis_core import ToolMetadata, ToolOutput, ToolInput, Boolean, Int, String, File, InputSelector
+from janis_core import (
+    ToolMetadata,
+    ToolOutput,
+    ToolInput,
+    Boolean,
+    Int,
+    String,
+    File,
+    InputSelector,
+)
 
 from janis_bioinformatics.data_types import VcfTabix, CompressedVcf
 from ..htslibbase import HtsLibBase
@@ -53,7 +62,7 @@ class TabixBase(HtsLibBase, ABC):
     def friendly_name(self):
         return "Tabix"
 
-    def metadata(self):
+    def bind_metadata(self):
         from datetime import date
 
         return ToolMetadata(

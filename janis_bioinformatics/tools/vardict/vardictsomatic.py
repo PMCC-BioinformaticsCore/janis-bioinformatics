@@ -551,10 +551,3 @@ class VarDictSomatic_1_5_7(VarDictSomaticBase, VarDict_1_5_7):
 
 class VarDictSomatic_1_5_8(VarDictSomaticBase, VarDict_1_5_8):
     pass
-
-
-VarDictSomaticLatest = VarDictSomatic_1_5_8
-
-if __name__ == "__main__":
-    # print(VarDictSomaticLatest().help())
-    VarDictSomaticLatest().translate("wdl")

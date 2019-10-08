@@ -58,7 +58,7 @@ class Gatk4SortSamBase(Gatk4ToolBase, ABC):
     def friendly_name(self):
         return "GATK4: SortSAM"
 
-    def metadata(self):
+    def bind_metadata(self):
         from datetime import date
 
         return ToolMetadata(
@@ -124,6 +124,7 @@ class Gatk4SortSamBase(Gatk4ToolBase, ABC):
             Array(File(), optional=True),
             prefix="--arguments_file",
             position=10,
+            prefix_applies_to_all_elements=True,
             doc="read one or more arguments files and add them to the command line",
         ),
         ToolInput(

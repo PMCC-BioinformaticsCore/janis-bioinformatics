@@ -12,10 +12,10 @@ from janis_core import (
     Filename,
     ToolMetadata,
     WildcardSelector,
+    get_value_for_hints_and_ordered_resource_tuple,
 )
-from janis_core import get_value_for_hints_and_ordered_resource_tuple
 
-from janis_bioinformatics.data_types import Fastq
+from janis_bioinformatics.data_types import FastqGzPair
 from janis_bioinformatics.tools import BioinformaticsTool
 
 MEM_TUPLE = [
@@ -68,7 +68,7 @@ class CutAdaptBase_2(BioinformaticsTool):
 
         fastq_uuid = str(uuid.uuid1())
         return [
-            ToolInput("fastq", Fastq(), position=5),
+            ToolInput("fastq", FastqGzPair, position=5),
             ToolInput(
                 "adapter",
                 String(optional=True),
@@ -95,7 +95,7 @@ class CutAdaptBase_2(BioinformaticsTool):
         ]
 
     def outputs(self) -> List[ToolOutput]:
-        return [ToolOutput("out", Fastq(), glob=WildcardSelector("*.fastq.gz"))]
+        return [ToolOutput("out", FastqGzPair, glob=WildcardSelector("*.fastq.gz"))]
 
     def memory(self, hints):
         val = get_value_for_hints_and_ordered_resource_tuple(hints, MEM_TUPLE)
@@ -434,7 +434,7 @@ class CutAdaptBase_2(BioinformaticsTool):
         ),
     ]
 
-    def metadata(self):
+    def bind_metadata(self):
         return ToolMetadata(
             creator=None,
             maintainer="Michael Franklin",

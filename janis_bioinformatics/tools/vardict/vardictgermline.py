@@ -544,10 +544,3 @@ class VarDictGermline_1_5_7(VarDictGermlineBase, VarDict_1_5_7):
 
 class VarDictGermline_1_5_8(VarDictGermlineBase, VarDict_1_5_8):
     pass
-
-
-VarDictGermlineLatest = VarDictGermline_1_5_8
-
-
-if __name__ == "__main__":
-    print(VarDictGermlineLatest().help())

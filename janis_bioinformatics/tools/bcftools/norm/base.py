@@ -11,7 +11,7 @@ from janis_core import (
     ToolOutput,
     InputSelector,
 )
-from janis_bioinformatics.data_types import FastaWithDict
+from janis_bioinformatics.data_types import FastaWithDict, CompressedVcf
 from janis_bioinformatics.data_types import Vcf
 from janis_bioinformatics.tools.bcftools.bcftoolstoolbase import BcfToolsToolBase
 from janis_core import ToolMetadata
@@ -31,10 +31,10 @@ class BcfToolsNormBase(BcfToolsToolBase, ABC):
 
     def inputs(self):
         return [
-            ToolInput("vcf", Vcf(), position=10),
+            ToolInput("vcf", CompressedVcf, position=10),
             ToolInput(
                 "outputFilename",
-                Filename(extension=".vcf"),
+                Filename(extension=".vcf.gz"),
                 prefix="-o",
                 doc="--output: When output consists of a single stream, "
                 "write it to FILE rather than to standard output, where it is written by default.",
@@ -43,23 +43,22 @@ class BcfToolsNormBase(BcfToolsToolBase, ABC):
         ]
 
     def outputs(self):
-        return [ToolOutput("out", Vcf(), glob=InputSelector("outputFilename"))]
+        return [ToolOutput("out", CompressedVcf, glob=InputSelector("outputFilename"))]
 
-    def metadata(self):
+    def bind_metadata(self):
         from datetime import date
 
-        metadata: ToolMetadata = self._metadata
-        metadata.dateUpdated = date(2019, 1, 24)
-        metadata.doi = "http://www.ncbi.nlm.nih.gov/pubmed/19505943"
-        metadata.citation = (
+        self.metadata.dateUpdated = date(2019, 1, 24)
+        self.metadata.doi = "http://www.ncbi.nlm.nih.gov/pubmed/19505943"
+        self.metadata.citation = (
             "Li H, Handsaker B, Wysoker A, Fennell T, Ruan J, Homer N, Marth G, Abecasis G, Durbin R, "
             "and 1000 Genome Project Data Processing Subgroup, The Sequence alignment/map (SAM) "
             "format and SAMtools, Bioinformatics (2009) 25(16) 2078-9"
         )
-        metadata.documentationUrl = (
+        self.metadata.documentationUrl = (
             "https://samtools.github.io/bcftools/bcftools.html#norm"
         )
-        metadata.documentation = """\
+        self.metadata.documentation = """\
 Left-align and normalize indels, check if REF alleles match the reference, 
 split multiallelic sites into multiple rows; recover multiallelics from 
 multiple rows. Left-alignment and normalization will only be applied if 
@@ -104,6 +103,7 @@ the --fasta-ref option is supplied.
             "multiallelics",
             String(optional=True),
             prefix="-m",
+            default="-",
             doc="--multiallelics -|+[snps|indels|both|any]: split multiallelic sites into "
             "biallelic records (-) or join biallelic sites into multiallelic records (+). "
             "An optional type string can follow which controls variant types which should "
@@ -128,6 +128,7 @@ the --fasta-ref option is supplied.
             "outputType",
             String(optional=True),
             prefix="-O",
+            default="z",
             doc="--output-type b|u|z|v: Output compressed BCF (b), uncompressed BCF (u), "
             "compressed VCF (z), uncompressed VCF (v). Use the -Ou option when piping "
             "between bcftools subcommands to speed up performance by removing "

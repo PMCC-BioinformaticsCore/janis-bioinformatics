@@ -15,7 +15,7 @@ from janis_core import (
 )
 from janis_core import ToolMetadata
 
-from janis_bioinformatics.data_types import Vcf
+from janis_bioinformatics.data_types import Vcf, CompressedVcf
 from ..gatk4toolbase import Gatk4ToolBase
 
 
@@ -74,9 +74,10 @@ class Gatk4GatherVcfsBase(Gatk4ToolBase, ABC):
         return [
             ToolInput(
                 "vcfs",
-                Array(Vcf()),
+                Array(Vcf),
                 prefix="--INPUT",
                 doc="[default: []] (-I) Input VCF file(s).",
+                prefix_applies_to_all_elements=True,
             ),
             ToolInput(
                 "outputFilename",
@@ -88,9 +89,9 @@ class Gatk4GatherVcfsBase(Gatk4ToolBase, ABC):
         ]
 
     def outputs(self):
-        return [ToolOutput("out", Vcf(), glob=InputSelector("outputFilename"))]
+        return [ToolOutput("out", Vcf, glob=InputSelector("outputFilename"))]
 
-    def metadata(self):
+    def bind_metadata(self):
         from datetime import date
 
         return ToolMetadata(

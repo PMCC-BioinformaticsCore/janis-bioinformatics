@@ -1,6 +1,6 @@
 from typing import List, Dict, Any
 from janis_core import get_value_for_hints_and_ordered_resource_tuple
-from janis_bioinformatics.data_types import FastaWithDict
+from janis_bioinformatics.data_types import FastaWithDict, CompressedVcf
 from janis_bioinformatics.data_types import Vcf
 from janis_bioinformatics.tools import BioinformaticsTool
 from janis_core import (
@@ -78,9 +78,9 @@ class SplitMultiAllele(BioinformaticsTool):
 
     def inputs(self) -> List[ToolInput]:
         return [
-            ToolInput("vcf", Vcf(), position=2, shell_quote=False),
+            ToolInput("vcf", CompressedVcf(), position=3, shell_quote=False),
             ToolInput(
-                "reference", FastaWithDict(), prefix="-r", position=7, shell_quote=False
+                "reference", FastaWithDict(), prefix="-r", position=8, shell_quote=False
             ),
             ToolInput(
                 "outputFilename",
@@ -93,18 +93,20 @@ class SplitMultiAllele(BioinformaticsTool):
 
     def arguments(self):
         return [
+            ToolArgument("zcat", position=0, shell_quote=False),
+            ToolArgument("|", position=1, shell_quote=False),
             ToolArgument(
                 "sed 's/ID=AD,Number=./ID=AD,Number=R/' <",
-                position=1,
+                position=2,
                 shell_quote=False,
             ),
-            ToolArgument("|", position=3, shell_quote=False),
-            ToolArgument("vt decompose -s - -o -", position=4, shell_quote=False),
-            ToolArgument("|", position=5, shell_quote=False),
-            ToolArgument("vt normalize -n -q - -o -", position=6, shell_quote=False),
-            ToolArgument("|", position=8, shell_quote=False),
+            ToolArgument("|", position=4, shell_quote=False),
+            ToolArgument("vt decompose -s - -o -", position=5, shell_quote=False),
+            ToolArgument("|", position=6, shell_quote=False),
+            ToolArgument("vt normalize -n -q - -o -", position=7, shell_quote=False),
+            ToolArgument("|", position=9, shell_quote=False),
             ToolArgument(
-                "sed 's/ID=AD,Number=./ID=AD,Number=1/'", position=9, shell_quote=False
+                "sed 's/ID=AD,Number=./ID=AD,Number=1/'", position=10, shell_quote=False
             ),
         ]
 

@@ -39,7 +39,7 @@ class BGZipBase(HtsLibBase, ABC):
     def friendly_name(self):
         return "BGZip"
 
-    def metadata(self):
+    def bind_metadata(self):
         from datetime import date
 
         return ToolMetadata(
