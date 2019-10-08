@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from janis import (
+from janis_core import (
     CommandTool,
     ToolInput,
     File,
@@ -9,9 +9,11 @@ from janis import (
     Int,
     ToolMetadata,
     Double,
+    Filename,
+    ToolOutput,
+    InputSelector,
 )
 from janis_bioinformatics.tools.gatk4.gatk4toolbase import Gatk4ToolBase
-from janis_core import Filename, ToolOutput, InputSelector
 
 from janis_bioinformatics.data_types import FastaWithDict, Bed, BamBai
 
