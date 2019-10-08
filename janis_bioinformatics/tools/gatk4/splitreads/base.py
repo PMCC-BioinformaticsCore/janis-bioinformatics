@@ -60,7 +60,7 @@ class Gatk4SplitReadsBase(Gatk4ToolBase):
             ToolOutput(
                 "out", BamBai, glob=InputSelector("bam", use_basename=True), doc="Bam"
             )
-        ]
+        ]__
 
     def metadata(self):
         return ToolMetadata(
