@@ -76,6 +76,7 @@ class Gatk4MergeSamFilesBase(Gatk4ToolBase, ABC):
                 "bams",
                 Array(BamBai()),
                 prefix="-I",
+                prefix_applies_to_all_elements=True,
                 doc="The SAM/BAM file to sort.",
                 position=10,
             ),
