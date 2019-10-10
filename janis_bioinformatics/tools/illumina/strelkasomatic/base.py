@@ -173,8 +173,9 @@ class StrelkaSomaticBase(IlluminaToolBase, ABC):
             ),
             ToolInput(
                 tag="indelCandidates",
-                input_type=VcfTabix(optional=True),
+                input_type=Array(VcfTabix, optional=True),
                 prefix="--indelCandidates=",
+                prefix_applies_to_all_elements=True,
                 position=1,
                 separate_value_from_prefix=False,
                 doc="Specify a VCF of candidate indel alleles. These alleles are always evaluated "
@@ -185,9 +186,10 @@ class StrelkaSomaticBase(IlluminaToolBase, ABC):
             ),
             ToolInput(
                 tag="forcedgt",
-                input_type=File(optional=True),
+                input_type=Array(File,optional=True),
                 prefix="--forcedGT=",
                 separate_value_from_prefix=False,
+                prefix_applies_to_all_elements=True,
                 position=1,
                 doc="Specify a VCF of candidate alleles. These alleles are always evaluated and reported even "
                 "if they are unlikely to exist in the sample. The VCF must be tabix indexed. All indel "
