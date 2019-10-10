@@ -13,6 +13,7 @@ from janis_core import (
     Boolean,
     String,
     Int,
+    WildcardSelector,
 )
 
 from janis_unix import TextFile
