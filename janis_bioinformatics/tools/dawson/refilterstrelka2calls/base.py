@@ -10,6 +10,9 @@ from janis_core import (
     ToolMetadata,
     CaptureType,
     Array,
+    Boolean,
+    String,
+    Int,
 )
 
 from janis_unix import TextFile
