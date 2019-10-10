@@ -68,7 +68,7 @@ class RefilterStrelka2CallsBase(BioinformaticsTool, ABC):
             return val
         return 12
 
-    def inputs(self) -> List[ToolInput]:
+    def inputs(self):
         return [
             ToolInput(
                 tag="input",

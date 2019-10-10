@@ -90,7 +90,7 @@ class freebayesBase(BioinformaticsTool, ABC):
             return val
         return 8
 
-    def inputs(self) -> List[ToolInput]:
+    def inputs(self):
         return [
             ToolInput(
                 tag="bams",
