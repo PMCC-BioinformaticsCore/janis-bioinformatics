@@ -32,6 +32,7 @@ from janis_bioinformatics.data_types import (
     CompressedVcf,
 )
 
+from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 
 CORES_TUPLE = [
     (

@@ -17,6 +17,8 @@ from janis_bioinformatics.data_types import (
     Vcf,
 )
 
+from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
+
 CORES_TUPLE = [
     # (CaptureType.key(), {
     #     CaptureType.CHROMOSOME: 2,
