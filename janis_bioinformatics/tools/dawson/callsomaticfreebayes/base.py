@@ -8,6 +8,7 @@ from janis_core import (
     CpuSelector,
     get_value_for_hints_and_ordered_resource_tuple,
     ToolMetadata,
+    CaptureType,
 )
 
 from janis_unix import TextFile
