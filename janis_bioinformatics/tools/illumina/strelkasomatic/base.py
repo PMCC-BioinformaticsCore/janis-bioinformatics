@@ -165,11 +165,11 @@ class StrelkaSomaticBase(IlluminaToolBase, ABC):
             ),
             ToolInput(
                 tag="outputcallableregions",
-                input_type=Bed(optional=True),
+                input_type=Boolean(optional=True),
                 prefix="--outputCallableRegions",
                 position=1,
                 separate_value_from_prefix=True,
-                doc=" Output a bed file describing somatic callable regions of the genome",
+                doc="Output a bed file describing somatic callable regions of the genome",
             ),
             ToolInput(
                 tag="indelCandidates",
