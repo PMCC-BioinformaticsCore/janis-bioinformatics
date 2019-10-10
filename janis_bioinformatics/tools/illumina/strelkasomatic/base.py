@@ -17,6 +17,7 @@ from janis_core import (
     CaptureType,
     StringFormatter,
     get_value_for_hints_and_ordered_resource_tuple,
+    Array,
 )
 from janis_unix import Tsv
 
@@ -365,7 +366,7 @@ class StrelkaSomaticBase(IlluminaToolBase, ABC):
     def bind_metadata(self):
         return ToolMetadata(
             dateCreated=datetime(2019, 5, 27, 15, 7, 45),
-            dateUpdated=datetime(2019, 5, 27, 15, 7, 45),
+            dateUpdated=datetime(2019, 10, 10, 14),
             documentation="""Usage: configureStrelkaSomaticWorkflow.py [options]
 Version: 2.9.10
 This script configures Strelka somatic small variant calling.
