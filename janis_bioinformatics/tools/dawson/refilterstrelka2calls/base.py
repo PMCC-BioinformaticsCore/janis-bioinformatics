@@ -9,6 +9,7 @@ from janis_core import (
     get_value_for_hints_and_ordered_resource_tuple,
     ToolMetadata,
     CaptureType,
+    Array,
 )
 
 from janis_unix import TextFile
