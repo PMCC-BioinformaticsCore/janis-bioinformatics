@@ -1,6 +1,7 @@
 from abc import ABC
 from janis_core import CommandTool
 
+
 class DawsonToolkit_0_1(CommandTool, ABC):
     @staticmethod
     def tool_provider():

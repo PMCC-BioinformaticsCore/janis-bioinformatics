@@ -1,29 +1,22 @@
 from abc import ABC
-from typing import Dict, Any
+from typing import Any, Dict
 
+from janis_bioinformatics.data_types import Vcf, VcfTabix
+from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 from janis_core import (
-    ToolInput,
-    Filename,
-    ToolOutput,
-    CpuSelector,
-    get_value_for_hints_and_ordered_resource_tuple,
-    ToolMetadata,
-    CaptureType,
     Array,
     Boolean,
-    String,
-    Int,
+    CaptureType,
+    CpuSelector,
     Filename,
+    Int,
+    String,
+    ToolInput,
+    ToolMetadata,
+    ToolOutput,
+    get_value_for_hints_and_ordered_resource_tuple,
 )
-
 from janis_unix import TextFile
-
-from janis_bioinformatics.data_types import (
-    VcfTabix,
-    Vcf,
-)
-
-from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 
 CORES_TUPLE = [
     # (CaptureType.key(), {
@@ -48,6 +41,7 @@ MEM_TUPLE = [
         },
     )
 ]
+
 
 class CallSomaticFreeBayesBase(BioinformaticsTool, ABC):
     @staticmethod
@@ -75,23 +69,18 @@ class CallSomaticFreeBayesBase(BioinformaticsTool, ABC):
 
     def inputs(self):
         return [
-            ToolInput(
-                tag="vcf",
-                input_type=VcfTabix,
-                prefix="-i",
-                doc="input vcf"
-            ),
+            ToolInput(tag="vcf", input_type=VcfTabix, prefix="-i", doc="input vcf"),
             ToolInput(
                 tag="normalSampleName",
                 input_type=String(optional=True),
                 prefix="-n",
-                doc="the normal sample name in the vcf (default: first sample in vcf)"
+                doc="the normal sample name in the vcf (default: first sample in vcf)",
             ),
             ToolInput(
                 tag="outputFilename",
                 input_type=Filename(extension=".vcf"),
                 prefix="-o",
-                doc="output file name (default: STDOUT)"
+                doc="output file name (default: STDOUT)",
             ),
         ]
 
@@ -102,8 +91,7 @@ class CallSomaticFreeBayesBase(BioinformaticsTool, ABC):
                 Vcf,
                 glob=InputSelector("outputFilename"),
                 doc="To determine type",
-            ),
-
+            )
         ]
 
     def cpus(self, hints: Dict[str, Any]):
