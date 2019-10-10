@@ -143,9 +143,9 @@ class StrelkaSomaticBase(IlluminaToolBase, ABC):
             ),
             ToolInput(
                 tag="region",
-                input_type=Bed(optional=True),
-                prefix="--region=",
-                separate_value_from_prefix=False,
+                input_type=Array(String, optional=True),
+                prefix="--region",
+                prefix_applies_to_all_elements=True,
                 position=1,
                 doc="Limit the analysis to one or more genome region(s) for debugging purposes. If this argument "
                 "is provided multiple times the union of all specified regions will be analyzed. All regions "
