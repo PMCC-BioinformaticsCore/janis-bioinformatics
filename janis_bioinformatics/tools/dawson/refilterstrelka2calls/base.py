@@ -72,7 +72,7 @@ class RefilterStrelka2CallsBase(BioinformaticsTool, ABC):
     def inputs(self):
         return [
             ToolInput(
-                tag="input",
+                tag="inputFiles",
                 input_type=Array(VcfTabix),
                 prefix="-i",
                 separator=',',

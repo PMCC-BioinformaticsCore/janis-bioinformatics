@@ -72,7 +72,7 @@ class CallSomaticFreeBayesBase(BioinformaticsTool, ABC):
     def inputs(self):
         return [
             ToolInput(
-                tag="input",
+                tag="vcf",
                 input_type=VcfTabix,
                 prefix="-i",
                 doc="input vcf"
