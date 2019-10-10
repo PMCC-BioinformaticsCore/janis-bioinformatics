@@ -129,18 +129,20 @@ class BcfToolsViewBase(BcfToolsToolBase, ABC):
             position=1,
             doc="do not append version and command line to the header",
         ),
-        ToolInput(
-            "outputFilename",
-            File(optional=True),
-            prefix="--output-file",
-            position=1,
-            doc="(-o) output file name [stdout]",
-        ),
+        # captured by stdout
+        # ToolInput(
+        #     "outputFilename",
+        #     File(optional=True),
+        #     prefix="--output-file",
+        #     position=1,
+        #     doc="(-o) output file name [stdout]",
+        # ),
         ToolInput(
             "outputType",
             String(optional=True),
             prefix="--output-type",
             position=1,
+            default="z",
             doc="(-O) [<b|u|z|v>] b: compressed BCF, u: uncompressed BCF, "
             "z: compressed VCF, v: uncompressed VCF [v]",
         ),
