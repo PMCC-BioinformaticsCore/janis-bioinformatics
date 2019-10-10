@@ -18,10 +18,7 @@ from janis_core import (
 
 from janis_unix import TextFile
 
-from janis_bioinformatics.data_types import (
-    VcfTabix,
-    Vcf,
-)
+from janis_bioinformatics.data_types import VcfTabix, Vcf
 
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 
@@ -48,6 +45,7 @@ MEM_TUPLE = [
         },
     )
 ]
+
 
 class RefilterStrelka2CallsBase(BioinformaticsTool, ABC):
     @staticmethod
@@ -79,64 +77,63 @@ class RefilterStrelka2CallsBase(BioinformaticsTool, ABC):
                 tag="inputFiles",
                 input_type=Array(VcfTabix),
                 prefix="-i",
-                separator=',',
-                doc="comma seperated list of vcfs"
+                separator=",",
+                doc="comma seperated list of vcfs",
             ),
             ToolInput(
                 tag="MQ",
                 input_type=Int(),
                 default=15,
                 prefix="--mq",
-                doc="minimum mapping quality for a variant to be accepted (default: 15)"
+                doc="minimum mapping quality for a variant to be accepted (default: 15)",
             ),
             ToolInput(
                 tag="DP",
                 input_type=Int(),
                 default=10,
                 prefix="--dp",
-                doc="minimum depth of coverage for a variant to be accepted (default: 10)"
+                doc="minimum depth of coverage for a variant to be accepted (default: 10)",
             ),
             ToolInput(
                 tag="EVS",
                 input_type=Int(),
                 default=10,
                 prefix="--evs",
-                doc="minimum phred scaled evidence for a variant to be accepted (default: 20)"
+                doc="minimum phred scaled evidence for a variant to be accepted (default: 20)",
             ),
             ToolInput(
                 tag="RPRS",
                 input_type=Int(),
                 default=-10,
                 prefix="--rprs",
-                doc="minimum phred scaled evidence for a variant to be accepted (default: 20)"
+                doc="minimum phred scaled evidence for a variant to be accepted (default: 20)",
             ),
             ToolInput(
                 tag="threads",
                 input_type=Int(),
                 default=CpuSelector(),
                 prefix="-t",
-                doc="amount of threads to use for parallelization (default: 4)"
+                doc="amount of threads to use for parallelization (default: 4)",
             ),
             ToolInput(
                 tag="interval",
                 input_type=String(optional=True),
                 prefix="-L",
-                doc="interval to call on (default: everything)"
+                doc="interval to call on (default: everything)",
             ),
             ToolInput(
                 tag="normalName",
                 input_type=String(optional=True),
                 prefix="-n",
-                doc="Name of the normal sample (defaul: infered from all sample names)"
+                doc="Name of the normal sample (defaul: infered from all sample names)",
             ),
             ToolInput(
                 tag="outputFolder",
                 input_type=String(),
                 prefix="-o",
-                default='./',
-                doc="Name of the normal sample (defaul: infered from all sample names)"
+                default="./",
+                doc="Name of the normal sample (defaul: infered from all sample names)",
             ),
-
         ]
 
     def outputs(self):
@@ -146,8 +143,7 @@ class RefilterStrelka2CallsBase(BioinformaticsTool, ABC):
                 Array(Vcf),
                 glob=WildcardSelector("*.refiltered.vcf"),
                 doc="To determine type",
-            ),
-
+            )
         ]
 
     def cpus(self, hints: Dict[str, Any]):

@@ -46,17 +46,11 @@ class Strelka2PassWorkflowStep1(BioinformaticsWorkflow):
                 callRegions=self.intervals,
             ),
         )
-        self.step(
-            "normaliseSNVs",
-            BcfToolsNorm_1_9(vcf=self.strelka.snvs),
-        )
-        w.step("indexSNVS", BcfToolsIndex_1_9(vcf=self.normaliseSNVs.out))
+        self.step("normaliseSNVs", BcfToolsNorm_1_9(vcf=self.strelka.snvs))
+        self.step("indexSNVS", BcfToolsIndex_1_9(vcf=self.normaliseSNVs.out))
 
-        self.step(
-            "normaliseINDELs",
-            BcfToolsNorm_1_9(vcf=self.strelka.indels),
-        )
-        w.step("indexINDELs", BcfToolsIndex_1_9(vcf=self.normaliseINDELs.out))
+        self.step("normaliseINDELs", BcfToolsNorm_1_9(vcf=self.strelka.indels))
+        self.step("indexINDELs", BcfToolsIndex_1_9(vcf=self.normaliseINDELs.out))
 
         self.output("diploid", source=self.manta.diploidSV)
         self.output("candIndels", source=self.manta.candidateSmallIndels)
