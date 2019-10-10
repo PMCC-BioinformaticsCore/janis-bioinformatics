@@ -1,7 +1,7 @@
 from abc import ABC
 from typing import List, Dict, Any
 
-from janis_core import get_value_for_hints_and_ordered_resource_tuple
+from janis_core import get_value_for_hints_and_ordered_resource_tuple, ToolArgument
 from janis_core import (
     ToolOutput,
     ToolInput,
@@ -93,6 +93,18 @@ class BcfToolsViewBase(BcfToolsToolBase, ABC):
     def outputs(self) -> List[ToolOutput]:
         return [ToolOutput("out", Stdout(CompressedVcf()))]
 
+    def arguments(self):
+        return [
+            # Ensures the output is compressed
+            ToolArgument(
+                "z",
+                prefix="--output-type",
+                position=1,
+                doc="(-O) [<b|u|z|v>] b: compressed BCF, u: uncompressed BCF, "
+                "z: compressed VCF, v: uncompressed VCF [v]",
+            )
+        ]
+
     additional_inputs = [
         ToolInput(
             "dropGenotypes",
@@ -129,21 +141,14 @@ class BcfToolsViewBase(BcfToolsToolBase, ABC):
             position=1,
             doc="do not append version and command line to the header",
         ),
-        ToolInput(
-            "outputFilename",
-            File(optional=True),
-            prefix="--output-file",
-            position=1,
-            doc="(-o) output file name [stdout]",
-        ),
-        ToolInput(
-            "outputType",
-            String(optional=True),
-            prefix="--output-type",
-            position=1,
-            doc="(-O) [<b|u|z|v>] b: compressed BCF, u: uncompressed BCF, "
-            "z: compressed VCF, v: uncompressed VCF [v]",
-        ),
+        # Captured by stdout
+        # ToolInput(
+        #     "outputFilename",
+        #     File(optional=True),
+        #     prefix="--output-file",
+        #     position=1,
+        #     doc="(-o) output file name [stdout]",
+        # ),
         ToolInput(
             "regions",
             String(optional=True),

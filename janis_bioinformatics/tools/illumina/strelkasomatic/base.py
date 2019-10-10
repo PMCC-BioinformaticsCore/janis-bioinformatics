@@ -17,6 +17,7 @@ from janis_core import (
     CaptureType,
     StringFormatter,
     get_value_for_hints_and_ordered_resource_tuple,
+    Array,
 )
 from janis_unix import Tsv
 
@@ -143,9 +144,9 @@ class StrelkaSomaticBase(IlluminaToolBase, ABC):
             ),
             ToolInput(
                 tag="region",
-                input_type=Bed(optional=True),
-                prefix="--region=",
-                separate_value_from_prefix=False,
+                input_type=Array(String, optional=True),
+                prefix="--region",
+                prefix_applies_to_all_elements=True,
                 position=1,
                 doc="Limit the analysis to one or more genome region(s) for debugging purposes. If this argument "
                 "is provided multiple times the union of all specified regions will be analyzed. All regions "
@@ -165,16 +166,17 @@ class StrelkaSomaticBase(IlluminaToolBase, ABC):
             ),
             ToolInput(
                 tag="outputcallableregions",
-                input_type=Bed(optional=True),
+                input_type=Boolean(optional=True),
                 prefix="--outputCallableRegions",
                 position=1,
                 separate_value_from_prefix=True,
-                doc=" Output a bed file describing somatic callable regions of the genome",
+                doc="Output a bed file describing somatic callable regions of the genome",
             ),
             ToolInput(
                 tag="indelCandidates",
-                input_type=VcfTabix(optional=True),
+                input_type=Array(VcfTabix, optional=True),
                 prefix="--indelCandidates=",
+                prefix_applies_to_all_elements=True,
                 position=1,
                 separate_value_from_prefix=False,
                 doc="Specify a VCF of candidate indel alleles. These alleles are always evaluated "
@@ -185,9 +187,10 @@ class StrelkaSomaticBase(IlluminaToolBase, ABC):
             ),
             ToolInput(
                 tag="forcedgt",
-                input_type=File(optional=True),
+                input_type=Array(File, optional=True),
                 prefix="--forcedGT=",
                 separate_value_from_prefix=False,
+                prefix_applies_to_all_elements=True,
                 position=1,
                 doc="Specify a VCF of candidate alleles. These alleles are always evaluated and reported even "
                 "if they are unlikely to exist in the sample. The VCF must be tabix indexed. All indel "
@@ -363,7 +366,7 @@ class StrelkaSomaticBase(IlluminaToolBase, ABC):
     def bind_metadata(self):
         return ToolMetadata(
             dateCreated=datetime(2019, 5, 27, 15, 7, 45),
-            dateUpdated=datetime(2019, 5, 27, 15, 7, 45),
+            dateUpdated=datetime(2019, 10, 10, 14),
             documentation="""Usage: configureStrelkaSomaticWorkflow.py [options]
 Version: 2.9.10
 This script configures Strelka somatic small variant calling.
