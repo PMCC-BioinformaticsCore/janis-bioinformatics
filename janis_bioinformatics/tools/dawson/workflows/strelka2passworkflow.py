@@ -108,7 +108,8 @@ class Strelka2PassWorkflow(BioinformaticsWorkflow):
 
         self.output("snvs", source=self.compressSNVs)
         self.output("indels", source=self.compressINDELs)
-        self.output("svs", source=self.step1.somaticSVs)
+        # once optional outputs are supported we should enable this again
+        # self.output("svs", source=self.step1.somaticSVs)
 
 
 if __name__ == "__main__":
