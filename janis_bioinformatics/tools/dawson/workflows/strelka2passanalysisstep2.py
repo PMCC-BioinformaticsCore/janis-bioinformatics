@@ -4,12 +4,12 @@ from janis_bioinformatics.tools.illumina import Manta_1_5_0, StrelkaSomatic_2_9_
 from janis_bioinformatics.tools.bcftools import BcfToolsNorm_1_9, BcfToolsIndex_1_9
 
 
-class Strelka2PassWorkflowStep1(BioinformaticsWorkflow):
+class Strelka2PassWorkflowStep2(BioinformaticsWorkflow):
     def id(self):
-        return "Strelka2PassWorkflowStep1"
+        return "Strelka2PassWorkflowStep2"
 
     def friendly_name(self):
-        return "Strelka 2Pass analysis step1"
+        return "Strelka 2Pass analysis step 2"
 
     @staticmethod
     def tool_provider():
@@ -27,38 +27,25 @@ class Strelka2PassWorkflowStep1(BioinformaticsWorkflow):
         self.input("reference", FastaWithDict)
         self.input("intervals", BedTabix(optional=True))
 
+        self.input("indelCandidates", Array(VcfTabix))
+        self.input("strelkaSNVs", Array(VcfTabix))
+
         self.step(
-            "manta",
-            Manta_1_5_0(
-                bam=self.normalBam,
-                tumorBam=self.tumorBam,
-                reference=self.reference,
-                callRegions=self.intervals,
-            ),
-        )
-        self.step(
-            "strelka",
+            "strelka2pass",
             StrelkaSomatic_2_9_10(
-                indelCandidates=self.manta.candidateSmallIndels,
+                indelCandidates=self.indelCandidates,
+                forcedgt=self.strelkaSNVs,
                 normalBam=self.normalBam,
                 tumorBam=self.tumorBam,
                 reference=self.reference,
                 callRegions=self.intervals,
             ),
         )
-        self.step("normaliseSNVs", BcfToolsNorm_1_9(vcf=self.strelka.snvs))
+        self.step("normaliseSNVs", BcfToolsNorm_1_9(vcf=self.strelka2pass.snvs))
         self.step("indexSNVs", BcfToolsIndex_1_9(vcf=self.normaliseSNVs.out))
 
-        self.step("normaliseINDELs", BcfToolsNorm_1_9(vcf=self.strelka.indels))
+        self.step("normaliseINDELs", BcfToolsNorm_1_9(vcf=self.strelka2pass.indels))
         self.step("indexINDELs", BcfToolsIndex_1_9(vcf=self.normaliseINDELs.out))
 
-        self.output("diploid", source=self.manta.diploidSV)
-        self.output("candIndels", source=self.manta.candidateSmallIndels)
         self.output("indels", source=self.indexINDELs.out)
         self.output("snvs", source=self.indexSNVs.out)
-
-
-if __name__ == "__main__":
-
-    wf = Strelka2PassWorkflowStep1()
-    wdl = wf.translate("wdl", to_console=True, to_disk=False, write_inputs_file=False)
