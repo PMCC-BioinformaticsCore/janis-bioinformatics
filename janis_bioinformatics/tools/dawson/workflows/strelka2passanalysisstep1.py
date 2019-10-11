@@ -19,6 +19,29 @@ class Strelka2PassWorkflowStep1(BioinformaticsWorkflow):
     def version():
         return "0.1"
 
+    def bind_metadata(self):
+        self.metadata.version = "0.1"
+        self.metadata.dateCreated = date(2019, 10, 11)
+        self.metadata.dateUpdated = date(2019, 10, 11)
+
+        self.metadata.maintainer = "Sebastian Hollizeck"
+        self.metadata.maintainerEmail = "sebastian.hollizeck@petermac.org"
+        self.metadata.keywords = [
+            "variants",
+            "strelka2",
+            "variant caller",
+            "multi sample",
+        ]
+        self.metadata.documentation = """
+        This is the first step for joint somatic variant calling
+        based on a 2pass analysis common in RNASeq.
+
+        It runs manta and strelka on the bams as is best practice
+        for somatic variant calling with strelka2
+
+        It also normalises and indexes the output vcfs
+                """.strip()
+
     def constructor(self):
 
         self.input("normalBam", BamBai)
