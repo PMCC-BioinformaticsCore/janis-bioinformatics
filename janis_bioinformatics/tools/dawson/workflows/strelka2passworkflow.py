@@ -6,11 +6,14 @@ from janis_bioinformatics.data_types import FastaWithDict, BamBai, BedTabix, Vcf
 
 from janis_core import Array
 
-from janis_bioinformatics.tools.dawson import (
-    RefilterStrelka2Calls_0_1,
+from janis_bioinformatics.tools.dawson import RefilterStrelka2Calls_0_1
+from janis_bioinformatics.tools.dawson.workflows.strelka2passanalysisstep1 import (
     Strelka2PassWorkflowStep1,
+)
+from janis_bioinformatics.tools.dawson.workflows.strelka2passanalysisstep2 import (
     Strelka2PassWorkflowStep2,
 )
+
 
 from janis_bioinformatics.tools.bcftools import BcfToolsView_1_9
 
