@@ -36,7 +36,7 @@ CORES_TUPLE = [
             CaptureType.CHROMOSOME: 8,
             CaptureType.EXOME: 8,
             CaptureType.THIRTYX: 16,
-            CaptureType.NINETYX: 80,
+            CaptureType.NINETYX: 40,
             CaptureType.THREEHUNDREDX: 80,
         },
     )
