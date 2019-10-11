@@ -6,4 +6,4 @@ from .callsomaticfreebayes.latest import CallSomaticFreeBayesLatest
 from .callsomaticfreebayes.callsomaticfreebayes_0_1 import CallSomaticFreeBayes_0_1
 
 
-from .workflows import Strelka2PassWorkflowStep1, Strelka2PassWorkflowStep2
+from .workflows import *
