@@ -19,6 +19,28 @@ class Strelka2PassWorkflowStep2(BioinformaticsWorkflow):
     def version():
         return "0.1"
 
+    def bind_metadata(self):
+        self.metadata.version = "0.1"
+        self.metadata.dateCreated = date(2019, 10, 11)
+        self.metadata.dateUpdated = date(2019, 10, 11)
+
+        self.metadata.maintainer = "Sebastian Hollizeck"
+        self.metadata.maintainerEmail = "sebastian.hollizeck@petermac.org"
+        self.metadata.keywords = [
+            "variants",
+            "strelka2",
+            "variant caller",
+            "multi sample",
+        ]
+        self.metadata.documentation = """
+        This is the second step for joint somatic variant calling
+        based on a 2pass analysis common in RNASeq.
+
+        It runs strelka2 again with the variants found in all of the other samples as input to be forced to genotype these.
+
+        It also normalises and indexes the output vcfs
+                """.strip()
+
     def constructor(self):
 
         self.input("normalBam", BamBai)
@@ -49,3 +71,9 @@ class Strelka2PassWorkflowStep2(BioinformaticsWorkflow):
 
         self.output("indels", source=self.indexINDELs.out)
         self.output("snvs", source=self.indexSNVs.out)
+
+
+if __name__ == "__main__":
+
+    wf = Strelka2PassWorkflowStep2()
+    wdl = wf.translate("wdl", to_console=True, to_disk=False, write_inputs_file=False)
