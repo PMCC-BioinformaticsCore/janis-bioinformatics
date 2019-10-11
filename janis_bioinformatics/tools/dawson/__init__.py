@@ -4,6 +4,3 @@ from .refilterstrelka2calls.refilterstrelka2calls_0_1 import RefilterStrelka2Cal
 
 from .callsomaticfreebayes.latest import CallSomaticFreeBayesLatest
 from .callsomaticfreebayes.callsomaticfreebayes_0_1 import CallSomaticFreeBayes_0_1
-
-
-from .workflows import *
