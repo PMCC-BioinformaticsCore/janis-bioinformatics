@@ -187,7 +187,7 @@ class StrelkaSomaticBase(IlluminaToolBase, ABC):
             ),
             ToolInput(
                 tag="forcedgt",
-                input_type=Array(File, optional=True),
+                input_type=Array(VcfTabix, optional=True),
                 prefix="--forcedGT=",
                 separate_value_from_prefix=False,
                 prefix_applies_to_all_elements=True,
@@ -222,7 +222,7 @@ class StrelkaSomaticBase(IlluminaToolBase, ABC):
             ),
             ToolInput(
                 tag="noisevcf",
-                input_type=File(optional=True),
+                input_type=VcfTabix(optional=True),
                 prefix="--noiseVcf=",
                 separate_value_from_prefix=False,
                 position=1,
