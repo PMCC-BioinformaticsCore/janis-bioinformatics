@@ -15,7 +15,7 @@ from janis_bioinformatics.tools.dawson.workflows.strelka2passanalysisstep2 impor
 )
 
 
-from janis_bioinformatics.tools.bcftools import BcfToolsView_1_9
+from janis_bioinformatics.tools.htslib import BGZipLatest, TabixLatest
 
 
 class Strelka2PassWorkflow(BioinformaticsWorkflow):
@@ -36,7 +36,7 @@ class Strelka2PassWorkflow(BioinformaticsWorkflow):
     def bind_metadata(self):
         self.metadata.version = "0.1"
         self.metadata.dateCreated = date(2019, 10, 11)
-        self.metadata.dateUpdated = date(2019, 10, 11)
+        self.metadata.dateUpdated = date(2019, 10, 19)
 
         self.metadata.maintainer = "Sebastian Hollizeck"
         self.metadata.maintainerEmail = "sebastian.hollizeck@petermac.org"
@@ -91,23 +91,23 @@ class Strelka2PassWorkflow(BioinformaticsWorkflow):
         )
 
         self.step("refilterSNVs", RefilterStrelka2Calls_0_1(inputFiles=self.step2.snvs))
-
         self.step(
-            "compressSNVs", BcfToolsView_1_9(file=self.refilterSNVs.out), scatter="file"
+            "compressSNVs", BGZipLatest(file=self.refilterSNVs.out), scatter="file"
         )
+        self.step("indexSNVs", TabixLatest(file=self.compressSNVs.out), scatter="file")
 
         self.step(
             "refilterINDELs", RefilterStrelka2Calls_0_1(inputFiles=self.step2.indels)
         )
-
         self.step(
-            "compressINDELs",
-            BcfToolsView_1_9(file=self.refilterINDELs.out),
-            scatter="file",
+            "compressINDELs", BGZipLatest(file=self.refilterINDELs.out), scatter="file"
+        )
+        self.step(
+            "indexINDELs", TabixLatest(file=self.compressINDELs.out), scatter="file"
         )
 
-        self.output("snvs", source=self.compressSNVs)
-        self.output("indels", source=self.compressINDELs)
+        self.output("snvs", source=self.indexSNVs)
+        self.output("indels", source=self.indexINDELs)
         # once optional outputs are supported we should enable this again
         # self.output("svs", source=self.step1.somaticSVs)
 
