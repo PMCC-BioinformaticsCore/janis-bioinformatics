@@ -4,7 +4,7 @@ from janis_bioinformatics.tools import BioinformaticsWorkflow
 
 from janis_bioinformatics.data_types import FastaWithDict, BamBai, BedTabix, VcfTabix
 
-from janis_core import Array
+from janis_core import Array, Boolean
 
 from janis_bioinformatics.tools.dawson import RefilterStrelka2Calls_0_1
 from janis_bioinformatics.tools.dawson.workflows.strelka2passanalysisstep1 import (
@@ -65,6 +65,7 @@ class Strelka2PassWorkflow(BioinformaticsWorkflow):
 
         self.input("reference", FastaWithDict)
         self.input("callRegions", BedTabix(optional=True))
+        self.input("exome", Boolean(optional=True), default=False)
 
         self.step(
             "step1",
@@ -73,6 +74,7 @@ class Strelka2PassWorkflow(BioinformaticsWorkflow):
                 tumorBam=self.tumorBams,
                 reference=self.reference,
                 intervals=self.callRegions,
+                exome=self.exome,
             ),
             scatter="tumorBam",
         )
@@ -86,6 +88,7 @@ class Strelka2PassWorkflow(BioinformaticsWorkflow):
                 intervals=self.callRegions,
                 indelCandidates=self.step1.candIndels,
                 strelkaSNVs=self.step1.snvs,
+                exome=self.exome,
             ),
             scatter="tumorBam",
         )
