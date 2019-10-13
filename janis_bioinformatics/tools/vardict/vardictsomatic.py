@@ -24,6 +24,8 @@ from janis_bioinformatics.tools.vardict.vardict import (
     VarDict_1_5_6,
     VarDict_1_5_7,
     VarDict_1_5_8,
+    VarDict_1_7_0,
+    VarDict_1_6_0,
 )
 
 CORES_TUPLE = [
@@ -550,4 +552,12 @@ class VarDictSomatic_1_5_7(VarDictSomaticBase, VarDict_1_5_7):
 
 
 class VarDictSomatic_1_5_8(VarDictSomaticBase, VarDict_1_5_8):
+    pass
+
+
+class VarDictSomatic_1_6_0(VarDictSomaticBase, VarDict_1_6_0):
+    pass
+
+
+class VarDictSomatic_1_7_0(VarDictSomaticBase, VarDict_1_7_0):
     pass

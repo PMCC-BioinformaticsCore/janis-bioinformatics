@@ -40,3 +40,13 @@ class VarDict_1_6_0(CommandTool):
     @staticmethod
     def version():
         return "1.6.0"
+
+
+class VarDict_1_7_0(CommandTool):
+    @staticmethod
+    def container():
+        return "michaelfranklin/vardict:1.7.0"
+
+    @staticmethod
+    def version():
+        return "1.7.0"

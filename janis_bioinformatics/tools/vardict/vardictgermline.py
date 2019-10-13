@@ -23,6 +23,8 @@ from janis_bioinformatics.tools.vardict.vardict import (
     VarDict_1_5_6,
     VarDict_1_5_7,
     VarDict_1_5_8,
+    VarDict_1_6_0,
+    VarDict_1_7_0,
 )
 
 CORES_TUPLE = [
@@ -543,4 +545,12 @@ class VarDictGermline_1_5_7(VarDictGermlineBase, VarDict_1_5_7):
 
 
 class VarDictGermline_1_5_8(VarDictGermlineBase, VarDict_1_5_8):
+    pass
+
+
+class VarDictGermline_1_6_0(VarDictGermlineBase, VarDict_1_6_0):
+    pass
+
+
+class VarDictGermline_1_7_0(VarDictGermlineBase, VarDict_1_7_0):
     pass

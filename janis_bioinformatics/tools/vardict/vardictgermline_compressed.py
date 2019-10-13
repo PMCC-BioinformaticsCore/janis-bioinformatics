@@ -18,7 +18,7 @@ from janis_core import get_value_for_hints_and_ordered_resource_tuple
 
 from janis_bioinformatics.data_types import BamBai, Bed, FastaFai, Vcf, CompressedVcf
 from janis_bioinformatics.tools import BioinformaticsTool
-from janis_bioinformatics.tools.vardict.vardict import VarDict_1_6_0
+from janis_bioinformatics.tools.vardict.vardict import VarDict_1_6_0, VarDict_1_7_0
 
 CORES_TUPLE = [
     (
@@ -530,4 +530,8 @@ class VarDictGermlineCompressedBase(BioinformaticsTool, ABC):
 
 
 class VarDictGermline_1_6_0(VarDictGermlineCompressedBase, VarDict_1_6_0):
+    pass
+
+
+class VarDictGermline_1_7_0(VarDictGermlineCompressedBase, VarDict_1_7_0):
     pass
