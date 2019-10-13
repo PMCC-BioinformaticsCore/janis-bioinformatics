@@ -5,7 +5,7 @@ from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.illumina import Manta_1_5_0, StrelkaSomatic_2_9_10
 from janis_bioinformatics.tools.bcftools import BcfToolsNorm_1_9, BcfToolsIndex_1_9
 
-from janis_core import Array
+from janis_core import Array, Boolean
 
 
 class Strelka2PassWorkflowStep2(BioinformaticsWorkflow):
@@ -52,6 +52,7 @@ class Strelka2PassWorkflowStep2(BioinformaticsWorkflow):
 
         self.input("reference", FastaWithDict)
         self.input("intervals", BedTabix(optional=True))
+        self.input("exome", Boolean(optional=True), default=False)
 
         self.input("indelCandidates", Array(VcfTabix))
         self.input("strelkaSNVs", Array(VcfTabix))
@@ -65,6 +66,7 @@ class Strelka2PassWorkflowStep2(BioinformaticsWorkflow):
                 tumorBam=self.tumorBam,
                 reference=self.reference,
                 callRegions=self.intervals,
+                targeted=self.exome,
             ),
         )
         self.step("normaliseSNVs", BcfToolsNorm_1_9(vcf=self.strelka2pass.snvs))

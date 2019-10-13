@@ -1,5 +1,6 @@
 from datetime import date
 
+from janis_core import Boolean
 from janis_bioinformatics.data_types import FastaWithDict, BamBai, BedTabix, VcfTabix
 from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.illumina import Manta_1_5_0, StrelkaSomatic_2_9_10
@@ -51,6 +52,7 @@ class Strelka2PassWorkflowStep1(BioinformaticsWorkflow):
 
         self.input("reference", FastaWithDict)
         self.input("intervals", BedTabix(optional=True))
+        self.input("exome", Boolean(optional=True), default=False)
 
         self.step(
             "manta",
@@ -59,6 +61,7 @@ class Strelka2PassWorkflowStep1(BioinformaticsWorkflow):
                 tumorBam=self.tumorBam,
                 reference=self.reference,
                 callRegions=self.intervals,
+                exome=self.exome,
             ),
         )
         self.step(
@@ -69,6 +72,7 @@ class Strelka2PassWorkflowStep1(BioinformaticsWorkflow):
                 tumorBam=self.tumorBam,
                 reference=self.reference,
                 callRegions=self.intervals,
+                targeted=self.exome,
             ),
         )
         self.step("normaliseSNVs", BcfToolsNorm_1_9(vcf=self.strelka.snvs))
