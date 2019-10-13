@@ -1,3 +1,5 @@
+from janis_core import Boolean
+
 from janis_bioinformatics.data_types import FastaWithDict, BamBai, BedTabix
 from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.bcftools import BcfToolsView_1_5
@@ -25,11 +27,15 @@ class IlluminaGermlineVariantCaller(BioinformaticsWorkflow):
         self.input("bam", BamBai)
         self.input("reference", FastaWithDict)
         self.input("intervals", BedTabix(optional=True))
+        self.input("isExome", Boolean)
 
         self.step(
             "manta",
             Manta_1_5_0(
-                bam=self.bam, reference=self.reference, callRegions=self.intervals
+                bam=self.bam,
+                reference=self.reference,
+                callRegions=self.intervals,
+                exome=self.isExome,
             ),
         )
 
@@ -40,6 +46,7 @@ class IlluminaGermlineVariantCaller(BioinformaticsWorkflow):
                 reference=self.reference,
                 indelCandidates=self.manta.candidateSmallIndels,
                 callRegions=self.intervals,
+                exome=self.isExome,
             ),
         )
 
