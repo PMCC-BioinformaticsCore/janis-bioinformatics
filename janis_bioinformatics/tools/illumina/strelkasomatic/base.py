@@ -200,7 +200,7 @@ class StrelkaSomaticBase(IlluminaToolBase, ABC):
                 "excluded from block compression), but the specific SNV alleles are ignored. (default: None)",
             ),
             ToolInput(
-                tag="targeted",
+                tag="exome",
                 input_type=Boolean(optional=True),
                 prefix="--exome",
                 separate_value_from_prefix=True,
