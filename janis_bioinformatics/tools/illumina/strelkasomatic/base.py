@@ -202,7 +202,7 @@ class StrelkaSomaticBase(IlluminaToolBase, ABC):
             ToolInput(
                 tag="targeted",
                 input_type=Boolean(optional=True),
-                prefix="--targeted",
+                prefix="--exome",
                 separate_value_from_prefix=True,
                 position=1,
                 doc="(--exome)  Set options for exome or other targeted input: "
