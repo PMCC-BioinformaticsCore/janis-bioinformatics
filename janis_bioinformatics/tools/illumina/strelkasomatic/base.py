@@ -209,6 +209,14 @@ class StrelkaSomaticBase(IlluminaToolBase, ABC):
                 "note in particular that this flag turns off high-depth filters",
             ),
             ToolInput(
+                tag="exome",
+                input_type=Boolean(optional=True),
+                prefix="--exome",
+                separate_value_from_prefix=True,
+                position=1,
+                doc="Set options for exome: note in particular that this flag turns off high-depth filters",
+            ),
+            ToolInput(
                 tag="callRegions",
                 input_type=BedTabix(optional=True),
                 prefix="--callRegions=",

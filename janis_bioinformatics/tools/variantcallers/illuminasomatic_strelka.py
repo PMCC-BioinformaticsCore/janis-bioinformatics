@@ -1,3 +1,5 @@
+from janis_core import Boolean
+
 from janis_bioinformatics.data_types import FastaWithDict, BamBai, BedTabix
 from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.bcftools import BcfToolsView_1_5
@@ -28,6 +30,8 @@ class IlluminaSomaticVariantCaller(BioinformaticsWorkflow):
         self.input("reference", FastaWithDict)
         self.input("intervals", BedTabix(optional=True))
 
+        self.input("isExome", Boolean)
+
         self.step(
             "manta",
             Manta_1_5_0(
@@ -35,6 +39,7 @@ class IlluminaSomaticVariantCaller(BioinformaticsWorkflow):
                 tumorBam=self.tumorBam,
                 reference=self.reference,
                 callRegions=self.intervals,
+                exome=self.isExome,
             ),
         )
         self.step(
@@ -45,6 +50,7 @@ class IlluminaSomaticVariantCaller(BioinformaticsWorkflow):
                 tumorBam=self.tumorBam,
                 reference=self.reference,
                 callRegions=self.intervals,
+                exome=self.isExome,
             ),
         )
         self.step(
