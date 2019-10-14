@@ -1,4 +1,3 @@
-from abc import ABC
 from typing import Dict, Any
 
 from janis_core import (
@@ -63,7 +62,7 @@ MEM_TUPLE = [
 ]
 
 
-class FreeBayesBase(BioinformaticsTool, ABC):
+class FreeBayesBase(BioinformaticsTool):
     def friendly_name(self) -> str:
         return "freebayes"
 
