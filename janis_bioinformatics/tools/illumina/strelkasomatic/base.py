@@ -205,7 +205,7 @@ class StrelkaSomaticBase(IlluminaToolBase, ABC):
                 prefix="--targeted",
                 separate_value_from_prefix=True,
                 position=1,
-                doc="(--exome)  Set options for exome or other targeted input: "
+                doc="Set options for other targeted input: "
                 "note in particular that this flag turns off high-depth filters",
             ),
             ToolInput(

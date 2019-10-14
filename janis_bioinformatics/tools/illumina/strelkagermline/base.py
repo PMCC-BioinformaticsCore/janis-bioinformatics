@@ -166,11 +166,19 @@ class StrelkaGermlineBase(IlluminaToolBase, ABC):
             ),
             ToolInput(
                 "exome",
-                File(optional=True),
+                Boolean(optional=True),
                 prefix="--exome",
                 position=1,
                 shell_quote=False,
-                doc="--targeted Set options for exome or other targeted input: "
+                doc="Set options for exome note in particular that this flag turns off high-depth filters",
+            ),
+            ToolInput(
+                "targeted",
+                Boolean(optional=True),
+                prefix="--exome",
+                position=1,
+                shell_quote=False,
+                doc="Set options for other targeted input: "
                 "note in particular that this flag turns off high-depth filters",
             ),
             ToolInput(
