@@ -57,7 +57,7 @@ class RefilterStrelka2CallsBase(BioinformaticsTool, ABC):
 
     @staticmethod
     def base_command():
-        return "Rscript filterStrelkaCalls.R"
+        return "filterStrelkaCalls.R"
 
     def cpus(self, hints: Dict[str, Any]):
         val = get_value_for_hints_and_ordered_resource_tuple(hints, CORES_TUPLE)
