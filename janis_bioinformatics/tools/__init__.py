@@ -8,6 +8,7 @@ from janis_bioinformatics.tools import (
     bwa,
     common,
     cutadapt,
+    freebayes,
     gatk4,
     htslib,
     illumina,
