@@ -72,7 +72,7 @@ class Strelka2PassWorkflowStep1(BioinformaticsWorkflow):
                 tumorBam=self.tumorBam,
                 reference=self.reference,
                 callRegions=self.intervals,
-                targeted=self.exome,
+                exome=self.exome,
             ),
         )
         self.step("normaliseSNVs", BcfToolsNorm_1_9(vcf=self.strelka.snvs))
