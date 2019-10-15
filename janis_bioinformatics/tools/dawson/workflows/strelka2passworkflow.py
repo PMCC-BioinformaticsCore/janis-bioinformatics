@@ -36,7 +36,7 @@ class Strelka2PassWorkflow(BioinformaticsWorkflow):
     def bind_metadata(self):
         self.metadata.version = "0.1"
         self.metadata.dateCreated = date(2019, 10, 11)
-        self.metadata.dateUpdated = date(2019, 10, 19)
+        self.metadata.dateUpdated = date(2019, 10, 15)
 
         self.metadata.maintainer = "Sebastian Hollizeck"
         self.metadata.maintainerEmail = "sebastian.hollizeck@petermac.org"
