@@ -99,7 +99,6 @@ class Gatk4MergeSamFilesBase(Gatk4ToolBase, ABC):
         return ToolMetadata(
             creator="Michael Franklin",
             maintainer="Michael Franklin",
-            maintainerEmail="michael.franklin@petermac.org",
             dateCreated=date(2018, 12, 24),
             dateUpdated=date(2019, 1, 24),
             institution="Broad Institute",

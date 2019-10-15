@@ -463,7 +463,6 @@ class HapPyValidatorBase(IlluminaToolBase, ABC):
         return j.ToolMetadata(
             creator=None,
             maintainer="Michael Franklin",
-            maintainerEmail=None,
             dateCreated=datetime(2019, 5, 15),
             dateUpdated=datetime(2019, 5, 15),
             institution=None,

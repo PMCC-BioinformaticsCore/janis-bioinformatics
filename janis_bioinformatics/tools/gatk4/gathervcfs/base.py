@@ -97,7 +97,6 @@ class Gatk4GatherVcfsBase(Gatk4ToolBase, ABC):
         return ToolMetadata(
             creator="Michael Franklin",
             maintainer="Michael Franklin",
-            maintainerEmail="michael.franklin@petermac.org",
             dateCreated=date(2018, 5, 1),
             dateUpdated=date(2019, 5, 1),
             institution="Broad Institute",

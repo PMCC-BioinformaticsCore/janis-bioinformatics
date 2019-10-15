@@ -97,7 +97,6 @@ class BcfToolsSortBase(BcfToolsToolBase, ABC):
         return ToolMetadata(
             creator=None,
             maintainer=None,
-            maintainerEmail=None,
             dateCreated=datetime(2019, 5, 9),
             dateUpdated=datetime(2019, 7, 11),
             institution=None,

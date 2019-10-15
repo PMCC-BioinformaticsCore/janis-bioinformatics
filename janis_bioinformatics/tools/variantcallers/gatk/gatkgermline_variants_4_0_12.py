@@ -22,7 +22,6 @@ class GatkGermlineVariantCaller_4_0_12(BioinformaticsWorkflow):
         self.metadata.version = "4.0.12.0"
         self.metadata.dateCreated = date(2019, 2, 1)
         self.metadata.maintainer = "Michael Franklin"
-        self.metadata.maintainerEmail = "michael.franklin@petermac.org"
         self.metadata.keywords = ["variants", "gatk", "gatk4", "variant caller"]
         self.metadata.documentation = """
         This is a VariantCaller based on the GATK Best Practice pipelines. It uses the GATK4 toolkit, specifically 4.0.12.0.

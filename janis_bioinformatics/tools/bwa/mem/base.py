@@ -97,7 +97,6 @@ class BwaMemBase(BioinformaticsTool, ABC):
         return ToolMetadata(
             creator="Michael Franklin",
             maintainer="Michael Franklin",
-            maintainerEmail="michael.franklin@petermac.org",
             dateCreated=date(2018, 12, 24),
             dateUpdated=date(2019, 7, 23),
             institution="Sanger Institute",

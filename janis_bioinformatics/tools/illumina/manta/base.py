@@ -158,7 +158,6 @@ class MantaBase(IlluminaToolBase, ABC):
         return ToolMetadata(
             creator="Michael Franklin",
             maintainer="Michael Franklin",
-            maintainerEmail="michael.franklin@petermac.org",
             dateCreated=date(2019, 2, 12),
             dateUpdated=date(2019, 2, 19),
             institution="Illumina",

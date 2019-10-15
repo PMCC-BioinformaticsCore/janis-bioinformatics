@@ -438,7 +438,6 @@ class CutAdaptBase_2(BioinformaticsTool):
         return ToolMetadata(
             creator=None,
             maintainer="Michael Franklin",
-            maintainerEmail="michael.franklin@petermac.org",
             dateCreated=datetime(2019, 3, 21),
             dateUpdated=datetime(2019, 7, 23),
             institution=None,

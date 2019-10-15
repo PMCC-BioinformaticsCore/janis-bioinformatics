@@ -30,7 +30,7 @@ class IlluminaSomaticVariantCaller(BioinformaticsWorkflow):
         self.input("reference", FastaWithDict)
         self.input("intervals", BedTabix(optional=True))
 
-        self.input("isExome", Boolean)
+        self.input("isExome", Boolean(optional=True))
 
         self.step(
             "manta",

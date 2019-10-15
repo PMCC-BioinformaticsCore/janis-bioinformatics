@@ -131,7 +131,6 @@ class Gatk4CalculateContaminationBase(Gatk4ToolBase, ABC):
         return ToolMetadata(
             creator="Hollizeck Sebastian",
             maintainer="Hollizeck Sebastian",
-            maintainerEmail="sebastian.hollizeck@petermac.org",
             dateCreated=date(2019, 9, 9),
             dateUpdated=date(2019, 9, 9),
             institution="Broad Institute",
