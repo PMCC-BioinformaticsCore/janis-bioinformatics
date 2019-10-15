@@ -56,6 +56,10 @@ class RefilterStrelka2CallsBase(BioinformaticsTool, ABC):
         return "Refilter Strelka2 Variant Calls"
 
     @staticmethod
+    def tool_provider():
+        return "Dawson Labs"
+
+    @staticmethod
     def base_command():
         return "filterStrelkaCalls.R"
 

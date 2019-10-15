@@ -52,6 +52,10 @@ class CallSomaticFreeBayesBase(BioinformaticsTool, ABC):
         return "Call Somatic Variants from freebayes"
 
     @staticmethod
+    def tool_provider():
+        return "Dawson Labs"
+
+    @staticmethod
     def base_command():
         return "callSomaticFreeBayes.R"
 
