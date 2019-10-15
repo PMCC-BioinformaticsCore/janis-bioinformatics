@@ -51,7 +51,7 @@ class Strelka2PassWorkflowStep1(BioinformaticsWorkflow):
         self.input("tumorBam", BamBai)
 
         self.input("reference", FastaWithDict)
-        self.input("intervals", BedTabix(optional=True))
+        self.input("callRegions", BedTabix(optional=True))
         self.input("exome", Boolean(optional=True), default=False)
 
         self.step(
@@ -60,7 +60,7 @@ class Strelka2PassWorkflowStep1(BioinformaticsWorkflow):
                 bam=self.normalBam,
                 tumorBam=self.tumorBam,
                 reference=self.reference,
-                callRegions=self.intervals,
+                callRegions=self.callRegions,
                 exome=self.exome,
             ),
         )
@@ -71,7 +71,7 @@ class Strelka2PassWorkflowStep1(BioinformaticsWorkflow):
                 normalBam=self.normalBam,
                 tumorBam=self.tumorBam,
                 reference=self.reference,
-                callRegions=self.intervals,
+                callRegions=self.callRegions,
                 exome=self.exome,
             ),
         )
