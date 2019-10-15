@@ -125,14 +125,21 @@ class RefilterStrelka2CallsBase(BioinformaticsTool, ABC):
                 tag="normalName",
                 input_type=String(optional=True),
                 prefix="-n",
-                doc="Name of the normal sample (defaul: infered from all sample names)",
+                doc="Name of the normal sample (default: infered from all sample names)",
+            ),
+            ToolInput(
+                tag="sampleNames",
+                input_type=Array(String, optional=True),
+                prefix="--sampleNames",
+                separator=",",
+                doc="Name of the normal sample (default: infered from all sample names)",
             ),
             ToolInput(
                 tag="outputFolder",
                 input_type=String(),
                 prefix="-o",
                 default="./",
-                doc="Name of the normal sample (defaul: infered from all sample names)",
+                doc="Name of the normal sample (default: infered from all sample names)",
             ),
         ]
 
@@ -150,7 +157,7 @@ class RefilterStrelka2CallsBase(BioinformaticsTool, ABC):
         val = get_value_for_hints_and_ordered_resource_tuple(hints, CORES_TUPLE)
         if val:
             return val
-        return 4
+        return 5
 
     def memory(self, hints: Dict[str, Any]):
         val = get_value_for_hints_and_ordered_resource_tuple(hints, MEM_TUPLE)
