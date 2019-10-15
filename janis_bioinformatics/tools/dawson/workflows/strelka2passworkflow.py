@@ -19,7 +19,7 @@ from janis_bioinformatics.tools.htslib import BGZipLatest, TabixLatest
 
 
 class Strelka2PassWorkflow(BioinformaticsWorkflow):
-    def id(self):
+    def tool(self):
         return "Strelka2PassWorkflow"
 
     def friendly_name(self):
