@@ -16,7 +16,7 @@ class Strelka2PassWorkflowStep1(BioinformaticsWorkflow):
 
     @staticmethod
     def tool_provider():
-        return "Dawons Labs"
+        return "Dawson Labs"
 
     @staticmethod
     def version():
