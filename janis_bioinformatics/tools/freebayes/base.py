@@ -68,7 +68,7 @@ class FreeBayesBase(BioinformaticsTool):
 
     @staticmethod
     def tools_provider():
-        return "freebayes"
+        return "Erik Garrison"
 
     @staticmethod
     def tool():
