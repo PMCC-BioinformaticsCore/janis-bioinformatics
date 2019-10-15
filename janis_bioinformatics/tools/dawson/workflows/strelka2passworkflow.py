@@ -67,13 +67,15 @@ class Strelka2PassWorkflow(BioinformaticsWorkflow):
         self.input("callRegions", BedTabix(optional=True))
         self.input("exome", Boolean(optional=True), default=False)
 
+        self.input("sampleNames", Array(String, optional=True))
+
         self.step(
             "step1",
             Strelka2PassWorkflowStep1(
                 normalBam=self.normalBam,
                 tumorBam=self.tumorBams,
                 reference=self.reference,
-                intervals=self.callRegions,
+                callRegions=self.callRegions,
                 exome=self.exome,
             ),
             scatter="tumorBam",
@@ -85,7 +87,7 @@ class Strelka2PassWorkflow(BioinformaticsWorkflow):
                 normalBam=self.normalBam,
                 tumorBam=self.tumorBams,
                 reference=self.reference,
-                intervals=self.callRegions,
+                callRegions=self.callRegions,
                 indelCandidates=self.step1.candIndels,
                 strelkaSNVs=self.step1.snvs,
                 exome=self.exome,
@@ -93,14 +95,22 @@ class Strelka2PassWorkflow(BioinformaticsWorkflow):
             scatter="tumorBam",
         )
 
-        self.step("refilterSNVs", RefilterStrelka2Calls_0_1(inputFiles=self.step2.snvs))
+        self.step(
+            "refilterSNVs",
+            RefilterStrelka2Calls_0_1(
+                inputFiles=self.step2.snvs, sampleNames=self.sampleNames
+            ),
+        )
         self.step(
             "compressSNVs", BGZipLatest(file=self.refilterSNVs.out), scatter="file"
         )
         self.step("indexSNVs", TabixLatest(file=self.compressSNVs.out), scatter="file")
 
         self.step(
-            "refilterINDELs", RefilterStrelka2Calls_0_1(inputFiles=self.step2.indels)
+            "refilterINDELs",
+            RefilterStrelka2Calls_0_1(
+                inputFiles=self.step2.indels, sampleNames=self.sampleNames
+            ),
         )
         self.step(
             "compressINDELs", BGZipLatest(file=self.refilterINDELs.out), scatter="file"
