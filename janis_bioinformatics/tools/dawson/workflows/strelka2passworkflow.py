@@ -4,7 +4,7 @@ from janis_bioinformatics.tools import BioinformaticsWorkflow
 
 from janis_bioinformatics.data_types import FastaWithDict, BamBai, BedTabix, VcfTabix
 
-from janis_core import Array, Boolean
+from janis_core import Array, Boolean, String
 
 from janis_bioinformatics.tools.dawson import RefilterStrelka2Calls_0_1
 from janis_bioinformatics.tools.dawson.workflows.strelka2passanalysisstep1 import (
@@ -14,12 +14,11 @@ from janis_bioinformatics.tools.dawson.workflows.strelka2passanalysisstep2 impor
     Strelka2PassWorkflowStep2,
 )
 
-
 from janis_bioinformatics.tools.htslib import BGZipLatest, TabixLatest
 
 
 class Strelka2PassWorkflow(BioinformaticsWorkflow):
-    def tool(self):
+    def id(self):
         return "Strelka2PassWorkflow"
 
     def friendly_name(self):
