@@ -23,13 +23,16 @@ from janis_bioinformatics.data_types import VcfTabix, Vcf
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 
 CORES_TUPLE = [
-    # (CaptureType.key(), {
-    #     CaptureType.CHROMOSOME: 2,
-    #     CaptureType.EXOME: 2,
-    #     CaptureType.THIRTYX: 2,
-    #     CaptureType.NINETYX: 2,
-    #     CaptureType.THREEHUNDREDX: 2
-    # })
+    (
+        CaptureType.key(),
+        {
+            CaptureType.CHROMOSOME: 5,
+            CaptureType.EXOME: 20,
+            CaptureType.THIRTYX: 20,
+            CaptureType.NINETYX: 40,
+            CaptureType.THREEHUNDREDX: 40,
+        },
+    )
 ]
 
 MEM_TUPLE = [
@@ -117,7 +120,7 @@ class RefilterStrelka2CallsBase(BioinformaticsTool, ABC):
                 input_type=Int(),
                 default=CpuSelector(),
                 prefix="-t",
-                doc="amount of threads to use for parallelization (default: 4)",
+                doc="amount of threads to use for parallelization (default: 5)",
             ),
             ToolInput(
                 tag="interval",
@@ -161,7 +164,7 @@ class RefilterStrelka2CallsBase(BioinformaticsTool, ABC):
         val = get_value_for_hints_and_ordered_resource_tuple(hints, CORES_TUPLE)
         if val:
             return val
-        return 5
+        return 20
 
     def memory(self, hints: Dict[str, Any]):
         val = get_value_for_hints_and_ordered_resource_tuple(hints, MEM_TUPLE)
