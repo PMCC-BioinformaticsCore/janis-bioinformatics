@@ -26,6 +26,7 @@ CORES_TUPLE = [
     (
         CaptureType.key(),
         {
+            CaptureType.TARGETED: 5,
             CaptureType.CHROMOSOME: 5,
             CaptureType.EXOME: 20,
             CaptureType.THIRTYX: 20,
@@ -39,12 +40,12 @@ MEM_TUPLE = [
     (
         CaptureType.key(),
         {
-            CaptureType.TARGETED: 12,
-            CaptureType.CHROMOSOME: 12,
-            CaptureType.EXOME: 12,
-            CaptureType.THIRTYX: 12,
-            CaptureType.NINETYX: 12,
-            CaptureType.THREEHUNDREDX: 12,
+            CaptureType.TARGETED: 24,
+            CaptureType.CHROMOSOME: 24,
+            CaptureType.EXOME: 48,
+            CaptureType.THIRTYX: 48,
+            CaptureType.NINETYX: 48,
+            CaptureType.THREEHUNDREDX: 48,
         },
     )
 ]
@@ -170,7 +171,7 @@ class RefilterStrelka2CallsBase(BioinformaticsTool, ABC):
         val = get_value_for_hints_and_ordered_resource_tuple(hints, MEM_TUPLE)
         if val:
             return val
-        return 12
+        return 48
 
     def bind_metadata(self):
         from datetime import date
