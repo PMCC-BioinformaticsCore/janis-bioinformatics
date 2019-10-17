@@ -56,11 +56,13 @@ class Strelka2PassWorkflowStep2(BioinformaticsWorkflow):
 
         self.input("indelCandidates", Array(VcfTabix))
         self.input("strelkaSNVs", Array(VcfTabix))
+        # self.input("strelkaIndels", Array(VcfTabix))
 
         self.step(
             "strelka2pass",
             StrelkaSomatic_2_9_10(
                 indelCandidates=self.indelCandidates,
+                # indelCandidates=self.strelkaIndels,
                 forcedgt=self.strelkaSNVs,
                 normalBam=self.normalBam,
                 tumorBam=self.tumorBam,

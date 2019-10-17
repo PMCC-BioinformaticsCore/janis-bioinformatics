@@ -87,8 +87,10 @@ class Strelka2PassWorkflow(BioinformaticsWorkflow):
                 tumorBam=self.tumorBams,
                 reference=self.reference,
                 callRegions=self.callRegions,
-                indelCandidates=self.step1.candIndels,
                 strelkaSNVs=self.step1.snvs,
+                indelCandidates=self.step1.candIndels,
+                # as soon as janis allows flattening of arguments, we need this
+                # indelCandidates=self.step1.indels,
                 exome=self.exome,
             ),
             scatter="tumorBam",
