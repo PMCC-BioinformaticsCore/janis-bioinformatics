@@ -97,7 +97,7 @@ class GatkSomaticVariantCaller_4_0_12(BioinformaticsWorkflow):
         self.metadata.dateCreated = date(2019, 2, 1)
         self.metadata.dateUpdated = date(2019, 9, 13)
 
-        self.metadata.maintainer = "Michael Franklin"
+        self.metadata.contributors = ["Michael Franklin"]
         self.metadata.keywords = [
             "variants",
             "gatk",

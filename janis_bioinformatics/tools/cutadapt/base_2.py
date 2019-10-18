@@ -436,8 +436,7 @@ class CutAdaptBase_2(BioinformaticsTool):
 
     def bind_metadata(self):
         return ToolMetadata(
-            creator=None,
-            maintainer="Michael Franklin",
+            contributors=["Michael Franklin"],
             dateCreated=datetime(2019, 3, 21),
             dateUpdated=datetime(2019, 7, 23),
             institution=None,

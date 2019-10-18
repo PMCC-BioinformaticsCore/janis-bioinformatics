@@ -70,8 +70,7 @@ class FastQCBase(BioinformaticsTool, ABC):
 
     def bind_metadata(self):
         return ToolMetadata(
-            creator="Simon Andrews",
-            maintainer="Michael Franklin",
+            contributors=["Michael Franklin"],
             dateCreated=datetime(2019, 3, 25),
             dateUpdated=datetime(2019, 3, 25),
             institution="Babraham Bioinformatics",

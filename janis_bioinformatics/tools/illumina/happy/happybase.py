@@ -461,8 +461,7 @@ class HapPyValidatorBase(IlluminaToolBase, ABC):
 
     def bind_metadata(self):
         return j.ToolMetadata(
-            creator=None,
-            maintainer="Michael Franklin",
+            contributors=["Michael Franklin"],
             dateCreated=datetime(2019, 5, 15),
             dateUpdated=datetime(2019, 5, 15),
             institution=None,

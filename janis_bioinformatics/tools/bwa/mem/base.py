@@ -95,8 +95,7 @@ class BwaMemBase(BioinformaticsTool, ABC):
         from datetime import date
 
         return ToolMetadata(
-            creator="Michael Franklin",
-            maintainer="Michael Franklin",
+            contributors=["Michael Franklin"],
             dateCreated=date(2018, 12, 24),
             dateUpdated=date(2019, 7, 23),
             institution="Sanger Institute",

@@ -18,6 +18,7 @@ from janis_core import (
     CpuSelector,
     get_value_for_hints_and_ordered_resource_tuple,
     ToolMetadata,
+    Stdout,
 )
 from janis_unix import TarFileGz, TextFile
 
@@ -78,18 +79,6 @@ class FreeBayesBase(BioinformaticsTool):
     def base_command():
         return "freebayes"
 
-    def cpus(self, hints: Dict[str, Any]):
-        val = get_value_for_hints_and_ordered_resource_tuple(hints, CORES_TUPLE)
-        if val:
-            return val
-        return4
-
-    def memory(self, hints: Dict[str, Any]):
-        val = get_value_for_hints_and_ordered_resource_tuple(hints, MEM_TUPLE)
-        if val:
-            return val
-        return 8
-
     def inputs(self):
         return [
             ToolInput(
@@ -105,7 +94,6 @@ class FreeBayesBase(BioinformaticsTool):
                 prefix="-L",
                 doc="A file containing a list of BAM files to be analyzed.",
             ),
-            ToolInput(tag="stdin", prefix="-c", doc="Read BAM input on stdin."),
             ToolInput(
                 tag="reference",
                 input_type=FastaWithDict(),
@@ -115,7 +103,7 @@ class FreeBayesBase(BioinformaticsTool):
             ToolInput(
                 tag="targetsFile",
                 prefix="-t",
-                input_type=BedFile(optional=True),
+                input_type=Bed(optional=True),
                 doc=" Limit analysis to targets listed in the BED-format FILE.",
             ),
             ToolInput(
@@ -548,41 +536,32 @@ class FreeBayesBase(BioinformaticsTool):
             ),
         ]
 
-        def outputs(self):
-            return [
-                ToolOutput(
-                    "out",
-                    Vcf,
-                    glob=InputSelector("outputFilename"),
-                    doc="To determine type",
-                )
-            ]
+    def outputs(self):
+        return [ToolOutput("out", Stdout(Vcf), doc="VCF output")]
 
-        def cpus(self, hints: Dict[str, Any]):
-            val = get_value_for_hints_and_ordered_resource_tuple(hints, CORES_TUPLE)
-            if val:
-                return val
-            return 4
+    def cpus(self, hints: Dict[str, Any]):
+        val = get_value_for_hints_and_ordered_resource_tuple(hints, CORES_TUPLE)
+        if val:
+            return val
+        return 4
 
-        def memory(self, hints: Dict[str, Any]):
-            val = get_value_for_hints_and_ordered_resource_tuple(hints, MEM_TUPLE)
-            if val:
-                return val
-            return 16
+    def memory(self, hints: Dict[str, Any]):
+        val = get_value_for_hints_and_ordered_resource_tuple(hints, MEM_TUPLE)
+        if val:
+            return val
+        return 16
 
-        def bind_metadata(self):
-            from datetime import date
+    def bind_metadata(self):
+        from datetime import date
 
-            return ToolMetadata(
-                creator="Sebastian Hollizeck",
-                maintainer="Sebastian Hollizeck",
-                maintainerEmail="sebastian.hollizeck@petermac.org",
-                dateCreated=date(2019, 10, 8),
-                dateUpdated=date(2019, 10, 14),
-                institution=None,
-                doi=None,
-                citation="Garrison E, Marth G. Haplotype-based variant detection from short-read sequencing. arXiv preprint arXiv:1207.3907 [q-bio.GN] 2012",
-                keywords=["freebayes", "bayesian", "variant calling"],
-                documentationUrl="https://github.com/ekg/freebayes",
-                documentation="usage: freebayes [OPTION] ... [BAM FILE] ...\nBayesian haplotype-based polymorphism discovery.\nVersion:1.2.0\n",
-            )
+        return ToolMetadata(
+            contributors=["Sebastian Hollizeck", "Michael Franklin"],
+            dateCreated=date(2019, 10, 8),
+            dateUpdated=date(2019, 10, 14),
+            institution=None,
+            doi=None,
+            citation="Garrison E, Marth G. Haplotype-based variant detection from short-read sequencing. arXiv preprint arXiv:1207.3907 [q-bio.GN] 2012",
+            keywords=["freebayes", "bayesian", "variant calling"],
+            documentationUrl="https://github.com/ekg/freebayes",
+            documentation="usage: freebayes [OPTION] ... [BAM FILE] ...\nBayesian haplotype-based polymorphism discovery.\nVersion:1.2.0\n",
+        )

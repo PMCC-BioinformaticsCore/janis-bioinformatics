@@ -156,8 +156,7 @@ class MantaBase(IlluminaToolBase, ABC):
         from datetime import date
 
         return ToolMetadata(
-            creator="Michael Franklin",
-            maintainer="Michael Franklin",
+            contributors=["Michael Franklin"],
             dateCreated=date(2019, 2, 12),
             dateUpdated=date(2019, 2, 19),
             institution="Illumina",

@@ -169,7 +169,7 @@ class GridssBase_2_2(BioinformaticsTool):
 
     def bind_metadata(self):
 
-        self.metadata.maintainer = "Michael Franklin"
+        self.metadata.contributors = ["Michael Franklin"]
         self.metadata.dateCreated = date(2019, 6, 19)
         self.metadata.dateUpdated = date(2019, 7, 3)
         self.metadata.documentationUrl = (

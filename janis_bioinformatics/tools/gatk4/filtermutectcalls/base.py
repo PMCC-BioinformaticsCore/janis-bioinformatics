@@ -119,8 +119,7 @@ class Gatk4FilterMutectCallsBase(Gatk4ToolBase, ABC):
         from datetime import date
 
         return ToolMetadata(
-            creator="Hollizeck Sebastian",
-            maintainer="Hollizeck Sebastian",
+            contributors=["Hollizeck Sebastian"],
             dateCreated=date(2019, 9, 9),
             dateUpdated=date(2019, 9, 9),
             institution="Broad Institute",

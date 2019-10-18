@@ -107,8 +107,7 @@ class Gatk4ApplyBqsrBase(Gatk4ToolBase, ABC):
         from datetime import date
 
         return ToolMetadata(
-            creator="Michael Franklin",
-            maintainer="Michael Franklin",
+            contributors=["Michael Franklin"],
             dateCreated=date(2018, 12, 24),
             dateUpdated=date(2019, 1, 24),
             institution="Broad Institute",
