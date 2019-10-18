@@ -49,6 +49,18 @@ class FastqGzPair(Array):
     def doc(self):
         return "Paired end FastqGz files"
 
+    def validate_value(self, meta: Any, allow_null_if_not_optional: bool):
+        if not super().validate_value(meta, allow_null_if_not_optional):
+            return False
+        return len(meta) == 2
+
+    def invalid_value_hint(self, meta):
+        prev = super().invalid_value_hint(meta)
+        if prev:
+            return prev
+        if len(meta) != 2:
+            return f"There must be exactly 2 (found {len(meta)}) fastq files"
+
 
 class FastqPair(Array):
     def __init__(self, optional=False):
@@ -65,3 +77,15 @@ class FastqPair(Array):
 
     def doc(self):
         return "Paired end Fastq files "
+
+    def validate_value(self, meta: Any, allow_null_if_not_optional: bool):
+        if not super().validate_value(meta, allow_null_if_not_optional):
+            return False
+        return len(meta) == 2
+
+    def invalid_value_hint(self, meta):
+        prev = super().invalid_value_hint(meta)
+        if prev:
+            return prev
+        if len(meta) != 2:
+            return f"There must be exactly 2 (found {len(meta)}) fastq files"
