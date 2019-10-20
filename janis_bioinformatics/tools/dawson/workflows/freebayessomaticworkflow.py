@@ -10,7 +10,11 @@ from janis_bioinformatics.tools.dawson import CallSomaticFreeBayes_0_1
 from janis_bioinformatics.tools.freebayes import FreeBayes_1_2
 
 from janis_bioinformatics.tools.htslib import BGZipLatest, TabixLatest
-from janis_bioinformatics.tools.bcftools import BcfToolsConcatLatest, BcfToolsNormLatest
+from janis_bioinformatics.tools.bcftools import (
+    BcfToolsConcatLatest,
+    BcfToolsNormLatest,
+    BcfToolsSortLatest,
+)
 
 
 class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
@@ -76,9 +80,14 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
             scatter="region",
         )
 
-        self.step("combine", BcfToolsConcatLatest(file=self.callVariants.out))
+        self.step(
+            "combine",
+            BcfToolsConcatLatest(file=self.callVariants.out, allowOverLaps=True),
+        )
 
-        self.step("compress", BGZipLatest(file=self.combine.out))
+        self.step("sort", BcfToolsSortLatest(file=self.combine.out))
+
+        self.step("compress", BGZipLatest(file=self.sort.out))
 
         self.step("index", TabixLatest(file=self.compress))
 
