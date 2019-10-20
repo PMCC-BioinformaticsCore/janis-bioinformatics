@@ -18,4 +18,5 @@ from janis_bioinformatics.tools import (
     ucsf,
     validation,
     variantcallers,
+    vcflib,
 )
