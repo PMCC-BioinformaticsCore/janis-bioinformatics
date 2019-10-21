@@ -16,6 +16,13 @@ from janis_bioinformatics.tools.bcftools import (
     BcfToolsSortLatest,
 )
 
+from janis_bioinformatics.tools.vcflib import (
+    VcfSplitAllelicPrimitivesLatest,
+    VcfFixUpLatest,
+    VcfUniqAllelesLatest,
+    VcfUniqLatest,
+)
+
 
 class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
     def id(self):
@@ -85,29 +92,53 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
             BcfToolsConcatLatest(file=self.callVariants.out, allowOverLaps=True),
         )
 
-        self.step("sort", BcfToolsSortLatest(file=self.combine.out))
+        self.step("sort_all", BcfToolsSortLatest(file=self.combine.out))
 
-        self.step("compress", BGZipLatest(file=self.sort.out))
+        self.step("compress", BGZipLatest(file=self.sort_all.out))
 
-        self.step("index", TabixLatest(file=self.compress))
+        self.step("index_all", TabixLatest(file=self.compress_all.out))
 
         self.step(
             "callSomatic",
             CallSomaticFreeBayes_0_1(
-                vcf=self.index.out,
+                vcf=self.index_all.out,
                 normalSampleName=self.normalSample,
                 outFileName=self.normalSample + "somatic_calls.vcf",
             ),
         )
 
-        self.step("normalization_one", BcfToolsNormLatest(file=self.callSomatic.out))
+        self.step("normalization_first", BcfToolsNormLatest(file=self.callSomatic.out))
 
-        self.step("split_allelic_primitves", VcfToolaSplitAllelicPrimitives())
+        self.step(
+            "split_allelic_primitves",
+            VcfSplitAllelicPrimitivesLatest(
+                vcf=self.normalization_first, tagParsed="DECOMPOSED"
+            ),
+        )
 
-        self.output("snvs", source=self.indexSNVs)
-        self.output("indels", source=self.indexINDELs)
-        # once optional outputs are supported we should enable this again
-        # self.output("svs", source=self.step1.somaticSVs)
+        self.step(
+            "fix_split_lines", VcfFixUpLatest(vcf=self.split_allelic_primitves.out)
+        )
+
+        self.step("sort_somatic", BcfToolsSortLatest(file=self.fix_split_lines.out))
+
+        self.step(
+            "normalization_second", BcfToolsNormLatest(file=self.sort_somatic.out)
+        )
+
+        self.step(
+            "unique_alleles", VcfUniqAllelesLatest(file=self.normalization_second.out)
+        )
+
+        self.step("sort_final", BcfToolsSortLatest(file=self.unique_alleles.out))
+
+        self.step("unique", VcfUniqLatest(file=self.sort_final.out))
+
+        self.step("compress_final", BGZipLatest(file=self.unique.out))
+
+        self.step("index_final", TabixLatest(file=self.compress_final.out))
+
+        self.output("out", source=self.index_final)
 
 
 if __name__ == "__main__":
