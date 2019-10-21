@@ -17,7 +17,7 @@ from janis_bioinformatics.tools.vcflib.vcflibtoolbase import VcfToolsToolBase
 from janis_core import ToolMetadata
 
 
-class VcfUniqBase(VcfToolsToolBase, ABC):
+class VcfUniqAllelesBase(VcfToolsToolBase, ABC):
     @staticmethod
     def tool():
         return "vcfuniqalleles"
@@ -27,7 +27,7 @@ class VcfUniqBase(VcfToolsToolBase, ABC):
 
     @staticmethod
     def base_command():
-        return "vcfuniq"
+        return "vcfuniqalleles"
 
     def inputs(self):
         return [ToolInput("vcf", CompressedVcf, position=3)]
