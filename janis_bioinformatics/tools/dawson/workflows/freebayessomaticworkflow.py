@@ -127,12 +127,12 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
         )
 
         self.step(
-            "unique_alleles", VcfUniqAllelesLatest(file=self.normalization_second.out)
+            "unique_alleles", VcfUniqAllelesLatest(vcf=self.normalization_second.out)
         )
 
         self.step("sort_final", BcfToolsSortLatest(file=self.unique_alleles.out))
 
-        self.step("unique", VcfUniqLatest(file=self.sort_final.out))
+        self.step("unique", VcfUniqLatest(vcf=self.sort_final.out))
 
         self.step("compress_final", BGZipLatest(file=self.unique.out))
 
