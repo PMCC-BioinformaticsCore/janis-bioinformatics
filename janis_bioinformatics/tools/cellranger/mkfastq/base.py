@@ -1,5 +1,5 @@
 from datetime import datetime
-from janis import (
+from janis_core import (
     CommandTool,
     ToolInput,
     ToolOutput,
