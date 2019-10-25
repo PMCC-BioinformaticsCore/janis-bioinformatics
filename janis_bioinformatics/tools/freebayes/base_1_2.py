@@ -8,30 +8,16 @@ from janis_core import (
     Float,
     InputSelector,
     CaptureType,
-    ToolArgument,
-    MemorySelector,
     Array,
     Int,
     Boolean,
     File,
-    Double,
-    CpuSelector,
     get_value_for_hints_and_ordered_resource_tuple,
     ToolMetadata,
-    Stdout,
 )
-from janis_unix import TarFileGz, TextFile
+from janis_unix import TextFile
 
-from janis_bioinformatics.data_types import (
-    BamBai,
-    Bed,
-    FastaWithDict,
-    VcfIdx,
-    Vcf,
-    VcfTabix,
-    CompressedVcf,
-)
-
+from janis_bioinformatics.data_types import BamBai, Bed, FastaWithDict, Vcf
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 
 CORES_TUPLE = [
@@ -63,7 +49,7 @@ MEM_TUPLE = [
 ]
 
 
-class FreeBayesBase(BioinformaticsTool):
+class FreeBayesBase_1_2(BioinformaticsTool):
     def friendly_name(self) -> str:
         return "freebayes"
 
@@ -133,7 +119,7 @@ class FreeBayesBase(BioinformaticsTool):
             ToolInput(
                 tag="outputFilename",
                 prefix="-v",
-                input_type=Vcf(),
+                input_type=Filename(extension=".vcf"),
                 doc="FILE Output VCF-format results to FILE. (default: stdout)",
             ),
             ToolInput(
@@ -537,7 +523,7 @@ class FreeBayesBase(BioinformaticsTool):
         ]
 
     def outputs(self):
-        return [ToolOutput("out", Stdout(Vcf), doc="VCF output")]
+        return [ToolOutput("out", Vcf, glob=InputSelector("outputFilename"))]
 
     def cpus(self, hints: Dict[str, Any]):
         val = get_value_for_hints_and_ordered_resource_tuple(hints, CORES_TUPLE)
@@ -557,7 +543,7 @@ class FreeBayesBase(BioinformaticsTool):
         return ToolMetadata(
             contributors=["Sebastian Hollizeck", "Michael Franklin"],
             dateCreated=date(2019, 10, 8),
-            dateUpdated=date(2019, 10, 14),
+            dateUpdated=date(2019, 10, 19),
             institution=None,
             doi=None,
             citation="Garrison E, Marth G. Haplotype-based variant detection from short-read sequencing. arXiv preprint arXiv:1207.3907 [q-bio.GN] 2012",
