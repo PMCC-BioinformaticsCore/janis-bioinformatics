@@ -1,21 +1,21 @@
 from datetime import datetime
+
 from janis_core import (
-    CommandTool,
     ToolInput,
     Array,
-    ToolOutput,
     File,
     Boolean,
     Directory,
     String,
     Int,
-    InputSelector,
     Filename,
     ToolMetadata,
 )
 
+from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 
-class MultiqcBase(CommandTool):
+
+class MultiqcBase(BioinformaticsTool):
     def friendly_name(self) -> str:
         return "Multiqc"
 
