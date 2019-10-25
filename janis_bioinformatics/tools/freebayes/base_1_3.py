@@ -63,7 +63,7 @@ MEM_TUPLE = [
 ]
 
 
-class FreeBayesBase(BioinformaticsTool):
+class FreeBayesBase_1_3(BioinformaticsTool):
     def friendly_name(self) -> str:
         return "freebayes"
 
@@ -133,7 +133,7 @@ class FreeBayesBase(BioinformaticsTool):
             ToolInput(
                 tag="outputFilename",
                 prefix="-v",
-                input_type=Vcf(),
+                input_type=Filename(extension=".vcf"),
                 doc="FILE Output VCF-format results to FILE. (default: stdout)",
             ),
             ToolInput(
@@ -411,9 +411,9 @@ class FreeBayesBase(BioinformaticsTool):
             ),
             ToolInput(
                 tag="maxCov",
-                prefix="--max-coverage",
+                prefix="--limit-coverage",
                 input_type=Int(optional=True),
-                doc=" --max-coverage N Do not process sites with greater than this coverage. default: no limit",
+                doc="Downsample per-sample coverage to this level if greater than this coverage. default: no limit",
             ),
             ToolInput(
                 tag="noPopPriorsFlag",
@@ -534,10 +534,16 @@ class FreeBayesBase(BioinformaticsTool):
                 input_type=Boolean(optional=True),
                 doc=" -= --genotype-qualities Calculate the marginal probability of genotypes and report as GQ in each sample field in the VCF output.",
             ),
+            ToolInput(
+                tag="skipCov",
+                prefix="--skip-coverage",
+                input_type=Int(optional=True),
+                doc="Skip processing of alignments overlapping positions with coverage >N. This filters sites above this coverage, but will also reduce data nearby. default: no limit",
+            ),
         ]
 
     def outputs(self):
-        return [ToolOutput("out", Stdout(Vcf), doc="VCF output")]
+        return [ToolOutput("out", Vcf, glob=InputSelector("outputFilename"))]
 
     def cpus(self, hints: Dict[str, Any]):
         val = get_value_for_hints_and_ordered_resource_tuple(hints, CORES_TUPLE)
@@ -556,12 +562,12 @@ class FreeBayesBase(BioinformaticsTool):
 
         return ToolMetadata(
             contributors=["Sebastian Hollizeck", "Michael Franklin"],
-            dateCreated=date(2019, 10, 8),
-            dateUpdated=date(2019, 10, 14),
+            dateCreated=date(2019, 10, 19),
+            dateUpdated=date(2019, 10, 19),
             institution=None,
             doi=None,
             citation="Garrison E, Marth G. Haplotype-based variant detection from short-read sequencing. arXiv preprint arXiv:1207.3907 [q-bio.GN] 2012",
             keywords=["freebayes", "bayesian", "variant calling"],
             documentationUrl="https://github.com/ekg/freebayes",
-            documentation="usage: freebayes [OPTION] ... [BAM FILE] ...\nBayesian haplotype-based polymorphism discovery.\nVersion:1.2.0\n",
+            documentation="usage: freebayes [OPTION] ... [BAM FILE] ...\nBayesian haplotype-based polymorphism discovery.\nVersion:1.3.1\n",
         )

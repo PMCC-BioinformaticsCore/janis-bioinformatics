@@ -1,2 +1,1 @@
-from .latest import FreeBayesLatest
-from .freebayes_1_2 import FreeBayes_1_2
+from .versions import FreeBayesLatest, FreeBayes_1_2, FreeBayes_1_3
