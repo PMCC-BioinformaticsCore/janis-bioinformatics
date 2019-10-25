@@ -19,7 +19,7 @@ class FreeBayes_1_3(FreeBayesBase_1_3):
 
     @staticmethod
     def version():
-        return "1.3.1-dirty"
+        return "1.3.1"
 
 
 FreeBayesLatest = FreeBayes_1_3

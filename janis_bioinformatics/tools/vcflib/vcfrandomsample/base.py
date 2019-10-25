@@ -1,20 +1,10 @@
 from abc import ABC
 
-from janis_core import (
-    ToolInput,
-    String,
-    Boolean,
-    File,
-    Filename,
-    Array,
-    Int,
-    ToolOutput,
-    InputSelector,
-)
-from janis_bioinformatics.data_types import FastaWithDict, CompressedVcf
+from janis_core import ToolInput, String, Int, ToolOutput, Float, Stdout, ToolMetadata
+
+from janis_bioinformatics.data_types import CompressedVcf
 from janis_bioinformatics.data_types import Vcf
 from janis_bioinformatics.tools.vcflib.vcflibtoolbase import VcfToolsToolBase
-from janis_core import ToolMetadata
 
 
 class VcfRandomSampleBase(VcfToolsToolBase, ABC):

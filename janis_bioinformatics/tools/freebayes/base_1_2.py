@@ -8,30 +8,16 @@ from janis_core import (
     Float,
     InputSelector,
     CaptureType,
-    ToolArgument,
-    MemorySelector,
     Array,
     Int,
     Boolean,
     File,
-    Double,
-    CpuSelector,
     get_value_for_hints_and_ordered_resource_tuple,
     ToolMetadata,
-    Stdout,
 )
-from janis_unix import TarFileGz, TextFile
+from janis_unix import TextFile
 
-from janis_bioinformatics.data_types import (
-    BamBai,
-    Bed,
-    FastaWithDict,
-    VcfIdx,
-    Vcf,
-    VcfTabix,
-    CompressedVcf,
-)
-
+from janis_bioinformatics.data_types import BamBai, Bed, FastaWithDict, Vcf
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 
 CORES_TUPLE = [
