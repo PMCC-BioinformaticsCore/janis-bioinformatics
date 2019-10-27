@@ -7,7 +7,7 @@ from janis_bioinformatics.data_types import FastaWithDict, BamBai, BedTabix, Vcf
 from janis_core import Array, Boolean, String
 
 from janis_bioinformatics.tools.dawson import CallSomaticFreeBayes_0_1
-from janis_bioinformatics.tools.freebayes import FreeBayes_1_2
+from janis_bioinformatics.tools.freebayes import FreeBayes_1_3
 
 from janis_bioinformatics.tools.htslib import BGZipLatest, TabixLatest
 from janis_bioinformatics.tools.bcftools import (
@@ -17,10 +17,10 @@ from janis_bioinformatics.tools.bcftools import (
 )
 
 from janis_bioinformatics.tools.vcflib import (
-    VcfSplitAllelicPrimitivesLatest,
+    VcfUniqLatest,
     VcfFixUpLatest,
     VcfUniqAllelesLatest,
-    VcfUniqLatest,
+    VcfAllelicPrimitivesLatest,
 )
 
 
@@ -42,10 +42,9 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
     def bind_metadata(self):
         self.metadata.version = "0.1"
         self.metadata.dateCreated = date(2019, 10, 18)
-        self.metadata.dateUpdated = date(2019, 10, 18)
+        self.metadata.dateUpdated = date(2019, 10, 25)
 
-        self.metadata.maintainer = "Sebastian Hollizeck"
-        self.metadata.maintainerEmail = "sebastian.hollizeck@petermac.org"
+        self.contributors = ["Sebastian Hollizeck"]
         self.metadata.keywords = [
             "variants",
             "freebayes",
@@ -71,7 +70,7 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
 
         self.step(
             "callVariants",
-            FreeBayes_1_2(
+            FreeBayes_1_3(
                 bams=self.bams,
                 reference=self.reference,
                 pooledDiscreteFlag=True,
@@ -83,6 +82,7 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
                 maxNumOfAlleles=5,
                 noPartObsFlag=True,
                 region=self.callRegions,
+                skipCov=300,
             ),
             scatter="region",
         )
@@ -110,15 +110,13 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
         self.step("normalization_first", BcfToolsNormLatest(file=self.callSomatic.out))
 
         self.step(
-            "split_allelic_primitves",
-            VcfSplitAllelicPrimitivesLatest(
+            "allelic_primitves",
+            VcfAllelicPrimitivesLatest(
                 vcf=self.normalization_first, tagParsed="DECOMPOSED"
             ),
         )
 
-        self.step(
-            "fix_split_lines", VcfFixUpLatest(vcf=self.split_allelic_primitves.out)
-        )
+        self.step("fix_split_lines", VcfFixUpLatest(vcf=self.allelic_primitves.out))
 
         self.step("sort_somatic", BcfToolsSortLatest(file=self.fix_split_lines.out))
 
