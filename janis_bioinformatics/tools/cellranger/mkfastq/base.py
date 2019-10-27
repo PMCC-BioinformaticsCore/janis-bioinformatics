@@ -1,6 +1,7 @@
 from datetime import datetime
+
+from janis_core import Directory, CpuSelector, MemorySelector
 from janis_core import (
-    CommandTool,
     ToolInput,
     ToolOutput,
     File,
@@ -13,11 +14,12 @@ from janis_core import (
     ToolMetadata,
     Float,
 )
-from janis_core import Directory, CpuSelector, MemorySelector
 from janis_unix import Csv
 
+from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 
-class CellRangerMkfastqBase(CommandTool):
+
+class CellRangerMkfastqBase(BioinformaticsTool):
     def friendly_name(self) -> str:
         return "CellRanger mkfastq"
 
