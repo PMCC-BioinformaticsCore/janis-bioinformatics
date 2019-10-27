@@ -28,8 +28,7 @@ class Strelka2PassWorkflowStep2(BioinformaticsWorkflow):
         self.metadata.dateCreated = date(2019, 10, 11)
         self.metadata.dateUpdated = date(2019, 10, 11)
 
-        self.metadata.maintainer = "Sebastian Hollizeck"
-        self.metadata.maintainerEmail = "sebastian.hollizeck@petermac.org"
+        self.metadata.contributors = ["Sebastian Hollizeck"]
         self.metadata.keywords = [
             "variants",
             "strelka2",

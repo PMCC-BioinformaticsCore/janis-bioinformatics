@@ -177,11 +177,9 @@ class RefilterStrelka2CallsBase(BioinformaticsTool, ABC):
         from datetime import date
 
         return ToolMetadata(
-            creator="Sebastian Hollizeck",
-            maintainer="Sebastian Hollizeck",
-            maintainerEmail="sebastian.hollizeck@petermac.org",
+            contributors=["Sebastian Hollizeck"],
             dateCreated=date(2019, 10, 19),
-            dateUpdated=date(2019, 10, 19),
+            dateUpdated=date(2019, 10, 25),
             institution="PMCC",
             doi=None,
             citation=None,
