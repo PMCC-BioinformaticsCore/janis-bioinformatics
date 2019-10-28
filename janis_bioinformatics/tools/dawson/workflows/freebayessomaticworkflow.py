@@ -4,7 +4,7 @@ from janis_bioinformatics.tools import BioinformaticsWorkflow
 
 from janis_bioinformatics.data_types import FastaWithDict, BamBai, BedTabix, VcfTabix
 
-from janis_core import Array, Boolean, String
+from janis_core import Array, Boolean, String, Int
 
 from janis_bioinformatics.tools.dawson import CallSomaticFreeBayes_0_1
 from janis_bioinformatics.tools.freebayes import FreeBayes_1_3
@@ -85,16 +85,23 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
                 noPartObsFlag=True,
                 region=self.callRegions,
                 skipCov=self.skipCov,
+                # things that are actually default, but janis does not recognize yet
+                useDupFlag=False,
+                minBaseQual=0,
+                minSupQsum=0,
+                minSupMQsum=0,
+                minAltQSum=0,
+                minCov=0,
             ),
             scatter="region",
         )
 
         self.step(
             "combine",
-            BcfToolsConcatLatest(file=self.callVariants.out, allowOverLaps=True),
+            BcfToolsConcatLatest(vcf=self.callVariants.out, allowOverLaps=True),
         )
 
-        self.step("sort_all", BcfToolsSortLatest(file=self.combine.out))
+        self.step("sort_all", BcfToolsSortLatest(vcf=self.combine.out))
 
         # i think sort returns a compressed vcf
         # self.step("compress", BGZipLatest(file=self.sort_all.out))
@@ -106,11 +113,11 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
             CallSomaticFreeBayes_0_1(
                 vcf=self.index_all.out,
                 normalSampleName=self.normalSample,
-                outFileName=self.normalSample + "somatic_calls.vcf",
+                outputFilename=self.normalSample,
             ),
         )
 
-        self.step("normalization_first", BcfToolsNormLatest(file=self.callSomatic.out))
+        self.step("normalization_first", BcfToolsNormLatest(vcf=self.callSomatic.out))
 
         self.step(
             "allelic_primitves",
@@ -121,17 +128,15 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
 
         self.step("fix_split_lines", VcfFixUpLatest(vcf=self.allelic_primitves.out))
 
-        self.step("sort_somatic", BcfToolsSortLatest(file=self.fix_split_lines.out))
+        self.step("sort_somatic", BcfToolsSortLatest(vcf=self.fix_split_lines.out))
 
-        self.step(
-            "normalization_second", BcfToolsNormLatest(file=self.sort_somatic.out)
-        )
+        self.step("normalization_second", BcfToolsNormLatest(vcf=self.sort_somatic.out))
 
         self.step(
             "unique_alleles", VcfUniqAllelesLatest(vcf=self.normalization_second.out)
         )
 
-        self.step("sort_final", BcfToolsSortLatest(file=self.unique_alleles.out))
+        self.step("sort_final", BcfToolsSortLatest(vcf=self.unique_alleles.out))
 
         self.step("unique", VcfUniqLatest(vcf=self.sort_final.out))
 
