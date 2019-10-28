@@ -21,7 +21,7 @@ class VcfCombineBase(VcfToolsToolBase, ABC):
 
     def inputs(self):
         return [
-            ToolInput("vcf", Array(Vcf)),
+            ToolInput("vcf", Array(Vcf), position=2),
             ToolInput(
                 "region",
                 String(optional=True),
