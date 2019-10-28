@@ -131,12 +131,12 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
             BcfToolsConcatLatest(vcf=self.callVariants.out, allowOverLaps=True),
         )
 
-        self.step("sort_all", BcfToolsSortLatest(vcf=self.combine.out))
+        self.step("sortAll", BcfToolsSortLatest(vcf=self.combine.out))
 
         # i think sort returns a compressed vcf
         # self.step("compress", BGZipLatest(file=self.sort_all.out))
 
-        self.step("index_all", TabixLatest(file=self.sort_all.out))
+        self.step("indexAll", TabixLatest(file=self.sort_all.out))
 
         self.step(
             "callSomatic",
@@ -150,29 +150,29 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
         self.step("normalization_first", BcfToolsNormLatest(vcf=self.callSomatic.out))
 
         self.step(
-            "allelic_primitves",
+            "allelicPrimitves",
             VcfAllelicPrimitivesLatest(
                 vcf=self.normalization_first, tagParsed="DECOMPOSED"
             ),
         )
 
-        self.step("fix_split_lines", VcfFixUpLatest(vcf=self.allelic_primitves.out))
+        self.step("fixSplitLines", VcfFixUpLatest(vcf=self.allelic_primitves.out))
 
-        self.step("sort_somatic", BcfToolsSortLatest(vcf=self.fix_split_lines.out))
+        self.step("sortSomatic", BcfToolsSortLatest(vcf=self.fix_split_lines.out))
 
-        self.step("normalization_second", BcfToolsNormLatest(vcf=self.sort_somatic.out))
+        self.step("normalizationSecond", BcfToolsNormLatest(vcf=self.sort_somatic.out))
 
         self.step(
-            "unique_alleles", VcfUniqAllelesLatest(vcf=self.normalization_second.out)
+            "uniqueAlleles", VcfUniqAllelesLatest(vcf=self.normalization_second.out)
         )
 
-        self.step("sort_final", BcfToolsSortLatest(vcf=self.unique_alleles.out))
+        self.step("sortFinal", BcfToolsSortLatest(vcf=self.unique_alleles.out))
 
-        self.step("unique", VcfUniqLatest(vcf=self.sort_final.out))
+        self.step("uniq", VcfUniqLatest(vcf=self.sort_final.out))
 
-        self.step("compress_final", BGZipLatest(file=self.unique.out))
+        self.step("compressFinal", BGZipLatest(file=self.unique.out))
 
-        self.step("index_final", TabixLatest(file=self.compress_final.out))
+        self.step("indexFinal", TabixLatest(file=self.compress_final.out))
 
         self.output("out", source=self.index_final)
 
