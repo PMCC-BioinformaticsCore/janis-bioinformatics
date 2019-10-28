@@ -168,9 +168,9 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
 
         self.step("sortFinal", BcfToolsSortLatest(vcf=self.uniqueAlleles.out))
 
-        self.step("uniq", VcfUniqLatest(vcf=self.sortFinal.out))
+        self.step("uniqVcf", VcfUniqLatest(vcf=self.sortFinal.out))
 
-        self.step("compressFinal", BGZipLatest(file=self.uniq.out))
+        self.step("compressFinal", BGZipLatest(file=self.uniqVcf.out))
 
         self.step("indexFinal", TabixLatest(file=self.compressFinal.out))
 
