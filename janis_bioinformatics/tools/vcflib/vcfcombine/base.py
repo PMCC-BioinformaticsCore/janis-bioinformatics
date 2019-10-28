@@ -21,12 +21,13 @@ class VcfCombineBase(VcfToolsToolBase, ABC):
 
     def inputs(self):
         return [
-            ToolInput("vcf", CompressedVcf, position=3),
+            ToolInput("vcf", Array(Vcf)),
             ToolInput(
                 "region",
                 String(optional=True),
                 prefix="-r",
                 doc="A region specifier of the form chrN:x-y to bound the merge",
+                position=1,
             ),
         ]
 
