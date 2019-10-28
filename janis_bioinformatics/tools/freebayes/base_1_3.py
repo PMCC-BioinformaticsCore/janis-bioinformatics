@@ -169,7 +169,7 @@ class FreeBayesBase_1_3(BioinformaticsTool):
                 tag="polyMoprhProbFlag",
                 prefix="-P",
                 input_type=Float(optional=True),
-                default=0.0,
+                # default=0.0,
                 doc="Report sites if the probability that there is a polymorphism at the site is greater than N. default: 0.0. Note that post-filtering is generally recommended over the use of this parameter.",
             ),
             ToolInput(
@@ -182,7 +182,7 @@ class FreeBayesBase_1_3(BioinformaticsTool):
                 tag="theta",
                 prefix="-T",
                 input_type=Float(),
-                default=0.001,
+                # default=0.001,
                 doc="The expected mutation rate or pairwise nucleotide diversity among the population under analysis. This serves as the single parameter to the Ewens Sampling Formula prior model default: 0.001",
             ),
             ToolInput(
@@ -339,7 +339,7 @@ class FreeBayesBase_1_3(BioinformaticsTool):
                 tag="maxMisMatchFrac",
                 prefix="-z",
                 input_type=Float(),
-                default=1.0,
+                # default=1.0,
                 doc=" -z --read-max-mismatch-fraction N Exclude reads with more than N [0,1] fraction of mismatches where each mismatch has base quality >= mismatch-base-quality-threshold default: 1.0",
             ),
             ToolInput(
@@ -364,7 +364,7 @@ class FreeBayesBase_1_3(BioinformaticsTool):
                 tag="minAltFrac",
                 prefix="-F",
                 input_type=Float(),
-                default=0.05,
+                # default=0.05,
                 doc=" -F --min-alternate-fraction N Require at least this fraction of observations supporting an alternate allele within a single individual in the in order to evaluate the position. default: 0.05",
             ),
             ToolInput(
@@ -441,7 +441,7 @@ class FreeBayesBase_1_3(BioinformaticsTool):
                 tag="probContamin",
                 prefix="--prob-contamination",
                 input_type=Float(),
-                default=0.000000001,
+                # default=0.000000001,
                 doc=" --prob-contamination F An estimate of contamination to use for all samples. default: 10e-9",
             ),
             ToolInput(
@@ -511,7 +511,7 @@ class FreeBayesBase_1_3(BioinformaticsTool):
                 tag="readDepFact",
                 prefix="-D",
                 input_type=Float(),
-                default=0.9,
+                # default=0.9,
                 doc=" -D --read-dependence-factor N Incorporate non-independence of reads by scaling successive observations by this factor during data likelihood calculations. default: 0.9",
             ),
             ToolInput(
