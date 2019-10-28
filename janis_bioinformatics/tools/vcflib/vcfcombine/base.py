@@ -1,6 +1,6 @@
 from abc import ABC
 
-from janis_core import ToolInput, ToolOutput, Stdout, ToolMetadata, Array
+from janis_core import ToolInput, ToolOutput, Stdout, ToolMetadata, Array, String
 
 from janis_bioinformatics.data_types import CompressedVcf
 from janis_bioinformatics.data_types import Vcf
