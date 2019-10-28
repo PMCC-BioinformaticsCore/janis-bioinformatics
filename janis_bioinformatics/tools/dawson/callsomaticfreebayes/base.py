@@ -15,8 +15,10 @@ from janis_core import (
     ToolMetadata,
     ToolOutput,
     get_value_for_hints_and_ordered_resource_tuple,
+    InputSelector,
 )
 from janis_unix import TextFile
+
 
 CORES_TUPLE = [
     # (CaptureType.key(), {
