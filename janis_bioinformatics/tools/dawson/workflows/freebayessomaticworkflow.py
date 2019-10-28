@@ -127,7 +127,7 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
 
         self.step("compressAll", BGZipLatest(file=self.combineRegions.out))
 
-        self.step("sortAll", BcfToolsSortLatest(vcf=self.combine.out))
+        self.step("sortAll", BcfToolsSortLatest(vcf=self.compressAll.out))
 
         self.step("indexAll", TabixLatest(file=self.sortAll.out))
 
