@@ -80,7 +80,7 @@ class BcfToolsSortBase(BcfToolsToolBase, ABC):
                 "outputType",
                 String(optional=True),
                 prefix="--output-type",
-                default="-z",
+                default="z",
                 doc="(-O) b: compressed BCF, u: uncompressed BCF, z: compressed VCF, v: uncompressed VCF [v]",
             ),
             ToolInput(
