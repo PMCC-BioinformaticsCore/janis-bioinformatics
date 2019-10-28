@@ -136,45 +136,45 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
         # i think sort returns a compressed vcf
         # self.step("compress", BGZipLatest(file=self.sort_all.out))
 
-        self.step("indexAll", TabixLatest(file=self.sort_all.out))
+        self.step("indexAll", TabixLatest(file=self.sortAll.out))
 
         self.step(
             "callSomatic",
             CallSomaticFreeBayes_0_1(
-                vcf=self.index_all.out,
+                vcf=self.indexAll.out,
                 normalSampleName=self.normalSample,
                 outputFilename=self.normalSample,
             ),
         )
 
-        self.step("normalization_first", BcfToolsNormLatest(vcf=self.callSomatic.out))
+        self.step("normalizationFirst", BcfToolsNormLatest(vcf=self.callSomatic.out))
 
         self.step(
             "allelicPrimitves",
             VcfAllelicPrimitivesLatest(
-                vcf=self.normalization_first, tagParsed="DECOMPOSED"
+                vcf=self.normalizationFirst, tagParsed="DECOMPOSED"
             ),
         )
 
-        self.step("fixSplitLines", VcfFixUpLatest(vcf=self.allelic_primitves.out))
+        self.step("fixSplitLines", VcfFixUpLatest(vcf=self.allelicPrimitves.out))
 
-        self.step("sortSomatic", BcfToolsSortLatest(vcf=self.fix_split_lines.out))
+        self.step("sortSomatic", BcfToolsSortLatest(vcf=self.fixSplitLines.out))
 
-        self.step("normalizationSecond", BcfToolsNormLatest(vcf=self.sort_somatic.out))
+        self.step("normalizationSecond", BcfToolsNormLatest(vcf=self.sortSomatic.out))
 
         self.step(
-            "uniqueAlleles", VcfUniqAllelesLatest(vcf=self.normalization_second.out)
+            "uniqueAlleles", VcfUniqAllelesLatest(vcf=self.normalizationSecond.out)
         )
 
-        self.step("sortFinal", BcfToolsSortLatest(vcf=self.unique_alleles.out))
+        self.step("sortFinal", BcfToolsSortLatest(vcf=self.uniqueAlleles.out))
 
-        self.step("uniq", VcfUniqLatest(vcf=self.sort_final.out))
+        self.step("uniq", VcfUniqLatest(vcf=self.sortFinal.out))
 
-        self.step("compressFinal", BGZipLatest(file=self.unique.out))
+        self.step("compressFinal", BGZipLatest(file=self.uniq.out))
 
-        self.step("indexFinal", TabixLatest(file=self.compress_final.out))
+        self.step("indexFinal", TabixLatest(file=self.compressFinal.out))
 
-        self.output("out", source=self.index_final)
+        self.output("out", source=self.indexFinal)
 
 
 if __name__ == "__main__":
