@@ -127,14 +127,15 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
         )
 
         self.step(
+            "compressRegions", BGZipLatest(file=self.callVariants.out), scatter="file"
+        )
+
+        self.step(
             "combine",
-            BcfToolsConcatLatest(vcf=self.callVariants.out, allowOverLaps=True),
+            BcfToolsConcatLatest(vcf=self.compressRegions.out, allowOverLaps=True),
         )
 
         self.step("sortAll", BcfToolsSortLatest(vcf=self.combine.out))
-
-        # i think sort returns a compressed vcf
-        # self.step("compress", BGZipLatest(file=self.sort_all.out))
 
         self.step("indexAll", TabixLatest(file=self.sortAll.out))
 
