@@ -68,6 +68,8 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
         self.input("normalSample", String)
         self.input("sampleNames", Array(String, optional=True))
 
+        self.input("skipCov", Int(optional=True), default=500)
+
         self.step(
             "callVariants",
             FreeBayes_1_3(
@@ -82,7 +84,7 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
                 maxNumOfAlleles=5,
                 noPartObsFlag=True,
                 region=self.callRegions,
-                skipCov=300,
+                skipCov=self.skipCov,
             ),
             scatter="region",
         )
@@ -94,9 +96,10 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
 
         self.step("sort_all", BcfToolsSortLatest(file=self.combine.out))
 
-        self.step("compress", BGZipLatest(file=self.sort_all.out))
+        # i think sort returns a compressed vcf
+        # self.step("compress", BGZipLatest(file=self.sort_all.out))
 
-        self.step("index_all", TabixLatest(file=self.compress_all.out))
+        self.step("index_all", TabixLatest(file=self.sort_all.out))
 
         self.step(
             "callSomatic",
