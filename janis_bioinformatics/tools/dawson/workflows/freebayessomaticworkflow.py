@@ -18,6 +18,7 @@ from janis_bioinformatics.tools.vcflib import (
     VcfUniqAllelesLatest,
     VcfAllelicPrimitivesLatest,
     VcfCombineLatest,
+    VcfStreamSortLatest,
 )
 
 
@@ -125,13 +126,13 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
 
         self.step("combineRegions", VcfCombineLatest(vcf=self.callVariants.out))
 
-        self.step("compressAll", BGZipLatest(file=self.combineRegions.out))
+        self.step(
+            "sortAll",
+            VcfStreamSortLatest(vcf=self.combineRegions.out, inMemoryFlag=True),
+        )
 
-        self.step("tmpIndex", TabixLatest(file=self.compressAll.out))
-
-        self.step("sortAll", BcfToolsSortLatest(vcf=self.tmpIndex.out))
-
-        self.step("indexAll", TabixLatest(file=self.sortAll.out))
+        self.step("compressAll", BGZipLatest(file=self.sortAll.out))
+        self.step("indexAll", TabixLatest(file=self.compressAll.out))
 
         self.step(
             "callSomatic",
