@@ -145,14 +145,19 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
         # no need to compress this here if it leads to problems when we dont have an index for the allelic allelicPrimitves
         self.step(
             "normalizeSomatic1",
-            BcfToolsNormLatest(vcf=self.callSomatic.out, reference=self.reference),
+            BcfToolsNormLatest(
+                vcf=self.callSomatic.out,
+                reference=self.reference,
+                outputType="v",
+                outputFilename="normalised.vcf",
+            ),
         )
-
-        self.step("indexNorm1", TabixLatest(file=self.normalizeSomatic1))
 
         self.step(
             "allelicPrimitves",
-            VcfAllelicPrimitivesLatest(vcf=self.indexNorm1.out, tagParsed="DECOMPOSED"),
+            VcfAllelicPrimitivesLatest(
+                vcf=self.normalizeSomatic1.out, tagParsed="DECOMPOSED"
+            ),
         )
 
         self.step("fixSplitLines", VcfFixUpLatest(vcf=self.allelicPrimitves.out))
@@ -164,12 +169,15 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
 
         self.step(
             "normalizeSomatic2",
-            BcfToolsNormLatest(vcf=self.sortSomatic.out, reference=self.reference),
+            BcfToolsNormLatest(
+                vcf=self.sortSomatic.out,
+                reference=self.reference,
+                outputType="v",
+                outputFilename="normalised.vcf",
+            ),
         )
 
-        self.step("indexNorm2", TabixLatest(file=self.normalizeSomatic2))
-
-        self.step("uniqueAlleles", VcfUniqAllelesLatest(vcf=self.indexNorm2.out))
+        self.step("uniqueAlleles", VcfUniqAllelesLatest(vcf=self.normalizeSomatic2.out))
 
         self.step(
             "sortFinal",
