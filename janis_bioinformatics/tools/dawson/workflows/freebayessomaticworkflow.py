@@ -125,28 +125,35 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
         )
         # might actually rewrite this once everything works, to not combine the files here, but do
         # all of it scattered and then only combine the final output
-        self.step("combineRegions", VcfCombineLatest(vcf=self.callVariants.out))
+        # self.step("combineRegions", VcfCombineLatest(vcf=self.callVariants.out))
 
-        self.step(
-            "sortAll",
-            VcfStreamSortLatest(vcf=self.combineRegions.out, inMemoryFlag=True),
-        )
+        #
 
-        self.step("compressAll", BGZipLatest(file=self.sortAll.out))
-        self.step("indexAll", TabixLatest(file=self.compressAll.out))
+        # self.step("compressAll", BGZipLatest(file=self.sortAll.out))
+        # self.step("indexAll", TabixLatest(file=self.compressAll.out))
 
         self.step(
             "callSomatic",
             CallSomaticFreeBayes_0_1(
                 vcf=self.indexAll.out, normalSampleName=self.normalSample
             ),
+            # added for parallel
+            scatter="vcf",
+        )
+
+        self.step("combineRegions", VcfCombineLatest(vcf=self.callSomatic.out))
+
+        # should not be necessary here, but just to be save
+        self.step(
+            "sortSomatic1",
+            VcfStreamSortLatest(vcf=self.combineRegions.out, inMemoryFlag=True),
         )
 
         # no need to compress this here if it leads to problems when we dont have an index for the allelic allelicPrimitves
         self.step(
             "normalizeSomatic1",
             BcfToolsNormLatest(
-                vcf=self.callSomatic.out,
+                vcf=self.sortSomatic1.out,
                 reference=self.reference,
                 outputType="v",
                 outputFilename="normalised.vcf",
@@ -163,14 +170,14 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
         self.step("fixSplitLines", VcfFixUpLatest(vcf=self.allelicPrimitves.out))
 
         self.step(
-            "sortSomatic",
+            "sortSomatic2",
             VcfStreamSortLatest(vcf=self.fixSplitLines.out, inMemoryFlag=True),
         )
 
         self.step(
             "normalizeSomatic2",
             BcfToolsNormLatest(
-                vcf=self.sortSomatic.out,
+                vcf=self.sortSomatic2.out,
                 reference=self.reference,
                 outputType="v",
                 outputFilename="normalised.vcf",
