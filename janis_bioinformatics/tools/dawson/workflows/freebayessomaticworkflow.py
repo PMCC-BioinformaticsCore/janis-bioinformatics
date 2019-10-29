@@ -135,7 +135,7 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
         self.step(
             "callSomatic",
             CallSomaticFreeBayes_0_1(
-                vcf=self.indexAll.out, normalSampleName=self.normalSample
+                vcf=self.callVariants.out, normalSampleName=self.normalSample
             ),
             # added for parallel
             scatter="vcf",
