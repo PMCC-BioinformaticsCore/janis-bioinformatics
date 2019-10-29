@@ -1,7 +1,7 @@
 from abc import ABC
 from typing import Any, Dict
 
-from janis_bioinformatics.data_types import Vcf, VcfTabix
+from janis_bioinformatics.data_types import Vcf
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 from janis_core import (
     Array,
@@ -75,7 +75,8 @@ class CallSomaticFreeBayesBase(BioinformaticsTool, ABC):
 
     def inputs(self):
         return [
-            ToolInput(tag="vcf", input_type=VcfTabix, prefix="-i", doc="input vcf"),
+            # it can read CompressedVcf as well, but yea unionTypes are not a thing yet
+            ToolInput(tag="vcf", input_type=Vcf, prefix="-i", doc="input vcf"),
             ToolInput(
                 tag="normalSampleName",
                 input_type=String(optional=True),
