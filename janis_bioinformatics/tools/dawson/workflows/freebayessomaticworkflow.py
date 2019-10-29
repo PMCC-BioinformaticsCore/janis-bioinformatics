@@ -137,9 +137,7 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
         self.step(
             "callSomatic",
             CallSomaticFreeBayes_0_1(
-                vcf=self.indexAll.out,
-                normalSampleName=self.normalSample,
-                outputFilename=self.normalSample,
+                vcf=self.indexAll.out, normalSampleName=self.normalSample
             ),
         )
 
