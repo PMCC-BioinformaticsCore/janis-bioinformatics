@@ -144,33 +144,37 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
 
         # no need to compress this here if it leads to problems when we dont have an index for the allelic allelicPrimitves
         self.step(
-            "normalizationFirst",
-            BcfToolsNormLatest(
-                vcf=self.callSomatic.out,
-                outputType="v",
-                reference=self.reference,
-                outputFilename="normalized.vcf",
-            ),
+            "normalizeSomatic1",
+            BcfToolsNormLatest(vcf=self.callSomatic.out, reference=self.reference),
         )
+
+        self.step("indexNorm1", TabixLatest(file=self.normalizeSomatic1))
 
         self.step(
             "allelicPrimitves",
-            VcfAllelicPrimitivesLatest(
-                vcf=self.normalizationFirst, tagParsed="DECOMPOSED"
-            ),
+            VcfAllelicPrimitivesLatest(vcf=self.indexNorm.out, tagParsed="DECOMPOSED"),
         )
 
         self.step("fixSplitLines", VcfFixUpLatest(vcf=self.allelicPrimitves.out))
 
-        self.step("sortSomatic", BcfToolsSortLatest(vcf=self.fixSplitLines.out))
-
-        self.step("normalizationSecond", BcfToolsNormLatest(vcf=self.sortSomatic.out))
-
         self.step(
-            "uniqueAlleles", VcfUniqAllelesLatest(vcf=self.normalizationSecond.out)
+            "sortSomatic",
+            VcfStreamSortLatest(vcf=self.fixSplitLines.out, inMemoryFlag=True),
         )
 
-        self.step("sortFinal", BcfToolsSortLatest(vcf=self.uniqueAlleles.out))
+        self.step(
+            "normalizeSomatic2",
+            BcfToolsNormLatest(vcf=self.sortSomatic.out, reference=self.reference),
+        )
+
+        self.step("indexNorm2", TabixLatest(file=self.normalizeSomatic2))
+
+        self.step("uniqueAlleles", VcfUniqAllelesLatest(vcf=self.indexNorm2.out))
+
+        self.step(
+            "sortFinal",
+            VcfStreamSortLatest(vcf=self.uniqueAlleles.out, inMemoryFlag=True),
+        )
 
         self.step("uniqVcf", VcfUniqLatest(vcf=self.sortFinal.out))
 
