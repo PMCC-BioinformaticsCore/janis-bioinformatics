@@ -141,7 +141,11 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
             ),
         )
 
-        self.step("normalizationFirst", BcfToolsNormLatest(vcf=self.callSomatic.out))
+        # no need to compress this here if it leads to problems when we dont have an index for the allelic allelicPrimitves
+        self.step(
+            "normalizationFirst",
+            BcfToolsNormLatest(vcf=self.callSomatic.out, outputType="v"),
+        )
 
         self.step(
             "allelicPrimitves",
