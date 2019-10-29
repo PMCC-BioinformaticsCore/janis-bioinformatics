@@ -74,10 +74,16 @@ class Strelka2PassWorkflowStep1(BioinformaticsWorkflow):
                 exome=self.exome,
             ),
         )
-        self.step("normaliseSNVs", BcfToolsNorm_1_9(vcf=self.strelka.snvs))
+        self.step(
+            "normaliseSNVs",
+            BcfToolsNorm_1_9(vcf=self.strelka.snvs, reference=self.reference),
+        )
         self.step("indexSNVs", BcfToolsIndex_1_9(vcf=self.normaliseSNVs.out))
 
-        self.step("normaliseINDELs", BcfToolsNorm_1_9(vcf=self.strelka.indels))
+        self.step(
+            "normaliseINDELs",
+            BcfToolsNorm_1_9(vcf=self.strelka.indels, reference=self.reference),
+        )
         self.step("indexINDELs", BcfToolsIndex_1_9(vcf=self.normaliseINDELs.out))
 
         self.output("diploid", source=self.manta.diploidSV)
