@@ -149,7 +149,7 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
                 vcf=self.callSomatic.out,
                 outputType="v",
                 reference=self.reference,
-                outputFilename=Filename(extension=".vcf"),
+                outputFilename="normalized.vcf",
             ),
         )
 
