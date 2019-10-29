@@ -4,7 +4,7 @@ from janis_bioinformatics.tools import BioinformaticsWorkflow
 
 from janis_bioinformatics.data_types import FastaWithDict, BamBai, BedTabix, VcfTabix
 
-from janis_core import Array, Boolean, String, Int
+from janis_core import Array, Boolean, String, Int, Filename
 
 from janis_bioinformatics.tools.dawson import CallSomaticFreeBayes_0_1
 from janis_bioinformatics.tools.freebayes import FreeBayes_1_3
@@ -123,7 +123,8 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
             ),
             scatter="region",
         )
-
+        # might actually rewrite this once everything works, to not combine the files here, but do
+        # all of it scattered and then only combine the final output
         self.step("combineRegions", VcfCombineLatest(vcf=self.callVariants.out))
 
         self.step(
@@ -144,7 +145,12 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
         # no need to compress this here if it leads to problems when we dont have an index for the allelic allelicPrimitves
         self.step(
             "normalizationFirst",
-            BcfToolsNormLatest(vcf=self.callSomatic.out, outputType="v"),
+            BcfToolsNormLatest(
+                vcf=self.callSomatic.out,
+                outputType="v",
+                reference=self.reference,
+                outputFilename=Filename(extension=".vcf"),
+            ),
         )
 
         self.step(
