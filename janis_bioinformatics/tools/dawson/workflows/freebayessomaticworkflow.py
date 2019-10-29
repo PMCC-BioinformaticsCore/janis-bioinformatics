@@ -152,7 +152,7 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
 
         self.step(
             "allelicPrimitves",
-            VcfAllelicPrimitivesLatest(vcf=self.indexNorm.out, tagParsed="DECOMPOSED"),
+            VcfAllelicPrimitivesLatest(vcf=self.indexNorm1.out, tagParsed="DECOMPOSED"),
         )
 
         self.step("fixSplitLines", VcfFixUpLatest(vcf=self.allelicPrimitves.out))
