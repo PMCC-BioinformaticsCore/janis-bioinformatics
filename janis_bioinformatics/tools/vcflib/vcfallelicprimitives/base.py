@@ -36,6 +36,24 @@ class VcfAllelicPrimitivesBase(VcfToolsToolBase, ABC):
                 prefix="-t",
                 doc="Tag records which are split apart of a complex allele with this flag",
             ),
+            ToolInput(
+                "keepInfoFlag",
+                Boolean(optional=True),
+                prefix="-k",
+                doc="Maintain site and allele-level annotations when decomposing. Note that in many cases, such as multisample VCFs, these won't be valid post-decomposition.  For biallelic loci in single-sample VCFs, they should be usable with caution.",
+            ),
+            ToolInput(
+                "keepGenoFlag",
+                Boolean(optional=True),
+                prefix="-g",
+                doc="Maintain genotype-level annotations when decomposing.  Similar caution should be used for this as for --keep-info.",
+            ),
+            ToolInput(
+                "maxLength",
+                Int(optional=True),
+                prefix="-L",
+                doc="Do not manipulate records in which either the ALT or REF is longer than LEN (default: 200).",
+            ),
         ]
 
     def outputs(self):

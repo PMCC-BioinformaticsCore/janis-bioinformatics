@@ -163,7 +163,9 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
         self.step(
             "allelicPrimitves",
             VcfAllelicPrimitivesLatest(
-                vcf=self.normalizeSomatic1.out, tagParsed="DECOMPOSED"
+                vcf=self.normalizeSomatic1.out,
+                tagParsed="DECOMPOSED",
+                keepGenoFlag=True,
             ),
         )
 
