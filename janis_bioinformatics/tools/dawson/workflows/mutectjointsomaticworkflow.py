@@ -1,4 +1,7 @@
 from janis import WorkflowBuilder, String, Array
+
+from janis_bioinformatics.tools import BioinformaticsWorkflow
+
 from janis_bioinformatics.data_types import (
     FastaWithDict,
     Bam,
