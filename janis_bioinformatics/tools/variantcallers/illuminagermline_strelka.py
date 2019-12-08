@@ -14,12 +14,10 @@ class IlluminaGermlineVariantCaller(BioinformaticsWorkflow):
     def friendly_name(self):
         return "Strelka Germline Variant Caller"
 
-    @staticmethod
-    def tool_provider():
+    def tool_provider(self):
         return "Variant Callers"
 
-    @staticmethod
-    def version():
+    def version(self):
         return "v0.1.0"
 
     def constructor(self):

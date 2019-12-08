@@ -9,15 +9,13 @@ from janis_bioinformatics.tools.vcflib.vcflibtoolbase import VcfToolsToolBase
 
 
 class VcfUniqBase(VcfToolsToolBase, ABC):
-    @staticmethod
-    def tool():
+    def tool(self):
         return "vcfuniq"
 
     def friendly_name(self):
         return "VcfLib: VcfUniq"
 
-    @staticmethod
-    def base_command():
+    def base_command(self):
         return "vcfuniq"
 
     def inputs(self):

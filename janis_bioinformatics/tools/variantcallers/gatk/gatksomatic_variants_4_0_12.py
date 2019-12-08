@@ -14,8 +14,7 @@ class GatkSomaticVariantCaller_4_0_12(BioinformaticsWorkflow):
     def friendly_name(self):
         return "GATK4 Somatic Variant Caller"
 
-    @staticmethod
-    def tool_provider():
+    def tool_provider(self):
         return "Variant Callers"
 
     def constructor(self):

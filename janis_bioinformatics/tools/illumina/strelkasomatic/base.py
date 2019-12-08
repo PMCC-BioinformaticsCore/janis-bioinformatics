@@ -60,8 +60,7 @@ MEM_TUPLE = [
 
 
 class StrelkaSomaticBase(IlluminaToolBase, ABC):
-    @staticmethod
-    def tool() -> str:
+    def tool(self) -> str:
         return "strelka_somatic"
 
     def friendly_name(self) -> str:
@@ -79,8 +78,7 @@ class StrelkaSomaticBase(IlluminaToolBase, ABC):
             return val
         return 4
 
-    @staticmethod
-    def base_command():
+    def base_command(self):
         return
 
     def arguments(self):

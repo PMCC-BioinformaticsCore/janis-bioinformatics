@@ -21,15 +21,13 @@ from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 
 
 class VepBase(BioinformaticsTool):
-    @staticmethod
-    def tool() -> str:
+    def tool(self) -> str:
         return "vep"
 
     def friendly_name(self) -> str:
         return "Variant Effect Predictor (VEP)"
 
-    @staticmethod
-    def base_command():
+    def base_command(self):
         return "vep"
 
     def inputs(self) -> List[ToolInput]:

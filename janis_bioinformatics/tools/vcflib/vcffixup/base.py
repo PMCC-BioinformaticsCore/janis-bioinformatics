@@ -8,15 +8,13 @@ from janis_bioinformatics.tools.vcflib.vcflibtoolbase import VcfToolsToolBase
 
 
 class VcfFixUpBase(VcfToolsToolBase, ABC):
-    @staticmethod
-    def tool():
+    def tool(self):
         return "vcffixup"
 
     def friendly_name(self):
         return "VcfLib: VcfFixUp"
 
-    @staticmethod
-    def base_command():
+    def base_command(self):
         return "vcffixup"
 
     def inputs(self):

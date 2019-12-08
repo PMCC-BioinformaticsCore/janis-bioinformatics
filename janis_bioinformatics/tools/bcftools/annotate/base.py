@@ -64,15 +64,13 @@ class BcfToolsAnnotateBase(BcfToolsToolBase, ABC):
             self.metadata.documentation if self.metadata.documentation else ""
         ) + "------------------------------------\n\nAdd or remove annotations."
 
-    @staticmethod
-    def tool():
+    def tool(self):
         return "bcftoolsAnnotate"
 
     def friendly_name(self):
         return "BCFTools: Annotate"
 
-    @staticmethod
-    def base_command():
+    def base_command(self):
         return ["bcftools", "annotate"]
 
     def cpus(self, hints: Dict[str, Any]):
@@ -102,7 +100,6 @@ class BcfToolsAnnotateBase(BcfToolsToolBase, ABC):
     def outputs(self):
         return [ToolOutput("out", CompressedVcf, glob=InputSelector("outputFilename"))]
 
-    @staticmethod
     def docurl():
         return "https://samtools.github.io/bcftools/bcftools.html#annotate"
 

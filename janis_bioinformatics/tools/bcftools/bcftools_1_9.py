@@ -1,8 +1,6 @@
 class BcfTools_1_9:
-    @staticmethod
-    def container():
+    def container(self):
         return "michaelfranklin/bcftools:1.9"
 
-    @staticmethod
-    def version():
+    def version(self):
         return "v1.9"

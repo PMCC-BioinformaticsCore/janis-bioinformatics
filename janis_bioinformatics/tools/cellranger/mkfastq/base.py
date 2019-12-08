@@ -23,16 +23,13 @@ class CellRangerMkfastqBase(BioinformaticsTool):
     def friendly_name(self) -> str:
         return "CellRanger mkfastq"
 
-    @staticmethod
-    def tool_provider():
+    def tool_provider(self):
         return "CellRanger"
 
-    @staticmethod
-    def tool() -> str:
+    def tool(self) -> str:
         return "CellRangerMkfastq"
 
-    @staticmethod
-    def base_command():
+    def base_command(self):
         return ["cellranger", "mkfastq"]
 
     def inputs(self):

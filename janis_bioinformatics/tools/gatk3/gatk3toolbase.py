@@ -5,15 +5,12 @@ from janis_core import ToolInput, ToolArgument, Boolean
 
 
 class Gatk3ToolBase(BioinformaticsTool, ABC):
-    @staticmethod
-    def tool_provider():
+    def tool_provider(self):
         return "gatk3_NEEDS_WORK"
 
-    @staticmethod
-    def base_command():
+    def base_command(self):
         return ["java"]
 
-    @staticmethod
     @abstractmethod
     def analysis_type():
         raise Exception(
@@ -35,9 +32,8 @@ class Gatk3ToolBase(BioinformaticsTool, ABC):
             # ToolInput("c")
         ]
 
-    @staticmethod
     @abstractmethod
-    def container():
+    def container(self):
         raise Exception(
             "An error likely occurred when resolving the method order for docker for the Gatk3 classes "
             "or you're trying to execute the docker method of the base class (ie, don't do that). "

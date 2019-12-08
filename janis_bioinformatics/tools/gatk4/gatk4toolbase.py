@@ -7,8 +7,7 @@ from janis_core import ToolInput, Boolean
 
 
 class Gatk4ToolBase(BioinformaticsTool, ABC):
-    @staticmethod
-    def tool_provider():
+    def tool_provider(self):
         return "GATK4"
 
     @classmethod
@@ -26,9 +25,8 @@ class Gatk4ToolBase(BioinformaticsTool, ABC):
             #           doc="If true, adds a PG tag to created SAM/BAM/CRAM files.")
         ]
 
-    @staticmethod
     @abstractmethod
-    def container():
+    def container(self):
         raise Exception(
             "An error likely occurred when resolving the method order for docker for the Gatk classes "
             "or you're trying to execute the docker method of the base class (ie, don't do that). "

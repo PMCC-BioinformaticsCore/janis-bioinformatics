@@ -1,8 +1,6 @@
 class Bwa_0_7_15:
-    @staticmethod
-    def container():
+    def container(self):
         return "biocontainers/bwa:v0.7.15_cv3"
 
-    @staticmethod
-    def version():
+    def version(self):
         return "v0.7.15"

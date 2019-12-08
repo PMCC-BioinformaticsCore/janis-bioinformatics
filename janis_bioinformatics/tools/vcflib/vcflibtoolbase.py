@@ -5,6 +5,5 @@ from janis_core import ToolMetadata
 
 
 class VcfToolsToolBase(BioinformaticsTool, ABC):
-    @staticmethod
-    def tool_provider():
+    def tool_provider(self):
         return "ekg"

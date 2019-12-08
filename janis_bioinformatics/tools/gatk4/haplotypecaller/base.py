@@ -58,8 +58,7 @@ class Gatk4HaplotypeCallerBase(Gatk4ToolBase, ABC):
     def gatk_command(cls):
         return "HaplotypeCaller"
 
-    @staticmethod
-    def tool():
+    def tool(self):
         return "GatkHaplotypeCaller"
 
     def friendly_name(self):

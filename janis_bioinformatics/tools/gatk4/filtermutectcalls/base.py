@@ -46,8 +46,7 @@ class Gatk4FilterMutectCallsBase(Gatk4ToolBase, ABC):
     def gatk_command(cls):
         return "FilterMutectCalls"
 
-    @staticmethod
-    def tool():
+    def tool(self):
         return "GATK4FilterMutectCalls"
 
     def friendly_name(self):

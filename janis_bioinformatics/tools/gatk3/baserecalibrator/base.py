@@ -22,11 +22,9 @@ from janis_bioinformatics.tools import Gatk3ToolBase
 class Gatk3RecalibratorBase(Gatk3ToolBase, ABC):
     output = ToolOutput("out", File(), glob="$(inputs.outputFile)")
 
-    @staticmethod
-    def tool():
+    def tool(self):
         return "Gatk3BaseRecalibrator"
 
-    @staticmethod
     def analysis_type():
         return "BaseRecalibrator"
 

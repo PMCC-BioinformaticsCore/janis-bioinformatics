@@ -9,15 +9,13 @@ from janis_bioinformatics.tools.vcflib.vcflibtoolbase import VcfToolsToolBase
 
 
 class VcfRocBase(VcfToolsToolBase, ABC):
-    @staticmethod
-    def tool():
+    def tool(self):
         return "vcfroc"
 
     def friendly_name(self):
         return "VcfLib: Vcf ROC generator"
 
-    @staticmethod
-    def base_command():
+    def base_command(self):
         return "vcfroc"
 
     def inputs(self):
