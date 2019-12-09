@@ -6,6 +6,5 @@ from janis_core import ToolMetadata
 
 
 class BcfToolsToolBase(BioinformaticsTool, ABC):
-    @staticmethod
-    def tool_provider():
+    def tool_provider(self):
         return "bcftools"

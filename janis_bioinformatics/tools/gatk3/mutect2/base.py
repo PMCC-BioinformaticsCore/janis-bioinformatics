@@ -9,12 +9,10 @@ from janis_bioinformatics.tools import Gatk3ToolBase
 
 
 class Gatk3Mutect2Base(Gatk3ToolBase, ABC):
-    @staticmethod
     def analysis_type():
         return "MuTect2"
 
-    @staticmethod
-    def tool():
+    def tool(self):
         return "gatkmutect2"
 
     def inputs(self):
@@ -93,19 +91,19 @@ if __name__ == "__main__":
 #
 #     output = ToolOutput("out", File(), glob='$(inputs.outputfile_name)')
 #
-#     @staticmethod
-#     def tool():
+#
+#     def tool(self):
 #         return "GatkMutect2"
 #
-#     @staticmethod
-#     def base_command():
+#
+#     def base_command(self):
 #         return ['java']
 #
-#     @staticmethod
-#     def container():
+#
+#     def container(self):
 #         return "broadinstitute/gatk3:3.7-0"
 #
-#     @staticmethod
+#
 #     def doc():
 #         return None
 #

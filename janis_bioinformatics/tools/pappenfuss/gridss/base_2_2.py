@@ -19,19 +19,16 @@ from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 
 
 class GridssBase_2_2(BioinformaticsTool):
-    @staticmethod
-    def tool() -> str:
+    def tool(self) -> str:
         return "gridss"
 
-    @staticmethod
-    def tool_provider():
+    def tool_provider(self):
         return "Papenfuss Labs"
 
     def friendly_name(self) -> str:
         return "Gridss"
 
-    @staticmethod
-    def base_command():
+    def base_command(self):
         return [
             "java",
             "-XX:+UnlockExperimentalVMOptions",

@@ -51,8 +51,7 @@ class Gatk4MergeSamFilesBase(Gatk4ToolBase, ABC):
     def gatk_command(cls):
         return "MergeSamFiles"
 
-    @staticmethod
-    def tool():
+    def tool(self):
         return "Gatk4MergeSamFiles"
 
     def friendly_name(self):

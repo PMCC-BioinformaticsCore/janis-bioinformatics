@@ -22,8 +22,7 @@ class Gatk4SplitReadsBase(Gatk4ToolBase):
     def friendly_name(self) -> str:
         return "GATK4: SplitReads"
 
-    @staticmethod
-    def tool() -> str:
+    def tool(self) -> str:
         return "gatk4splitreads"
 
     @classmethod

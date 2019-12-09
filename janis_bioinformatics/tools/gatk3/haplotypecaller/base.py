@@ -20,12 +20,10 @@ from janis_bioinformatics.tools import Gatk3ToolBase
 
 
 class Gatk3HaplotypeCallerBase(Gatk3ToolBase, ABC):
-    @staticmethod
     def analysis_type():
         return "HaplotypeCaller"
 
-    @staticmethod
-    def tool():
+    def tool(self):
         return "GatkHaplotypeCaller"
 
     def inputs(self):

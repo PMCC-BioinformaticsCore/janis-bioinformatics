@@ -15,12 +15,10 @@ class MergeAndMarkBams_4_1_3(BioinformaticsWorkflow):
     def friendly_name(self):
         return "Merge and Mark Duplicates"
 
-    @staticmethod
-    def version():
+    def version(self):
         return "4.1.3"
 
-    @staticmethod
-    def tool_provider():
+    def tool_provider(self):
         return "common"
 
     def constructor(self):

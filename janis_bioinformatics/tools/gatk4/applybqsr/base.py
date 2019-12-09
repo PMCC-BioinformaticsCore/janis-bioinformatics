@@ -50,8 +50,7 @@ class Gatk4ApplyBqsrBase(Gatk4ToolBase, ABC):
     def friendly_name(self):
         return "GATK4: Apply base quality score recalibration"
 
-    @staticmethod
-    def tool():
+    def tool(self):
         return "GATK4ApplyBQSR"
 
     def cpus(self, hints: Dict[str, Any]):

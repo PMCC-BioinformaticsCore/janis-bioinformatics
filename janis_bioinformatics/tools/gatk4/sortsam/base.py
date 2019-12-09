@@ -51,8 +51,7 @@ class Gatk4SortSamBase(Gatk4ToolBase, ABC):
     def gatk_command(cls):
         return "SortSam"
 
-    @staticmethod
-    def tool():
+    def tool(self):
         return "gatk4sortsam"
 
     def friendly_name(self):

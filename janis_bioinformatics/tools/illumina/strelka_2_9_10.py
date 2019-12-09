@@ -3,14 +3,11 @@ from janis_core import CommandTool
 
 
 class Strelka_2_9_10(CommandTool, ABC):
-    @staticmethod
-    def tool_provider():
+    def tool_provider(self):
         return "Illumina"
 
-    @staticmethod
-    def container():
+    def container(self):
         return "michaelfranklin/strelka:2.9.10"
 
-    @staticmethod
-    def version():
+    def version(self):
         return "2.9.10"

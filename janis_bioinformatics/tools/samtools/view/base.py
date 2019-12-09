@@ -22,8 +22,7 @@ from janis_core import ToolMetadata
 
 
 class SamToolsViewBase(SamToolsToolBase, ABC):
-    @staticmethod
-    def tool():
+    def tool(self):
         return "SamToolsView"
 
     @classmethod

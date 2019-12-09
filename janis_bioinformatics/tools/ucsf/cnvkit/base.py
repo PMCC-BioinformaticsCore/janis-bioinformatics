@@ -7,19 +7,16 @@ from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 
 
 class CNVKitBase(BioinformaticsTool):
-    @staticmethod
-    def tool_provider():
+    def tool_provider(self):
         return "UCSF"
 
-    @staticmethod
-    def tool() -> str:
+    def tool(self) -> str:
         return "CNVKit"
 
     def friendly_name(self) -> str:
         return "CNVKit"
 
-    @staticmethod
-    def base_command():
+    def base_command(self):
         return ["cnvkit.py", "batch"]
 
     def inputs(self) -> List[ToolInput]:

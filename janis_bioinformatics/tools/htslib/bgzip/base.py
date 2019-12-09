@@ -10,16 +10,13 @@ from janis_bioinformatics.tools.htslib.htslibbase import HtsLibBase
 
 
 class BGZipBase(HtsLibBase, ABC):
-    @staticmethod
-    def tool_provider():
+    def tool_provider(self):
         return "htslib"
 
-    @staticmethod
-    def tool():
+    def tool(self):
         return "bgzip"
 
-    @staticmethod
-    def base_command():
+    def base_command(self):
         return "bgzip"
 
     def inputs(self) -> List[ToolInput]:
@@ -65,9 +62,8 @@ have a .gz suffix, which will be removed to make the output name.
 Again after decompression completes the input file will be removed.""".strip(),
         )
 
-    @staticmethod
     @abstractmethod
-    def container():
+    def container(self):
         raise Exception(
             "An error likely occurred when resolving the method order for docker for the tabix classes "
             "or you're trying to execute the docker method of the base class (ie, don't do that). "

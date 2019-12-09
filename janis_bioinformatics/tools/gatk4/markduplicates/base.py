@@ -52,8 +52,7 @@ class Gatk4MarkDuplicatesBase(Gatk4ToolBase, ABC):
     def gatk_command(cls):
         return "MarkDuplicates"
 
-    @staticmethod
-    def tool():
+    def tool(self):
         return "Gatk4MarkDuplicates"
 
     def friendly_name(self):

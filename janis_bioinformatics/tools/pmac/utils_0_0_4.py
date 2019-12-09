@@ -3,14 +3,11 @@ from janis_core import CommandTool
 
 
 class PeterMacUtils_0_0_4(CommandTool, ABC):
-    @staticmethod
-    def tool_provider():
+    def tool_provider(self):
         return "Peter MacCallum Cancer Centre"
 
-    @staticmethod
-    def container():
+    def container(self):
         return "michaelfranklin/pmacutil:0.0.4"
 
-    @staticmethod
-    def version():
+    def version(self):
         return "0.0.4"

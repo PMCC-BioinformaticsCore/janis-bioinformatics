@@ -3,50 +3,40 @@ from janis_core import CommandTool
 
 
 class VarDict_1_5_6(CommandTool, ABC):
-    @staticmethod
-    def container():
+    def container(self):
         return "michaelfranklin/vardict:1.5.6"
 
-    @staticmethod
-    def version():
+    def version(self):
         return "1.5.6"
 
 
 class VarDict_1_5_7(CommandTool):
-    @staticmethod
-    def container():
+    def container(self):
         return "michaelfranklin/vardict:1.5.7"
 
-    @staticmethod
-    def version():
+    def version(self):
         return "1.5.7"
 
 
 class VarDict_1_5_8(CommandTool):
-    @staticmethod
-    def container():
+    def container(self):
         return "michaelfranklin/vardict:1.5.8"
 
-    @staticmethod
-    def version():
+    def version(self):
         return "1.5.8"
 
 
 class VarDict_1_6_0(CommandTool):
-    @staticmethod
-    def container():
+    def container(self):
         return "michaelfranklin/vardict:1.6.0"
 
-    @staticmethod
-    def version():
+    def version(self):
         return "1.6.0"
 
 
 class VarDict_1_7_0(CommandTool):
-    @staticmethod
-    def container():
+    def container(self):
         return "michaelfranklin/vardict:1.7.0"
 
-    @staticmethod
-    def version():
+    def version(self):
         return "1.7.0"

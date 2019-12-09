@@ -53,16 +53,13 @@ class VarDictSomaticCompressedBase(BioinformaticsTool, ABC):
     def friendly_name(self) -> str:
         return "Vardict (Somatic)"
 
-    @staticmethod
-    def tool_provider():
+    def tool_provider(self):
         return "VarDict"
 
-    @staticmethod
-    def tool():
+    def tool(self):
         return "vardict_somatic"
 
-    @staticmethod
-    def base_command():
+    def base_command(self):
         return "VarDict"
 
     def cpus(self, hints: Dict[str, Any]):
@@ -499,7 +496,6 @@ class VarDictSomaticCompressedBase(BioinformaticsTool, ABC):
 
     var2vcf_inputs = []
 
-    @staticmethod
     def docurl():
         return "https://github.com/AstraZeneca-NGS/VarDict"
 

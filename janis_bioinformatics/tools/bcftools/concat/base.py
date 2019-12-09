@@ -18,15 +18,13 @@ from janis_core import ToolMetadata
 
 
 class BcfToolsConcatBase(BcfToolsToolBase, ABC):
-    @staticmethod
-    def tool():
+    def tool(self):
         return "bcftoolsConcat"
 
     def friendly_name(self):
         return "BCFTools: Concat"
 
-    @staticmethod
-    def base_command():
+    def base_command(self):
         return ["bcftools", "concat"]
 
     def inputs(self):

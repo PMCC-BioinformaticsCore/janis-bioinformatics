@@ -36,12 +36,10 @@ class PerformanceValidator_1_2_1(BioinformaticsWorkflow):
     def friendly_name(self):
         return "Performance Validator"
 
-    @staticmethod
-    def version():
+    def version(self):
         return "1.2.1"
 
-    @staticmethod
-    def tool_provider():
+    def tool_provider(self):
         return "Peter MacCallum Cancer Centre"
 
 

@@ -18,15 +18,13 @@ from janis_core import ToolMetadata
 
 
 class BcfToolsNormBase(BcfToolsToolBase, ABC):
-    @staticmethod
-    def tool():
+    def tool(self):
         return "bcftoolsNorm"
 
     def friendly_name(self):
         return "BCFTools: Normalize"
 
-    @staticmethod
-    def base_command():
+    def base_command(self):
         return ["bcftools", "norm"]
 
     def inputs(self):

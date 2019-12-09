@@ -61,16 +61,13 @@ class VarDictGermlineBase(BioinformaticsTool, ABC):
     def friendly_name(self) -> str:
         return "VarDict (Germline)"
 
-    @staticmethod
-    def tool():
+    def tool(self):
         return "vardict_germline"
 
-    @staticmethod
-    def tool_provider():
+    def tool_provider(self):
         return "VarDict"
 
-    @staticmethod
-    def base_command():
+    def base_command(self):
         return "VarDict"
 
     def cpus(self, hints: Dict[str, Any]):
@@ -499,7 +496,6 @@ class VarDictGermlineBase(BioinformaticsTool, ABC):
         ),
     ]
 
-    @staticmethod
     def docurl():
         return "https://github.com/AstraZeneca-NGS/VarDict"
 

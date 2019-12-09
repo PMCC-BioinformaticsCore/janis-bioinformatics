@@ -17,12 +17,10 @@ from janis_bioinformatics.tools import Gatk3ToolBase
 
 
 class Gatk3PrintReadsBase(Gatk3ToolBase, ABC):
-    @staticmethod
     def analysis_type():
         return "PrintReads"
 
-    @staticmethod
-    def tool():
+    def tool(self):
         return "GatkPrintReads"
 
     def inputs(self):

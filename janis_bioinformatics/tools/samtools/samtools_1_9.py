@@ -1,8 +1,6 @@
 class SamTools_1_9:
-    @staticmethod
-    def container():
+    def container(self):
         return "quay.io/biocontainers/samtools:1.9--h8571acd_11"
 
-    @staticmethod
-    def version():
+    def version(self):
         return "1.9.0"

@@ -44,8 +44,7 @@ class Gatk4CalculateContaminationBase(Gatk4ToolBase, ABC):
     def gatk_command(cls):
         return "CalculateContamination"
 
-    @staticmethod
-    def tool():
+    def tool(self):
         return "GATK4CalculateContamination"
 
     def friendly_name(self):

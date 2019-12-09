@@ -15,15 +15,13 @@ from janis_bioinformatics.tools.bcftools.bcftoolstoolbase import BcfToolsToolBas
 
 
 class BcfToolsIndexBase(BcfToolsToolBase, ABC):
-    @staticmethod
-    def tool():
+    def tool(self):
         return "bcftoolsIndex"
 
     def friendly_name(self):
         return "BCFTools: Index"
 
-    @staticmethod
-    def base_command():
+    def base_command(self):
         return ["bcftools", "index"]
 
     def inputs(self):

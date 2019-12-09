@@ -36,15 +36,13 @@ MEM_TUPLE = [
 
 
 class TrimIUPACBase(BioinformaticsTool, ABC):
-    @staticmethod
-    def tool() -> str:
+    def tool(self) -> str:
         return "trimIUPAC"
 
     def friendly_name(self) -> str:
         return "Trim IUPAC Bases"
 
-    @staticmethod
-    def base_command():
+    def base_command(self):
         return "trimIUPAC.py"
 
     def cpus(self, hints: Dict[str, Any]):
