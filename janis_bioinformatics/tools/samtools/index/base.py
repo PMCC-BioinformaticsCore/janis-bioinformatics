@@ -28,7 +28,13 @@ class SamToolsIndexBase(SamToolsToolBase, ABC):
             *super(SamToolsIndexBase, self).inputs(),
             *SamToolsIndexBase.additional_inputs,
             ToolInput("bam", Bam, position=10, localise_file=True),
-            ToolInput("threads", Int, default=CpuSelector(), position=10),
+            ToolInput(
+                "threads",
+                Int(optional=True),
+                prefix="-@",
+                default=CpuSelector(),
+                position=10,
+            ),
         ]
 
     def outputs(self):
