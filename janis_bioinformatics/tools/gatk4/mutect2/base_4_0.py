@@ -55,14 +55,12 @@ class Gatk4Mutect2Base_4_0(Gatk4ToolBase, ABC):
     def gatk_command(cls):
         return "Mutect2"
 
-    @staticmethod
-    def tool():
+    def tool(self):
         return "gatkmutect2"
 
     def friendly_name(self):
         return "GATK4: MuTect2"
 
-    @staticmethod
     def tumor_normal_inputs():
         return [
             ToolInput(

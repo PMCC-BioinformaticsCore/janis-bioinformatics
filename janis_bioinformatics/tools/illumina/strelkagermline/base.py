@@ -50,15 +50,13 @@ MEM_TUPLE = [
 
 
 class StrelkaGermlineBase(IlluminaToolBase, ABC):
-    @staticmethod
-    def tool():
+    def tool(self):
         return "strelka_germline"
 
     def friendly_name(self):
         return "Strelka (Germline)"
 
-    @staticmethod
-    def base_command():
+    def base_command(self):
         return None
 
     def cpus(self, hints: Dict[str, Any]):

@@ -44,15 +44,13 @@ MEM_TUPLE = [
 
 
 class BcfToolsSortBase(BcfToolsToolBase, ABC):
-    @staticmethod
-    def tool() -> str:
+    def tool(self) -> str:
         return "bcftoolssort"
 
     def friendly_name(self) -> str:
         return "BCFTools: Sort"
 
-    @staticmethod
-    def base_command():
+    def base_command(self):
         return ["bcftools", "sort"]
 
     def cpus(self, hints: Dict[str, Any]):
@@ -80,7 +78,7 @@ class BcfToolsSortBase(BcfToolsToolBase, ABC):
                 "outputType",
                 String(optional=True),
                 prefix="--output-type",
-                default="-z",
+                default="z",
                 doc="(-O) b: compressed BCF, u: uncompressed BCF, z: compressed VCF, v: uncompressed VCF [v]",
             ),
             ToolInput(

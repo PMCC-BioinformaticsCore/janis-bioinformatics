@@ -2,8 +2,7 @@ from janis_bioinformatics.tools.ensembl.vep.basecache import VepCacheBase
 
 
 class Vep_97_0:
-    @staticmethod
-    def container():
+    def container(self):
         return "ensemblorg/ensembl-vep:release_97.0"
 
 

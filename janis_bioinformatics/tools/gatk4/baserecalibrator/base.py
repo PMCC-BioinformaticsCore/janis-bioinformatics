@@ -59,8 +59,7 @@ class Gatk4BaseRecalibratorBase(Gatk4ToolBase, ABC):
     def friendly_name(self):
         return "GATK4: Base Recalibrator"
 
-    @staticmethod
-    def tool():
+    def tool(self):
         return "Gatk4BaseRecalibrator"
 
     def cpus(self, hints: Dict[str, Any]):

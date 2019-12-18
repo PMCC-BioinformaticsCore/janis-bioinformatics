@@ -1,8 +1,6 @@
 class VcfLib_1_0_1:
-    @staticmethod
-    def container():
+    def container(self):
         return "shollizeck/vcflib:1.0.1"
 
-    @staticmethod
-    def version():
+    def version(self):
         return "v1.0.1"

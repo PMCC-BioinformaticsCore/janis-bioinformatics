@@ -37,15 +37,13 @@ MEM_TUPLE = [
 
 
 class HapPyValidatorBase(IlluminaToolBase, ABC):
-    @staticmethod
-    def tool() -> str:
+    def tool(self) -> str:
         return "happy_validator"
 
     def friendly_name(self) -> str:
         return "Hap.py validation"
 
-    @staticmethod
-    def base_command():
+    def base_command(self):
         return "/opt/hap.py/bin/hap.py"
 
     def cpus(self, hints: Dict[str, Any]):

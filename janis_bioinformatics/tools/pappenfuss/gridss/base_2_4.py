@@ -52,19 +52,16 @@ MEM_TUPLE = [
 
 
 class GridssBase_2_4(BioinformaticsTool):
-    @staticmethod
-    def tool() -> str:
+    def tool(self) -> str:
         return "gridss"
 
-    @staticmethod
-    def tool_provider():
+    def tool_provider(self):
         return "Papenfuss Labs"
 
     def friendly_name(self) -> str:
         return "Gridss"
 
-    @staticmethod
-    def base_command():
+    def base_command(self):
         return "gridss.sh"
 
     def inputs(self):

@@ -23,8 +23,7 @@ class Gatk4GenotypeConcordanceBase(Gatk4ToolBase, ABC):
     def gatk_command(cls):
         return "GenotypeConcordance"
 
-    @staticmethod
-    def tool():
+    def tool(self):
         return "Gatk4GenotypeConcordance"
 
     def friendly_name(self):

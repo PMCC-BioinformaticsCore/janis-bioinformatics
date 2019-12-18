@@ -2,13 +2,10 @@ from janis_bioinformatics.tools.babrahambioinformatics.fastqc.base import FastQC
 
 
 class FastQC_0_11_5(FastQCBase):
-
-    @staticmethod
-    def version():
+    def version(self):
         return "v0.11.5"
 
-    @staticmethod
-    def container():
+    def container(self):
         return "biocontainers/fastqc:v0.11.5_cv3"
 
 

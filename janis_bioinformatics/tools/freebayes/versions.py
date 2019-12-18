@@ -3,22 +3,18 @@ from .base_1_3 import FreeBayesBase_1_3
 
 
 class FreeBayes_1_2(FreeBayesBase_1_2):
-    @staticmethod
-    def container():
+    def container(self):
         return "papaemmelab/docker-freebayes:v0.1.5"
 
-    @staticmethod
-    def version():
+    def version(self):
         return "1.2"
 
 
 class FreeBayes_1_3(FreeBayesBase_1_3):
-    @staticmethod
-    def container():
+    def container(self):
         return "shollizeck/freebayes:1.3.1"
 
-    @staticmethod
-    def version():
+    def version(self):
         return "1.3.1"
 
 

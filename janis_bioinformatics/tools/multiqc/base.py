@@ -19,16 +19,13 @@ class MultiqcBase(BioinformaticsTool):
     def friendly_name(self) -> str:
         return "Multiqc"
 
-    @staticmethod
-    def tool_provider():
+    def tool_provider(self):
         return "MultiQC"
 
-    @staticmethod
-    def tool() -> str:
+    def tool(self) -> str:
         return "MultiQC"
 
-    @staticmethod
-    def base_command():
+    def base_command(self):
         return ["multiqc"]
 
     def inputs(self):

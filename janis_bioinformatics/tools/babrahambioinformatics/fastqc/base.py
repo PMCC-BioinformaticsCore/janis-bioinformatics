@@ -56,16 +56,13 @@ class FastQCBase(BioinformaticsTool, ABC):
     def friendly_name(self) -> str:
         return "FastQC"
 
-    @staticmethod
-    def tool():
+    def tool(self):
         return "fastqc"
 
-    @staticmethod
-    def base_command():
+    def base_command(self):
         return "fastqc"
 
-    @staticmethod
-    def tool_provider():
+    def tool_provider(self):
         return "FastQC"
 
     def bind_metadata(self):

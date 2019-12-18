@@ -46,15 +46,13 @@ MEM_TUPLE = [
 
 
 class CombineVariantsBase(BioinformaticsTool, ABC):
-    @staticmethod
-    def tool() -> str:
+    def tool(self) -> str:
         return "combinevariants"
 
     def friendly_name(self) -> str:
         return "Combine Variants"
 
-    @staticmethod
-    def base_command():
+    def base_command(self):
         return "combine_vcf.py"
 
     def cpus(self, hints: Dict[str, Any]):

@@ -64,15 +64,13 @@ class BcfToolsViewBase(BcfToolsToolBase, ABC):
         View, subset and filter VCF or BCF files by position and filtering expression
         Convert between VCF and BCF. Former bcftools subset."""
 
-    @staticmethod
-    def tool():
+    def tool(self):
         return "bcftoolsview"
 
     def friendly_name(self):
         return "BCFTools: View"
 
-    @staticmethod
-    def base_command():
+    def base_command(self):
         return ["bcftools", "view"]
 
     def cpus(self, hints: Dict[str, Any]):

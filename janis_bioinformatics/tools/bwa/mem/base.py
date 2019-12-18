@@ -50,19 +50,16 @@ BWA_CORES_TUPLE = [
 
 
 class BwaMemBase(BioinformaticsTool, ABC):
-    @staticmethod
-    def tool():
+    def tool(self):
         return "bwamem"
 
     def friendly_name(self):
         return "BWA-MEM"
 
-    @staticmethod
-    def tool_provider():
+    def tool_provider(self):
         return "BWA"
 
-    @staticmethod
-    def base_command():
+    def base_command(self):
         return ["bwa", "mem"]
 
     def inputs(self):

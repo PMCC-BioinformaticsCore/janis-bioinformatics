@@ -53,16 +53,13 @@ class FreeBayesBase_1_2(BioinformaticsTool):
     def friendly_name(self) -> str:
         return "freebayes"
 
-    @staticmethod
-    def tool_provider():
+    def tool_provider(self):
         return "Erik Garrison"
 
-    @staticmethod
-    def tool():
+    def tool(self):
         return "freebayes"
 
-    @staticmethod
-    def base_command():
+    def base_command(self):
         return "freebayes"
 
     def inputs(self):

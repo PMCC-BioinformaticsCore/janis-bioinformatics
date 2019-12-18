@@ -8,15 +8,13 @@ from janis_bioinformatics.tools.vcflib.vcflibtoolbase import VcfToolsToolBase
 
 
 class VcfRandomSampleBase(VcfToolsToolBase, ABC):
-    @staticmethod
-    def tool():
+    def tool(self):
         return "vcfrandomsample"
 
     def friendly_name(self):
         return "VcfLib: Vcf Random Sampling"
 
-    @staticmethod
-    def base_command():
+    def base_command(self):
         return "vcfrandomsample"
 
     def inputs(self):

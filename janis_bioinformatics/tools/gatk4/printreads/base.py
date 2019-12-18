@@ -12,8 +12,7 @@ class Gatk4PrintReadsBase(Gatk4ToolBase, ABC):
     def gatk_command(cls):
         return "PrintReads"
 
-    @staticmethod
-    def tool():
+    def tool(self):
         return "Gatk4PrintReads"
 
     def friendly_name(self):

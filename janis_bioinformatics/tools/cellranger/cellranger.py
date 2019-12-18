@@ -1,8 +1,6 @@
 class CellRanger_3_0_2:
-    @staticmethod
-    def version():
+    def version(self):
         return "v3.0.2"
 
-    @staticmethod
-    def container():
+    def container(self):
         return "fbrundu/cellranger:v3.0.2"
