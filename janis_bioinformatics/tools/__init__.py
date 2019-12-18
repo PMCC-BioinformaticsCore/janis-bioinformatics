@@ -17,8 +17,10 @@ from janis_bioinformatics.tools import (
     pappenfuss,
     pmac,
     samtools,
+    star,
     ucsf,
     validation,
     variantcallers,
     vcflib,
+    wehi,
 )
