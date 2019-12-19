@@ -84,6 +84,7 @@ class Gatk4BaseRecalibratorBase(Gatk4ToolBase, ABC):
                 position=6,
                 prefix="-I",
                 doc="BAM/SAM/CRAM file containing reads",
+                secondaries_present_as={".bai": "^.bai"},
             ),
             ToolInput(
                 "knownSites",

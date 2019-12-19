@@ -22,7 +22,14 @@ class Gatk4PrintReadsBase(Gatk4ToolBase, ABC):
         return [ToolInput("bam", Bam()), ToolInput("outputFilename", Filename())]
 
     def outputs(self) -> List[ToolOutput]:
-        return [ToolOutput("out", BamBai(), glob=InputSelector("outputFilename"))]
+        return [
+            ToolOutput(
+                "out",
+                BamBai(),
+                glob=InputSelector("outputFilename"),
+                secondaries_present_as={".bai": "^.bai"},
+            )
+        ]
 
     def bind_metadata(self):
         from datetime import date
