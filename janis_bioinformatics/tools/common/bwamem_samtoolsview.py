@@ -52,24 +52,19 @@ BWA_CORES_TUPLE = [
 
 
 class BwaMem_SamToolsView(BioinformaticsTool):
-    @staticmethod
-    def tool() -> str:
+    def tool(self) -> str:
         return "BwaMemSamtoolsView"
 
-    @staticmethod
-    def tool_provider():
+    def tool_provider(self):
         return "common"
 
-    @staticmethod
-    def version():
+    def version(self):
         return "0.7.17|1.9"
 
-    @staticmethod
-    def container():
+    def container(self):
         return "michaelfranklin/bwasamtools:0.7.17-1.9"
 
-    @staticmethod
-    def base_command():
+    def base_command(self):
         return None
 
     def arguments(self):

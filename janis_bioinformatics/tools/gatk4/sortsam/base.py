@@ -51,9 +51,8 @@ class Gatk4SortSamBase(Gatk4ToolBase, ABC):
     def gatk_command(cls):
         return "SortSam"
 
-    @staticmethod
-    def tool():
-        return "gatk4sortsam"
+    def tool(self):
+        return "Gatk4SortSam"
 
     def friendly_name(self):
         return "GATK4: SortSAM"
@@ -114,7 +113,14 @@ class Gatk4SortSamBase(Gatk4ToolBase, ABC):
         ]
 
     def outputs(self):
-        return [ToolOutput("out", BamBai(), glob=InputSelector("outputFilename"))]
+        return [
+            ToolOutput(
+                "out",
+                BamBai(),
+                glob=InputSelector("outputFilename"),
+                secondaries_present_as={".bai": "^.bai"},
+            )
+        ]
 
     additional_args = [
         ToolInput(

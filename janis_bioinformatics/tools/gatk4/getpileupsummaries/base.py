@@ -47,9 +47,8 @@ class Gatk4GetPileUpSummariesBase(Gatk4ToolBase, ABC):
     def gatk_command(cls):
         return "GetPileupSummaries"
 
-    @staticmethod
-    def tool():
-        return "GATK4GetPileupSummaries"
+    def tool(self):
+        return "Gatk4GetPileupSummaries"
 
     def friendly_name(self):
         return "GATK4: GetPileupSummaries"

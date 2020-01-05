@@ -4,29 +4,27 @@ from janis_bioinformatics.tools import BioinformaticsTool
 
 
 class SamToolsToolBase(BioinformaticsTool, ABC):
-
-    @staticmethod
-    def tool_provider():
+    def tool_provider(self):
         return "Samtools"
 
     @classmethod
     @abstractmethod
     def samtools_command(cls):
-        raise Exception("Subclass must implement the samtools_command method: expects one of: ["
-                        "   view, sort, index, idxstats, flagstat, stats, bedcov, depth, "
-                        "   merge, faidx, fqidx, tview, split, quickcheck, dict, fixmate, "
-                        "   mpileup, flags, fastq/a, collate, refheader, cat, rmdup, "
-                        "   addreplacerg, calmd, targetcut, phase, depad, markdup"
-                        "]")
+        raise Exception(
+            "Subclass must implement the samtools_command method: expects one of: ["
+            "   view, sort, index, idxstats, flagstat, stats, bedcov, depth, "
+            "   merge, faidx, fqidx, tview, split, quickcheck, dict, fixmate, "
+            "   mpileup, flags, fastq/a, collate, refheader, cat, rmdup, "
+            "   addreplacerg, calmd, targetcut, phase, depad, markdup"
+            "]"
+        )
 
     @classmethod
     def base_command(cls):
         return ["samtools", cls.samtools_command()]
 
     def inputs(self):
-        return [
-
-        ]
+        return []
 
     def doc(self):
         return """
@@ -45,13 +43,14 @@ class SamToolsToolBase(BioinformaticsTool, ABC):
 
     Documentation: http://www.htslib.org/doc/samtools.html#DESCRIPTION""".strip()
 
-    @staticmethod
     @abstractmethod
-    def container():
-        raise Exception("An error likely occurred when resolving the method order for docker for the samtools classes "
-                        "or you're trying to execute the docker method of the base class (ie, don't do that). "
-                        "The method order resolution must preference Gatkbase subclasses, "
-                        "and the subclass must contain a definition for docker.")
+    def container(self):
+        raise Exception(
+            "An error likely occurred when resolving the method order for docker for the samtools classes "
+            "or you're trying to execute the docker method of the base class (ie, don't do that). "
+            "The method order resolution must preference Gatkbase subclasses, "
+            "and the subclass must contain a definition for docker."
+        )
 
     def arguments(self):
         return []

@@ -6,12 +6,10 @@ BIOINFORMATICS_MODULE = "bioinformatics"
 
 
 class BioinformaticsTool(CommandTool, ABC):
-    @staticmethod
-    def tool_module():
+    def tool_module(self):
         return BIOINFORMATICS_MODULE
 
 
 class BioinformaticsWorkflow(Workflow, ABC):
-    @staticmethod
-    def tool_module():
+    def tool_module(self):
         return BIOINFORMATICS_MODULE

@@ -22,9 +22,8 @@ class Gatk4SplitReadsBase(Gatk4ToolBase):
     def friendly_name(self) -> str:
         return "GATK4: SplitReads"
 
-    @staticmethod
-    def tool() -> str:
-        return "gatk4splitreads"
+    def tool(self) -> str:
+        return "Gatk4SplitReads"
 
     @classmethod
     def gatk_command(cls):
@@ -44,6 +43,7 @@ class Gatk4SplitReadsBase(Gatk4ToolBase):
                 BamBai,
                 prefix="--input",
                 position=1,
+                secondaries_present_as={".bai": "^.bai"},
                 doc="(-I:String) BAM/SAM/CRAM file containing reads  This argument must be specified at least once.",
             ),
             ToolInput(
@@ -58,7 +58,11 @@ class Gatk4SplitReadsBase(Gatk4ToolBase):
     def outputs(self):
         return [
             ToolOutput(
-                "out", BamBai, glob=InputSelector("bam", use_basename=True), doc="Bam"
+                "out",
+                BamBai,
+                glob=InputSelector("bam", use_basename=True),
+                doc="Bam",
+                secondaries_present_as={".bai": "^.bai"},
             )
         ]
 

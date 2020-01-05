@@ -17,8 +17,7 @@ from janis_core import ToolMetadata
 
 
 class SamToolsSortBase(SamToolsToolBase, ABC):
-    @staticmethod
-    def tool():
+    def tool(self):
         return "SamToolsSort"
 
     @classmethod

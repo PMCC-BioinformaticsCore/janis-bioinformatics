@@ -20,7 +20,7 @@ class BamBai(Bam):
 
     @staticmethod
     def secondary_files():
-        return ["^.bai"]
+        return [".bai"]
 
     def doc(self):
         return "A Bam and bai as the secondary"

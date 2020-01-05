@@ -46,9 +46,8 @@ class Gatk4LearnReadOrientationModelBase(Gatk4ToolBase, ABC):
     def gatk_command(cls):
         return "LearnReadOrientationModel"
 
-    @staticmethod
-    def tool():
-        return "GATK4LearnReadOrientationModel"
+    def tool(self):
+        return "Gatk4LearnReadOrientationModel"
 
     def friendly_name(self):
         return "GATK4: LearnReadOrientationModel"

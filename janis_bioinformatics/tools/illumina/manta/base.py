@@ -58,12 +58,10 @@ MEM_TUPLE = [
 
 
 class MantaBase(IlluminaToolBase, ABC):
-    @staticmethod
-    def tool():
+    def tool(self):
         return "manta"
 
-    @staticmethod
-    def base_command():
+    def base_command(self):
         return None
 
     def cpus(self, hints: Dict[str, Any]):
@@ -144,9 +142,8 @@ class MantaBase(IlluminaToolBase, ABC):
             ),
         ]
 
-    @staticmethod
     @abstractmethod
-    def container():
+    def container(self):
         raise Exception("Strelka version must override docker command")
 
     def friendly_name(self):

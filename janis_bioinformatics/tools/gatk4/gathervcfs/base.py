@@ -51,8 +51,7 @@ class Gatk4GatherVcfsBase(Gatk4ToolBase, ABC):
     def gatk_command(cls):
         return "GatherVcfs"
 
-    @staticmethod
-    def tool():
+    def tool(self):
         return "Gatk4GatherVcfs"
 
     def friendly_name(self):

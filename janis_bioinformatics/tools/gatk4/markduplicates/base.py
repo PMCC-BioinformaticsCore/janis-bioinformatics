@@ -52,8 +52,7 @@ class Gatk4MarkDuplicatesBase(Gatk4ToolBase, ABC):
     def gatk_command(cls):
         return "MarkDuplicates"
 
-    @staticmethod
-    def tool():
+    def tool(self):
         return "Gatk4MarkDuplicates"
 
     def friendly_name(self):
@@ -78,6 +77,7 @@ class Gatk4MarkDuplicatesBase(Gatk4ToolBase, ABC):
                 BamBai(),
                 prefix="-I",
                 position=10,
+                secondaries_present_as={".bai": "^.bai"},
                 doc="One or more input SAM or BAM files to analyze. Must be coordinate sorted.",
             ),
             ToolInput(
@@ -100,7 +100,12 @@ class Gatk4MarkDuplicatesBase(Gatk4ToolBase, ABC):
 
     def outputs(self):
         return [
-            ToolOutput("out", BamBai(), glob=InputSelector("outputFilename")),
+            ToolOutput(
+                "out",
+                BamBai,
+                glob=InputSelector("outputFilename"),
+                secondaries_present_as={".bai": "^.bai"},
+            ),
             ToolOutput("metrics", Tsv(), glob=InputSelector("metricsFilename")),
         ]
 

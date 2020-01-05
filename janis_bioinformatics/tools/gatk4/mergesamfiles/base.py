@@ -51,8 +51,7 @@ class Gatk4MergeSamFilesBase(Gatk4ToolBase, ABC):
     def gatk_command(cls):
         return "MergeSamFiles"
 
-    @staticmethod
-    def tool():
+    def tool(self):
         return "Gatk4MergeSamFiles"
 
     def friendly_name(self):
@@ -91,7 +90,14 @@ class Gatk4MergeSamFilesBase(Gatk4ToolBase, ABC):
         ]
 
     def outputs(self):
-        return [ToolOutput("out", BamBai(), glob=InputSelector("outputFilename"))]
+        return [
+            ToolOutput(
+                "out",
+                BamBai(),
+                glob=InputSelector("outputFilename"),
+                secondaries_present_as={".bai": "^.bai"},
+            )
+        ]
 
     def bind_metadata(self):
         from datetime import date

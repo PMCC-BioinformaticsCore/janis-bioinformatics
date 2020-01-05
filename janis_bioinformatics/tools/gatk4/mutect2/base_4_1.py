@@ -62,9 +62,8 @@ class Gatk4Mutect2Base_4_1(Gatk4ToolBase, ABC):
     def friendly_name(self) -> str:
         return "GatkMutect2"
 
-    @staticmethod
-    def tool() -> str:
-        return "gatkmutect2"
+    def tool(self) -> str:
+        return "Gatk4Mutect2"
 
     @classmethod
     def gatk_command(cls):

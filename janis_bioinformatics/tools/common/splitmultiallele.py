@@ -41,27 +41,22 @@ MEM_TUPLE = [
 
 
 class SplitMultiAllele(BioinformaticsTool):
-    @staticmethod
-    def tool():
+    def tool(self):
         return "SplitMultiAllele"
 
-    @staticmethod
-    def tool_provider():
+    def tool_provider(self):
         return "Peter MacCallum Cancer Centre"
 
     def friendly_name(self):
         return "Split Multiple Alleles"
 
-    @staticmethod
-    def base_command():
+    def base_command(self):
         return None
 
-    @staticmethod
-    def container():
+    def container(self):
         return "heuermh/vt"  # "SEE (mfranklin's notes in) DOCUMENTATION"
 
-    @staticmethod
-    def version():
+    def version(self):
         return "v0.5772"
 
     def cpus(self, hints: Dict[str, Any]):

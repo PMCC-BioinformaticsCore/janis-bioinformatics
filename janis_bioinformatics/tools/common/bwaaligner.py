@@ -12,12 +12,10 @@ class BwaAligner(BioinformaticsWorkflow):
     def friendly_name(self):
         return "Align and sort reads"
 
-    @staticmethod
-    def tool_provider():
+    def tool_provider(self):
         return "common"
 
-    @staticmethod
-    def version():
+    def version(self):
         return "1.0.0"
 
     def constructor(self):

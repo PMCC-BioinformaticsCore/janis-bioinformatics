@@ -17,16 +17,13 @@ from ..htslibbase import HtsLibBase
 
 
 class TabixBase(HtsLibBase, ABC):
-    @staticmethod
-    def tool_provider():
+    def tool_provider(self):
         return "htslib"
 
-    @staticmethod
-    def tool():
+    def tool(self):
         return "tabix"
 
-    @staticmethod
-    def base_command():
+    def base_command(self):
         return "tabix"
 
     def inputs(self) -> List[ToolInput]:

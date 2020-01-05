@@ -9,15 +9,13 @@ from janis_bioinformatics.tools.vcflib.vcflibtoolbase import VcfToolsToolBase
 
 
 class VcfAllelicPrimitivesBase(VcfToolsToolBase, ABC):
-    @staticmethod
-    def tool():
+    def tool(self):
         return "vcfallelicprimitives"
 
     def friendly_name(self):
         return "VcfLib: VcfAllelicPrimitives"
 
-    @staticmethod
-    def base_command():
+    def base_command(self):
         return "vcfallelicprimitives"
 
     def inputs(self):

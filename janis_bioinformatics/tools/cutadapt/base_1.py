@@ -51,16 +51,13 @@ class CutAdaptBase_1(BioinformaticsTool):
     def friendly_name(self) -> str:
         return "Cutadapt"
 
-    @staticmethod
-    def tool_provider():
+    def tool_provider(self):
         return "cutadapt"
 
-    @staticmethod
-    def tool() -> str:
+    def tool(self) -> str:
         return "cutadapt"
 
-    @staticmethod
-    def base_command():
+    def base_command(self):
         return "cutadapt"
 
     def inputs(self) -> List[ToolInput]:

@@ -58,9 +58,8 @@ class Gatk4HaplotypeCallerBase(Gatk4ToolBase, ABC):
     def gatk_command(cls):
         return "HaplotypeCaller"
 
-    @staticmethod
-    def tool():
-        return "GatkHaplotypeCaller"
+    def tool(self):
+        return "Gatk4HaplotypeCaller"
 
     def friendly_name(self):
         return "GATK4: Haplotype Caller"
@@ -86,6 +85,7 @@ class Gatk4HaplotypeCallerBase(Gatk4ToolBase, ABC):
                 BamBai(),
                 doc="BAM/SAM/CRAM file containing reads",
                 prefix="--input",
+                secondaries_present_as={".bai": "^.bai"},
             ),
             ToolInput(
                 "reference",

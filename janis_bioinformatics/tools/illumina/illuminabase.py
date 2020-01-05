@@ -4,7 +4,5 @@ from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 
 
 class IlluminaToolBase(BioinformaticsTool, ABC):
-
-    @staticmethod
-    def tool_provider():
+    def tool_provider(self):
         return "Illumina"

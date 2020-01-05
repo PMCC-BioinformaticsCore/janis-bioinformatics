@@ -68,9 +68,9 @@ class SamToolsViewBase(SamToolsToolBase, ABC):
             keywords=["samtools", "view"],
             documentationUrl="http://www.htslib.org/doc/samtools.html#COMMANDS_AND_OPTIONS",
             documentation="""Ensure SAMTOOLS.SORT is inheriting from parent metadata
-        
+
 ---------------------------------------------------------------------------------------------------
-    
+
 With no options or regions specified, prints all alignments in the specified input alignment file 
 (in SAM, BAM, or CRAM format) to standard output in SAM format (with no header).
 
