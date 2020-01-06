@@ -84,7 +84,7 @@ from .printreads.versions import (
     Gatk4PrintReads_4_1_4,
     Gatk4PrintReadsLatest,
 )
-from .selectVariants.versions import (
+from .selectvariants.versions import (
     Gatk4SelectVariants_4_0,
     Gatk4SelectVariants_4_1_2,
     Gatk4SelectVariants_4_1_3,
