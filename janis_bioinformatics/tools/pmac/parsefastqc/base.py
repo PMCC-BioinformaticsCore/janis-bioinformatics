@@ -117,6 +117,3 @@ class ParseFastqcAdaptors(PythonTool):
 
     def version(self):
         return "v0.1.0"
-
-
-ParseFastqcAdaptors().translate("wdl")
