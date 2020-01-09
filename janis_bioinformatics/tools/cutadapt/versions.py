@@ -36,8 +36,3 @@ class CutAdapt_2_6(CutAdaptBase_2):
 
 
 CutAdaptLatest = CutAdapt_2_6
-
-
-CutAdaptLatest().wrapped_in_wf().translate(
-    "wdl", to_console=False, to_disk=True, validate=True
-)
