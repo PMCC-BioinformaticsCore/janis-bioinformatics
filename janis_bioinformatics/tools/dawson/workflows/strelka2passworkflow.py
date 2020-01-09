@@ -119,8 +119,8 @@ class Strelka2PassWorkflow(BioinformaticsWorkflow):
             "indexINDELs", TabixLatest(file=self.compressINDELs.out), scatter="file"
         )
 
-        self.output("snvs", source=self.indexSNVs, output_tag=self.sampleNames)
-        self.output("indels", source=self.indexINDELs, output_tag=self.sampleNames)
+        self.output("snvs", source=self.indexSNVs, output_folder=self.sampleNames)
+        self.output("indels", source=self.indexINDELs, output_folder=self.sampleNames)
         # once optional outputs are supported we should enable this again
         # self.output("svs", source=self.step1.somaticSVs)
 
