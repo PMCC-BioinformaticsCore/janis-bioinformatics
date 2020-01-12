@@ -27,8 +27,8 @@ class BwaAligner(BioinformaticsWorkflow):
         self.input("fastq", FastqGzPair)
 
         # pipe adapters
-        self.input("cutadapt_adapter", Array(str))
-        self.input("cutadapt_removeMiddle3Adapter", Array(str))
+        self.input("cutadapt_adapter", Array(str, optional=True))
+        self.input("cutadapt_removeMiddle3Adapter", Array(str, optional=True))
 
         # Steps
         self.step(
