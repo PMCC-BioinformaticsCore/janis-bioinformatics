@@ -1,10 +1,16 @@
+"""
+Each modification of this tool should duplicate this code
+"""
+
 from typing import List, Dict, Any
 
-from janis_core import PythonTool, File, Array
+from janis_core import PythonTool, File, Array, ToolMetadata
 from janis_core.tool.tool import TOutput
 
+from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsPythonTool
 
-class ParseFastqcAdaptors(PythonTool):
+
+class ParseFastqcAdaptors(BioinformaticsPythonTool):
     @staticmethod
     def code_block(fastqc_datafiles: List[File], cutadapt_adaptors_lookup: File):
         """
@@ -117,3 +123,14 @@ class ParseFastqcAdaptors(PythonTool):
 
     def version(self):
         return "v0.1.0"
+
+    def tool_provider(self):
+        return "Peter MacCallum Cancer Centre"
+
+    def bind_metadata(self):
+        self.metadata.documentation = (
+            "Parse overrepresented region and lookup in Cutadapt table"
+        )
+        self.metadata.creator = "Michael Franklin"
+        self.metadata.dateCreated = "2020-01-07"
+        self.metadata.version = "0.1.0"
