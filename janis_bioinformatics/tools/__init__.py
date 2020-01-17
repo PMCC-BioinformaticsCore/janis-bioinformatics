@@ -14,7 +14,7 @@ from janis_bioinformatics.tools import (
     htslib,
     illumina,
     multiqc,
-    pappenfuss,
+    papenfuss,
     pmac,
     samtools,
     ucsf,
