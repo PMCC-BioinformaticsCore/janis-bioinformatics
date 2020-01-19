@@ -1,5 +1,5 @@
-from janis_bioinformatics.tools.pappenfuss.gridss.base_2_2 import GridssBase_2_2
-from janis_bioinformatics.tools.pappenfuss.gridss.base_2_4 import GridssBase_2_4
+from janis_bioinformatics.tools.papenfuss.gridss.base_2_2 import GridssBase_2_2
+from janis_bioinformatics.tools.papenfuss.gridss.base_2_4 import GridssBase_2_4
 
 
 class Gridss_2_2_3(GridssBase_2_2):
