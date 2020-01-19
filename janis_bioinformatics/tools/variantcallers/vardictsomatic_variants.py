@@ -1,11 +1,11 @@
 from janis_core import File, String, Float, Int, Boolean
-from janis_bioinformatics.tools.pmac import TrimIUPAC_0_0_4
 
 from janis_bioinformatics.data_types import FastaWithDict, BamBai, Bed
 from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.bcftools import BcfToolsAnnotate_1_5
 from janis_bioinformatics.tools.common import SplitMultiAllele
 from janis_bioinformatics.tools.vardict import VarDictSomatic_1_6_0
+from janis_bioinformatics.tools.pmac import TrimIUPAC_0_0_5
 
 
 class VardictSomaticVariantCaller(BioinformaticsWorkflow):
@@ -60,7 +60,7 @@ class VardictSomaticVariantCaller(BioinformaticsWorkflow):
         self.step(
             "split", SplitMultiAllele(reference=self.reference, vcf=self.annotate.out)
         )
-        self.step("trim", TrimIUPAC_0_0_4(vcf=self.split.out))
+        self.step("trim", TrimIUPAC_0_0_5(vcf=self.split.out))
 
         self.output("vardictVariants", source=self.vardict.out)
         self.output("out", source=self.trim.out)
