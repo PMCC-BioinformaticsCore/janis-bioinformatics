@@ -19,11 +19,11 @@ class GatkSomaticVariantCaller_4_0_12(BioinformaticsWorkflow):
 
     def constructor(self):
 
-        self.input("normalBam", BamBai)
-        self.input("tumorBam", BamBai)
+        self.input("normal_bam", BamBai)
+        self.input("tumor_bam", BamBai)
 
-        self.input("normalName", str)
-        self.input("tumorName", str)
+        self.input("normal_name", str)
+        self.input("tumor_name", str)
 
         self.input(
             "intervals",
@@ -35,28 +35,28 @@ class GatkSomaticVariantCaller_4_0_12(BioinformaticsWorkflow):
 
         self.input("snps_dbsnp", VcfTabix)
         self.input("snps_1000gp", VcfTabix)
-        self.input("knownIndels", VcfTabix)
-        self.input("millsIndels", VcfTabix)
+        self.input("known_indels", VcfTabix)
+        self.input("mills_indels", VcfTabix)
 
         self.step(
-            "baseRecalibrator_normal",
+            "base_recalibrator_normal",
             gatk4.Gatk4BaseRecalibrator_4_0(),
             ignore_missing=True,
         )
         self.step(
-            "baseRecalibrator_tumor",
+            "base_recalibrator_tumor",
             gatk4.Gatk4BaseRecalibrator_4_0(),
             ignore_missing=True,
         )
 
-        self.step("applyBQSR_normal", gatk4.Gatk4ApplyBqsr_4_0(), ignore_missing=True)
-        self.step("applyBQSR_tumor", gatk4.Gatk4ApplyBqsr_4_0(), ignore_missing=True)
+        self.step("apply_bqsr_normal", gatk4.Gatk4ApplyBqsr_4_0(), ignore_missing=True)
+        self.step("apply_bqsr_tumor", gatk4.Gatk4ApplyBqsr_4_0(), ignore_missing=True)
 
         # S1: BaseRecalibrator(s)
 
         for inp, baseRecal, applyBQSR in [
-            (self.normalBam, self.baseRecalibrator_normal, self.applyBQSR_normal),
-            (self.tumorBam, self.baseRecalibrator_tumor, self.applyBQSR_tumor),
+            (self.normal_bam, self.base_recalibrator_normal, self.apply_bqsr_normal),
+            (self.tumor_bam, self.base_recalibrator_tumor, self.apply_bqsr_tumor),
         ]:
             baseRecal["bam"] = inp
             baseRecal["intervals"] = self.intervals
@@ -64,8 +64,8 @@ class GatkSomaticVariantCaller_4_0_12(BioinformaticsWorkflow):
             baseRecal["knownSites"] = [
                 self.snps_dbsnp,
                 self.snps_1000gp,
-                self.knownIndels,
-                self.millsIndels,
+                self.known_indels,
+                self.mills_indels,
             ]
 
             applyBQSR["recalFile"] = baseRecal.out
@@ -76,20 +76,20 @@ class GatkSomaticVariantCaller_4_0_12(BioinformaticsWorkflow):
         self.step(
             "mutect2",
             gatk4.GatkMutect2_4_0(
-                normal=self.applyBQSR_normal.out,
-                tumor=self.applyBQSR_tumor.out,
-                normalName=self.normalName,
-                tumorName=self.tumorName,
+                normal=self.apply_bqsr_normal.out,
+                tumor=self.apply_bqsr_tumor.out,
+                normalName=self.normal_name,
+                tumorName=self.tumor_name,
                 intervals=self.intervals,
                 reference=self.reference,
             ),
         )
         self.step(
-            "splitMultiAllele",
+            "split_multi_allele",
             SplitMultiAllele(reference=self.reference, vcf=self.mutect2.out),
         )
 
-        self.output("out", source=self.splitMultiAllele.out)
+        self.output("out", source=self.split_multi_allele.out)
 
     def bind_metadata(self):
         self.metadata.version = "4.0.12.0"
