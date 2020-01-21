@@ -26,9 +26,9 @@ class VardictGermlineVariantCaller(BioinformaticsWorkflow):
         self.input("bam", BamBai)
         self.input("intervals", Bed)
 
-        self.input("sampleName", String)
-        self.input("alleleFreqThreshold", Float, default=0.5)
-        self.input("headerLines", File)
+        self.input("sample_name", String)
+        self.input("allele_freq_threshold", Float, default=0.5)
+        self.input("header_lines", File)
 
         self.input("reference", FastaWithDict)
 
@@ -38,10 +38,10 @@ class VardictGermlineVariantCaller(BioinformaticsWorkflow):
                 intervals=self.intervals,
                 bam=self.bam,
                 reference=self.reference,
-                sampleName=self.sampleName,
-                var2vcfSampleName=self.sampleName,
-                alleleFreqThreshold=self.alleleFreqThreshold,
-                var2vcfAlleleFreqThreshold=self.alleleFreqThreshold,
+                sampleName=self.sample_name,
+                var2vcfSampleName=self.sample_name,
+                alleleFreqThreshold=self.allele_freq_threshold,
+                var2vcfAlleleFreqThreshold=self.allele_freq_threshold,
                 chromNamesAreNumbers=True,
                 vcfFormat=True,
                 chromColumn=1,
@@ -51,14 +51,15 @@ class VardictGermlineVariantCaller(BioinformaticsWorkflow):
         )
         self.step(
             "annotate",
-            BcfToolsAnnotate_1_5(file=self.vardict.out, headerLines=self.headerLines),
+            BcfToolsAnnotate_1_5(file=self.vardict.out, headerLines=self.header_lines),
         )
         self.step(
-            "split", SplitMultiAllele(vcf=self.annotate.out, reference=self.reference)
+            "split_multi_allele",
+            SplitMultiAllele(vcf=self.annotate.out, reference=self.reference),
         )
-        self.step("trim", TrimIUPAC_0_0_5(vcf=self.split.out))
+        self.step("trim", TrimIUPAC_0_0_5(vcf=self.split_multi_allele.out))
 
-        self.output("vardictVariants", source=self.vardict.out)
+        self.output("vardict_variants", source=self.vardict.out)
         self.output("out", source=self.trim.out)
 
 
