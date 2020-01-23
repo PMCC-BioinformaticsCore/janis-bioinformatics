@@ -25,7 +25,7 @@ class IlluminaGermlineVariantCaller(BioinformaticsWorkflow):
         self.input("bam", BamBai)
         self.input("reference", FastaWithDict)
         self.input("intervals", BedTabix(optional=True))
-        self.input("isExome", Boolean(optional=True))
+        self.input("is_exome", Boolean(optional=True))
 
         self.step(
             "manta",
@@ -33,7 +33,7 @@ class IlluminaGermlineVariantCaller(BioinformaticsWorkflow):
                 bam=self.bam,
                 reference=self.reference,
                 callRegions=self.intervals,
-                exome=self.isExome,
+                exome=self.is_exome,
             ),
         )
 
@@ -44,7 +44,7 @@ class IlluminaGermlineVariantCaller(BioinformaticsWorkflow):
                 reference=self.reference,
                 indelCandidates=self.manta.candidateSmallIndels,
                 callRegions=self.intervals,
-                exome=self.isExome,
+                exome=self.is_exome,
             ),
         )
 
@@ -54,13 +54,13 @@ class IlluminaGermlineVariantCaller(BioinformaticsWorkflow):
         )
 
         self.step(
-            "splitMultiAllele",
+            "split_multi_allele",
             SplitMultiAllele(vcf=self.bcfview.out, reference=self.reference),
         )
 
         self.output("diploid", source=self.manta.diploidSV)
         self.output("variants", source=self.strelka.variants)
-        self.output("out", source=self.splitMultiAllele.out)
+        self.output("out", source=self.split_multi_allele.out)
 
 
 if __name__ == "__main__":

@@ -49,52 +49,52 @@ class GatkGermlineVariantCaller_4_1_3(BioinformaticsWorkflow):
 
         self.input("snps_dbsnp", VcfTabix)
         self.input("snps_1000gp", VcfTabix)
-        self.input("knownIndels", VcfTabix)
-        self.input("millsIndels", VcfTabix)
+        self.input("known_indels", VcfTabix)
+        self.input("mills_indels", VcfTabix)
 
         self.step(
-            "splitBams",
+            "split_bam",
             gatk4.Gatk4SplitReads_4_1_3(bam=self.bam, intervals=self.intervals),
         )
 
         self.step(
-            "baseRecalibrator",
+            "base_recalibrator",
             gatk4.Gatk4BaseRecalibrator_4_1_3(
-                bam=self.splitBams,
+                bam=self.split_bam,
                 intervals=self.intervals,
                 reference=self.reference,
                 knownSites=[
                     self.snps_dbsnp,
                     self.snps_1000gp,
-                    self.knownIndels,
-                    self.millsIndels,
+                    self.known_indels,
+                    self.mills_indels,
                 ],
             ),
         )
         self.step(
-            "applyBQSR",
+            "apply_bqsr",
             gatk4.Gatk4ApplyBqsr_4_1_3(
-                bam=self.splitBams,
+                bam=self.split_bam,
                 intervals=self.intervals,
-                recalFile=self.baseRecalibrator.out,
+                recalFile=self.base_recalibrator.out,
                 reference=self.reference,
             ),
         )
         self.step(
-            "haplotypeCaller",
+            "haplotype_caller",
             gatk4.Gatk4HaplotypeCaller_4_1_3(
-                inputRead=self.applyBQSR,
+                inputRead=self.apply_bqsr,
                 intervals=self.intervals,
                 reference=self.reference,
                 dbsnp=self.snps_dbsnp,
             ),
         )
         self.step(
-            "splitMultiAllele",
-            SplitMultiAllele(reference=self.reference, vcf=self.haplotypeCaller),
+            "split_multi_allele",
+            SplitMultiAllele(reference=self.reference, vcf=self.haplotype_caller),
         )
 
-        self.output("out", source=self.splitMultiAllele)
+        self.output("out", source=self.split_multi_allele)
 
 
 if __name__ == "__main__":
