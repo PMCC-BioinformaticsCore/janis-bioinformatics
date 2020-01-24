@@ -13,7 +13,7 @@ class Cram(File):
         return "A binary version of a SAM file, https://samtools.github.io/hts-specs/CRAMv3.pdf"
 
 
-class CramCrai(Bam):
+class CramCrai(Cram):
     @staticmethod
     def name():
         return "CramPair"
