@@ -2,7 +2,13 @@ from datetime import date
 
 from janis_bioinformatics.tools import BioinformaticsWorkflow
 
-from janis_bioinformatics.data_types import FastaWithDict, BamBai, BedTabix, VcfTabix
+from janis_bioinformatics.data_types import (
+    FastaWithDict,
+    BamBai,
+    BedTabix,
+    VcfTabix,
+    CramCrai,
+)
 
 from janis_core import Array, Boolean, String, Int, Filename
 
@@ -58,38 +64,38 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
 
     def constructor(self):
 
-        self.input("bams", Array(BamBai))
+        self.input("bams", Array(CramCrai))
 
         self.input("reference", FastaWithDict)
         self.input(
             "callRegions",
             Array(String, optional=True),
             default=[
-                "1",
-                "2",
-                "3",
-                "4",
-                "5",
-                "6",
-                "7",
-                "8",
-                "9",
-                "10",
-                "11",
-                "12",
-                "13",
-                "14",
-                "15",
-                "16",
-                "17",
-                "18",
-                "19",
-                "20",
-                "21",
-                "22",
-                "X",
-                "Y",
-                "MT",
+                "chr1",
+                "chr2",
+                "chr3",
+                "chr4",
+                "chr5",
+                "chr6",
+                "chr7",
+                "chr8",
+                "chr9",
+                "chr10",
+                "chr11",
+                "chr12",
+                "chr13",
+                "chr14",
+                "chr15",
+                "chr16",
+                "chr17",
+                "chr18",
+                "chr19",
+                "chr20",
+                "chr21",
+                "chr22",
+                "chrX",
+                "chrY",
+                "chrM",
             ],
         )
 
@@ -107,7 +113,7 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
                 gtQuals=True,
                 strictFlag=True,
                 pooledContinousFlag=True,
-                repoprtMaxGLFlag=True,
+                reportMaxGLFlag=True,
                 noABPriorsFlag=True,
                 maxNumOfAlleles=5,
                 noPartObsFlag=True,
@@ -199,7 +205,7 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
 
         self.step("indexFinal", TabixLatest(file=self.compressFinal.out))
 
-        self.output("out", source=self.indexFinal)
+        self.output("outVcf", source=self.indexFinal)
 
 
 if __name__ == "__main__":
