@@ -17,7 +17,7 @@ from janis_core import (
 )
 from janis_unix import TextFile
 
-from janis_bioinformatics.data_types import BamBai, Bed, FastaWithDict, Vcf
+from janis_bioinformatics.data_types import BamBai, Bed, FastaWithDict, Vcf, CramCrai
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 
 CORES_TUPLE = [
@@ -66,7 +66,7 @@ class FreeBayesBase_1_3(BioinformaticsTool):
         return [
             ToolInput(
                 tag="bams",
-                input_type=Array(BamBai),
+                input_type=Array(CramCrai),
                 prefix="-b",
                 prefix_applies_to_all_elements=True,
                 doc="Add FILE to the set of BAM files to be analyzed.",
