@@ -27,7 +27,7 @@ class CreateCallRegions(PythonTool):
                 # TODO: Maybe estimate how many regions we need and divide it in equal size regions
                 # instead of creating x full size and one smaller one.
                 while start < chrLength:
-                    end = start + regionsize
+                    end = start + regionSize
                     if end > chrLength:
                         end = chrLength
 
