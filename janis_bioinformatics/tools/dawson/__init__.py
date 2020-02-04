@@ -9,5 +9,4 @@ from .workflows.strelka2passworkflow import Strelka2PassWorkflow
 from .workflows.freebayessomaticworkflow import FreeBayesSomaticWorkflow
 from .workflows.mutectjointsomaticworkflow import Mutect2JointSomaticWorkflow
 
-
 from .createcallregions.base import CreateCallRegions

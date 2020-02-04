@@ -13,8 +13,8 @@ from janis_bioinformatics.data_types import (
 from janis_core import Array, Boolean, String, Int, Filename
 
 from janis_bioinformatics.tools.dawson import CallSomaticFreeBayes_0_1
-from janis_bioinformatics.tools.freebayes import FreeBayes_1_3
 from janis_bioinformatics.tools.dawson import CreateCallRegions
+from janis_bioinformatics.tools.freebayes import FreeBayes_1_3
 
 from janis_bioinformatics.tools.htslib import BGZipLatest, TabixLatest
 from janis_bioinformatics.tools.bcftools import BcfToolsNormLatest, BcfToolsSortLatest
@@ -84,9 +84,8 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
         # this should be a conditional (if the callregions are supplied we use them, otherwise we
         # create them)
         self.step(
-            "createRegions",
-            CreateCallRegions(reference=self.reference),
-            regionsize=self.regionSize,
+            "createCallRegions",
+            CreateCallRegions(reference=self.reference, regionSize=self.regionSize),
         )
 
         self.step(
@@ -102,7 +101,7 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
                 noABPriorsFlag=True,
                 maxNumOfAlleles=5,
                 noPartObsFlag=True,
-                region=self.createRegions.regions,
+                region=self.createCallRegions.regions,
                 skipCov=self.skipCov,
                 # things that are actually default, but janis does not recognize yet
                 useDupFlag=False,
@@ -191,9 +190,6 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
         self.step("indexFinal", TabixLatest(file=self.compressFinal.out))
 
         self.output("somaticOutVcf", source=self.indexFinal)
-        self.output(
-            "variantsOutVcf", source=self.callVariants, output_folder=self.callRegions
-        )
 
 
 if __name__ == "__main__":
