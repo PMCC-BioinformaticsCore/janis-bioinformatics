@@ -25,11 +25,11 @@ CORES_TUPLE = [
         CaptureType.key(),
         {
             CaptureType.TARGETED: 2,
-            CaptureType.CHROMOSOME: 4,
-            CaptureType.EXOME: 4,
-            CaptureType.THIRTYX: 4,
-            CaptureType.NINETYX: 4,
-            CaptureType.THREEHUNDREDX: 4,
+            CaptureType.CHROMOSOME: 2,
+            CaptureType.EXOME: 2,
+            CaptureType.THIRTYX: 2,
+            CaptureType.NINETYX: 2,
+            CaptureType.THREEHUNDREDX: 2,
         },
     )
 ]
