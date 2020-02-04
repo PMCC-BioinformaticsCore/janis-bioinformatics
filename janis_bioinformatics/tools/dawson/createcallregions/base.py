@@ -12,7 +12,7 @@ class CreateCallRegions(PythonTool):
 
         regions = ()
 
-        with open(reference, "r") as tmpF:
+        with open(f"{reference}.fai", "r") as tmpF:
             tsvreader = csv.reader(tsvfile, delimiter="\t")
             for line in tsvreader:
                 lineSplit = line.split("\t")
@@ -47,3 +47,6 @@ class CreateCallRegions(PythonTool):
 
     def version(self):
         return "v0.1.0"
+
+
+# CreateCallRegions().translate("cwl")

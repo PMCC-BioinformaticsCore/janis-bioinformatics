@@ -10,4 +10,4 @@ from .workflows.freebayessomaticworkflow import FreeBayesSomaticWorkflow
 from .workflows.mutectjointsomaticworkflow import Mutect2JointSomaticWorkflow
 
 
-from .createcallregions import CreateCallRegions
+from .createcallregions.base import CreateCallRegions
