@@ -2,25 +2,25 @@ from janis_core import PythonTool, TOutput, File
 from typing import Dict, Optional, List, Any
 
 from janis_core import Array
+from janis_bioinformatics.data_types import FastaFai
 
 
 class CreateCallRegions(PythonTool):
     @staticmethod
-    def code_block(reference: File, regionsize: int) -> Dict[str, Any]:
+    def code_block(reference: FastaFai, regionSize: int) -> Dict[str, Any]:
         from shutil import copyfile
         import csv
 
-        regions = ()
+        regions = []
 
         with open(f"{reference}.fai", "r") as tmpF:
-            tsvreader = csv.reader(tsvfile, delimiter="\t")
+            tsvreader = csv.reader(tmpF, delimiter="\t")
             for line in tsvreader:
-                lineSplit = line.split("\t")
 
                 # start point of the region per chr (which is per line)
                 start = 1
-                chr = lineSplit[0]
-                chrLength = lineSplit[1]
+                chr = line[0]
+                chrLength = int(line[1])
 
                 # while the start of the new region is still inside of the chromosomal boundaries
                 # we create a new region
