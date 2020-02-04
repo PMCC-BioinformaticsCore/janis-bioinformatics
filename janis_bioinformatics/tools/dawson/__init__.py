@@ -8,3 +8,6 @@ from .callsomaticfreebayes.callsomaticfreebayes_0_1 import CallSomaticFreeBayes_
 from .workflows.strelka2passworkflow import Strelka2PassWorkflow
 from .workflows.freebayessomaticworkflow import FreeBayesSomaticWorkflow
 from .workflows.mutectjointsomaticworkflow import Mutect2JointSomaticWorkflow
+
+
+from .createcallregions import CreateCallRegions
