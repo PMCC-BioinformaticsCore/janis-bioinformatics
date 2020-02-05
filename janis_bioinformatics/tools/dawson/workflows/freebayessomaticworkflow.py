@@ -81,6 +81,9 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
         # 8 * 400 = 1600 to be on the save side
         self.input("skipCov", Int(optional=True), default=500)
 
+        # the same is true for min cov
+        self.input("minCov", Int(optional=True), default=10)
+
         # this should be a conditional (if the callregions are supplied we use them, otherwise we
         # create them)
         self.step(
@@ -109,7 +112,7 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
                 minSupQsum=0,
                 minSupMQsum=0,
                 minAltQSum=0,
-                minCov=0,
+                minCov=self.minCov,
             ),
             scatter="region",
         )
