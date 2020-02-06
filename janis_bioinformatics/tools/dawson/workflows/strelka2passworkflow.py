@@ -2,7 +2,7 @@ from datetime import date
 
 from janis_bioinformatics.tools import BioinformaticsWorkflow
 
-from janis_bioinformatics.data_types import FastaWithDict, BamBai, BedTabix, VcfTabix
+from janis_bioinformatics.data_types import FastaWithDict, CramCrai, BedTabix, VcfTabix
 
 from janis_core import Array, Boolean, String
 
@@ -58,8 +58,8 @@ class Strelka2PassWorkflow(BioinformaticsWorkflow):
 
     def constructor(self):
 
-        self.input("normalBam", BamBai)
-        self.input("tumorBams", Array(BamBai))
+        self.input("normalBam", CramCrai)
+        self.input("tumorBams", Array(CramCrai))
 
         self.input("reference", FastaWithDict)
         self.input("callRegions", BedTabix(optional=True))
@@ -121,8 +121,8 @@ class Strelka2PassWorkflow(BioinformaticsWorkflow):
 
         self.output("snvs", source=self.indexSNVs, output_folder=self.sampleNames)
         self.output("indels", source=self.indexINDELs, output_folder=self.sampleNames)
-        # once optional outputs are supported we should enable this again
-        # self.output("svs", source=self.step1.somaticSVs)
+        # we enable this, because we also have a different wrapper than the default
+        self.output("svs", source=self.step1.somaticSVs)
 
 
 if __name__ == "__main__":
