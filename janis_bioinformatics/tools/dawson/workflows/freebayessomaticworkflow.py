@@ -113,6 +113,11 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
                 minSupMQsum=0,
                 minAltQSum=0,
                 minCov=self.minCov,
+                # now here we are trying to play with the detection limits
+                # we disable the fraction, because we really want to find all of them
+                minAltFrac=0,
+                # and we want at least ONE alt
+                minAltCount=1,
             ),
             scatter="region",
         )
