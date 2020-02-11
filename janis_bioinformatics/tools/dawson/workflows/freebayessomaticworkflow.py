@@ -114,10 +114,14 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
                 minAltQSum=0,
                 minCov=self.minCov,
                 # now here we are trying to play with the detection limits
-                # we disable the fraction, because we really want to find all of them
-                minAltFrac=0.0,
-                # and we want at least ONE alt
+                # we set the fraction to be very low, to include ALL of the sites in a potential analysis
+                minAltFrac=0.001,
+                # and we want at least ONE alt in at least one sample
                 minAltCount=1,
+                # but we also want to have at least two reads overall with that variants
+                # we do not care if they are between samples or if they are in the same sample, but
+                # 2 is better than one
+                minAltTotal=2,
             ),
             scatter="region",
         )
