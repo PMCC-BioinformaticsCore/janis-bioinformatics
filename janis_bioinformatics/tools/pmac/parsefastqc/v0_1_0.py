@@ -2,7 +2,7 @@
 Each modification of this tool should duplicate this code
 """
 
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 
 from janis_core import PythonTool, File, Array, ToolMetadata
 from janis_core.tool.tool import TOutput
@@ -12,7 +12,9 @@ from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsPyth
 
 class ParseFastqcAdaptors(BioinformaticsPythonTool):
     @staticmethod
-    def code_block(fastqc_datafiles: List[File], cutadapt_adaptors_lookup: File):
+    def code_block(
+        fastqc_datafiles: List[File], cutadapt_adaptors_lookup: Optional[File]
+    ):
         """
 
         :param fastqc_datafiles:
@@ -22,6 +24,9 @@ class ParseFastqcAdaptors(BioinformaticsPythonTool):
             the form name[tab]sequence. Lines prefixed with a hash will be ignored.
         :return:
         """
+        if not cutadapt_adaptors_lookup:
+            return {"adaptor_sequences": []}
+
         import mmap, re, csv
         from io import StringIO
         from sys import stderr
