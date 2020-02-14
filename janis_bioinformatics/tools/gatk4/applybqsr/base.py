@@ -51,7 +51,7 @@ class Gatk4ApplyBqsrBase(Gatk4ToolBase, ABC):
         return "GATK4: Apply base quality score recalibration"
 
     def tool(self):
-        return "GATK4ApplyBQSR"
+        return "Gatk4ApplyBQSR"
 
     def cpus(self, hints: Dict[str, Any]):
         val = get_value_for_hints_and_ordered_resource_tuple(hints, CORES_TUPLE)
@@ -73,6 +73,7 @@ class Gatk4ApplyBqsrBase(Gatk4ToolBase, ABC):
                 BamBai(),
                 prefix="-I",
                 doc="The SAM/BAM/CRAM file containing reads.",
+                secondaries_present_as={".bai": "^.bai"},
                 position=10,
             ),
             ToolInput(
@@ -100,7 +101,14 @@ class Gatk4ApplyBqsrBase(Gatk4ToolBase, ABC):
         ]
 
     def outputs(self):
-        return [ToolOutput("out", BamBai(), glob=InputSelector("outputFilename"))]
+        return [
+            ToolOutput(
+                "out",
+                BamBai(),
+                glob=InputSelector("outputFilename"),
+                secondaries_present_as={".bai": "^.bai"},
+            )
+        ]
 
     def bind_metadata(self):
         from datetime import date

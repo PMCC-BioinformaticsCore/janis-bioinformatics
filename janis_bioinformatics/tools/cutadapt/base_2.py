@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import List
 
-from janis_core import CaptureType
+from janis_core import CaptureType, Array
 from janis_core import (
     ToolOutput,
     ToolInput,
@@ -68,8 +68,9 @@ class CutAdaptBase_2(BioinformaticsTool):
             ToolInput("fastq", FastqGzPair, position=5),
             ToolInput(
                 "adapter",
-                String(optional=True),
+                input_type=Array(String(), optional=True),
                 prefix="-a",
+                prefix_applies_to_all_elements=True,
                 doc="Sequence of an adapter ligated to the 3' end (paired data: of the first read). "
                 "The adapter and subsequent bases are trimmed. If a '$' character is appended ('anchoring'), "
                 "the adapter is only found if it is a suffix of the read.",
@@ -113,13 +114,6 @@ class CutAdaptBase_2(BioinformaticsTool):
             prefix="--cores",
             separate_value_from_prefix=True,
             doc="(-j)  Number of CPU cores to use. Use 0 to auto-detect. Default: 1",
-        ),
-        ToolInput(
-            tag="adapter",
-            input_type=String(optional=True),
-            prefix="--adapter",
-            separate_value_from_prefix=True,
-            doc="(-a)  Sequence of an adapter ligated to the 3' end (paired data: of the first read). The adapter and subsequent bases are trimmed. If a '$' character is appended ('anchoring'), the adapter is only found if it is a suffix of the read.",
         ),
         ToolInput(
             tag="front",
@@ -200,7 +194,7 @@ class CutAdaptBase_2(BioinformaticsTool):
         ),
         ToolInput(
             tag="qualityCutoff",
-            input_type=Float(optional=True),
+            input_type=Int(optional=True),
             prefix="--quality-cutoff",
             separate_value_from_prefix=True,
             doc="(]3'CUTOFF, ]3'CUTOFF, -q)  Trim low-quality bases from 5' and/or 3' ends of each read before adapter removal. Applied to both reads if data is paired. If one value is given, only the 3' end is trimmed. If two comma-separated cutoffs are given, the 5' end is trimmed with the first cutoff, the 3' end with the second.",
@@ -361,9 +355,10 @@ class CutAdaptBase_2(BioinformaticsTool):
         ),
         ToolInput(
             tag="removeMiddle3Adapter",
-            input_type=String(optional=True),
+            input_type=Array(String, optional=True),
             prefix="-A",
             separate_value_from_prefix=True,
+            prefix_applies_to_all_elements=True,
             doc="3' adapter to be removed from second read in a pair.",
         ),
         ToolInput(

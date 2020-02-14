@@ -2,7 +2,7 @@ from janis_core import String, Logger, Array
 
 from janis_bioinformatics.data_types import FastaWithDict, BamBai, Bed
 from janis_bioinformatics.tools import BioinformaticsWorkflow
-from janis_bioinformatics.tools.pappenfuss import Gridss_2_5_1
+from janis_bioinformatics.tools.papenfuss import Gridss_2_5_1
 from janis_bioinformatics.tools.samtools import SamToolsView_1_7
 
 

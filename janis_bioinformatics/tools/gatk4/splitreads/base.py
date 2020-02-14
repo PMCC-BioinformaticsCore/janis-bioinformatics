@@ -1,7 +1,7 @@
 from datetime import datetime
+from typing import Dict, Any
 
 from janis_core import (
-    CommandTool,
     ToolInput,
     File,
     Boolean,
@@ -9,13 +9,27 @@ from janis_core import (
     Int,
     ToolMetadata,
     Double,
-    Filename,
     ToolOutput,
     InputSelector,
+    CaptureType,
+    get_value_for_hints_and_ordered_resource_tuple,
 )
-from janis_bioinformatics.tools.gatk4.gatk4toolbase import Gatk4ToolBase
 
 from janis_bioinformatics.data_types import FastaWithDict, Bed, BamBai
+from janis_bioinformatics.tools.gatk4.gatk4toolbase import Gatk4ToolBase
+
+MEM_TUPLE = [
+    (
+        CaptureType.key(),
+        {
+            CaptureType.CHROMOSOME: 8,
+            CaptureType.EXOME: 8,
+            CaptureType.THIRTYX: 8,
+            CaptureType.NINETYX: 16,
+            CaptureType.THREEHUNDREDX: 16,
+        },
+    )
+]
 
 
 class Gatk4SplitReadsBase(Gatk4ToolBase):
@@ -23,7 +37,7 @@ class Gatk4SplitReadsBase(Gatk4ToolBase):
         return "GATK4: SplitReads"
 
     def tool(self) -> str:
-        return "gatk4splitreads"
+        return "Gatk4SplitReads"
 
     @classmethod
     def gatk_command(cls):
@@ -43,6 +57,7 @@ class Gatk4SplitReadsBase(Gatk4ToolBase):
                 BamBai,
                 prefix="--input",
                 position=1,
+                secondaries_present_as={".bai": "^.bai"},
                 doc="(-I:String) BAM/SAM/CRAM file containing reads  This argument must be specified at least once.",
             ),
             ToolInput(
@@ -54,10 +69,20 @@ class Gatk4SplitReadsBase(Gatk4ToolBase):
             *Gatk4SplitReadsBase.additional_args,
         ]
 
+    def memory(self, hints: Dict[str, Any]):
+        val = get_value_for_hints_and_ordered_resource_tuple(hints, MEM_TUPLE)
+        if val:
+            return val
+        return 4
+
     def outputs(self):
         return [
             ToolOutput(
-                "out", BamBai, glob=InputSelector("bam", use_basename=True), doc="Bam"
+                "out",
+                BamBai,
+                glob=InputSelector("bam", use_basename=True),
+                doc="Bam",
+                secondaries_present_as={".bai": "^.bai"},
             )
         ]
 

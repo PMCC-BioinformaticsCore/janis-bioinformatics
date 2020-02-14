@@ -56,7 +56,7 @@ class Gatk4Mutect2Base_4_0(Gatk4ToolBase, ABC):
         return "Mutect2"
 
     def tool(self):
-        return "gatkmutect2"
+        return "Gatk4Mutect2"
 
     def friendly_name(self):
         return "GATK4: MuTect2"

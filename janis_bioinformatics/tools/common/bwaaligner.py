@@ -1,7 +1,8 @@
+from janis_core import Array
 from janis_bioinformatics.data_types import FastqGzPair, FastaWithDict
 from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.common.bwamem_samtoolsview import BwaMem_SamToolsView
-from janis_bioinformatics.tools.cutadapt import CutAdapt_1_18
+from janis_bioinformatics.tools.cutadapt import CutAdapt_2_6
 from janis_bioinformatics.tools.gatk4 import Gatk4SortSam_4_1_3
 
 
@@ -21,21 +22,25 @@ class BwaAligner(BioinformaticsWorkflow):
     def constructor(self):
 
         # Inputs
-        self.input("sampleName", str)
+        self.input("sample_name", str)
         self.input("reference", FastaWithDict)
         self.input("fastq", FastqGzPair)
+
+        # pipe adapters
+        self.input("cutadapt_adapter", Array(str, optional=True))
+        self.input("cutadapt_removeMiddle3Adapter", Array(str, optional=True))
 
         # Steps
         self.step(
             "cutadapt",
-            CutAdapt_1_18(
+            CutAdapt_2_6(
                 fastq=self.fastq,
-                adapter=None,
-                adapter_g=None,
+                adapter=self.cutadapt_adapter,
+                front=None,
                 removeMiddle5Adapter=None,
-                removeMiddle3Adapter=None,
+                removeMiddle3Adapter=self.cutadapt_removeMiddle3Adapter,
                 qualityCutoff=15,
-                minReadLength=50,
+                minimumLength=50,
             ),
         )
 
@@ -43,7 +48,7 @@ class BwaAligner(BioinformaticsWorkflow):
             "bwamem",
             BwaMem_SamToolsView(
                 reads=self.cutadapt.out,
-                sampleName=self.sampleName,
+                sampleName=self.sample_name,
                 reference=self.reference,
                 markShorterSplits=True,
             ),

@@ -6,3 +6,5 @@ from .fastq import *
 from .paired_read import *
 from .sam import *
 from .vcf import *
+from .crai import *
+from .cram import *
