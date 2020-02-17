@@ -105,3 +105,10 @@ from .splitreads.versions import (
     Gatk4SplitReads_4_1_4,
     Gatk4SortSamLatest,
 )
+
+from .collectinsertsizemetrics.versions import (
+    Gatk4CollectInsertSizeMetrics_4_1_2,
+    Gatk4CollectInsertSizeMetrics_4_1_3,
+    Gatk4CollectInsertSizeMetrics_4_1_4,
+    Gatk4CollectInsertSizeMetricsLatest,
+)
