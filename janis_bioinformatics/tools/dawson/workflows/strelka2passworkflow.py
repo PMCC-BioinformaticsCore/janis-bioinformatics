@@ -122,7 +122,7 @@ class Strelka2PassWorkflow(BioinformaticsWorkflow):
         self.output("snvs", source=self.indexSNVs, output_folder=self.sampleNames)
         self.output("indels", source=self.indexINDELs, output_folder=self.sampleNames)
         # we enable this, because we also have a different wrapper than the default
-        self.output("svs", source=self.step1.somaticSVs)
+        self.output("svs", source=self.step1.somaticSVs, output_folder=self.sampleNames)
 
 
 if __name__ == "__main__":
