@@ -5,6 +5,7 @@ from janis_bioinformatics.tools.bioinformaticstoolbase import (
 from janis_bioinformatics.tools import (
     babrahambioinformatics,
     bcftools,
+    bedtools,
     bwa,
     common,
     cellranger,

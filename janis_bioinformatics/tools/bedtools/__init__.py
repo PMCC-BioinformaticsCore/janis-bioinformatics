@@ -1,0 +1,1 @@
+from .intersectbed.versions import BedToolsIntersectBed_2_29_2, BedToolsIntersectBedLatest
