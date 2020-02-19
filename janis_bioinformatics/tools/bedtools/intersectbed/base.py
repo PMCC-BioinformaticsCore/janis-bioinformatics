@@ -35,7 +35,7 @@ class BedToolsIntersectBedBase(BedToolsToolBase, ABC):
         return "BEDTools: intersectBed"
 
     def base_command(self):
-        return ["bedtools", "intersectBed"]
+        return ["intersectBed"]
     
     def inputs(self):
         return [
