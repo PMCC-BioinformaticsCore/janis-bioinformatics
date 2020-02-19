@@ -102,22 +102,22 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
                 pooledContinousFlag=True,
                 reportMaxGLFlag=True,
                 noABPriorsFlag=True,
-                maxNumOfAlleles=5,
+                maxNumOfAlleles=4,
                 noPartObsFlag=True,
                 region=self.createCallRegions.regions,
                 skipCov=self.skipCov,
                 # things that are actually default, but janis does not recognize yet
                 useDupFlag=False,
-                minBaseQual=0,
-                minSupQsum=0,
+                minBaseQual=1,
                 minSupMQsum=0,
-                minAltQSum=0,
+                minSupQsum=0,
                 minCov=self.minCov,
                 # now here we are trying to play with the detection limits
                 # we set the fraction to be very low, to include ALL of the sites in a potential analysis
-                minAltFrac=0.001,
-                # and we want at least ONE alt in at least one sample
-                minAltCount=1,
+                minAltFrac=0.01,
+                # and we want at least one sample that has two high quality variants OR multiple
+                # lower quality ones
+                minAltQSum=70,
                 # but we also want to have at least two reads overall with that variants
                 # we do not care if they are between samples or if they are in the same sample, but
                 # 2 is better than one
