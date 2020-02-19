@@ -112,3 +112,10 @@ from .splitreads.versions import (
     Gatk4SplitReads_4_1_4,
     Gatk4SortSamLatest,
 )
+
+from .createsequencedictionary.versions import (
+    Gatk4CreateSequenceDictionary_4_1_2,
+    Gatk4CreateSequenceDictionary_4_1_3,
+    Gatk4CreateSequenceDictionary_4_1_4,
+    Gatk4CreateSequenceDictionaryLatest,
+)
