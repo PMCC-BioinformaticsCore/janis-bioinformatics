@@ -11,6 +11,7 @@ from janis_bioinformatics.tools import (
     cellranger,
     cutadapt,
     freebayes,
+    gatk3,
     gatk4,
     htslib,
     illumina,
