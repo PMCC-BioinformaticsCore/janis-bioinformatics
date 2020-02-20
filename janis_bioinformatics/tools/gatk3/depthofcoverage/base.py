@@ -14,7 +14,8 @@ from janis_core import (
     ToolMetadata,
     InputSelector,
     String,
-    Int
+    Int,
+    Array
 )
 
 class GATK3DepthOfCoverageBase(GATK3ToolBase, ABC):
@@ -36,7 +37,7 @@ class GATK3DepthOfCoverageBase(GATK3ToolBase, ABC):
             ToolInput("outputFilename", String(), prefix="-o", doc="An output file created by the walker. Will overwrite contents if file exists"),
             ToolInput("interval", Bed(optional=True), prefix="-L", doc="Only bed is supported. One or more genomic intervals over which to operate"),
             ToolInput("countType", String(optional=True), prefix="--countType", doc="overlapping reads from the same  fragment be handled? (COUNT_READS|COUNT_FRAGMENTS|COUNT_FRAGMENTS_REQUIRE_SAME_BASE)"),
-            #ToolInput("summaryCoverageThreshold", Int(optional=True), prefix="--summaryCoverageThreshold", doc="Coverage threshold (in percent) for summarizing statistics")
+            ToolInput("summaryCoverageThreshold", Array(Int(), optional=True), prefix="-ct", doc="Coverage threshold (in percent) for summarizing statistics", prefix_applies_to_all_elements=True)
         ]
 
     def outputs(self):
