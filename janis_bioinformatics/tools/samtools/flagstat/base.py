@@ -12,6 +12,7 @@ from janis_core import (
     WildcardSelector,
     Stdout
 )
+from janis_unix import TextFile
 from janis_bioinformatics.data_types.bam import Bam
 from janis_bioinformatics.tools.samtools.samtoolstoolbase import SamToolsToolBase
 from janis_core import ToolMetadata
@@ -36,7 +37,7 @@ class SamToolsFlagstatBase(SamToolsToolBase, ABC):
 
     def outputs(self):
         return [
-            ToolOutput("out", Stdout()),
+            ToolOutput("flagstatsOut", Stdout(TextFile)),
         ]
 
     def friendly_name(self):

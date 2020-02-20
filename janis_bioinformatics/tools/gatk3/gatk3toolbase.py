@@ -9,7 +9,7 @@ class GATK3ToolBase(BioinformaticsTool, ABC):
     @classmethod
     def base_command(cls):
         # Check to emplement the gatk3 java options
-        return ["java", "-Xmx8g", "-jar", "GenomeAnalysisTK.jar", "-T",
+        return ["java", "-Xmx8g", "-jar", "/usr/GenomeAnalysisTK.jar", "-T",
         cls.gatk_command()]
 
     @classmethod
