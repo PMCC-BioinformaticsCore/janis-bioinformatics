@@ -38,12 +38,12 @@ MEM_TUPLE = [
     (
         CaptureType.key(),
         {
-            CaptureType.TARGETED: 4,
-            CaptureType.CHROMOSOME: 16,
-            CaptureType.EXOME: 32,
-            CaptureType.THIRTYX: 64,
-            CaptureType.NINETYX: 64,
-            CaptureType.THREEHUNDREDX: 64,
+            CaptureType.TARGETED: 2,
+            CaptureType.CHROMOSOME: 4,
+            CaptureType.EXOME: 8,
+            CaptureType.THIRTYX: 8,
+            CaptureType.NINETYX: 16,
+            CaptureType.THREEHUNDREDX: 32,
         },
     )
 ]
@@ -538,7 +538,7 @@ class FreeBayesBase_1_3(BioinformaticsTool):
         val = get_value_for_hints_and_ordered_resource_tuple(hints, MEM_TUPLE)
         if val:
             return val
-        return 16
+        return 2
 
     def bind_metadata(self):
         from datetime import date
