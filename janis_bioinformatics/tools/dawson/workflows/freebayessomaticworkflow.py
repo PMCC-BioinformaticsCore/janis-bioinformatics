@@ -88,7 +88,9 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
         # create them)
         self.step(
             "createCallRegions",
-            CreateCallRegions(reference=self.reference, regionSize=self.regionSize),
+            CreateCallRegions(
+                reference=self.reference, regionSize=self.regionSize, equalize=True
+            ),
         )
 
         self.step(

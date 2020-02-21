@@ -24,18 +24,19 @@ class CreateCallRegions(PythonTool):
                 start = 1
                 chr = line[0]
                 chrLength = int(line[1])
+                chrRegionSize = regionSize
 
                 if equalize:
                     # in this case we make the regions as equal in size as we can an treat the
                     # input size as a guide and not as nessecity
-                    steps = math.ceil(chrLength / regionSize)
+                    steps = math.ceil(chrLength / chrRegionSize)
                     # change the regionSize to the equalized version
-                    regionSize = math.ceil(chrLength / steps)
+                    chrRegionSize = math.ceil(chrLength / steps)
 
                 # while the start of the new region is still inside of the chromosomal boundaries
                 # we create a new region
                 while start < chrLength:
-                    end = start + regionSize
+                    end = start + chrRegionSize
                     if end > chrLength:
                         end = chrLength
 
