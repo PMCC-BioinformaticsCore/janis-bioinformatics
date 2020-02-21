@@ -7,9 +7,12 @@ from janis_bioinformatics.data_types import FastaFai
 
 class CreateCallRegions(PythonTool):
     @staticmethod
-    def code_block(reference: FastaFai, regionSize: int) -> Dict[str, Any]:
+    def code_block(
+        reference: FastaFai, regionSize: int, equalize: boolean = True
+    ) -> Dict[str, Any]:
         from shutil import copyfile
         import csv
+        import math
 
         regions = []
 
@@ -22,10 +25,15 @@ class CreateCallRegions(PythonTool):
                 chr = line[0]
                 chrLength = int(line[1])
 
+                if equalize:
+                    # in this case we make the regions as equal in size as we can an treat the
+                    # input size as a guide and not as nessecity
+                    steps = math.ceil(chrLength / regionSize)
+                    # change the regionSize to the equalized version
+                    regionSize = math.ceil(chrLength / steps)
+
                 # while the start of the new region is still inside of the chromosomal boundaries
                 # we create a new region
-                # TODO: Maybe estimate how many regions we need and divide it in equal size regions
-                # instead of creating x full size and one smaller one.
                 while start < chrLength:
                     end = start + regionSize
                     if end > chrLength:
