@@ -8,7 +8,7 @@ from janis_bioinformatics.data_types import FastaFai
 class CreateCallRegions(PythonTool):
     @staticmethod
     def code_block(
-        reference: FastaFai, regionSize: int, equalize: boolean = True
+        reference: FastaFai, regionSize: int, equalize: bool = True
     ) -> Dict[str, Any]:
         from shutil import copyfile
         import csv
