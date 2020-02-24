@@ -90,6 +90,7 @@ class Strelka2PassWorkflowStep1(BioinformaticsWorkflow):
         self.output("candIndels", source=self.manta.candidateSmallIndels)
         self.output("indels", source=self.indexINDELs.out)
         self.output("snvs", source=self.indexSNVs.out)
+        self.output("somaticSVs", source=self.manta.somaticSVs)
 
 
 if __name__ == "__main__":

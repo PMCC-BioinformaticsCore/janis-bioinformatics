@@ -123,7 +123,7 @@ class MantaBase(IlluminaToolBase, ABC):
                 glob=InputSelector("runDir") + "/results/stats/svLocusGraphStats.tsv",
             ),
             ToolOutput(
-                "somaticSV",
+                "somaticSVs",
                 VcfTabix(),
                 glob=InputSelector("runDir") + "/results/variants/somaticSV.vcf.gz",
             ),
