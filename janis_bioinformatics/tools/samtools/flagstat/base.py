@@ -37,7 +37,7 @@ class SamToolsFlagstatBase(SamToolsToolBase, ABC):
 
     def outputs(self):
         return [
-            ToolOutput("flagstatsOut", Stdout(TextFile)),
+            ToolOutput("out", Stdout(TextFile)),
         ]
 
     def friendly_name(self):
