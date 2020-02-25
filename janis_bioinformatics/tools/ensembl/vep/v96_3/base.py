@@ -15,12 +15,12 @@ from janis_core import (
 )
 from janis_unix import Tsv
 
-from janis_bioinformatics.data_types import Fasta
+from janis_bioinformatics.data_types import Fasta, CompressedVcf
 
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 
 
-class VepBase(BioinformaticsTool):
+class VepBase_96_3(BioinformaticsTool):
     def tool(self) -> str:
         return "vep"
 
@@ -34,7 +34,7 @@ class VepBase(BioinformaticsTool):
         return [
             ToolInput(
                 "inputFile",
-                File(),
+                CompressedVcf(),
                 prefix="--input_file",
                 doc="Input file name. Can use compressed file (gzipped).",
             ),
@@ -56,7 +56,9 @@ class VepBase(BioinformaticsTool):
                 default="bgzip",
                 doc='Compress output: "gzip" or "bgzip"',
             ),
-            ToolInput("outputFilename", Filename(), doc="Output file name"),
+            ToolInput(
+                "outputFilename", Filename(), prefix="-o", doc="Output file name"
+            ),
             ToolInput(
                 "inputData",
                 String(optional=True),
@@ -174,7 +176,7 @@ class VepBase(BioinformaticsTool):
                 "useGivenRef",
                 String(optional=True),
                 prefix="--use_given_ref",
-                doc="Using --bam or a BAM-edited RefSeq cache by default enables --use_transcript_ref; add this flag "
+                doc="Using --bam or a BAM-edited RefSeq cache by default enables --use_transcriipt_ref; add this flag "
                 "to override this behaviour and use the provided reference allele from the input. ",
             ),
             ToolInput(
@@ -340,7 +342,7 @@ class VepBase(BioinformaticsTool):
                 prefix="--no_headers",
                 doc="Don't write header lines in output files. Default = add headers",
             ),
-            *VepBase.identifiers,
+            *VepBase_96_3.identifiers,
         ]
 
     def bind_metadata(self):
