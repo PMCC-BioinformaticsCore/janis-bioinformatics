@@ -54,10 +54,10 @@ class FastaDict(Fasta):
         return ["^.dict"]
 
 
-class FastaWithDict(Fasta):
+class FastaWithIndexes(Fasta):
     @staticmethod
     def name():
-        return "FastaWithDict"
+        return "FastaWithIndexes"
 
     @staticmethod
     def secondary_files():
@@ -67,6 +67,8 @@ class FastaWithDict(Fasta):
             *FastaDict.secondary_files(),
         ]
 
+
+FastaWithDict = FastaWithIndexes
 
 if __name__ == "__main__":
     bwa, fai, wdict = FastaBwa(), FastaFai(), FastaWithDict()
