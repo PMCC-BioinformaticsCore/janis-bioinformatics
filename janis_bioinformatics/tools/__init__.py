@@ -9,6 +9,7 @@ from janis_bioinformatics.tools import (
     common,
     cellranger,
     cutadapt,
+    ensembl,
     freebayes,
     gatk4,
     htslib,
