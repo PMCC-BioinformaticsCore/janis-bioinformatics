@@ -42,10 +42,10 @@ class BedToolsCoverageBedBase(BedToolsToolBase, ABC):
     def inputs(self):
         return [
             *self.additional_inputs,
-            ToolInput("inputABam", Bam(), prefix="-a",
-            doc="input file a: only bam is supported at the moment"),
-            ToolInput("inputBBed", Array(Bed()), prefix="-b", 
-            doc="input file b: only bed is supported at the moment. May be followed with multiple databases and/or  wildcard (*) character(s). "),
+            ToolInput("inputABed", Bed(), prefix="-a",
+            doc="input file a: only bed is supported at the moment. May be followed with multiple databases and/or  wildcard (*) character(s). "),
+            ToolInput("inputBBam", Bam(), prefix="-b",
+            doc="input file b: only bam is supported at the moment"),
             ToolInput("histogram", Boolean(optional=True), prefix="-hist", doc="Report a histogram of coverage for each feature in A as well as a summary histogram for _all_ features in A. Output (tab delimited) after each feature in A: 1) depth 2) # bases at depth 3) size of A 4) % of A at depth.")
         ]
 
