@@ -101,7 +101,14 @@ class FastQCBase(BioinformaticsTool, ABC):
 
     def outputs(self) -> List[ToolOutput]:
         return [
-            ToolOutput("out", Array(ZipFile()), glob=WildcardSelector(wildcard="*.zip"))
+            ToolOutput(
+                "out", Array(ZipFile()), glob=WildcardSelector(wildcard="*.zip")
+            ),
+            ToolOutput(
+                "datafile",
+                Array(File),
+                glob=WildcardSelector(wildcard="*/fastqc_data.txt"),
+            ),
         ]
 
     additional_inputs = [
@@ -144,6 +151,7 @@ class FastQCBase(BioinformaticsTool, ABC):
             "extract",
             Boolean(optional=True),
             prefix="--extract",
+            default=True,
             doc="If set then the zipped output file will be uncompressed in the same directory after it has "
             "been created.  By default this option will be set if fastqc is run in non-interactive mode.",
         ),
@@ -157,7 +165,6 @@ class FastQCBase(BioinformaticsTool, ABC):
         ToolInput(
             "noextract",
             Boolean(optional=True),
-            default=True,
             prefix="--noextract",
             doc="Do not uncompress the output file after creating it.  You should set this option if you do"
             "not wish to uncompress the output when running in non-interactive mode. ",
@@ -201,7 +208,7 @@ class FastQCBase(BioinformaticsTool, ABC):
             prefix="--adapters",
             doc="(-a) Specifies a non-default file which contains the list of adapter sequences which will "
             "be explicity searched against the library. The file must contain sets of named adapters in "
-            "the form name[tab]sequence.  Lines prefixed with a hash will be ignored. ",
+            "the form name[tab]sequence. Lines prefixed with a hash will be ignored.",
         ),
         ToolInput(
             "limits",

@@ -46,7 +46,7 @@ class Gatk4MergeMutectStatsBase(Gatk4ToolBase, ABC):
         return "MergeMutectStats"
 
     def tool(self):
-        return "GATK4MergeMutectStats"
+        return "Gatk4MergeMutectStats"
 
     def friendly_name(self):
         return "GATK4: MergeMutectStats"

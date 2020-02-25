@@ -22,46 +22,46 @@ class IlluminaSomaticVariantCaller(BioinformaticsWorkflow):
 
     def constructor(self):
 
-        self.input("normalBam", BamBai)
-        self.input("tumorBam", BamBai)
+        self.input("normal_bam", BamBai)
+        self.input("tumor_bam", BamBai)
 
         self.input("reference", FastaWithDict)
         self.input("intervals", BedTabix(optional=True))
 
-        self.input("isExome", Boolean(optional=True))
+        self.input("is_exome", Boolean(optional=True))
 
         self.step(
             "manta",
             Manta_1_5_0(
-                bam=self.normalBam,
-                tumorBam=self.tumorBam,
+                bam=self.normal_bam,
+                tumorBam=self.tumor_bam,
                 reference=self.reference,
                 callRegions=self.intervals,
-                exome=self.isExome,
+                exome=self.is_exome,
             ),
         )
         self.step(
             "strelka",
             StrelkaSomatic_2_9_10(
                 indelCandidates=self.manta.candidateSmallIndels,
-                normalBam=self.normalBam,
-                tumorBam=self.tumorBam,
+                normalBam=self.normal_bam,
+                tumorBam=self.tumor_bam,
                 reference=self.reference,
                 callRegions=self.intervals,
-                exome=self.isExome,
+                exome=self.is_exome,
             ),
         )
         self.step(
             "bcf_view", BcfToolsView_1_5(file=self.strelka.snvs, applyFilters=["PASS"])
         )
         self.step(
-            "splitMultiAllele",
+            "split_multi_allele",
             SplitMultiAllele(vcf=self.bcf_view.out, reference=self.reference),
         )
 
         self.output("diploid", source=self.manta.diploidSV)
         self.output("variants", source=self.strelka.snvs)
-        self.output("out", source=self.splitMultiAllele.out)
+        self.output("out", source=self.split_multi_allele.out)
 
 
 if __name__ == "__main__":

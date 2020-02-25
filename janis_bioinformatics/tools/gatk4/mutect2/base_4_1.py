@@ -63,7 +63,7 @@ class Gatk4Mutect2Base_4_1(Gatk4ToolBase, ABC):
         return "GatkMutect2"
 
     def tool(self) -> str:
-        return "gatkmutect2"
+        return "Gatk4Mutect2"
 
     @classmethod
     def gatk_command(cls):
