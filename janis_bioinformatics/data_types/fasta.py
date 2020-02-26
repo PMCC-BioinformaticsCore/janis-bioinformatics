@@ -13,7 +13,7 @@ class Fasta(File):
     def can_receive_from(self, other, source_has_default=False):
 
         if isinstance(other, Fasta):
-            if self.optional and not other.optional:
+            if other.optional and not self.optional:
                 return False
         elif not super().can_receive_from(other, source_has_default):
             return False
@@ -75,3 +75,4 @@ if __name__ == "__main__":
     print(fai.can_receive_from(wdict))
     print(bwa.can_receive_from(wdict))
     print(wdict.can_receive_from(bwa))
+    print(wdict.can_receive_from(wdict))
