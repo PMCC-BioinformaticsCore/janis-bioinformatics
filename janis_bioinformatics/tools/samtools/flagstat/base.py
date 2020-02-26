@@ -10,7 +10,7 @@ from janis_core import (
     Array,
     InputSelector,
     WildcardSelector,
-    Stdout
+    Stdout,
 )
 from janis_unix import TextFile
 from janis_bioinformatics.data_types.bam import Bam
@@ -29,9 +29,12 @@ class SamToolsFlagstatBase(SamToolsToolBase, ABC):
     def inputs(self):
         return [
             ToolInput("bam", Bam(), position=10),
-            ToolInput("threads", Int(optional=True),
-                      position=5, prefix="-@",
-                      doc="Number of BAM compression threads to use in addition to main thread [0].",
+            ToolInput(
+                "threads",
+                Int(optional=True),
+                position=5,
+                prefix="-@",
+                doc="Number of BAM compression threads to use in addition to main thread [0].",
             ),
         ]
 
@@ -93,4 +96,3 @@ with mate mapped to a different chr     0x1 bit set and neither 0x4 nor 0x8 bits
 
 with mate mapped to a different chr (mapQ>=5)     0x1 bit set and neither 0x4 nor 0x8 bits set and MRNM not equal to RNAME and MAPQ >= 5)""".strip(),
         )
-

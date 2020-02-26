@@ -13,7 +13,7 @@ from janis_core import (
     InputSelector,
     CaptureType,
     Double,
-    Float
+    Float,
 )
 from janis_core import get_value_for_hints_and_ordered_resource_tuple
 from janis_core import ToolMetadata
@@ -89,22 +89,32 @@ class Gatk4CollectInsertSizeMetricsBase(Gatk4ToolBase, ABC):
     def inputs(self):
         return [
             *super(Gatk4CollectInsertSizeMetricsBase, self).inputs(),
-
-            ToolInput("bam", 
-                      Bam(optional=False), prefix="-I", doc="Input SAM or BAM file.  Required.", position=10),
-            ToolInput("outputFilename", 
-                      Filename(extension=".txt"), prefix="-O", doc="File to write the output to.  Required."),
-
-            ToolInput("outputHistogram", Filename(extension=".pdf"), prefix="-H", doc="File to write insert size Histogram chart to.  Required. "),
-
-            *Gatk4CollectInsertSizeMetricsBase.additional_args,         
+            ToolInput(
+                "bam",
+                Bam(optional=False),
+                prefix="-I",
+                doc="Input SAM or BAM file.  Required.",
+                position=10,
+            ),
+            ToolInput(
+                "outputFilename",
+                Filename(extension=".txt"),
+                prefix="-O",
+                doc="File to write the output to.  Required.",
+            ),
+            ToolInput(
+                "outputHistogram",
+                Filename(extension=".pdf"),
+                prefix="-H",
+                doc="File to write insert size Histogram chart to.  Required. ",
+            ),
+            *Gatk4CollectInsertSizeMetricsBase.additional_args,
         ]
 
     def outputs(self):
         return [
             ToolOutput("out", File(), glob=InputSelector("outputFilename")),
-
-            ToolOutput("outHistogram", File(), glob=InputSelector("outputHistogram"))
+            ToolOutput("outHistogram", File(), glob=InputSelector("outputHistogram")),
         ]
 
     additional_args = [
