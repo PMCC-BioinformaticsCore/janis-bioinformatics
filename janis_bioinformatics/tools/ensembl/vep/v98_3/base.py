@@ -63,15 +63,6 @@ class VepBase_98_3(BioinformaticsTool):
             # ToolInput('plugin', [PLUGINS](optional=True), prefix='--plugin',
             #           doc='Use named plugin. Plugin modules should be installed in the Plugins subdirectory of the VEP cache directory (defaults to $HOME/.vep/). Multiple plugins can be used by supplying the --plugin flag multiple times. See plugin documentation. Not used by default'),
             ToolInput(
-                "compressOutput",
-                String(),
-                default="bgzip",
-                doc='Compress output: "gzip" or "bgzip"',
-            ),
-            ToolInput(
-                "outputFilename", Filename(), prefix="-o", doc="Output file name"
-            ),
-            ToolInput(
                 "help",
                 Boolean(optional=True),
                 prefix="--help",
@@ -270,6 +261,7 @@ class VepBase_98_3(BioinformaticsTool):
             ToolInput(
                 "compressOutput",
                 String(optional=True),
+                default="bgzip",
                 prefix="--compress_output",
                 doc="Writes output compressed using either gzip or bgzip. Not used by default",
             ),
