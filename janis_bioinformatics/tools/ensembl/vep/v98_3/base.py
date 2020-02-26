@@ -194,6 +194,7 @@ class VepBase_98_3(BioinformaticsTool):
                 "custom",
                 Array(BedTabix, optional=True),
                 prefix="--custom",
+                prefix_applies_to_all_elements=True,
                 doc="Add custom annotation to the output. Files must be tabix indexed or in the bigWig format. "
                 "Multiple files can be specified by supplying the --custom flag multiple times. "
                 "See https://asia.ensembl.org/info/docs/tools/vep/script/vep_custom.html for full details. "
@@ -791,5 +792,7 @@ Not used by default""",
         return [
             ToolOutput("std", Stdout),
             ToolOutput("out", File, glob=InputSelector("outputFilename")),
-            ToolOutput("stats"),
+            ToolOutput(
+                "stats", File(extension=".html"), glob=InputSelector("statsFile")
+            ),
         ]
