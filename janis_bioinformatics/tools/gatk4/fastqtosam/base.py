@@ -261,6 +261,23 @@ class Gatk4FastqToSamBase(Gatk4ToolBase, ABC):
             doc="Use sequential fastq files with the suffix _###.fastq or _###.fastq.gz."
         ),
         ToolInput(
+<<<<<<< HEAD
+=======
+            "unmappedReadStrategy",
+            String(optional=True),
+            prefix="--UNMAPPED_READ_STRATEGY",
+            position=11,
+            doc="How to deal with alignment information in reads that are being unmapped (e.g. due to cross-species contamination.) Currently ignored unless UNMAP_CONTAMINANT_READS = true."
+        ),
+        ToolInput(
+            "addPgTagToReads",
+            Boolean(optional=True),
+            prefix="--ADD_PG_TAG_TO_READS",
+            position=11,
+            doc="Add PG tag to each read in a SAM or BAM"
+        ),
+        ToolInput(
+>>>>>>> 396e351cacd8266287a1bb552a0249a2a4b834f3
             "compressionLevel",
             Int(optional=True),
             prefix="--COMPRESSION_LEVEL",
