@@ -148,6 +148,7 @@ class VepBase_98_3(BioinformaticsTool):
             ToolInput(
                 "statsFile",
                 String(optional=True),
+                default="variant_effect_output.txt_summary.html",
                 prefix="--stats_file",
                 doc="(--sf) Summary stats file name. This is an HTML file containing a summary of the VEP run - the "
                 'file name must end ".htm" or ".html". Default = "variant_effect_output.txt_summary.html"',
