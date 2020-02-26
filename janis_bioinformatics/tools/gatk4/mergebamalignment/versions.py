@@ -18,7 +18,7 @@ class Gatk4MergeBamAlignment_4_1_4(Gatk_4_1_4_1, Gatk4MergeBamAlignmentBase):
     pass
 
 
-Gatk4MergeBamAlignmentLatest = Gatk4MarkDuplicates_4_1_4
+Gatk4MergeBamAlignmentLatest = Gatk4MergeBamAlignment_4_1_4
 
 if __name__ == "__main__":
     print(Gatk4MergeBamAlignmentLatest().help())
