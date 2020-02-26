@@ -33,4 +33,12 @@ class Gatk_4_1_4_0(ABC):
         return "4.1.4.0"
 
 
-Gatk4Latest = Gatk_4_1_4_0
+class Gatk_4_1_4_1(ABC):
+    def container(self):
+        return "broadinstitute/gatk:4.1.4.1"
+
+    def version(self):
+        return "4.1.4.1"
+
+
+Gatk4Latest = Gatk_4_1_4_1
