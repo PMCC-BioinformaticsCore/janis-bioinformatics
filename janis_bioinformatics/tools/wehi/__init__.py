@@ -1,1 +1,0 @@
-from .featurecounts.versions import FeatureCounts_1_6_4
