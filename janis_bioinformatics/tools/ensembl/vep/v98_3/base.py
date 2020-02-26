@@ -18,7 +18,7 @@ from janis_core import (
 )
 from janis_unix import Tsv
 
-from janis_bioinformatics.data_types import Fasta, CompressedVcf
+from janis_bioinformatics.data_types import Fasta, CompressedVcf, Bam, BedTabix
 
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 
@@ -82,7 +82,7 @@ class VepBase_98_3(BioinformaticsTool):
             ),
             ToolInput(
                 "config",
-                Filename(),
+                File(optional=True),
                 prefix="--config",
                 doc="""Load configuration options from a config file. The config file should consist of whitespace-separated pairs of option names and settings e.g.:
 
@@ -147,7 +147,7 @@ class VepBase_98_3(BioinformaticsTool):
             ),
             ToolInput(
                 "statsFile",
-                Filename(),
+                String(optional=True),
                 prefix="--stats_file",
                 doc="(--sf) Summary stats file name. This is an HTML file containing a summary of the VEP run - the "
                 'file name must end ".htm" or ".html". Default = "variant_effect_output.txt_summary.html"',
@@ -166,7 +166,7 @@ class VepBase_98_3(BioinformaticsTool):
             ),
             ToolInput(
                 "warningFile",
-                Filename(),
+                Filename(suffix="warning", extension=".txt"),
                 prefix="--warning_file",
                 doc="File name to write warnings and errors to. Default = STDERR (standard error)",
             ),
@@ -192,29 +192,30 @@ class VepBase_98_3(BioinformaticsTool):
             ),
             ToolInput(
                 "custom",
-                Filename(),
+                Array(BedTabix, optional=True),
                 prefix="--custom",
                 doc="Add custom annotation to the output. Files must be tabix indexed or in the bigWig format. "
                 "Multiple files can be specified by supplying the --custom flag multiple times. "
-                "See here for full details. Not used by default",
+                "See https://asia.ensembl.org/info/docs/tools/vep/script/vep_custom.html for full details. "
+                "Not used by default",
             ),
             ToolInput(
                 "gff",
-                Filename(),
+                File(optional=True),
                 prefix="--gff",
                 doc="Use GFF transcript annotations in [filename] as an annotation source. "
                 "Requires a FASTA file of genomic sequence.Not used by default",
             ),
             ToolInput(
                 "gtf",
-                Filename(),
+                File(optional=True),
                 prefix="--gtf",
                 doc="Use GTF transcript annotations in [filename] as an annotation source. "
                 "Requires a FASTA file of genomic sequence.Not used by default",
             ),
             ToolInput(
                 "bam",
-                Filename(),
+                Bam(optional=True),
                 prefix="--bam",
                 doc="ADVANCED Use BAM file of sequence alignments to correct transcript models not derived from "
                 "reference genome sequence. Used to correct RefSeq transcript models. "
@@ -790,4 +791,5 @@ Not used by default""",
         return [
             ToolOutput("std", Stdout),
             ToolOutput("out", File, glob=InputSelector("outputFilename")),
+            ToolOutput("stats"),
         ]
