@@ -13,6 +13,7 @@ from janis_core import (
     Int,
     Stdout,
     String,
+    ToolArgument,
     ToolInput,
     ToolMetadata,
     ToolOutput,
@@ -73,19 +74,18 @@ class ScrambleBase(BioinformaticsTool, ABC):
 
     def arguments(self):
         return [
-            ToolInput("inputFormat", String("bam"), prefix="-I",),
-            ToolInput("outputFormat", String("cram"), prefix="-O",),
-            ToolInput(
-                "level",
-                Boolean(True),
-                prefix="-9",
+            ToolArgument("bam", prefix="-I", doc="input data format",),
+            ToolArgument("cram", prefix="-O", doc="output data format",),
+            ToolArgument(
+                "-9",
+                Boolean(),
                 doc="compression settings for output cram file (-1=fast,-9=best)",
             ),
-            ToolInput(
-                "cramFormat",
-                String("3.0"),
+            ToolArgument(
+                "3.0",
                 prefix="-V",
                 separate_value_from_prefix=False,
+                doc="Cram version to output",
             ),
         ]
 
