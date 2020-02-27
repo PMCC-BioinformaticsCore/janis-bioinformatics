@@ -17,7 +17,7 @@ from janis_core import (
     ToolMetadata,
 )
 
-from janis_bioinformatics.data_types import Sam, FastaWithDict, FastqGzPair
+from janis_bioinformatics.data_types import Sam, FastaBwa, FastqGzPair
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 
 BWA_MEM_TUPLE = [
@@ -64,7 +64,7 @@ class BwaMemBase(BioinformaticsTool, ABC):
 
     def inputs(self):
         return [
-            ToolInput("reference", FastaWithDict(), position=9),
+            ToolInput("reference", FastaBwa(), position=9),
             ToolInput("reads", FastqGzPair, position=10, doc=None),
             ToolInput("mates", FastqGzPair(optional=True), position=11, doc=None),
             ToolInput("outputFilename", Filename(extension=".sam")),
