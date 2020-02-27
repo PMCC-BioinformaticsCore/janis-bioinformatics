@@ -1,24 +1,23 @@
 from abc import ABC
 from typing import Any, Dict
 
+from janis_bioinformatics.data_types import Bam, FastaFai, FastqGzPair, File
+from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 from janis_core import (
-    ToolInput,
-    Int,
-    Float,
     Boolean,
-    String,
-    ToolOutput,
-    Filename,
-    InputSelector,
     CaptureType,
     CpuSelector,
+    Filename,
+    Float,
+    InputSelector,
+    Int,
     Stdout,
-    get_value_for_hints_and_ordered_resource_tuple,
+    String,
+    ToolInput,
     ToolMetadata,
+    ToolOutput,
+    get_value_for_hints_and_ordered_resource_tuple,
 )
-
-from janis_bioinformatics.data_types import FastaFai, FastqGzPair, Bam, File
-from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 
 SCRAMBLE_MEM_TUPLE = [
     (
@@ -64,66 +63,47 @@ class ScrambleBase(BioinformaticsTool, ABC):
 
     def inputs(self):
         return [
+            ToolInput("inputFilename", Bam(), position=200),
             ToolInput(
-                "inputFilename",
-                Bam(),
-                position=200
+                "reference", FastaFai(), prefix="-r", doc="Reference sequence file.",
             ),
-            ToolInput(
-                "reference",
-                FastaFai(),
-                prefix="-r",
-                doc="Reference sequence file.",
-            ),
-            ToolInput(
-                "outputFilename",
-                Filename(extension=".bam")
-            ),
+            ToolInput("outputFilename", Filename(extension=".bam")),
             *ScrambleBase.additional_inputs,
         ]
 
     def arguments(self):
         return [
-            ToolInput(
-                "inputFormat",
-                String("bam"),
-                prefix="-I",
-            ),
-            ToolInput(
-                "outputFormat",
-                String("cram"),
-                prefix="-O",
-            ),
+            ToolInput("inputFormat", String("bam"), prefix="-I",),
+            ToolInput("outputFormat", String("cram"), prefix="-O",),
             ToolInput(
                 "level",
                 Boolean(True),
                 prefix="-9",
-                doc="compression settings for output cram file (-1=fast,-9=best)"
+                doc="compression settings for output cram file (-1=fast,-9=best)",
             ),
             ToolInput(
                 "cramFormat",
                 String("3.0"),
                 prefix="-V",
-                separate_value_from_prefix=False
+                separate_value_from_prefix=False,
             ),
         ]
 
     def outputs(self):
         return [
-            ToolOutput("out", Stdout(
-                Bam(), stdoutname=InputSelector("outputFilename")))
+            ToolOutput("out", Stdout(Bam(), stdoutname=InputSelector("outputFilename")))
         ]
 
     def memory(self, hints: Dict[str, Any]):
-        val = get_value_for_hints_and_ordered_resource_tuple(
-            hints, SCRAMBLE_MEM_TUPLE)
+        val = get_value_for_hints_and_ordered_resource_tuple(hints, SCRAMBLE_MEM_TUPLE)
         if val:
             return val
         return 16
 
     def cpus(self, hints: Dict[str, Any]):
         val = get_value_for_hints_and_ordered_resource_tuple(
-            hints, SCRAMBLE_CORES_TUPLE)
+            hints, SCRAMBLE_CORES_TUPLE
+        )
         if val:
             return val
         return 4
@@ -147,7 +127,7 @@ class ScrambleBase(BioinformaticsTool, ABC):
             "range",
             String(optional=True),
             prefix="-R",
-            doc="Specifies the refseq:start-end range"
+            doc="Specifies the refseq:start-end range",
         ),
         ToolInput(
             "maxBases",
