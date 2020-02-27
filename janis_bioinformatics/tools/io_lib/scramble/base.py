@@ -1,7 +1,7 @@
 from abc import ABC
 from typing import Any, Dict
 
-from janis_bioinformatics.data_types import Bam, FastaFai, FastqGzPair, File
+from janis_bioinformatics.data_types import Bam, Cram, FastaFai, FastqGzPair, File
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 from janis_core import (
     Boolean,
@@ -91,7 +91,9 @@ class ScrambleBase(BioinformaticsTool, ABC):
 
     def outputs(self):
         return [
-            ToolOutput("out", Stdout(Bam(), stdoutname=InputSelector("outputFilename")))
+            ToolOutput(
+                "out", Stdout(Cram(), stdoutname=InputSelector("outputFilename"))
+            )
         ]
 
     def memory(self, hints: Dict[str, Any]):
