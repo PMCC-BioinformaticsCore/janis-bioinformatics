@@ -3,6 +3,8 @@ from typing import Any, Dict
 
 from janis_core import (
     ToolInput,
+    ToolArgument,
+    WildcardSelector,
     Int,
     Float,
     Boolean,
@@ -64,56 +66,53 @@ class BamSorMaDupBase(BioinformaticsTool, ABC):
 
     def inputs(self):
         return [
-            ToolInput(
-                "alignedReads",
-                Bam(),
-                position=200
-            ),
-            ToolInput(
-                "outputFilename",
-                Filename(extension=".bam")
-            ),
+            ToolInput("alignedReads", Bam(), position=200),
+            ToolInput("outputFilename", Filename(extension=".bam")),
             *BamSorMaDupBase.additional_inputs,
         ]
 
     def arguments(self):
         return [
-            ToolInput(
-                "metricsFile",
-                File("metrics.txt"),
+            ToolArgument(
+                "metrics.txt",
                 prefix="M=",
-                separate_value_from_prefix=False
+                separate_value_from_prefix=False,
+                doc="file containing metrics from duplicate removal",
             ),
-            ToolInput(
-                "inputFormat",
-                String("bam"),
+            ToolArgument(
+                "bam",
                 prefix="inputformat=",
-                separate_value_from_prefix=False
+                separate_value_from_prefix=False,
+                doc="input data format",
             ),
-            ToolInput(
-                "outputFormat",
-                String("bam"),
+            ToolArgument(
+                "bam",
                 prefix="outputFormat=",
-                separate_value_from_prefix=False
-            )
+                separate_value_from_prefix=False,
+                doc="output data format",
+            ),
         ]
 
     def outputs(self):
         return [
-            ToolOutput("out", Stdout(
-                Bam(), stdoutname=InputSelector("outputFilename")))
+            ToolOutput(
+                "out", Stdout(Bam(), stdoutname=InputSelector("outputFilename"))
+            ),
+            ToolOutput("metrics", File(), glob=WildcardSelector("metrics.txt")),
         ]
 
     def memory(self, hints: Dict[str, Any]):
         val = get_value_for_hints_and_ordered_resource_tuple(
-            hints, BAMSORMADUP_MEM_TUPLE)
+            hints, BAMSORMADUP_MEM_TUPLE
+        )
         if val:
             return val
         return 16
 
     def cpus(self, hints: Dict[str, Any]):
         val = get_value_for_hints_and_ordered_resource_tuple(
-            hints, BAMSORMADUP_CORES_TUPLE)
+            hints, BAMSORMADUP_CORES_TUPLE
+        )
         if val:
             return val
         return 4
@@ -139,7 +138,7 @@ class BamSorMaDupBase(BioinformaticsTool, ABC):
             prefix="level=",
             separate_value_from_prefix=False,
             default=0,
-            doc="compression settings for output bam file (-1=zlib default,0=uncompressed,1=fast,9=best)"
+            doc="compression settings for output bam file (-1=zlib default,0=uncompressed,1=fast,9=best)",
         ),
         ToolInput(
             "tempLevel",
@@ -147,7 +146,7 @@ class BamSorMaDupBase(BioinformaticsTool, ABC):
             prefix="templevel=",
             separate_value_from_prefix=False,
             default=0,
-            doc="compression settings for temporary bam files (-1=zlib default,0=uncompressed,1=fast,9=best)"
+            doc="compression settings for temporary bam files (-1=zlib default,0=uncompressed,1=fast,9=best)",
         ),
         ToolInput(
             "threads",
@@ -172,5 +171,5 @@ class BamSorMaDupBase(BioinformaticsTool, ABC):
             separate_value_from_prefix=False,
             default=2500,
             doc="pixel difference threshold for optical duplicates (patterned flowcell: 12000, unpatterned flowcell: 2500)",
-        )
+        ),
     ]
