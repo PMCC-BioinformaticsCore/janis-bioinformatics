@@ -78,7 +78,6 @@ class ScrambleBase(BioinformaticsTool, ABC):
             ToolArgument("cram", prefix="-O", doc="output data format",),
             ToolArgument(
                 "-9",
-                Boolean(),
                 doc="compression settings for output cram file (-1=fast,-9=best)",
             ),
             ToolArgument(
