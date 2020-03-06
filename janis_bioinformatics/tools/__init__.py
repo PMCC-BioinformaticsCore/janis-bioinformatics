@@ -4,6 +4,7 @@ from janis_bioinformatics.tools.bioinformaticstoolbase import (
 )
 from janis_bioinformatics.tools import (
     babrahambioinformatics,
+    biobambam,
     bcftools,
     bwa,
     common,
@@ -14,6 +15,7 @@ from janis_bioinformatics.tools import (
     gatk4,
     htslib,
     illumina,
+    io_lib,
     multiqc,
     papenfuss,
     pmac,

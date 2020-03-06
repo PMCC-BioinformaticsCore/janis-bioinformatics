@@ -18,11 +18,25 @@ from .calculatecontaminations.versions import (
     Gatk4CalculateContamination_4_1_4,
     Gatk4CalculateContaminationLatest,
 )
+from .createsequencedictionary.versions import (
+    Gatk4CreateSequenceDictionary_4_1_2,
+    Gatk4CreateSequenceDictionary_4_1_3,
+    Gatk4CreateSequenceDictionary_4_1_4,
+    Gatk4CreateSequenceDictionaryLatest,
+)
+from .fastqtosam.versions import *
 from .filtermutectcalls.versions import (
     Gatk4FilterMutectCalls_4_1_2,
     Gatk4FilterMutectCalls_4_1_3,
     Gatk4FilterMutectCalls_4_1_4,
     Gatk4FilterMutectCallsLatest,
+)
+from .gathervcfs.versions import (
+    Gatk4GatherVcfs_4_0,
+    Gatk4GatherVcfs_4_1_2,
+    Gatk4GatherVcfs_4_1_3,
+    Gatk4GatherVcfs_4_1_4,
+    Gatk4GatherVcfsLatest,
 )
 from .genotypeconcordance.versions import (
     Gatk4GenotypeConcordance_4_0,
@@ -57,6 +71,7 @@ from .markduplicates.versions import (
     Gatk4MarkDuplicates_4_1_4,
     Gatk4MarkDuplicatesLatest,
 )
+from .mergebamalignment.versions import *
 from .mergemutectstats.versions import (
     Gatk4MergeMutectStats_4_1_2,
     Gatk4MergeMutectStats_4_1_3,
@@ -91,24 +106,9 @@ from .sortsam.versions import (
     Gatk4SortSam_4_1_4,
     Gatk4SortSamLatest,
 )
-from .gathervcfs.versions import (
-    Gatk4GatherVcfs_4_0,
-    Gatk4GatherVcfs_4_1_2,
-    Gatk4GatherVcfs_4_1_3,
-    Gatk4GatherVcfs_4_1_4,
-    Gatk4GatherVcfsLatest,
-)
-
 from .splitreads.versions import (
+    Gatk4SortSamLatest,
     Gatk4SplitReads_4_1_2,
     Gatk4SplitReads_4_1_3,
     Gatk4SplitReads_4_1_4,
-    Gatk4SortSamLatest,
-)
-
-from .createsequencedictionary.versions import (
-    Gatk4CreateSequenceDictionary_4_1_2,
-    Gatk4CreateSequenceDictionary_4_1_3,
-    Gatk4CreateSequenceDictionary_4_1_4,
-    Gatk4CreateSequenceDictionaryLatest,
 )
