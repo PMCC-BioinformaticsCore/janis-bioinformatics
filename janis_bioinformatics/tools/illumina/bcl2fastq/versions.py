@@ -1,8 +1,7 @@
 from .base import Bcl2FastqBase
-from ..illuminabase import IlluminaToolBase
 
 
-class Bcl2Fastq_2_20_0(IlluminaToolBase, Bcl2FastqBase):
+class Bcl2Fastq_2_20_0(Bcl2FastqBase):
     def container(self):
         return None
 

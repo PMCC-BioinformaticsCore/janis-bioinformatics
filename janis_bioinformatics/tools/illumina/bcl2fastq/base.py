@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from typing import Any, Dict
 
 from janis_bioinformatics.data_types import FastqGz
-from janis_bioinformatics.tools import BioinformaticsTool
+from janis_bioinformatics.tools.illumina.illuminabase import IlluminaToolBase
 from janis_core import (
     Array,
     Boolean,
@@ -53,7 +53,7 @@ MEM_TUPLE = [
 ]
 
 
-class Bcl2FastqBase(BioinformaticsTool, ABC):
+class Bcl2FastqBase(IlluminaToolBase, ABC):
     def tool(self):
         return "bcl2fastq"
 
