@@ -67,6 +67,11 @@ class Bcl2FastqBase(IlluminaToolBase, ABC):
     def base_command(self):
         return "bcl2fastq"
 
+    def arguments(self):
+        return [
+            ToolArgument(".", prefix="--output-dir", doc="path to demultiplexed output")
+        ]
+
     def inputs(self):
         return [
             ToolInput(
@@ -169,16 +174,14 @@ class Bcl2FastqBase(IlluminaToolBase, ABC):
         ),
         ToolInput(
             "maskShortAdapterReads",
-            input_type=Int(),
+            input_type=Int(optional=True),
             prefix="--mask-short-adapter-reads",
-            default=22,
             doc="smallest number of remaining bases (after masking bases below the minimum trimmed read length) below which whole read is masked",
         ),
         ToolInput(
             "adapterStringency",
-            input_type=Float(),
+            input_type=Float(optional=True),
             prefix="--adapter-stringency",
-            default=0.9,
             doc="adapter stringency",
         ),
         ToolInput(
