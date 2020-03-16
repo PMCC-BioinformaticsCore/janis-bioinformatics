@@ -163,7 +163,6 @@ class Bcl2FastqBase(IlluminaToolBase, ABC):
             "minimumTrimmedReadLength",
             input_type=Int(optional=True),
             prefix="--minimum-trimmed-read-length",
-            default=35,
             doc="minimum read length after adapter trimming",
         ),
         ToolInput(
