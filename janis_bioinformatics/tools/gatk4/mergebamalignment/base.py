@@ -58,8 +58,7 @@ class Gatk4MergeBamAlignmentBase(Gatk4ToolBase, ABC):
         return "GATK4: Merge SAM or BAM with unmapped BAM file"
 
     def cpus(self, hints: Dict[str, Any]):
-        val = get_value_for_hints_and_ordered_resource_tuple(
-            hints, CORES_TUPLE)
+        val = get_value_for_hints_and_ordered_resource_tuple(hints, CORES_TUPLE)
         if val:
             return val
         return 1
@@ -120,7 +119,8 @@ class Gatk4MergeBamAlignmentBase(Gatk4ToolBase, ABC):
 
         return ToolMetadata(
             contributors=[
-                "Michael Franklin (@illisional)", "Matthias De Smet(@matthdsm)"
+                "Michael Franklin (@illisional)",
+                "Matthias De Smet(@matthdsm)",
             ],
             dateCreated=date(2018, 12, 24),
             dateUpdated=date(2020, 2, 26),
@@ -138,21 +138,21 @@ class Gatk4MergeBamAlignmentBase(Gatk4ToolBase, ABC):
             Boolean(optional=True),
             prefix="--ADD_MATE_CIGAR",
             position=11,
-            doc="Adds the mate CIGAR tag (MC)"
+            doc="Adds the mate CIGAR tag (MC)",
         ),
         ToolInput(
             "alignedReadsOnly",
             Boolean(optional=True),
             prefix="--ALIGNED_READS_ONLY",
             position=11,
-            doc="Whether to output only aligned reads."
+            doc="Whether to output only aligned reads.",
         ),
         ToolInput(
             "alignerProperPairFlags",
             Boolean(optional=True),
             prefix="--ALIGNER_PROPER_PAIR_FLAGS",
             position=11,
-            doc="Use the aligner's idea of what a proper pair is rather than computing in this program."
+            doc="Use the aligner's idea of what a proper pair is rather than computing in this program.",
         ),
         ToolInput(
             "argumentsFile",
@@ -194,14 +194,14 @@ class Gatk4MergeBamAlignmentBase(Gatk4ToolBase, ABC):
             Boolean(optional=True),
             prefix="--CLIP_ADAPTERS",
             position=11,
-            doc="Whether to clip adapters where identified."
+            doc="Whether to clip adapters where identified.",
         ),
         ToolInput(
             "clipOverlappingReads",
             Boolean(optional=True),
             prefix="--CLIP_OVERLAPPING_READS",
             position=11,
-            doc="For paired reads, soft clip the 3' end of each read if necessary so that it does not extend past the 5' end of its mate."
+            doc="For paired reads, soft clip the 3' end of each read if necessary so that it does not extend past the 5' end of its mate.",
         ),
         ToolInput(
             "expectedOrientations",
@@ -215,14 +215,14 @@ class Gatk4MergeBamAlignmentBase(Gatk4ToolBase, ABC):
             Boolean(optional=True),
             prefix="--INCLUDE_SECONDARY_ALIGNMENTS",
             position=11,
-            doc="If false, do not write secondary alignments to output."
+            doc="If false, do not write secondary alignments to output.",
         ),
         ToolInput(
             "isBisulfiteSequencing",
             Boolean(optional=True),
             prefix="--IS_BISULFITE_SEQUENCE",
             position=11,
-            doc="Whether the lane is bisulfite sequence (used when calculating the NM tag)."
+            doc="Whether the lane is bisulfite sequence (used when calculating the NM tag).",
         ),
         ToolInput(
             "matchingDictionaryTags",
@@ -236,49 +236,49 @@ class Gatk4MergeBamAlignmentBase(Gatk4ToolBase, ABC):
             Int(optional=True),
             prefix="--MAX_INSERTIONS_OR_DELETIONS",
             position=11,
-            doc="The maximum number of insertions or deletions permitted for an alignment to be included."
+            doc="The maximum number of insertions or deletions permitted for an alignment to be included.",
         ),
         ToolInput(
             "minUnclippedBases",
             Int(optional=True),
             prefix="--MIN_UNCLIPPED_BASES",
             position=11,
-            doc="If UNMAP_CONTAMINANT_READS is set, require this many unclipped bases or else the read will be marked as contaminant."
+            doc="If UNMAP_CONTAMINANT_READS is set, require this many unclipped bases or else the read will be marked as contaminant.",
         ),
         ToolInput(
             "primaryAlignmentStrategy",
             Int(optional=True),
             prefix="--PRIMARY_ALIGNMENT_STRATEGY",
             position=11,
-            doc="Strategy for selecting primary alignment when the aligner has provided more than one alignment for a pair or fragment, and none are marked as primary, more than one is marked as primary, or the primary alignment is filtered out for some reason."
+            doc="Strategy for selecting primary alignment when the aligner has provided more than one alignment for a pair or fragment, and none are marked as primary, more than one is marked as primary, or the primary alignment is filtered out for some reason.",
         ),
         ToolInput(
             "programGroupCommandLine",
             String(optional=True),
             prefix="--PROGRAM_GROUP_COMMAND_LINE",
             position=11,
-            doc="The command line of the program group."
+            doc="The command line of the program group.",
         ),
         ToolInput(
             "programGroupName",
             String(optional=True),
             prefix="--PROGRAM_GROUP_NAME",
             position=11,
-            doc="The name of the program group."
+            doc="The name of the program group.",
         ),
         ToolInput(
             "programGroupVersion",
             String(optional=True),
             prefix="--PROGRAM_GROUP_VERSION",
             position=11,
-            doc="The version of the program group."
+            doc="The version of the program group.",
         ),
         ToolInput(
             "programRecordId",
             String(optional=True),
             prefix="--PROGRAM_RECORD_ID",
             position=11,
-            doc="The program group ID of the aligner."
+            doc="The program group ID of the aligner.",
         ),
         ToolInput(
             "sortOrder",
@@ -293,21 +293,21 @@ class Gatk4MergeBamAlignmentBase(Gatk4ToolBase, ABC):
             Boolean(optional=True),
             prefix="--UNMAP_CONTAMINANT_READS",
             position=11,
-            doc="Detect reads originating from foreign organisms (e.g. bacterial DNA in a non-bacterial sample),and unmap + label those reads accordingly."
+            doc="Detect reads originating from foreign organisms (e.g. bacterial DNA in a non-bacterial sample),and unmap + label those reads accordingly.",
         ),
         ToolInput(
             "unmappedReadStrategy",
             String(optional=True),
             prefix="--UNMAPPED_READ_STRATEGY",
             position=11,
-            doc="How to deal with alignment information in reads that are being unmapped (e.g. due to cross-species contamination.) Currently ignored unless UNMAP_CONTAMINANT_READS = true."
+            doc="How to deal with alignment information in reads that are being unmapped (e.g. due to cross-species contamination.) Currently ignored unless UNMAP_CONTAMINANT_READS = true.",
         ),
         ToolInput(
             "addPgTagToReads",
             Boolean(optional=True),
             prefix="--ADD_PG_TAG_TO_READS",
             position=11,
-            doc="Add PG tag to each read in a SAM or BAM"
+            doc="Add PG tag to each read in a SAM or BAM",
         ),
         ToolInput(
             "compressionLevel",
