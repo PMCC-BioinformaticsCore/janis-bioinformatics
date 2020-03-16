@@ -114,17 +114,15 @@ class Bcl2FastqBase(IlluminaToolBase, ABC):
             ),
             ToolOutput(
                 "reports",
-                output_type=Directory(optional=True),
+                output_type=Array(File()),
                 glob=WildcardSelector("Reports/*"),
             ),
             ToolOutput(
-                "stats",
-                output_type=Array(File(optional="True")),
-                glob=WildcardSelector("Stats/*"),
+                "stats", output_type=Array(File()), glob=WildcardSelector("Stats/*"),
             ),
             ToolOutput(
                 "interop",
-                output_type=Array(File(optional="True")),
+                output_type=Array(File()),
                 glob=WildcardSelector("InterOp/*"),
             ),
         ]
@@ -159,7 +157,7 @@ class Bcl2FastqBase(IlluminaToolBase, ABC):
         ToolInput(
             "minimumTrimmedReadLength",
             input_type=Int(optional=True),
-            prefix="--minimum-trimmed-read-length arg",
+            prefix="--minimum-trimmed-read-length",
             default=35,
             doc="minimum read length after adapter trimming",
         ),
