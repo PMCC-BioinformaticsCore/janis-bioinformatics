@@ -9,6 +9,7 @@ from janis_core import (
     CaptureType,
     CpuSelector,
     Directory,
+    File,
     Filename,
     Float,
     InputSelector,
@@ -104,20 +105,28 @@ class Bcl2FastqBase(IlluminaToolBase, ABC):
             *Bcl2FastqBase.additional_inputs,
         ]
 
-    def arguments(self):
-        return [
-            ToolArgument(
-                "$PWD", prefix="--output-dir", doc="path to demultiplexed output"
-            )
-        ]
-
     def outputs(self):
         return [
             ToolOutput(
                 "unalignedReads",
                 output_type=Array(FastqGz()),
                 glob=WildcardSelector("**/!(Undetermined)*.fastq.gz"),
-            )
+            ),
+            ToolOutput(
+                "reports",
+                output_type=Directory(optional=True),
+                glob=WildcardSelector("Reports/*"),
+            ),
+            ToolOutput(
+                "stats",
+                output_type=Array(File(optional="True")),
+                glob=WildcardSelector("Stats/*"),
+            ),
+            ToolOutput(
+                "interop",
+                output_type=Array(File(optional="True")),
+                glob=WildcardSelector("InterOp/*"),
+            ),
         ]
 
     def cpus(self, hints: Dict[str, Any]):
