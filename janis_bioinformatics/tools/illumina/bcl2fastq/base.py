@@ -236,7 +236,6 @@ class Bcl2FastqBase(IlluminaToolBase, ABC):
             "barcodeMismatches",
             input_type=Int(optional=True),
             prefix="--barcode-mismatches",
-            default=1,
             doc="number of allowed mismatches per index",
         ),
         ToolInput(
