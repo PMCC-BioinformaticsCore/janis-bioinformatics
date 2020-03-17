@@ -115,12 +115,7 @@ class Bcl2FastqBase(IlluminaToolBase, ABC):
             ToolOutput(
                 "unalignedReads",
                 output_type=Array(FastqGz()),
-                glob=WildcardSelector("**/!(Undetermined)*.fastq.gz"),
-            ),
-            ToolOutput(
-                "reports",
-                output_type=Array(File()),
-                glob=WildcardSelector("Reports/*"),
+                glob=WildcardSelector("*/*.fastq.gz"),
             ),
             ToolOutput(
                 "stats", output_type=Array(File()), glob=WildcardSelector("Stats/*"),
