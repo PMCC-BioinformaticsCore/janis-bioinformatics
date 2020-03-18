@@ -78,7 +78,7 @@ class FastaGz(File):
 
     def can_receive_from(self, other, source_has_default=False):
 
-        if isinstance(other, Fasta):
+        if isinstance(other, FastaGz):
             if other.optional and not self.optional:
                 return False
         elif not super().can_receive_from(other, source_has_default):
