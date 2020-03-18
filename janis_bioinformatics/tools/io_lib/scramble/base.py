@@ -66,7 +66,7 @@ class ScrambleBase(BioinformaticsTool, ABC):
         return [
             ToolInput("inputFilename", Bam(), position=200),
             ToolInput(
-                "reference", FastaFai(), prefix="-r", doc="Reference sequence file.",
+                "reference", FastaFai(), prefix="-r", doc="Reference sequence file."
             ),
             ToolInput("outputFilename", Filename(extension=".bam")),
             *ScrambleBase.additional_inputs,
@@ -74,11 +74,10 @@ class ScrambleBase(BioinformaticsTool, ABC):
 
     def arguments(self):
         return [
-            ToolArgument("bam", prefix="-I", doc="input data format",),
-            ToolArgument("cram", prefix="-O", doc="output data format",),
+            ToolArgument("bam", prefix="-I", doc="input data format"),
+            ToolArgument("cram", prefix="-O", doc="output data format"),
             ToolArgument(
-                "-9",
-                doc="compression settings for output cram file (-1=fast,-9=best)",
+                "-9", doc="compression settings for output cram file (-1=fast,-9=best)"
             ),
             ToolArgument(
                 "3.0",

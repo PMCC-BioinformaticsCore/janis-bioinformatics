@@ -58,8 +58,7 @@ class Gatk4FastqToSamBase(Gatk4ToolBase, ABC):
         return "GATK4: Convert a FASTQ file to an unaligned BAM or SAM file."
 
     def cpus(self, hints: Dict[str, Any]):
-        val = get_value_for_hints_and_ordered_resource_tuple(
-            hints, CORES_TUPLE)
+        val = get_value_for_hints_and_ordered_resource_tuple(hints, CORES_TUPLE)
         if val:
             return val
         return 1
@@ -128,7 +127,9 @@ class Gatk4FastqToSamBase(Gatk4ToolBase, ABC):
 
         return ToolMetadata(
             contributors=[
-                "Michael Franklin (@illisional)", "Matthias De Smet(@matthdsm)"],
+                "Michael Franklin (@illisional)",
+                "Matthias De Smet(@matthdsm)",
+            ],
             dateCreated=date(2020, 2, 26),
             dateUpdated=date(2020, 2, 26),
             institution="Broad Institute",
@@ -145,7 +146,7 @@ class Gatk4FastqToSamBase(Gatk4ToolBase, ABC):
             Boolean(optional=True),
             prefix="--ALLOW_AND_IGNORE_EMPTY_LINES",
             position=11,
-            doc="Allow (and ignore) empty lines"
+            doc="Allow (and ignore) empty lines",
         ),
         ToolInput(
             "argumentsFile",
@@ -194,14 +195,14 @@ class Gatk4FastqToSamBase(Gatk4ToolBase, ABC):
             String(optional=True),
             prefix="--PLATFORM",
             position=11,
-            doc="The platform type (e.g. ILLUMINA, SOLID) to insert into the read group header."
+            doc="The platform type (e.g. ILLUMINA, SOLID) to insert into the read group header.",
         ),
         ToolInput(
             "platformModel",
             String(optional=True),
             prefix="--PLATFORM_MODEL",
             position=11,
-            doc="Platform model to insert into the group header (free-form text providing further details of the platform/technology used)."
+            doc="Platform model to insert into the group header (free-form text providing further details of the platform/technology used).",
         ),
         ToolInput(
             "platformUnit",
@@ -215,35 +216,35 @@ class Gatk4FastqToSamBase(Gatk4ToolBase, ABC):
             Int(optional=True),
             prefix="--PREDICTED_INSERT_SIZE",
             position=11,
-            doc="Predicted median insert size, to insert into the read group header."
+            doc="Predicted median insert size, to insert into the read group header.",
         ),
         ToolInput(
             "programGroup",
             String(optional=True),
             prefix="--PROGRAM_GROUP",
             position=11,
-            doc="Program group to insert into the read group header."
+            doc="Program group to insert into the read group header.",
         ),
         ToolInput(
             "readGroupName",
             String(optional=True),
             prefix="--READ_GROUP_NAME",
             position=11,
-            doc="Read group name."
+            doc="Read group name.",
         ),
         ToolInput(
             "runDate",
             String(optional=True),
             prefix="--RUN_DATE",
             position=11,
-            doc="Date the run was produced, to insert into the read group header"
+            doc="Date the run was produced, to insert into the read group header",
         ),
         ToolInput(
             "sequencingCenter",
             String(optional=True),
             prefix="--SEQUENCING_CENTER",
             position=11,
-            doc="The sequencing center from which the data originated."
+            doc="The sequencing center from which the data originated.",
         ),
         ToolInput(
             "sortOrder",
@@ -258,7 +259,7 @@ class Gatk4FastqToSamBase(Gatk4ToolBase, ABC):
             Boolean(optional=True),
             prefix="--USE_SEQUENTIAL_FASTQS",
             position=11,
-            doc="Use sequential fastq files with the suffix _###.fastq or _###.fastq.gz."
+            doc="Use sequential fastq files with the suffix _###.fastq or _###.fastq.gz.",
         ),
         ToolInput(
             "compressionLevel",
