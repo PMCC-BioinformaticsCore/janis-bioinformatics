@@ -16,7 +16,7 @@ from janis_core import (
 from janis_core import get_value_for_hints_and_ordered_resource_tuple
 from janis_core import ToolMetadata
 
-from janis_bioinformatics.data_types import FastaWithDict, BamBai, FastqGz
+from janis_bioinformatics.data_types import FastaWithDict, Bam, FastqGz
 from ..gatk4toolbase import Gatk4ToolBase
 
 CORES_TUPLE = [
@@ -113,21 +113,14 @@ class Gatk4FastqToSamBase(Gatk4ToolBase, ABC):
         ]
 
     def outputs(self):
-        return [
-            ToolOutput(
-                "out",
-                BamBai(),
-                glob=InputSelector("outputFilename"),
-                secondaries_present_as={".bai": "^.bai"},
-            )
-        ]
+        return [ToolOutput("out", Bam(), glob=InputSelector("outputFilename"))]
 
     def bind_metadata(self):
         from datetime import date
 
         return ToolMetadata(
             contributors=[
-                "Michael Franklin (@illisional)",
+                "Michael Franklin (@illusional)",
                 "Matthias De Smet(@matthdsm)",
             ],
             dateCreated=date(2020, 2, 26),
