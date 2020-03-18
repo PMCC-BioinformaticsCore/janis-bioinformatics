@@ -51,7 +51,7 @@ class FastaDict(FastaFai):
 
     @staticmethod
     def secondary_files():
-        return [*FastaFai().secondary_files(), "^.dict"]
+        return [*FastaFai.secondary_files(), "^.dict"]
 
 
 class FastaWithIndexes(Fasta):
@@ -116,7 +116,7 @@ class FastaGzDict(FastaGzFai):
 
     @staticmethod
     def secondary_files():
-        return [*super().secondary_files(), "^.dict"]
+        return [*FastaGzFai.secondary_files(), "^.dict"]
 
 
 class FastaGzWithIndexes(FastaGz):
