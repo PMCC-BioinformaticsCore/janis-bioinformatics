@@ -37,7 +37,7 @@ class FastaFai(Fasta):
 class FastaBwa(Fasta):
     @staticmethod
     def name():
-        return "FastaFai"
+        return "FastaBwa"
 
     @staticmethod
     def secondary_files():
@@ -51,7 +51,8 @@ class FastaDict(FastaFai):
 
     @staticmethod
     def secondary_files():
-        return [*FastaFai().secondary_files(), "^.dict"]
+        return [*FastaFai.secondary_files(), "^.dict"]
+
 
 
 class FastaWithIndexes(Fasta):
@@ -65,6 +66,69 @@ class FastaWithIndexes(Fasta):
 
 
 FastaWithDict = FastaWithIndexes
+
+
+class FastaGz(File):
+    def __init__(self, optional=False):
+        super().__init__(optional, extension=".fa.gz")
+
+    @staticmethod
+    def name():
+        return "FastaGz"
+
+    def can_receive_from(self, other, source_has_default=False):
+
+        if isinstance(other, FastaGz):
+            if other.optional and not self.optional:
+                return False
+        elif not super().can_receive_from(other, source_has_default):
+            return False
+
+        if not self.secondary_files():
+            return True
+
+        return set(self.secondary_files()).issubset(set(other.secondary_files() or []))
+
+
+class FastaGzFai(FastaGz):
+    @staticmethod
+    def name():
+        return "FastaGzFai"
+
+    @staticmethod
+    def secondary_files():
+        return [".fai"]
+
+
+class FastaGzBwa(FastaGz):
+    @staticmethod
+    def name():
+        return "FastaGzBwa"
+
+    @staticmethod
+    def secondary_files():
+        return [".amb", ".ann", ".bwt", ".pac", ".sa"]
+
+
+class FastaGzDict(FastaGzFai):
+    @staticmethod
+    def name():
+        return "FastGzDict"
+
+    @staticmethod
+    def secondary_files():
+        return [*FastaGzFai.secondary_files(), "^.dict"]
+
+
+class FastaGzWithIndexes(FastaGz):
+    @staticmethod
+    def name():
+        return "FastaGzWithIndexes"
+
+    @staticmethod
+    def secondary_files():
+        return [*FastaGzBwa.secondary_files(), *FastaGzDict.secondary_files()]
+
 
 if __name__ == "__main__":
     bwa, fai, wdict = FastaBwa(), FastaFai(), FastaWithDict()

@@ -16,7 +16,7 @@ from janis_core import (
 from janis_core import get_value_for_hints_and_ordered_resource_tuple
 from janis_core import ToolMetadata
 
-from janis_bioinformatics.data_types import FastaWithDict, BamBai
+from janis_bioinformatics.data_types import FastaWithDict, Bam, Sam
 from ..gatk4toolbase import Gatk4ToolBase
 
 CORES_TUPLE = [
@@ -73,7 +73,7 @@ class Gatk4MergeBamAlignmentBase(Gatk4ToolBase, ABC):
         return [
             ToolInput(
                 "ubam",
-                BamBai(),
+                Bam(),
                 prefix="--UNMAPPED_BAM",
                 prefix_applies_to_all_elements=True,
                 doc="Original SAM or BAM file of unmapped reads, which must be in queryname order.",
@@ -81,7 +81,7 @@ class Gatk4MergeBamAlignmentBase(Gatk4ToolBase, ABC):
             ),
             ToolInput(
                 "bam",
-                Array(BamBai()),
+                Array(Sam()),
                 prefix="--ALIGNED_BAM",
                 prefix_applies_to_all_elements=True,
                 doc="SAM or BAM file(s) with alignment data.",
@@ -108,7 +108,7 @@ class Gatk4MergeBamAlignmentBase(Gatk4ToolBase, ABC):
         return [
             ToolOutput(
                 "out",
-                BamBai(),
+                Bam(),
                 glob=InputSelector("outputFilename"),
                 secondaries_present_as={".bai": "^.bai"},
             )
@@ -119,7 +119,7 @@ class Gatk4MergeBamAlignmentBase(Gatk4ToolBase, ABC):
 
         return ToolMetadata(
             contributors=[
-                "Michael Franklin (@illisional)",
+                "Michael Franklin (@illusional)",
                 "Matthias De Smet(@matthdsm)",
             ],
             dateCreated=date(2018, 12, 24),
