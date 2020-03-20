@@ -7,7 +7,7 @@
 This repository is the bioinformatics toolbox for [Janis](https://github.com/PMCC-BioinformaticsCore/janis). 
 It contains tools and data types directly related to the bioinformatics field.
 
-You can see a full list of tools in the  [documentation](https://janis.readthedocs.io/en/latest/tools/bioinformatics/index.html).
+You can see a full list of tools in the [documentation](https://janis.readthedocs.io/en/latest/tools/bioinformatics/index.html).
 
 
 ## Data types

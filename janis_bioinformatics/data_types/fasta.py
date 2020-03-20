@@ -54,7 +54,6 @@ class FastaDict(FastaFai):
         return [*FastaFai.secondary_files(), "^.dict"]
 
 
-
 class FastaWithIndexes(Fasta):
     @staticmethod
     def name():

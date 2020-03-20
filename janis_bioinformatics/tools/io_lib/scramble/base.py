@@ -79,7 +79,7 @@ class ScrambleBase(BioinformaticsTool, ABC):
             ToolArgument(
                 "-9", doc="compression settings for output cram file (-1=fast,-9=best)"
             ),
-            ToolArgument("3.0", prefix="-V", doc="Cram version to output",),
+            ToolArgument("3.0", prefix="-V", doc="Cram version to output"),
         ]
 
     def outputs(self):
