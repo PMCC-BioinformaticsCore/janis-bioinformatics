@@ -3,4 +3,9 @@ from .intersectbed.versions import (
     BedToolsIntersectBedLatest,
 )
 
-from .coverageBed.versions import BedToolsCoverageBed_2_29_2, BedToolsCoverageBedLatest
+from .coveragebed.versions import BedToolsCoverageBed_2_29_2, BedToolsCoverageBedLatest
+
+from .genomecoveragebed.versions import (
+    BedToolsGenomeCoverageBed_2_29_2,
+    BedToolsGenomeCoverageBedLatest,
+)

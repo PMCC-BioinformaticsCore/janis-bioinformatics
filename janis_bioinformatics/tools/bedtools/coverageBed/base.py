@@ -52,13 +52,13 @@ class BedToolsCoverageBedBase(BedToolsToolBase, ABC):
                 "inputABed",
                 Bed(),
                 prefix="-a",
-                doc="input file a: only bed is supported at the moment. May be followed with multiple databases and/or  wildcard (*) character(s). ",
+                doc="input file a: only bed is supported. May be followed with multiple databases and/or  wildcard (*) character(s). ",
             ),
             ToolInput(
                 "inputBBam",
                 Bam(),
                 prefix="-b",
-                doc="input file b: only bam is supported at the moment",
+                doc="input file b: only bam is supported.",
             ),
             ToolInput(
                 "histogram",
