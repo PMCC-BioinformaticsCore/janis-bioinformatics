@@ -19,7 +19,6 @@ from janis_bioinformatics.tools import (
     papenfuss,
     pmac,
     samtools,
-    star,
     ucsf,
     validation,
     variantcallers,
