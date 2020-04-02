@@ -62,6 +62,9 @@ class StarAlignerBase(BioinformaticsTool, ABC):
     def base_command():
         return "STAR"
 
+    def friendly_name(self):
+        return "STAR Aligner"
+
     # Need a better way to specify memory
     def memory(self, hints):
         val = get_value_for_hints_and_ordered_resource_tuple(hints, MEM_TUPLE)
@@ -147,12 +150,10 @@ class StarAlignerBase(BioinformaticsTool, ABC):
                 glob=InputSelector("outFileNamePrefix") + "Log.progress.out",
             ),
             ToolOutput(
-                "SJOutTab",
-                File,
-                glob=InputSelector("outFileNamePrefix") + "SJ.out.tab",
+                "SJOutTab", File, glob=InputSelector("outFileNamePrefix") + "SJ.out.tab"
             ),
             # Problem will occur if more than one *.out.bam is found. Only the first one will get.
-            ToolOutput("out", Bam, glob=WildcardSelector("*.out.bam"),),
+            ToolOutput("out", Bam, glob=WildcardSelector("*.out.bam")),
         ]
 
     def bind_metadata(self):
