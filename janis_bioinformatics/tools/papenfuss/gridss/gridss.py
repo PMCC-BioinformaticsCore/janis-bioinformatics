@@ -43,4 +43,16 @@ class Gridss_2_5_1(GridssBase_2_4):
         return "v2.5.1-dev"
 
 
-GridssLatest = Gridss_2_5_1
+class Gridss_2_6_3(GridssBase_2_4):
+    def base_command(self):
+        return "/opt/gridss/gridss.sh"
+
+    def container(self):
+        # https://hub.docker.com/r/gridss/gridss
+        return "gridss/gridss:2.6.3"
+
+    def version(self):
+        return "v2.6.3"
+
+
+GridssLatest = Gridss_2_6_3

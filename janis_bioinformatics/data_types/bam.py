@@ -16,7 +16,7 @@ class Bam(File):
 class BamBai(Bam):
     @staticmethod
     def name():
-        return "BamPair"
+        return "IndexedBam"
 
     @staticmethod
     def secondary_files():
