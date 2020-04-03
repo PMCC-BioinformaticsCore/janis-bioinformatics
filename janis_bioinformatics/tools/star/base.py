@@ -59,6 +59,10 @@ class StarAlignerBase(BioinformaticsTool, ABC):
         return "star_aligner"
 
     @staticmethod
+    def tool_provider():
+        return "Cold Spring Harbor Laboratory"
+
+    @staticmethod
     def base_command():
         return "STAR"
 
@@ -110,7 +114,7 @@ class StarAlignerBase(BioinformaticsTool, ABC):
             ),
             ToolInput(
                 "outSAMtype",
-                String(optional=True),
+                Array(String, optional=True),
                 prefix="--outSAMtype",
                 doc='strings: type of SAM/BAM output. 1st word: "BAM": outputBAMwithoutsorting, "SAM": outputSAMwithoutsorting, "None": no SAM/BAM output. 2nd,3rd: "Unsorted": standard unsorted. "SortedByCoordinate": sorted by coordinate. This option will allocate extra memory for sorting which can be specified by –limitBAMsortRAM.',
             ),
@@ -142,15 +146,15 @@ class StarAlignerBase(BioinformaticsTool, ABC):
                 glob=InputSelector("outFileNamePrefix") + "Log.final.out",
             ),
             ToolOutput(
-                "LogOut", File, glob=InputSelector("outFileNamePrefix") + "Log.out"
+                "logOut", File, glob=InputSelector("outFileNamePrefix") + "Log.out"
             ),
             ToolOutput(
-                "LogProgressOut",
+                "logProgressOut",
                 File,
                 glob=InputSelector("outFileNamePrefix") + "Log.progress.out",
             ),
             ToolOutput(
-                "SJOutTab", File, glob=InputSelector("outFileNamePrefix") + "SJ.out.tab"
+                "sjOutTab", File, glob=InputSelector("outFileNamePrefix") + "SJ.out.tab"
             ),
             # Problem will occur if more than one *.out.bam is found. Only the first one will get.
             ToolOutput("out", Bam, glob=WildcardSelector("*.out.bam")),
