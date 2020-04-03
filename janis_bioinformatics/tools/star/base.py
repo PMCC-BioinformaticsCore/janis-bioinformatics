@@ -107,8 +107,10 @@ class StarAlignerBase(BioinformaticsTool, ABC):
             ),
             ToolInput(
                 "outSAMtype",
-                String(optional=True),
+                Array(String(), optional=True),
                 prefix="--outSAMtype",
+                separator=" ",
+                prefix_applies_to_all_elements=False,
                 doc='strings: type of SAM/BAM output. 1st word: "BAM": outputBAMwithoutsorting, "SAM": outputSAMwithoutsorting, "None": no SAM/BAM output. 2nd,3rd: "Unsorted": standard unsorted. "SortedByCoordinate": sorted by coordinate. This option will allocate extra memory for sorting which can be specified by –limitBAMsortRAM.',
             ),
             ToolInput(
