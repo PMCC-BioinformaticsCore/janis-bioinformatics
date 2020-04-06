@@ -54,16 +54,13 @@ CPU_TUPLE = [
 
 
 class StarAlignerBase(BioinformaticsTool, ABC):
-    @staticmethod
-    def tool():
+    def tool(self):
         return "star_aligner"
 
-    @staticmethod
-    def tool_provider():
+    def tool_provider(self):
         return "Cold Spring Harbor Laboratory"
 
-    @staticmethod
-    def base_command():
+    def base_command(self):
         return "STAR"
 
     def friendly_name(self):
@@ -108,14 +105,17 @@ class StarAlignerBase(BioinformaticsTool, ABC):
             ),
             ToolInput(
                 "outFileNamePrefix",
+                Filename(),
                 String(optional=True),
                 prefix="--outFileNamePrefix",
                 doc="string: output files name prefix (including full or relative path). Can only be defined on the command line.",
             ),
             ToolInput(
                 "outSAMtype",
-                Array(String, optional=True),
+                Array(String(), optional=True),
                 prefix="--outSAMtype",
+                separator=" ",
+                prefix_applies_to_all_elements=False,
                 doc='strings: type of SAM/BAM output. 1st word: "BAM": outputBAMwithoutsorting, "SAM": outputSAMwithoutsorting, "None": no SAM/BAM output. 2nd,3rd: "Unsorted": standard unsorted. "SortedByCoordinate": sorted by coordinate. This option will allocate extra memory for sorting which can be specified by –limitBAMsortRAM.',
             ),
             ToolInput(
@@ -156,8 +156,9 @@ class StarAlignerBase(BioinformaticsTool, ABC):
             ToolOutput(
                 "sjOutTab", File, glob=InputSelector("outFileNamePrefix") + "SJ.out.tab"
             ),
-            # Problem will occur if more than one *.out.bam is found. Only the first one will get.
-            ToolOutput("out", Bam, glob=WildcardSelector("*.out.bam")),
+            ToolOutput(
+                "out", Bam, glob=InputSelector("outFileNamePrefix") + "Aligned.out.bam"
+            ),
         ]
 
     def bind_metadata(self):
