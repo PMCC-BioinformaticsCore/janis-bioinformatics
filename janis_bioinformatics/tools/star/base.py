@@ -101,7 +101,7 @@ class StarAlignerBase(BioinformaticsTool, ABC):
             ),
             ToolInput(
                 "outFileNamePrefix",
-                String(optional=True),
+                Filename(),
                 prefix="--outFileNamePrefix",
                 doc="string: output files name prefix (including full or relative path). Can only be defined on the command line.",
             ),
@@ -153,8 +153,9 @@ class StarAlignerBase(BioinformaticsTool, ABC):
                 File,
                 glob=InputSelector("outFileNamePrefix") + "SJ.out.tab",
             ),
-            # Problem will occur if more than one *.out.bam is found. Only the first one will get.
-            ToolOutput("out", Bam, glob=WildcardSelector("*.out.bam"),),
+            ToolOutput(
+                "out", Bam, glob=InputSelector("outFileNamePrefix") + "Aligned.out.bam"
+            ),
         ]
 
     def bind_metadata(self):
