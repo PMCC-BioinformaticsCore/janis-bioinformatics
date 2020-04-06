@@ -54,15 +54,13 @@ CPU_TUPLE = [
 
 
 class StarAlignerBase(BioinformaticsTool, ABC):
-    @staticmethod
-    def tool():
+    def tool(self):
         return "star_aligner"
 
-    def tool_provider():
+    def tool_provider(self):
         return "Cold Spring Harbor Laboratory"
 
-    @staticmethod
-    def base_command():
+    def base_command(self):
         return "STAR"
 
     def friendly_name(self):
