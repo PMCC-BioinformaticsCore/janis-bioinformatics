@@ -13,6 +13,7 @@ from janis_bioinformatics.tools import (
     cutadapt,
     ensembl,
     freebayes,
+    gatk3,
     gatk4,
     htslib,
     illumina,
