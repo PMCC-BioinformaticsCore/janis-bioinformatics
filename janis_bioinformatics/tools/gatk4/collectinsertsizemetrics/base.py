@@ -91,7 +91,7 @@ class Gatk4CollectInsertSizeMetricsBase(Gatk4ToolBase, ABC):
             *super(Gatk4CollectInsertSizeMetricsBase, self).inputs(),
             ToolInput(
                 "bam",
-                Bam(optional=False),
+                BamBai(optional=False),
                 prefix="-I",
                 doc="Input SAM or BAM file.  Required.",
                 position=10,
