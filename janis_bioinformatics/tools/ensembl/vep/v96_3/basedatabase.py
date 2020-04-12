@@ -1,10 +1,10 @@
 from abc import ABC
 
 from janis_core import ToolInput, String, Boolean, Int
-from janis_bioinformatics.tools.ensembl.vep.base import VepBase
+from .base import VepBase_96_3
 
 
-class VepDatabaseBase(VepBase, ABC):
+class VepDatabaseBase_96_3(VepBase_96_3, ABC):
     def inputs(self):
         return [
             *super().inputs(),

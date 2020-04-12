@@ -37,6 +37,7 @@ MEM_TUPLE = [
     (
         CaptureType.key(),
         {
+            CaptureType.TARGETED: 16,
             CaptureType.CHROMOSOME: 64,
             CaptureType.EXOME: 64,
             CaptureType.THIRTYX: 64,

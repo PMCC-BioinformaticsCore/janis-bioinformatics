@@ -1,18 +1,28 @@
 from abc import ABC
 
+from janis_bioinformatics.data_types import FastaWithDict
 from janis_core import ToolInput, String, Boolean, Directory
-from janis_bioinformatics.tools.ensembl.vep.base import VepBase
+from .base import VepBase_96_3
 
 
-class VepCacheBase(VepBase, ABC):
+class VepCacheBase_96_3(VepBase_96_3, ABC):
     def inputs(self):
         return [
             *super().inputs(),  # cache options
             ToolInput(
                 "cache",
                 Boolean(optional=True),
+                default=True,
                 prefix="--cache",
                 doc="Enables use of the cache. Add --refseq or --merged to use the refseq or merged cache,",
+            ),
+            ToolInput(
+                "offline",
+                Boolean(optional=True),
+                default=True,
+                prefix="--offline",
+                doc="Enable offline mode. No database connections will be made, and a cache file or GFF/GTF file is "
+                "required for annotation. Add --refseq to use the refseq cache (if installed). ",
             ),
             ToolInput(
                 "cachePluginDir",
@@ -33,15 +43,8 @@ class VepCacheBase(VepBase, ABC):
                 doc='Specify the plugin directory to use. Default = "$HOME/.vep/"',
             ),
             ToolInput(
-                "offline",
-                Boolean(optional=True),
-                prefix="--offline",
-                doc="Enable offline mode. No database connections will be made, and a cache file or GFF/GTF file is "
-                "required for annotation. Add --refseq to use the refseq cache (if installed). ",
-            ),
-            ToolInput(
-                "fasta",
-                Fasta(optional=True),
+                "reference",
+                FastaWithDict(optional=True),
                 prefix="--fasta",
                 doc="Specify a FASTA file or a directory containing FASTA files to use to look up reference sequence. "
                 "The first time you run VEP, an index will be built which can take a few minutes. This is required "
