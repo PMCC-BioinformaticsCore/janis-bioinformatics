@@ -2,7 +2,7 @@ from janis_core import String, Logger, Array
 
 from janis_bioinformatics.data_types import FastaWithDict, BamBai, Bed
 from janis_bioinformatics.tools import BioinformaticsWorkflow
-from janis_bioinformatics.tools.papenfuss import Gridss_2_5_1
+from janis_bioinformatics.tools.papenfuss import Gridss_2_5_1, Gridss_2_6_3
 from janis_bioinformatics.tools.samtools import SamToolsView_1_7
 
 
@@ -30,7 +30,7 @@ class GridssGermlineVariantCaller(BioinformaticsWorkflow):
         )
         self.step(
             "gridss",
-            Gridss_2_5_1(
+            Gridss_2_6_3(
                 bams=[self.samtools.out],
                 reference=self.reference,
                 blacklist=self.blacklist,
