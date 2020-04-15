@@ -44,7 +44,7 @@ class GATK3DepthOfCoverageBase(GATK3ToolBase, ABC):
                 "reference", FastaWithDict(), prefix="-R", doc="Reference sequence file"
             ),
             ToolInput(
-                "outputFilename",
+                "outputPrefix",
                 String(),
                 prefix="-o",
                 doc="An output file created by the walker. Will overwrite contents if file exists",
@@ -66,43 +66,43 @@ class GATK3DepthOfCoverageBase(GATK3ToolBase, ABC):
 
     def outputs(self):
         return [
-            ToolOutput("out", TextFile(), glob=InputSelector("outputFilename"), doc=""),
+            ToolOutput("sample", File(), glob=InputSelector("outputPrefix"), doc=""),
             ToolOutput(
                 "sampleCumulativeCoverageCounts",
-                TextFile(extension=".sample_cumulative_coverage_counts"),
-                glob=InputSelector("outputFilename")
+                File(),
+                glob=InputSelector("outputPrefix")
                 + ".sample_cumulative_coverage_counts",
                 doc="",
             ),
             ToolOutput(
                 "sampleCumulativeCoverageProportions",
-                TextFile(extension=".sample_cumulative_coverage_proportions"),
-                glob=InputSelector("outputFilename")
+                File(),
+                glob=InputSelector("outputPrefix")
                 + ".sample_cumulative_coverage_proportions",
                 doc="",
             ),
             ToolOutput(
                 "sampleIntervalStatistics",
-                TextFile(extension=".sample_interval_statistics"),
-                glob=InputSelector("outputFilename") + ".sample_interval_statistics",
+                File(),
+                glob=InputSelector("outputPrefix") + ".sample_interval_statistics",
                 doc="",
             ),
             ToolOutput(
                 "sampleIntervalSummary",
-                TextFile(extension=".sample_interval_summary"),
-                glob=InputSelector("outputFilename") + ".sample_interval_summary",
+                File(),
+                glob=InputSelector("outputPrefix") + ".sample_interval_summary",
                 doc="",
             ),
             ToolOutput(
                 "sampleStatistics",
-                TextFile(extension=".sample_statistics"),
-                glob=InputSelector("outputFilename") + ".sample_statistics",
+                File(),
+                glob=InputSelector("outputPrefix") + ".sample_statistics",
                 doc="",
             ),
             ToolOutput(
                 "sampleSummary",
-                TextFile(extension=".sample_summary"),
-                glob=InputSelector("outputFilename") + ".sample_summary",
+                File(),
+                glob=InputSelector("outputPrefix") + ".sample_summary",
                 doc="",
             ),
         ]
@@ -205,7 +205,7 @@ _cumulative_coverage_proportions: proprotions of loci with >= X coverage, aggreg
             "downsampling_type",
             String(optional=True),
             prefix="--downsampling_type",
-            doc="Type of read downsampling to employ at a given locus (NONE|ALL_READS|BY_SAMPLE)",
+            doc="Type of read downsampling to employ at a given locus (NONE|ALL_READS|BY.sample)",
         ),
         ToolInput(
             "downsample_to_fraction",
@@ -298,3 +298,4 @@ _cumulative_coverage_proportions: proprotions of loci with >= X coverage, aggreg
             prefix_applies_to_all_elements=True,
         ),
     ]
+
