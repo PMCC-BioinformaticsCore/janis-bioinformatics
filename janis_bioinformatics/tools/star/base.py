@@ -54,13 +54,17 @@ CPU_TUPLE = [
 
 
 class StarAlignerBase(BioinformaticsTool, ABC):
-    @staticmethod
-    def tool():
+    def tool(self):
         return "star_aligner"
 
-    @staticmethod
-    def base_command():
+    def tool_provider(self):
+        return "Cold Spring Harbor Laboratory"
+
+    def base_command(self):
         return "STAR"
+
+    def friendly_name(self):
+        return "STAR Aligner"
 
     # Need a better way to specify memory
     def memory(self, hints):
@@ -102,6 +106,10 @@ class StarAlignerBase(BioinformaticsTool, ABC):
             ToolInput(
                 "outFileNamePrefix",
                 Filename(),
+<<<<<<< HEAD
+=======
+                String(optional=True),
+>>>>>>> upstream/master
                 prefix="--outFileNamePrefix",
                 doc="string: output files name prefix (including full or relative path). Can only be defined on the command line.",
             ),
@@ -141,17 +149,28 @@ class StarAlignerBase(BioinformaticsTool, ABC):
                 glob=InputSelector("outFileNamePrefix") + "Log.final.out",
             ),
             ToolOutput(
+<<<<<<< HEAD
                 "LogOut", File, glob=InputSelector("outFileNamePrefix") + "Log.out"
             ),
             ToolOutput(
                 "LogProgressOut",
+=======
+                "logOut", File, glob=InputSelector("outFileNamePrefix") + "Log.out"
+            ),
+            ToolOutput(
+                "logProgressOut",
+>>>>>>> upstream/master
                 File,
                 glob=InputSelector("outFileNamePrefix") + "Log.progress.out",
             ),
             ToolOutput(
+<<<<<<< HEAD
                 "SJOutTab",
                 File,
                 glob=InputSelector("outFileNamePrefix") + "SJ.out.tab",
+=======
+                "sjOutTab", File, glob=InputSelector("outFileNamePrefix") + "SJ.out.tab"
+>>>>>>> upstream/master
             ),
             ToolOutput(
                 "out", Bam, glob=InputSelector("outFileNamePrefix") + "Aligned.out.bam"

@@ -13,6 +13,7 @@ from janis_core import (
     Filename,
     Stdout,
     InputSelector,
+    Array,
 )
 from janis_bioinformatics.data_types.bam import Bam
 from janis_bioinformatics.data_types import FastaWithDict
@@ -48,6 +49,14 @@ class SamToolsViewBase(SamToolsToolBase, ABC):
                 position=5,
                 prefix="-o",
                 doc="Output to FILE [stdout].",
+            ),
+            ToolInput(
+                "regions",
+                Array(String, optional=True),
+                position=11,
+                doc="Region specifications after the input filename to restrict output to only those alignments which "
+                "overlap the specified region(s). Use of region specifications requires a coordinate-sorted and "
+                "indexed input file (in BAM or CRAM format)",
             ),
         ]
 

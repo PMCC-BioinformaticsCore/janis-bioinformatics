@@ -41,14 +41,14 @@ class SamToolsSortBase(SamToolsToolBase, ABC):
     def outputs(self):
         return [
             ToolOutput("out", Bam(), glob=InputSelector("outputFilename")),
-            ToolOutput(
-                "temporaryOutputs",
-                Array(Bam(), optional=True),
-                glob=WildcardSelector("*.tmp.*.bam"),
-                doc="By default, any temporary files are written alongside the output file, "
-                "as out.bam.tmp.nnnn.bam, or if output is to standard output, "
-                "in the current directory as samtools.mmm.mmm.tmp.nnnn.bam.",
-            ),
+            # ToolOutput(
+            #     "temporaryOutputs",
+            #     Array(Bam(), optional=True),
+            #     glob=WildcardSelector("*.tmp.*.bam"),
+            #     doc="By default, any temporary files are written alongside the output file, "
+            #     "as out.bam.tmp.nnnn.bam, or if output is to standard output, "
+            #     "in the current directory as samtools.mmm.mmm.tmp.nnnn.bam.",
+            # ),
         ]
 
     def friendly_name(self):
