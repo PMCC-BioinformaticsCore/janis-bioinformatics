@@ -107,6 +107,10 @@ class StarAlignerBase(BioinformaticsTool, ABC):
                 "outFileNamePrefix",
                 Filename(),
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+                String(optional=True),
+>>>>>>> upstream/master
 =======
                 String(optional=True),
 >>>>>>> upstream/master
@@ -150,24 +154,34 @@ class StarAlignerBase(BioinformaticsTool, ABC):
             ),
             ToolOutput(
 <<<<<<< HEAD
+<<<<<<< HEAD
                 "LogOut", File, glob=InputSelector("outFileNamePrefix") + "Log.out"
             ),
             ToolOutput(
                 "LogProgressOut",
 =======
+=======
+>>>>>>> upstream/master
                 "logOut", File, glob=InputSelector("outFileNamePrefix") + "Log.out"
             ),
             ToolOutput(
                 "logProgressOut",
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
                 File,
                 glob=InputSelector("outFileNamePrefix") + "Log.progress.out",
             ),
             ToolOutput(
 <<<<<<< HEAD
+<<<<<<< HEAD
                 "SJOutTab",
                 File,
                 glob=InputSelector("outFileNamePrefix") + "SJ.out.tab",
+=======
+                "sjOutTab", File, glob=InputSelector("outFileNamePrefix") + "SJ.out.tab"
+>>>>>>> upstream/master
 =======
                 "sjOutTab", File, glob=InputSelector("outFileNamePrefix") + "SJ.out.tab"
 >>>>>>> upstream/master
