@@ -1,0 +1,40 @@
+from janis_core import WorkflowBuilder
+
+# data types
+from janis_bioinformatics.data_types import BamBai, Bed, FastaWithDict
+from janis_core import String
+
+from janis_bioinformatics.tools.gatk3 import GATK3DepthOfCoverageLatest
+from janis_bioinformatics.tools.pmac import AddSymToDepthOfCoverageLatest
+
+wf = WorkflowBuilder("AnnotateDepthOfCoverage", version="v0.1.0")
+# workflow construction
+AnnotateDepthOfCoverage_0_1_0 = wf
+
+wf.input("bam", BamBai)
+wf.input("bed", Bed)
+wf.input("reference", FastaWithDict)
+wf.input("outputprefix", String)
+
+wf.step(
+    "gatk3depthofcoverage",
+    GATK3DepthOfCoverageLatest(
+        reference=wf.reference,
+        bam=wf.bam,
+        intervals=wf.bed,
+        countType="COUNT_FRAGMENTS_REQUIRE_SAME_BASE",
+        summaryCoverageThreshold=[1, 50, 100, 300, 500],
+        outputPrefix=wf.outputprefix,
+    ),
+)
+
+wf.step(
+    "addsymtodepthofcoverage",
+    AddSymToDepthOfCoverageLatest(
+        inputFile=wf.gatk3depthofcoverage.sampleIntervalSummary,
+        bed=wf.bed,
+        outputFilename=wf.outputprefix,
+    ),
+)
+
+wf.output("out", source=wf.addsymtodepthofcoverage.out)
