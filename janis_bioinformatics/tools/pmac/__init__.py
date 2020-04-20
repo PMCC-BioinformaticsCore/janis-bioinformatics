@@ -4,7 +4,6 @@ from .parsefastqc.v0_1_0 import ParseFastqcAdaptors
 from .performancesummary.versions import *
 from .genecovpersample.versions import *
 from .addsymtodepthofcoverage.versions import *
-from .depthOfCoverageWorkflow import depthOfCoverageWorkflow_0_1_0
-
-# from .workflows.performanceSummary import performanceSummaryWorkflow_0_1_0
-# from .workflows.performanceSummaryGenome import performanceSummaryGenomeWorkflow_0_1_0
+from .annotateDepthOfCoverageWorkflow import AnnotateDepthOfCoverage_0_1_0
+from .performanceSummaryTargetedWorkflow import PerformanceSummaryTargeted_0_1_0
+from .performanceSummaryGenomeWorkflow import PerformanceSummaryGenome_0_1_0
