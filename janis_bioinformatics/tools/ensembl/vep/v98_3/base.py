@@ -15,10 +15,19 @@ from janis_core import (
     Float,
     Stdout,
     InputSelector,
+    ToolArgument,
 )
+from janis_core.operators.logical import If, IsDefined, AndOperator
+from janis_core.operators.standard import JoinOperator
 from janis_unix import Tsv
 
-from janis_bioinformatics.data_types import Fasta, CompressedVcf, Bam, BedTabix
+from janis_bioinformatics.data_types import (
+    Fasta,
+    CompressedVcf,
+    Bam,
+    BedTabix,
+    VcfTabix,
+)
 
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 
@@ -29,6 +38,9 @@ class VepBase_98_3(BioinformaticsTool):
 
     def friendly_name(self) -> str:
         return "Variant Effect Predictor (VEP)"
+
+    def tool_provider(self):
+        return "Ensembl"
 
     def base_command(self):
         return "vep"
@@ -786,11 +798,107 @@ Not used by default""",
                 prefix="--freq_filter",
                 doc="Specify whether to exclude or include only variants that pass the frequency filter",
             ),
+            # CADD plugin
+            ToolInput("caddReference", Array(VcfTabix, optional=True)),
+            # Condel
+            ToolInput(
+                "condelConfig",
+                Directory(optional=True),
+                doc="Directory containing CondelPlugin config, in format: '<dir>/condel_SP.conf'",
+            ),
+            # dbNSFP
+            ToolInput("dbnspReference", VcfTabix(optional=True), doc=""),
+            ToolInput("dbsnpColumns", Array(String, optional=True)),
+            # REVEL
+            ToolInput("revelReference", VcfTabix(optional=True)),
+            # CUSTOM
+            ToolInput("custom1Reference", VcfTabix(optional=True)),
+            ToolInput("custom1Columns", Array(String, optional=True)),
+        ]
+
+    def arguments(self):
+        return [
+            # CADD
+            ToolArgument(
+                If(
+                    IsDefined(InputSelector("caddReference")),
+                    [
+                        "--plugin",
+                        "CADD," + JoinOperator(InputSelector("caddReference"), ","),
+                    ],
+                    None,
+                )
+            ),
+            # Condel
+            ToolArgument(
+                If(
+                    IsDefined(InputSelector("condelConfig")),
+                    [
+                        "--plugin",
+                        StringFormatter(
+                            "Condel,{condelconfig},b",
+                            condelconfig=InputSelector("condelConfig"),
+                        ),
+                    ],
+                    "",
+                ),
+                shell_quote=False,
+            ),
+            # dbNSFP
+            ToolArgument(
+                If(
+                    AndOperator(
+                        IsDefined(InputSelector("dbnspReference")),
+                        IsDefined(InputSelector("dbsnpColumns")),
+                    ),
+                    [
+                        "--plugin",
+                        StringFormatter(
+                            "dbNSFP,{ref},{cols}",
+                            ref=InputSelector("dbnspReference"),
+                            cols=JoinOperator(InputSelector("dbsnpColumns"), ","),
+                        ),
+                    ],
+                    None,
+                )
+            ),
+            # REVEL
+            ToolArgument(
+                If(
+                    IsDefined(InputSelector("revelReference")),
+                    [
+                        "--plugin",
+                        StringFormatter(
+                            "REVEL,{ref}", ref=InputSelector("revelReference")
+                        ),
+                    ],
+                    "",
+                ),
+                shell_quote=False,
+            ),
+            # CUSTOM 1
+            ToolArgument(
+                If(
+                    AndOperator(
+                        IsDefined(InputSelector("custom1Reference")),
+                        IsDefined(InputSelector("custom1Columns")),
+                    ),
+                    [
+                        "--custom",
+                        StringFormatter(
+                            "{ref},{cols}",
+                            ref=InputSelector("custom1Reference"),
+                            cols=JoinOperator(InputSelector("custom1Columns"), ","),
+                        ),
+                    ],
+                    None,
+                )
+            ),
         ]
 
     def outputs(self) -> List[ToolOutput]:
         return [
             ToolOutput("std", Stdout),
             ToolOutput("out", File, glob=InputSelector("outputFilename")),
-            ToolOutput("stats"),
+            # ToolOutput("stats", File, glob="*"),
         ]
