@@ -795,5 +795,7 @@ Not used by default""",
         return [
             ToolOutput("std", Stdout),
             ToolOutput("out", File, glob=InputSelector("outputFilename")),
-            ToolOutput("stats"),
+            ToolOutput(
+                "stats", File(extension=".html"), glob=InputSelector("statsFile")
+            ),
         ]
