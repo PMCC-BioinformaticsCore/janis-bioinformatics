@@ -30,6 +30,9 @@ class VepBase_98_3(BioinformaticsTool):
     def friendly_name(self) -> str:
         return "Variant Effect Predictor (VEP)"
 
+    def tool_provider(self):
+        return "Ensembl"
+
     def base_command(self):
         return "vep"
 
