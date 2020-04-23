@@ -67,46 +67,43 @@ class GATK3DepthOfCoverageBase(GATK3ToolBase, ABC):
     def outputs(self):
         return [
             ToolOutput(
-                "sample",
-                File(extension=".txt"),
-                glob=InputSelector("outputPrefix"),
-                doc="",
+                "sample", TextFile(), glob=InputSelector("outputPrefix"), doc="",
             ),
             ToolOutput(
                 "sampleCumulativeCoverageCounts",
-                File(extension=".txt"),
+                TextFile(),
                 glob=InputSelector("outputPrefix")
                 + ".sample_cumulative_coverage_counts",
                 doc="",
             ),
             ToolOutput(
                 "sampleCumulativeCoverageProportions",
-                File(extension=".txt"),
+                TextFile(),
                 glob=InputSelector("outputPrefix")
                 + ".sample_cumulative_coverage_proportions",
                 doc="",
             ),
             ToolOutput(
                 "sampleIntervalStatistics",
-                File(extension=".txt"),
+                TextFile(),
                 glob=InputSelector("outputPrefix") + ".sample_interval_statistics",
                 doc="",
             ),
             ToolOutput(
                 "sampleIntervalSummary",
-                File(extension=".txt"),
+                TextFile(),
                 glob=InputSelector("outputPrefix") + ".sample_interval_summary",
                 doc="",
             ),
             ToolOutput(
                 "sampleStatistics",
-                File(extension=".txt"),
+                TextFile(),
                 glob=InputSelector("outputPrefix") + ".sample_statistics",
                 doc="",
             ),
             ToolOutput(
                 "sampleSummary",
-                File(extension=".txt"),
+                TextFile(),
                 glob=InputSelector("outputPrefix") + ".sample_summary",
                 doc="",
             ),
