@@ -66,42 +66,47 @@ class GATK3DepthOfCoverageBase(GATK3ToolBase, ABC):
 
     def outputs(self):
         return [
-            ToolOutput("sample", File(), glob=InputSelector("outputPrefix"), doc=""),
+            ToolOutput(
+                "sample",
+                File(extension=".txt"),
+                glob=InputSelector("outputPrefix"),
+                doc="",
+            ),
             ToolOutput(
                 "sampleCumulativeCoverageCounts",
-                File(),
+                File(extension=".txt"),
                 glob=InputSelector("outputPrefix")
                 + ".sample_cumulative_coverage_counts",
                 doc="",
             ),
             ToolOutput(
                 "sampleCumulativeCoverageProportions",
-                File(),
+                File(extension=".txt"),
                 glob=InputSelector("outputPrefix")
                 + ".sample_cumulative_coverage_proportions",
                 doc="",
             ),
             ToolOutput(
                 "sampleIntervalStatistics",
-                File(),
+                File(extension=".txt"),
                 glob=InputSelector("outputPrefix") + ".sample_interval_statistics",
                 doc="",
             ),
             ToolOutput(
                 "sampleIntervalSummary",
-                File(),
+                File(extension=".txt"),
                 glob=InputSelector("outputPrefix") + ".sample_interval_summary",
                 doc="",
             ),
             ToolOutput(
                 "sampleStatistics",
-                File(),
+                File(extension=".txt"),
                 glob=InputSelector("outputPrefix") + ".sample_statistics",
                 doc="",
             ),
             ToolOutput(
                 "sampleSummary",
-                File(),
+                File(extension=".txt"),
                 glob=InputSelector("outputPrefix") + ".sample_summary",
                 doc="",
             ),
@@ -298,4 +303,3 @@ _cumulative_coverage_proportions: proprotions of loci with >= X coverage, aggreg
             prefix_applies_to_all_elements=True,
         ),
     ]
-
