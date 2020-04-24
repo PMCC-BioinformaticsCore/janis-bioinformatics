@@ -118,12 +118,10 @@ class Bcl2FastqBase(IlluminaToolBase, ABC):
                 glob=WildcardSelector("*/*.fastq.gz"),
             ),
             ToolOutput(
-                "stats", output_type=Array(File()), glob=WildcardSelector("Stats/*"),
+                "stats", output_type=Array(File()), glob=WildcardSelector("Stats/*")
             ),
             ToolOutput(
-                "interop",
-                output_type=Array(File()),
-                glob=WildcardSelector("InterOp/*"),
+                "interop", output_type=Array(File()), glob=WildcardSelector("InterOp/*")
             ),
         ]
 
