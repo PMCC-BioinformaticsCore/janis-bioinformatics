@@ -25,7 +25,8 @@ PerformanceSummaryGenome_0_1_0 = wf
 # Inputs
 wf.input("bam", BamBai)
 wf.input("bed", Bed)
-wf.input("sampleName", String)
+# Pending to multiple outputs with same prefix
+wf.input("sample_name", String)
 
 # Steps - Performance Summary
 wf.step(
@@ -59,7 +60,7 @@ wf.step(
         coverage=wf.bedtoolsgenomecoveragebed.out,
         rmdupFlagstat=wf.rmdupbamflagstat.out,
         genome=True,
-        outputFilename=wf.sampleName,
+        outputPrefix=wf.sample_name,
     ),
 )
 
@@ -73,7 +74,7 @@ wf.step(
 wf.step(
     "genecoverage",
     GeneCoveragePerSampleLatest(
-        sampleName=wf.sampleName,
+        sampleName=wf.sample_name,
         bedtoolsOutputPath=wf.bedtoolscoverage.out,
         outputGeneFile="gene.txt",
         outputRegionFile="region.txt",
@@ -89,3 +90,4 @@ wf.output(
 wf.output(
     "regionFileOut", source=wf.genecoverage.regionFileOut,
 )
+

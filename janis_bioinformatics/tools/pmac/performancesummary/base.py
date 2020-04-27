@@ -3,6 +3,7 @@ import datetime
 
 from janis_bioinformatics.tools import BioinformaticsTool
 from janis_core import ToolInput, ToolOutput, File, Filename, InputSelector, Boolean
+from janis_unix import Csv
 
 
 class PerformanceSummaryBase(BioinformaticsTool, ABC):
@@ -36,15 +37,16 @@ class PerformanceSummaryBase(BioinformaticsTool, ABC):
                 doc="output of bedtools coverageBed for targeted bam; bedtools genomeCoverageBed for whole genome bam",
             ),
             ToolInput(
-                "outputFilename", Filename(), prefix="-o", doc="output summary csv name"
+                "outputPrefix",
+                Filename(),
+                prefix="-o",
+                doc="prefix of output summary csv",
             ),
             *self.additional_args,
         ]
 
     def outputs(self):
-        return [
-            ToolOutput("out", File(), glob=InputSelector("outputFilename") + ".csv")
-        ]
+        return [ToolOutput("out", Csv(), glob=InputSelector("outputPrefix") + ".csv")]
 
     additional_args = [
         ToolInput(
@@ -102,3 +104,4 @@ optional arguments:
         self.metadata.documentationUrl = (
             "https://github.com/PMCC-BioinformaticsCore/scripts/tree/master/performance"
         )
+

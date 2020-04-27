@@ -17,6 +17,7 @@ from janis_core import (
 )
 from janis_core import get_value_for_hints_and_ordered_resource_tuple
 from janis_core import ToolMetadata
+from janis_unix import TextFile
 
 from janis_bioinformatics.data_types import Bam, BamBai, FastaWithDict
 from ..gatk4toolbase import Gatk4ToolBase
@@ -98,13 +99,13 @@ class Gatk4CollectInsertSizeMetricsBase(Gatk4ToolBase, ABC):
             ),
             ToolInput(
                 "outputFilename",
-                Filename(extension=".txt"),
+                Filename(),
                 prefix="-O",
                 doc="File to write the output to.  Required.",
             ),
             ToolInput(
                 "outputHistogram",
-                Filename(extension=".pdf"),
+                Filename(),
                 prefix="-H",
                 doc="File to write insert size Histogram chart to.  Required. ",
             ),
@@ -113,8 +114,12 @@ class Gatk4CollectInsertSizeMetricsBase(Gatk4ToolBase, ABC):
 
     def outputs(self):
         return [
-            ToolOutput("out", File(), glob=InputSelector("outputFilename")),
-            ToolOutput("outHistogram", File(), glob=InputSelector("outputHistogram")),
+            ToolOutput("out", TextFile(), glob=InputSelector("outputFilename")),
+            ToolOutput(
+                "outHistogram",
+                File(extension=".pdf"),
+                glob=InputSelector("outputHistogram"),
+            ),
         ]
 
     additional_args = [
@@ -190,3 +195,4 @@ class Gatk4CollectInsertSizeMetricsBase(Gatk4ToolBase, ABC):
             doc="display hidden  arguments  Default  value: false.  Possible values: {true, false} ",
         ),
     ]
+

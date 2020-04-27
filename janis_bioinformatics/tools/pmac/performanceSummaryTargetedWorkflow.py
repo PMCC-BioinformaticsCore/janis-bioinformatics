@@ -12,7 +12,10 @@ from janis_bioinformatics.tools.bedtools import (
     BedToolsIntersectBedLatest,
 )
 from janis_bioinformatics.tools.gatk4 import Gatk4CollectInsertSizeMetricsLatest
-from janis_bioinformatics.tools.pmac import PerformanceSummaryLatest
+from janis_bioinformatics.tools.pmac import (
+    PerformanceSummaryLatest,
+    GeneCoveragePerSampleLatest,
+)
 
 wf = WorkflowBuilder("PerformanceSummaryTargeted", version="v0.1.0")
 # workflow construction
@@ -21,7 +24,7 @@ PerformanceSummaryTargeted_0_1_0 = wf
 # Inputs
 wf.input("bam", BamBai)
 wf.input("bed", Bed)
-wf.input("outputFilename", String)
+wf.input("sample_name", String)
 
 # Steps
 wf.step(
@@ -62,8 +65,33 @@ wf.step(
         targetFlagstat=wf.targetbamflagstat.out,
         coverage=wf.bedtoolscoveragebed.out,
         rmdupFlagstat=wf.rmdupbamflagstat.out,
-        outputFilename=wf.outputFilename,
+        outputPrefix=wf.sample_name,
     ),
 )
 
+# Steps - Gene Coverage
+wf.step(
+    "bedtoolscoverage",
+    BedToolsCoverageBedLatest(
+        inputABed=wf.bed, inputBBam=wf.samtoolsview.out, histogram=True,
+    ),
+)
+wf.step(
+    "genecoverage",
+    GeneCoveragePerSampleLatest(
+        sampleName=wf.sample_name,
+        bedtoolsOutputPath=wf.bedtoolscoverage.out,
+        outputGeneFile="gene.txt",
+        outputRegionFile="region.txt",
+    ),
+)
+
+# Outputs
 wf.output("out", source=wf.performancesummary.out)
+wf.output(
+    "geneFileOut", source=wf.genecoverage.geneFileOut,
+)
+wf.output(
+    "regionFileOut", source=wf.genecoverage.regionFileOut,
+)
+
