@@ -3,6 +3,7 @@ import datetime
 
 from janis_bioinformatics.tools import BioinformaticsTool
 from janis_core import ToolInput, ToolOutput, File, Filename, Int, InputSelector, String
+from janis_unix import TextFile
 
 
 class GeneCoveragePerSampleBase(BioinformaticsTool, ABC):
@@ -60,8 +61,10 @@ class GeneCoveragePerSampleBase(BioinformaticsTool, ABC):
 
     def outputs(self):
         return [
-            ToolOutput("geneFileOut", File(), glob=InputSelector("outputGeneFile")),
-            ToolOutput("regionFileOut", File(), glob=InputSelector("outputRegionFile")),
+            ToolOutput("geneFileOut", TextFile(), glob=InputSelector("outputGeneFile")),
+            ToolOutput(
+                "regionFileOut", TextFile(), glob=InputSelector("outputRegionFile")
+            ),
         ]
 
     def bind_metadata(self):
