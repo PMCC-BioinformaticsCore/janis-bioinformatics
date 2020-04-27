@@ -1,7 +1,7 @@
 from janis_core import WorkflowBuilder
 
 # data types
-from janis_bioinformatics.data_types import Bam, Bed
+from janis_bioinformatics.data_types import BamBai, Bed
 from janis_core import String
 from janis_bioinformatics.tools.samtools import (
     SamToolsFlagstatLatest,
@@ -19,7 +19,7 @@ wf = WorkflowBuilder("PerformanceSummaryTargeted", version="v0.1.0")
 PerformanceSummaryTargeted_0_1_0 = wf
 
 # Inputs
-wf.input("bam", Bam)
+wf.input("bam", BamBai)
 wf.input("bed", Bed)
 wf.input("outputFilename", String)
 
