@@ -4,7 +4,7 @@ import datetime
 from janis_bioinformatics.tools import BioinformaticsTool
 from janis_core import ToolInput, ToolOutput, File, Filename, InputSelector
 from janis_bioinformatics.data_types import Bed
-from janis_unix import Tsv
+from janis_unix import TextFile
 
 
 class AddSymToDepthOfCoverageBase(BioinformaticsTool, ABC):
@@ -32,7 +32,7 @@ class AddSymToDepthOfCoverageBase(BioinformaticsTool, ABC):
         ]
 
     def outputs(self):
-        return [ToolOutput("out", Tsv(), glob=InputSelector("outputFilename"))]
+        return [ToolOutput("out", TextFile(), glob=InputSelector("outputFilename"))]
 
     def bind_metadata(self):
         self.metadata.creator = "Jiaan Yu"
