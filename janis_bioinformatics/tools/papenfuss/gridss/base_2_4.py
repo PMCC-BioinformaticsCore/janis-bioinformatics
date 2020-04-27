@@ -28,9 +28,9 @@ CORES_TUPLE = [
             CaptureType.TARGETED: 8,
             CaptureType.CHROMOSOME: 8,
             CaptureType.EXOME: 8,
-            CaptureType.THIRTYX: 8,
-            CaptureType.NINETYX: 8,
-            CaptureType.THREEHUNDREDX: 8,
+            CaptureType.THIRTYX: 16,
+            CaptureType.NINETYX: 16,
+            CaptureType.THREEHUNDREDX: 16,
         },
     )
 ]
@@ -85,6 +85,9 @@ class GridssBase_2_4(BioinformaticsTool):
             ),
             ToolInput(
                 "blacklist", Bed(optional=True), position=4, prefix="--blacklist"
+            ),
+            ToolInput(
+                "tmpdir", String(optional=True), default="./TMP", prefix="--workingdir"
             ),
         ]
 
