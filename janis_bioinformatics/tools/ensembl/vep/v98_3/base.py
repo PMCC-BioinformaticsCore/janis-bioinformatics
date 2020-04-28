@@ -825,24 +825,21 @@ Not used by default""",
             ToolArgument(
                 If(
                     IsDefined(InputSelector("caddReference")),
-                    [
-                        "--plugin",
-                        "CADD," + JoinOperator(InputSelector("caddReference"), ","),
-                    ],
-                    None,
-                )
+                    "--plugin CADD,"
+                    + JoinOperator(InputSelector("caddReference"), ","),
+                    "",
+                ),
+                shell_quote=False,
             ),
             # Condel
             ToolArgument(
                 If(
                     IsDefined(InputSelector("condelConfig")),
-                    [
-                        "--plugin",
-                        StringFormatter(
-                            "Condel,{condelconfig},b",
-                            condelconfig=InputSelector("condelConfig"),
-                        ),
-                    ],
+                    "--plugin "
+                    + StringFormatter(
+                        "Condel,{condelconfig},b",
+                        condelconfig=InputSelector("condelConfig"),
+                    ),
                     "",
                 ),
                 shell_quote=False,
@@ -854,27 +851,24 @@ Not used by default""",
                         IsDefined(InputSelector("dbnspReference")),
                         IsDefined(InputSelector("dbsnpColumns")),
                     ),
-                    [
-                        "--plugin",
-                        StringFormatter(
-                            "dbNSFP,{ref},{cols}",
-                            ref=InputSelector("dbnspReference"),
-                            cols=JoinOperator(InputSelector("dbsnpColumns"), ","),
-                        ),
-                    ],
-                    None,
-                )
+                    "--plugin "
+                    + StringFormatter(
+                        "dbNSFP,{ref},{cols}",
+                        ref=InputSelector("dbnspReference"),
+                        cols=JoinOperator(InputSelector("dbsnpColumns"), ","),
+                    ),
+                    "",
+                ),
+                shell_quote=False,
             ),
             # REVEL
             ToolArgument(
                 If(
                     IsDefined(InputSelector("revelReference")),
-                    [
-                        "--plugin",
-                        StringFormatter(
-                            "REVEL,{ref}", ref=InputSelector("revelReference")
-                        ),
-                    ],
+                    "--plugin "
+                    + StringFormatter(
+                        "REVEL,{ref}", ref=InputSelector("revelReference")
+                    ),
                     "",
                 ),
                 shell_quote=False,
@@ -886,15 +880,13 @@ Not used by default""",
                         IsDefined(InputSelector("custom1Reference")),
                         IsDefined(InputSelector("custom1Columns")),
                     ),
-                    [
-                        "--custom",
-                        StringFormatter(
-                            "{ref},{cols}",
-                            ref=InputSelector("custom1Reference"),
-                            cols=JoinOperator(InputSelector("custom1Columns"), ","),
-                        ),
-                    ],
-                    None,
+                    "--custom "
+                    + StringFormatter(
+                        "{ref},{cols}",
+                        ref=InputSelector("custom1Reference"),
+                        cols=JoinOperator(InputSelector("custom1Columns"), ","),
+                    ),
+                    "",
                 )
             ),
             # CUSTOM 2
@@ -904,16 +896,15 @@ Not used by default""",
                         IsDefined(InputSelector("custom2Reference")),
                         IsDefined(InputSelector("custom2Columns")),
                     ),
-                    [
-                        "--custom",
-                        StringFormatter(
-                            "{ref},{cols}",
-                            ref=InputSelector("custom2Reference"),
-                            cols=JoinOperator(InputSelector("custom2Columns"), ","),
-                        ),
-                    ],
-                    None,
-                )
+                    "--custom "
+                    + StringFormatter(
+                        "{ref},{cols}",
+                        ref=InputSelector("custom2Reference"),
+                        cols=JoinOperator(InputSelector("custom2Columns"), ","),
+                    ),
+                    "",
+                ),
+                shell_quote=False,
             ),
         ]
 
