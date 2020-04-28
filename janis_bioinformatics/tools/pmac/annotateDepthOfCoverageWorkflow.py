@@ -7,7 +7,11 @@ from janis_core import String
 from janis_bioinformatics.tools.gatk3 import GATK3DepthOfCoverageLatest
 from janis_bioinformatics.tools.pmac import AddSymToDepthOfCoverageLatest
 
-wf = WorkflowBuilder("AnnotateDepthOfCoverage", version="v0.1.0")
+wf = WorkflowBuilder(
+    "AnnotateDepthOfCoverage",
+    friendly_name="Annotate GATK3 DepthOfCoverage Workflow",
+    version="v0.1.0",
+)
 # workflow construction
 AnnotateDepthOfCoverage_0_1_0 = wf
 

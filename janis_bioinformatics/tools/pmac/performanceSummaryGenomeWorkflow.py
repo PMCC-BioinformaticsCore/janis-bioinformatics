@@ -18,7 +18,11 @@ from janis_bioinformatics.tools.pmac import (
     GeneCoveragePerSampleLatest,
 )
 
-wf = WorkflowBuilder("PerformanceSummaryGenome", version="v0.1.0")
+wf = WorkflowBuilder(
+    "PerformanceSummaryGenome",
+    friendly_name="Performance summary workflow (whole genome)",
+    version="v0.1.0",
+)
 # workflow construction
 PerformanceSummaryGenome_0_1_0 = wf
 
@@ -60,7 +64,7 @@ wf.step(
         coverage=wf.bedtoolsgenomecoveragebed.out,
         rmdupFlagstat=wf.rmdupbamflagstat.out,
         genome=True,
-        outputPrefix=wf.sample_name,
+        outputPrefix="performance_summary",
     ),
 )
 
@@ -90,4 +94,3 @@ wf.output(
 wf.output(
     "regionFileOut", source=wf.genecoverage.regionFileOut,
 )
-
