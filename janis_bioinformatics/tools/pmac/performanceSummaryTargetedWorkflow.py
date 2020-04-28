@@ -17,7 +17,11 @@ from janis_bioinformatics.tools.pmac import (
     GeneCoveragePerSampleLatest,
 )
 
-wf = WorkflowBuilder("PerformanceSummaryTargeted", version="v0.1.0")
+wf = WorkflowBuilder(
+    "PerformanceSummaryTargeted",
+    friendly_name="Performance summary workflow (targeted bed)",
+    version="v0.1.0",
+)
 # workflow construction
 PerformanceSummaryTargeted_0_1_0 = wf
 
@@ -94,4 +98,3 @@ wf.output(
 wf.output(
     "regionFileOut", source=wf.genecoverage.regionFileOut,
 )
-
