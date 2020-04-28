@@ -67,7 +67,7 @@ class GATK3DepthOfCoverageBase(GATK3ToolBase, ABC):
     def outputs(self):
         return [
             ToolOutput(
-                "sample", TextFile(), glob=InputSelector("outputPrefix"), doc="",
+                "sample", TextFile(), glob=InputSelector("outputPrefix"), doc=""
             ),
             ToolOutput(
                 "sampleCumulativeCoverageCounts",

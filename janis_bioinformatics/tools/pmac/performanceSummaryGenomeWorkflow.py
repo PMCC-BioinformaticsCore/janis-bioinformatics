@@ -3,6 +3,10 @@ from janis_core import WorkflowBuilder
 # data types
 from janis_bioinformatics.data_types import BamBai, Bed
 from janis_core import String
+
+from janis_bioinformatics.tools.bioinformaticstoolbase import (
+    BioinformaticsWorkflowBuilder,
+)
 from janis_bioinformatics.tools.samtools import (
     SamToolsFlagstatLatest,
     SamToolsViewLatest,
@@ -18,10 +22,11 @@ from janis_bioinformatics.tools.pmac import (
     GeneCoveragePerSampleLatest,
 )
 
-wf = WorkflowBuilder(
+wf = BioinformaticsWorkflowBuilder(
     "PerformanceSummaryGenome",
     friendly_name="Performance summary workflow (whole genome)",
     version="v0.1.0",
+    tool_provider="Peter MacCallum Cancer Centre",
 )
 # workflow construction
 PerformanceSummaryGenome_0_1_0 = wf
@@ -41,16 +46,12 @@ wf.step(
         outputHistogram="insertsizemetrics.pdf",
     ),
 )
-wf.step(
-    "bamflagstat", SamToolsFlagstatLatest(bam=wf.bam),
-)
+wf.step("bamflagstat", SamToolsFlagstatLatest(bam=wf.bam))
 wf.step(
     "samtoolsview",
-    SamToolsViewLatest(sam=wf.bam, doNotOutputAlignmentsWithBitsSet="0x400",),
+    SamToolsViewLatest(sam=wf.bam, doNotOutputAlignmentsWithBitsSet="0x400"),
 )
-wf.step(
-    "rmdupbamflagstat", SamToolsFlagstatLatest(bam=wf.samtoolsview.out),
-)
+wf.step("rmdupbamflagstat", SamToolsFlagstatLatest(bam=wf.samtoolsview.out))
 wf.step(
     "bedtoolsgenomecoveragebed",
     BedToolsGenomeCoverageBedLatest(inputBam=wf.samtoolsview.out),
@@ -72,7 +73,7 @@ wf.step(
 wf.step(
     "bedtoolscoverage",
     BedToolsCoverageBedLatest(
-        inputABed=wf.bed, inputBBam=wf.samtoolsview.out, histogram=True,
+        inputABed=wf.bed, inputBBam=wf.samtoolsview.out, histogram=True
     ),
 )
 wf.step(
@@ -85,12 +86,6 @@ wf.step(
     ),
 )
 
-wf.output(
-    "performanceSummaryOut", source=wf.performancesummary.out,
-)
-wf.output(
-    "geneFileOut", source=wf.genecoverage.geneFileOut,
-)
-wf.output(
-    "regionFileOut", source=wf.genecoverage.regionFileOut,
-)
+wf.output("performanceSummaryOut", source=wf.performancesummary.out)
+wf.output("geneFileOut", source=wf.genecoverage.geneFileOut)
+wf.output("regionFileOut", source=wf.genecoverage.regionFileOut)

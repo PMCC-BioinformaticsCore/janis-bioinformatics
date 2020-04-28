@@ -4,13 +4,17 @@ from janis_core import WorkflowBuilder
 from janis_bioinformatics.data_types import BamBai, Bed, FastaWithDict
 from janis_core import String
 
+from janis_bioinformatics.tools.bioinformaticstoolbase import (
+    BioinformaticsWorkflowBuilder,
+)
 from janis_bioinformatics.tools.gatk3 import GATK3DepthOfCoverageLatest
 from janis_bioinformatics.tools.pmac import AddSymToDepthOfCoverageLatest
 
-wf = WorkflowBuilder(
+wf = BioinformaticsWorkflowBuilder(
     "AnnotateDepthOfCoverage",
     friendly_name="Annotate GATK3 DepthOfCoverage Workflow",
     version="v0.1.0",
+    tool_provider="Peter MacCallum Cancer Centre",
 )
 # workflow construction
 AnnotateDepthOfCoverage_0_1_0 = wf

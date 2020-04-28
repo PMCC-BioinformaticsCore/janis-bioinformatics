@@ -3,6 +3,10 @@ from janis_core import WorkflowBuilder
 # data types
 from janis_bioinformatics.data_types import BamBai, Bed
 from janis_core import String
+
+from janis_bioinformatics.tools.bioinformaticstoolbase import (
+    BioinformaticsWorkflowBuilder,
+)
 from janis_bioinformatics.tools.samtools import (
     SamToolsFlagstatLatest,
     SamToolsViewLatest,
@@ -17,10 +21,11 @@ from janis_bioinformatics.tools.pmac import (
     GeneCoveragePerSampleLatest,
 )
 
-wf = WorkflowBuilder(
+wf = BioinformaticsWorkflowBuilder(
     "PerformanceSummaryTargeted",
     friendly_name="Performance summary workflow (targeted bed)",
     version="v0.1.0",
+    tool_provider="Peter MacCallum Cancer Centre",
 )
 # workflow construction
 PerformanceSummaryTargeted_0_1_0 = wf
@@ -42,22 +47,18 @@ wf.step(
 wf.step("bamflagstat", SamToolsFlagstatLatest(bam=wf.bam))
 wf.step(
     "samtoolsview",
-    SamToolsViewLatest(sam=wf.bam, doNotOutputAlignmentsWithBitsSet="0x400",),
+    SamToolsViewLatest(sam=wf.bam, doNotOutputAlignmentsWithBitsSet="0x400"),
 )
-wf.step(
-    "rmdupbamflagstat", SamToolsFlagstatLatest(bam=wf.samtoolsview.out),
-)
+wf.step("rmdupbamflagstat", SamToolsFlagstatLatest(bam=wf.samtoolsview.out))
 wf.step(
     "bedtoolsintersectbed",
-    BedToolsIntersectBedLatest(inputABam=wf.samtoolsview.out, inputBBed=wf.bed,),
+    BedToolsIntersectBedLatest(inputABam=wf.samtoolsview.out, inputBBed=wf.bed),
 )
-wf.step(
-    "targetbamflagstat", SamToolsFlagstatLatest(bam=wf.bedtoolsintersectbed.out,),
-)
+wf.step("targetbamflagstat", SamToolsFlagstatLatest(bam=wf.bedtoolsintersectbed.out))
 wf.step(
     "bedtoolscoveragebed",
     BedToolsCoverageBedLatest(
-        inputABed=wf.bed, inputBBam=wf.bedtoolsintersectbed.out, histogram=True,
+        inputABed=wf.bed, inputBBam=wf.bedtoolsintersectbed.out, histogram=True
     ),
 )
 # Give all the output files to performance summary script
@@ -77,7 +78,7 @@ wf.step(
 wf.step(
     "bedtoolscoverage",
     BedToolsCoverageBedLatest(
-        inputABed=wf.bed, inputBBam=wf.samtoolsview.out, histogram=True,
+        inputABed=wf.bed, inputBBam=wf.samtoolsview.out, histogram=True
     ),
 )
 wf.step(
@@ -92,9 +93,5 @@ wf.step(
 
 # Outputs
 wf.output("out", source=wf.performancesummary.out)
-wf.output(
-    "geneFileOut", source=wf.genecoverage.geneFileOut,
-)
-wf.output(
-    "regionFileOut", source=wf.genecoverage.regionFileOut,
-)
+wf.output("geneFileOut", source=wf.genecoverage.geneFileOut)
+wf.output("regionFileOut", source=wf.genecoverage.regionFileOut)
