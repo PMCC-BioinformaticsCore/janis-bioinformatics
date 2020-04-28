@@ -38,7 +38,7 @@ class PerformanceSummaryBase(BioinformaticsTool, ABC):
             ),
             ToolInput(
                 "outputPrefix",
-                Filename(),
+                Filename(extension=".csv"),
                 prefix="-o",
                 doc="prefix of output summary csv",
             ),
@@ -104,4 +104,3 @@ optional arguments:
         self.metadata.documentationUrl = (
             "https://github.com/PMCC-BioinformaticsCore/scripts/tree/master/performance"
         )
-

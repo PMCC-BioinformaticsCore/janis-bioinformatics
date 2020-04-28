@@ -37,11 +37,14 @@ class GeneCoveragePerSampleBase(BioinformaticsTool, ABC):
                 doc="Path to bedtools output if list not used",
             ),
             ToolInput(
-                "outputGeneFile", Filename(), prefix="--gene", doc="Output gene file",
+                "outputGeneFile",
+                Filename(extension=".txt"),
+                prefix="--gene",
+                doc="Output gene file",
             ),
             ToolInput(
                 "outputRegionFile",
-                Filename(),
+                Filename(extension=".txt"),
                 prefix="--region",
                 doc="Output region file",
             ),

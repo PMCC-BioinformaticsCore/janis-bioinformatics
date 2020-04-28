@@ -26,7 +26,10 @@ class AddSymToDepthOfCoverageBase(BioinformaticsTool, ABC):
                 doc="Gatk3 DepthOfCoverage interval_summary output",
             ),
             ToolInput(
-                "outputFilename", Filename(), prefix="-o", doc="Output file name"
+                "outputFilename",
+                Filename(extension=".txt"),
+                prefix="-o",
+                doc="Output file name",
             ),
             ToolInput("bed", Bed(), prefix="-bed", doc="Annotated bed file"),
         ]
