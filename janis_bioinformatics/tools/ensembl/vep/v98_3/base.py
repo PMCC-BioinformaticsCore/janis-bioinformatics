@@ -815,6 +815,8 @@ Not used by default""",
             # CUSTOM
             ToolInput("custom1Reference", VcfTabix(optional=True)),
             ToolInput("custom1Columns", Array(String, optional=True)),
+            ToolInput("custom2Reference", VcfTabix(optional=True)),
+            ToolInput("custom2Columns", Array(String, optional=True)),
         ]
 
     def arguments(self):
@@ -890,6 +892,24 @@ Not used by default""",
                             "{ref},{cols}",
                             ref=InputSelector("custom1Reference"),
                             cols=JoinOperator(InputSelector("custom1Columns"), ","),
+                        ),
+                    ],
+                    None,
+                )
+            ),
+            # CUSTOM 2
+            ToolArgument(
+                If(
+                    AndOperator(
+                        IsDefined(InputSelector("custom2Reference")),
+                        IsDefined(InputSelector("custom2Columns")),
+                    ),
+                    [
+                        "--custom",
+                        StringFormatter(
+                            "{ref},{cols}",
+                            ref=InputSelector("custom2Reference"),
+                            cols=JoinOperator(InputSelector("custom2Columns"), ","),
                         ),
                     ],
                     None,
