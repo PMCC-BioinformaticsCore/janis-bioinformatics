@@ -33,7 +33,7 @@ class FastqGz(File):
         )
 
 
-class FastqGzPair(Array):
+class FastqGzPairedEnd(Array):
     def __init__(self, optional=False):
         super().__init__(FastqGz, optional=optional)
 
@@ -64,7 +64,7 @@ class FastqGzPair(Array):
         return ", ".join(hints)
 
 
-class FastqPair(Array):
+class FastqPairedEnd(Array):
     def __init__(self, optional=False):
         super().__init__(File(optional=False, extension=".fastq"), optional=optional)
 
@@ -93,3 +93,7 @@ class FastqPair(Array):
         if len(meta) != 2:
             hints.append(f"There must be exactly 2 (found {len(meta)}) fastq files")
         return ", ".join(hints)
+
+
+FastqGzPair = FastqGzPairedEnd
+FastqPair = FastqPairedEnd
