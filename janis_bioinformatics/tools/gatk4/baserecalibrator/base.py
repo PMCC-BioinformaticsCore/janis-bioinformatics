@@ -112,7 +112,7 @@ class Gatk4BaseRecalibratorBase(Gatk4ToolBase, ABC):
             ),
             ToolInput(
                 "outputFilename",
-                Filename(extension=".table"),
+                Filename(input_to_select="bam", extension=".table"),
                 position=8,
                 prefix="-O",
                 doc="**The output recalibration table filename to create.** "

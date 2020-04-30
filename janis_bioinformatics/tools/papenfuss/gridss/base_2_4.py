@@ -70,13 +70,13 @@ class GridssBase_2_4(BioinformaticsTool):
             ToolInput("reference", FastaWithDict(), position=1, prefix="--reference"),
             ToolInput(
                 "outputFilename",
-                Filename(extension=".vcf"),
+                Filename(suffix=".svs", extension=".vcf"),
                 position=2,
                 prefix="--output",
             ),
             ToolInput(
                 "assemblyFilename",
-                Filename(extension=".bam"),
+                Filename(suffix=".assembled", extension=".bam"),
                 position=3,
                 prefix="--assembly",
             ),
