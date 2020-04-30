@@ -80,8 +80,13 @@ class Gatk4MergeSamFilesBase(Gatk4ToolBase, ABC):
                 position=10,
             ),
             ToolInput(
+                "sampleName", String(optional=True), doc="Used for naming purposes only"
+            ),
+            ToolInput(
                 "outputFilename",
-                Filename(extension=".bam"),
+                Filename(
+                    input_to_select="sampleName", suffix=".merged", extension=".bam"
+                ),
                 position=10,
                 prefix="-O",
                 doc="SAM/BAM file to write merged result to",

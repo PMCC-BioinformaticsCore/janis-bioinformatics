@@ -38,6 +38,7 @@ class GatkSomaticVariantCaller_4_1_3(BioinformaticsWorkflow):
         self.input("known_indels", VcfTabix)
         self.input("mills_indels", VcfTabix)
 
+        # we'll create the steps, and then assign their inputs later
         self.step(
             "base_recalibrator_normal",
             gatk4.Gatk4BaseRecalibrator_4_1_3(),

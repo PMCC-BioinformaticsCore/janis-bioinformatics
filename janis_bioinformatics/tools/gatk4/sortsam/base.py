@@ -96,7 +96,7 @@ class Gatk4SortSamBase(Gatk4ToolBase, ABC):
             ),
             ToolInput(
                 "outputFilename",
-                Filename(extension=".bam"),
+                Filename(input_to_select="bam", suffix=".sorted", extension=".bam"),
                 position=10,
                 prefix="-O",
                 doc="The sorted SAM/BAM/CRAM output file.",
