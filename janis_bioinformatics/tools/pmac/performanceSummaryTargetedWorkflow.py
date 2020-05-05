@@ -1,16 +1,9 @@
-from janis_core import WorkflowBuilder
+from janis_core import String
+from janis_core import WorkflowMetadata
 
 # data types
 from janis_bioinformatics.data_types import BamBai, Bed
-from janis_core import String
-
-from janis_bioinformatics.tools.bioinformaticstoolbase import (
-    BioinformaticsWorkflowBuilder,
-)
-from janis_bioinformatics.tools.samtools import (
-    SamToolsFlagstatLatest,
-    SamToolsViewLatest,
-)
+from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.bedtools import (
     BedToolsCoverageBedLatest,
     BedToolsIntersectBedLatest,
@@ -20,78 +13,96 @@ from janis_bioinformatics.tools.pmac import (
     PerformanceSummaryLatest,
     GeneCoveragePerSampleLatest,
 )
-
-wf = BioinformaticsWorkflowBuilder(
-    "PerformanceSummaryTargeted",
-    friendly_name="Performance summary workflow (targeted bed)",
-    version="v0.1.0",
-    tool_provider="Peter MacCallum Cancer Centre",
-)
-# workflow construction
-PerformanceSummaryTargeted_0_1_0 = wf
-
-# Inputs
-wf.input("bam", BamBai)
-wf.input("bed", Bed)
-wf.input("sample_name", String)
-
-# Steps
-wf.step(
-    "gatk4collectinsertsizemetrics",
-    Gatk4CollectInsertSizeMetricsLatest(
-        bam=wf.bam,
-        outputFilename="insertsizemetrics.txt",
-        outputHistogram="insertsizemetrics.pdf",
-    ),
-)
-wf.step("bamflagstat", SamToolsFlagstatLatest(bam=wf.bam))
-wf.step(
-    "samtoolsview",
-    SamToolsViewLatest(sam=wf.bam, doNotOutputAlignmentsWithBitsSet="0x400"),
-)
-wf.step("rmdupbamflagstat", SamToolsFlagstatLatest(bam=wf.samtoolsview.out))
-wf.step(
-    "bedtoolsintersectbed",
-    BedToolsIntersectBedLatest(inputABam=wf.samtoolsview.out, inputBBed=wf.bed),
-)
-wf.step("targetbamflagstat", SamToolsFlagstatLatest(bam=wf.bedtoolsintersectbed.out))
-wf.step(
-    "bedtoolscoveragebed",
-    BedToolsCoverageBedLatest(
-        inputABed=wf.bed, inputBBam=wf.bedtoolsintersectbed.out, histogram=True
-    ),
-)
-# Give all the output files to performance summary script
-wf.step(
-    "performancesummary",
-    PerformanceSummaryLatest(
-        flagstat=wf.bamflagstat.out,
-        collectInsertSizeMetrics=wf.gatk4collectinsertsizemetrics.out,
-        targetFlagstat=wf.targetbamflagstat.out,
-        coverage=wf.bedtoolscoveragebed.out,
-        rmdupFlagstat=wf.rmdupbamflagstat.out,
-        outputPrefix=wf.sample_name,
-    ),
+from janis_bioinformatics.tools.samtools import (
+    SamToolsFlagstatLatest,
+    SamToolsViewLatest,
 )
 
-# Steps - Gene Coverage
-wf.step(
-    "bedtoolscoverage",
-    BedToolsCoverageBedLatest(
-        inputABed=wf.bed, inputBBam=wf.samtoolsview.out, histogram=True
-    ),
-)
-wf.step(
-    "genecoverage",
-    GeneCoveragePerSampleLatest(
-        sampleName=wf.sample_name,
-        bedtoolsOutputPath=wf.bedtoolscoverage.out,
-        outputGeneFile="gene.txt",
-        outputRegionFile="region.txt",
-    ),
-)
 
-# Outputs
-wf.output("out", source=wf.performancesummary.out)
-wf.output("geneFileOut", source=wf.genecoverage.geneFileOut)
-wf.output("regionFileOut", source=wf.genecoverage.regionFileOut)
+class PerformanceSummaryTargeted_0_1_0(BioinformaticsWorkflow):
+    def id(self) -> str:
+        return "PerformanceSummaryTargeted"
+
+    def friendly_name(self):
+        return "Performance summary workflow (targeted bed)"
+
+    def tool_provider(self):
+        return "Peter MacCallum Cancer Centre"
+
+    def bind_metadata(self):
+        return WorkflowMetadata(version="v0.1.0", contributors=["Jiaan Yu"])
+
+    def constructor(self):
+
+        # Inputs
+        self.input("bam", BamBai)
+        self.input("bed", Bed)
+        self.input("sample_name", String)
+
+        # Steps
+        self.step(
+            "gatk4collectinsertsizemetrics",
+            Gatk4CollectInsertSizeMetricsLatest(
+                bam=self.bam,
+                outputFilename="insertsizemetrics.txt",
+                outputHistogram="insertsizemetrics.pdf",
+            ),
+        )
+        self.step("bamflagstat", SamToolsFlagstatLatest(bam=self.bam))
+        self.step(
+            "samtoolsview",
+            SamToolsViewLatest(sam=self.bam, doNotOutputAlignmentsWithBitsSet="0x400"),
+        )
+        self.step("rmdupbamflagstat", SamToolsFlagstatLatest(bam=self.samtoolsview.out))
+        self.step(
+            "bedtoolsintersectbed",
+            BedToolsIntersectBedLatest(
+                inputABam=self.samtoolsview.out, inputBBed=self.bed
+            ),
+        )
+        self.step(
+            "targetbamflagstat",
+            SamToolsFlagstatLatest(bam=self.bedtoolsintersectbed.out),
+        )
+        self.step(
+            "bedtoolscoveragebed",
+            BedToolsCoverageBedLatest(
+                inputABed=self.bed,
+                inputBBam=self.bedtoolsintersectbed.out,
+                histogram=True,
+            ),
+        )
+        # Give all the output files to performance summary script
+        self.step(
+            "performancesummary",
+            PerformanceSummaryLatest(
+                flagstat=self.bamflagstat.out,
+                collectInsertSizeMetrics=self.gatk4collectinsertsizemetrics.out,
+                targetFlagstat=self.targetbamflagstat.out,
+                coverage=self.bedtoolscoveragebed.out,
+                rmdupFlagstat=self.rmdupbamflagstat.out,
+                outputPrefix=self.sample_name,
+            ),
+        )
+
+        # Steps - Gene Coverage
+        self.step(
+            "bedtoolscoverage",
+            BedToolsCoverageBedLatest(
+                inputABed=self.bed, inputBBam=self.samtoolsview.out, histogram=True
+            ),
+        )
+        self.step(
+            "genecoverage",
+            GeneCoveragePerSampleLatest(
+                sampleName=self.sample_name,
+                bedtoolsOutputPath=self.bedtoolscoverage.out,
+                outputGeneFile="gene.txt",
+                outputRegionFile="region.txt",
+            ),
+        )
+
+        # Outputs
+        self.output("out", source=self.performancesummary.out)
+        self.output("geneFileOut", source=self.genecoverage.geneFileOut)
+        self.output("regionFileOut", source=self.genecoverage.regionFileOut)
