@@ -5,6 +5,9 @@ from .base import VepBase_98_3
 
 
 class VepDatabaseBase_98_3(VepBase_98_3, ABC):
+    def tool(self) -> str:
+        return "vep_database"
+
     def friendly_name(self):
         return "Vep (Database)"
 

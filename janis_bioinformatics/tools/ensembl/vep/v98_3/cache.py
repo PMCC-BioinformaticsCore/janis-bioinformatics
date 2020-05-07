@@ -6,6 +6,9 @@ from .base import VepBase_98_3
 
 
 class VepCacheBase_98_3(VepBase_98_3, ABC):
+    def tool(self) -> str:
+        return "vep_cache"
+
     def friendly_name(self):
         return "Vep (Cache)"
 
