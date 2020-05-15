@@ -107,7 +107,7 @@ from .sortsam.versions import (
     Gatk4SortSamLatest,
 )
 from .splitreads.versions import (
-    Gatk4SortSamLatest,
+    Gatk4SplitReadsLatest,
     Gatk4SplitReads_4_1_2,
     Gatk4SplitReads_4_1_3,
     Gatk4SplitReads_4_1_4,
@@ -119,3 +119,7 @@ from .collectinsertsizemetrics.versions import (
     Gatk4CollectInsertSizeMetrics_4_1_4,
     Gatk4CollectInsertSizeMetricsLatest,
 )
+
+from .splitncigarreads.versions import *
+from .addorreplacereadgroups.versions import *
+from .reordersam.versions import *
