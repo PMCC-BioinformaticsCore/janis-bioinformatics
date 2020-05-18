@@ -129,7 +129,7 @@ class BwaMem_SamToolsView(BioinformaticsTool):
             ),
             ToolInput(
                 "outputFilename",
-                Filename(input_to_select="sampleName", extension=".bam"),
+                Filename(prefix=InputSelector("sampleName"), extension=".bam"),
                 position=8,
                 shell_quote=False,
                 prefix="-o",

@@ -85,7 +85,9 @@ class Gatk4MergeSamFilesBase(Gatk4ToolBase, ABC):
             ToolInput(
                 "outputFilename",
                 Filename(
-                    input_to_select="sampleName", suffix=".merged", extension=".bam"
+                    prefix=InputSelector("sampleName"),
+                    suffix=".merged",
+                    extension=".bam",
                 ),
                 position=10,
                 prefix="-O",
