@@ -1,19 +1,22 @@
 from abc import ABC
 from datetime import datetime
+from janis_bioinformatics.tools.gatk4.gatk4toolbase import Gatk4ToolBase
 
 from janis_core import (
+    CommandTool,
     ToolInput,
+    ToolOutput,
     File,
     Boolean,
     String,
     Int,
     Double,
+    Float,
+    InputSelector,
+    Filename,
     ToolMetadata,
     InputDocumentation,
-    Filename,
 )
-
-from janis_bioinformatics.tools.gatk4.gatk4toolbase import Gatk4ToolBase
 
 
 class GatkSplitNCigarReadsBase(Gatk4ToolBase, ABC):
@@ -25,7 +28,7 @@ class GatkSplitNCigarReadsBase(Gatk4ToolBase, ABC):
         return "GATK4: SplitNCigarReads"
 
     def tool(self) -> str:
-        return "GatkSplitNCigarReads"
+        return "Gatk4SplitNCigarReads"
 
     def inputs(self):
         return [
@@ -35,8 +38,7 @@ class GatkSplitNCigarReadsBase(Gatk4ToolBase, ABC):
                 prefix="--input",
                 separate_value_from_prefix=True,
                 doc=InputDocumentation(
-                    doc="(-I) BAM/SAM/CRAM file containing reads."
-                    " This argument must be specified at least once. Required. "
+                    doc="(-I) BAM/SAM/CRAM file containing reads This argument must be specified at least once. Required. "
                 ),
             ),
             ToolInput(
@@ -61,8 +63,7 @@ class GatkSplitNCigarReadsBase(Gatk4ToolBase, ABC):
                 prefix="--add-output-sam-program-record",
                 separate_value_from_prefix=True,
                 doc=InputDocumentation(
-                    doc="(-add-output-sam-program-record)  If true, adds a PG tag to created SAM/BAM/CRAM files.  "
-                    "Default value: true. Possible values: {true, false} "
+                    doc="(-add-output-sam-program-record)  If true, adds a PG tag to created SAM/BAM/CRAM files.  Default value: true. Possible values: {true, false} "
                 ),
             ),
             ToolInput(
@@ -71,8 +72,7 @@ class GatkSplitNCigarReadsBase(Gatk4ToolBase, ABC):
                 prefix="--add-output-vcf-command-line",
                 separate_value_from_prefix=True,
                 doc=InputDocumentation(
-                    doc="(-add-output-vcf-command-line)  If true, adds a command line header line to created VCF files."
-                    "Default value: true. Possible values: {true, false} "
+                    doc="(-add-output-vcf-command-line)  If true, adds a command line header line to created VCF files.  Default value: true. Possible values: {true, false} "
                 ),
             ),
             ToolInput(
@@ -81,8 +81,7 @@ class GatkSplitNCigarReadsBase(Gatk4ToolBase, ABC):
                 prefix="--arguments_file",
                 separate_value_from_prefix=True,
                 doc=InputDocumentation(
-                    doc="read one or more arguments files and add them to the command line This argument may be "
-                    "specified 0 or more times. Default value: null. "
+                    doc="read one or more arguments files and add them to the command line This argument may be specified 0 or more times. Default value: null. "
                 ),
             ),
             ToolInput(
@@ -652,7 +651,7 @@ class GatkSplitNCigarReadsBase(Gatk4ToolBase, ABC):
     def metadata(self):
         return ToolMetadata(
             contributors=[],
-            dateCreated=datetime.fromisoformat("2020-05-15T15:42:57.592654"),
-            dateUpdated=datetime.fromisoformat("2020-05-15T15:42:57.592655"),
+            dateCreated=datetime.fromisoformat("2020-05-18T14:59:50.838650"),
+            dateUpdated=datetime.fromisoformat("2020-05-18T14:59:50.838651"),
             documentation="USAGE: SplitNCigarReads [arguments]\nSplits reads that contain Ns in their cigar string (e.g. spanning splicing events).\nVersion:4.1.3.0\n",
         )

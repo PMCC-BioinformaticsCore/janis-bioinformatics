@@ -1,24 +1,9 @@
-from .base import GatkSplitNCigarReadsBase
-from ..versions import Gatk_4_0_12, Gatk_4_1_2_0, Gatk_4_1_3_0, Gatk_4_1_4_0
+from .base import GatkSplitncigarreadsBase
 
 
-class GatkSplitNCigarReads_4_0(Gatk_4_0_12, GatkSplitNCigarReadsBase):
-    pass
+class GatkSplitncigarreads_4_1_3_0(GatkSplitncigarreadsBase):
+    def version(self):
+        return "4.1.3.0"
 
-
-class GatkSplitNCigarReads_4_1_2(Gatk_4_1_2_0, GatkSplitNCigarReadsBase):
-    pass
-
-
-class GatkSplitNCigarReads_4_1_3(Gatk_4_1_3_0, GatkSplitNCigarReadsBase):
-    pass
-
-
-class GatkSplitNCigarReads_4_1_4(Gatk_4_1_4_0, GatkSplitNCigarReadsBase):
-    pass
-
-
-GatkSplitNCigarReadsLatest = GatkSplitNCigarReads_4_1_4
-
-if __name__ == "__main__":
-    print(GatkSplitNCigarReadsLatest().help())
+    def container(self):
+        return "broadinstitute/gatk:4.1.3.0"

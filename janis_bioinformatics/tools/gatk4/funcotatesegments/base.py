@@ -1,0 +1,695 @@
+from abc import ABC
+from datetime import datetime
+from janis_bioinformatics.tools.gatk4.gatk4toolbase import Gatk4ToolBase
+
+from janis_core import (
+    CommandTool,
+    ToolInput,
+    ToolOutput,
+    File,
+    Boolean,
+    String,
+    Int,
+    Double,
+    Float,
+    InputSelector,
+    Filename,
+    ToolMetadata,
+    InputDocumentation,
+)
+
+
+class GatkFuncotateSegmentsBase(Gatk4ToolBase, ABC):
+    @classmethod
+    def gatk_command(cls):
+        return "FuncotateSegments"
+
+    def friendly_name(self) -> str:
+        return "GATK4: FuncotateSegments"
+
+    def tool(self) -> str:
+        return "Gatk4FuncotateSegments"
+
+    def inputs(self):
+        return [
+            ToolInput(
+                tag="dataSourcesPath",
+                input_type=String(optional=True),
+                prefix="--data-sources-path",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="The path to a data source folder for Funcotator. May be specified more than once to handle multiple data source folders.  This argument must be specified at least once. Required. "
+                ),
+            ),
+            ToolInput(
+                tag="outputFilename",
+                input_type=Filename(optional=True),
+                prefix="--output",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="(-O) Output file to which annotated variants should be written. Required."
+                ),
+            ),
+            ToolInput(
+                tag="outputFileFormat",
+                input_type=Boolean(optional=True),
+                prefix="--output-file-format",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc=" The output file format.  Either VCF, MAF, or SEG.  Please note that MAF output for germline use case VCFs is unsupported.  SEG will generate two output files: a simple tsv and a gene list.  Required. Possible values: {VCF, MAF, SEG} "
+                ),
+            ),
+            ToolInput(
+                tag="refVersion",
+                input_type=Boolean(optional=True),
+                prefix="--ref-version",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc=" The version of the Human Genome reference to use (e.g. hg19, hg38, etc.).  This will correspond to a sub-folder of each data source corresponding to that data source for the given reference.  Required. Possible values: {hg19, hg38, b37} "
+                ),
+            ),
+            ToolInput(
+                tag="reference",
+                input_type=String(optional=True),
+                prefix="--reference",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(doc="(-R) Reference sequence file Required."),
+            ),
+            ToolInput(
+                tag="segments",
+                input_type=File(optional=True),
+                prefix="--segments",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="Input segment file (tab-separated values). Must have a call column. Required."
+                ),
+            ),
+            ToolInput(
+                tag="addOutputSamProgramRecord",
+                input_type=Boolean(optional=True),
+                prefix="--add-output-sam-program-record",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="(-add-output-sam-program-record)  If true, adds a PG tag to created SAM/BAM/CRAM files.  Default value: true. Possible values: {true, false} "
+                ),
+            ),
+            ToolInput(
+                tag="addOutputVcfCommandLine",
+                input_type=Boolean(optional=True),
+                prefix="--add-output-vcf-command-line",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="(-add-output-vcf-command-line)  If true, adds a command line header line to created VCF files.  Default value: true. Possible values: {true, false} "
+                ),
+            ),
+            ToolInput(
+                tag="aliasToKeyMapping",
+                input_type=Boolean(optional=True),
+                prefix="--alias-to-key-mapping",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc=" Users should not typically have to specify this.  This argument may be specified 0 or more times. Default value: [MEAN_LOG2_COPY_RATIO:Segment_Mean, CALL:Segment_Call, sample:Sample, sample_id:Sample, NUM_POINTS_COPY_RATIO:Num_Probes]. "
+                ),
+            ),
+            ToolInput(
+                tag="annotationDefault",
+                input_type=String(optional=True),
+                prefix="--annotation-default",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="Annotations to include in all annotated variants if the annotation is not specified in the data sources (in the format <ANNOTATION>:<VALUE>).  This will add the specified annotation to every annotated variant if it is not already present.  This argument may be specified 0 or more times. Default value: null. "
+                ),
+            ),
+            ToolInput(
+                tag="annotationOverride",
+                input_type=String(optional=True),
+                prefix="--annotation-override",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="Override values for annotations (in the format <ANNOTATION>:<VALUE>). Replaces existing annotations of the given name with given values.  This argument may be specified 0 or more times. Default value: null. "
+                ),
+            ),
+            ToolInput(
+                tag="arguments_file",
+                input_type=File(optional=True),
+                prefix="--arguments_file",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="read one or more arguments files and add them to the command line This argument may be specified 0 or more times. Default value: null. "
+                ),
+            ),
+            ToolInput(
+                tag="cloudIndexPrefetchBuffer",
+                input_type=Int(optional=True),
+                prefix="--cloud-index-prefetch-buffer",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="(-CIPB)  Size of the cloud-only prefetch buffer (in MB; 0 to disable). Defaults to cloudPrefetchBuffer if unset.  Default value: -1. "
+                ),
+            ),
+            ToolInput(
+                tag="cloudPrefetchBuffer",
+                input_type=Int(optional=True),
+                prefix="--cloud-prefetch-buffer",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="(-CPB)  Size of the cloud-only prefetch buffer (in MB; 0 to disable).  Default value: 40. "
+                ),
+            ),
+            ToolInput(
+                tag="createOutputBamIndex",
+                input_type=Boolean(optional=True),
+                prefix="--create-output-bam-index",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="(-OBI)  If true, create a BAM/CRAM index when writing a coordinate-sorted BAM/CRAM file.  Default value: true. Possible values: {true, false} "
+                ),
+            ),
+            ToolInput(
+                tag="createOutputBamMd5",
+                input_type=Boolean(optional=True),
+                prefix="--create-output-bam-md5",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="(-OBM)  If true, create a MD5 digest for any BAM/SAM/CRAM file created  Default value: false. Possible values: {true, false} "
+                ),
+            ),
+            ToolInput(
+                tag="createOutputVariantIndex",
+                input_type=Boolean(optional=True),
+                prefix="--create-output-variant-index",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="(-OVI)  If true, create a VCF index when writing a coordinate-sorted VCF file.  Default value: true. Possible values: {true, false} "
+                ),
+            ),
+            ToolInput(
+                tag="createOutputVariantMd5",
+                input_type=Boolean(optional=True),
+                prefix="--create-output-variant-md5",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="(-OVM)  If true, create a a MD5 digest any VCF file created.  Default value: false. Possible values: {true, false} "
+                ),
+            ),
+            ToolInput(
+                tag="disableBamIndexCaching",
+                input_type=Boolean(optional=True),
+                prefix="--disable-bam-index-caching",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="(-DBIC)  If true, don't cache bam indexes, this will reduce memory requirements but may harm performance if many intervals are specified.  Caching is automatically disabled if there are no intervals specified.  Default value: false. Possible values: {true, false} "
+                ),
+            ),
+            ToolInput(
+                tag="disableReadFilter",
+                input_type=String(optional=True),
+                prefix="--disable-read-filter",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="(-DF)  Read filters to be disabled before analysis  This argument may be specified 0 or more times. Default value: null. Possible Values: {WellformedReadFilter}"
+                ),
+            ),
+            ToolInput(
+                tag="disableSequenceDictionaryValidation",
+                input_type=Boolean(optional=True),
+                prefix="--disable-sequence-dictionary-validation",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="(-disable-sequence-dictionary-validation)  If specified, do not check the sequence dictionaries from our inputs for compatibility. Use at your own risk!  Default value: false. Possible values: {true, false} "
+                ),
+            ),
+            ToolInput(
+                tag="excludeField",
+                input_type=String(optional=True),
+                prefix="--exclude-field",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="Fields that should not be rendered in the final output. Only exact name matches will be excluded.  This argument may be specified 0 or more times. Default value: null. "
+                ),
+            ),
+            ToolInput(
+                tag="excludeIntervals",
+                input_type=Boolean(optional=True),
+                prefix="--exclude-intervals",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="(-XL) This argument may be specified 0 or more times. Default value: null. "
+                ),
+            ),
+            ToolInput(
+                tag="gatkConfigFile",
+                input_type=String(optional=True),
+                prefix="--gatk-config-file",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="A configuration file to use with the GATK. Default value: null."
+                ),
+            ),
+            ToolInput(
+                tag="gcsMaxRetries",
+                input_type=Int(optional=True),
+                prefix="--gcs-max-retries",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="(-gcs-retries)  If the GCS bucket channel errors out, how many times it will attempt to re-initiate the connection  Default value: 20. "
+                ),
+            ),
+            ToolInput(
+                tag="gcsProjectForRequesterPays",
+                input_type=String(optional=True),
+                prefix="--gcs-project-for-requester-pays",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc=" Project to bill when accessing 'requester pays' buckets. If unset, these buckets cannot be accessed.  Default value: . "
+                ),
+            ),
+            ToolInput(
+                tag="help",
+                input_type=Boolean(optional=True),
+                prefix="--help",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="(-h) display the help message Default value: false. Possible values: {true, false}"
+                ),
+            ),
+            ToolInput(
+                tag="inp",
+                input_type=String(optional=True),
+                prefix="--input",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="(-I) BAM/SAM/CRAM file containing reads This argument may be specified 0 or more times. Default value: null. "
+                ),
+            ),
+            ToolInput(
+                tag="intervalExclusionPadding",
+                input_type=Int(optional=True),
+                prefix="--interval-exclusion-padding",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="(-ixp)  Amount of padding (in bp) to add to each interval you are excluding.  Default value: 0. "
+                ),
+            ),
+            ToolInput(
+                tag="intervalMergingRule",
+                input_type=Boolean(optional=True),
+                prefix="--interval-merging-rule",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="(-imr)  Interval merging rule for abutting intervals  Default value: ALL. Possible values: {ALL, OVERLAPPING_ONLY} "
+                ),
+            ),
+            ToolInput(
+                tag="intervalPadding",
+                input_type=Boolean(optional=True),
+                prefix="--interval-padding",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(doc="(-ip) Default value: 0."),
+            ),
+            ToolInput(
+                tag="intervalSetRule",
+                input_type=Boolean(optional=True),
+                prefix="--interval-set-rule",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="(-isr)  Set merging approach to use for combining interval inputs  Default value: UNION. Possible values: {UNION, INTERSECTION} "
+                ),
+            ),
+            ToolInput(
+                tag="intervals",
+                input_type=String(optional=True),
+                prefix="--intervals",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="(-L) One or more genomic intervals over which to operate This argument may be specified 0 or more times. Default value: null. "
+                ),
+            ),
+            ToolInput(
+                tag="lenient",
+                input_type=Boolean(optional=True),
+                prefix="--lenient",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="(-LE) Lenient processing of VCF files Default value: false. Possible values: {true, false}"
+                ),
+            ),
+            ToolInput(
+                tag="lookaheadCacheBp",
+                input_type=Int(optional=True),
+                prefix="--lookahead-cache-bp",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="Number of base-pairs to cache when querying variants. Can be overridden in individual data source configuration files.  Default value: 100000. "
+                ),
+            ),
+            ToolInput(
+                tag="quiet",
+                input_type=Boolean(optional=True),
+                prefix="--QUIET",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="Whether to suppress job-summary info on System.err. Default value: false. Possible values: {true, false} "
+                ),
+            ),
+            ToolInput(
+                tag="readFilter",
+                input_type=String(optional=True),
+                prefix="--read-filter",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="(-RF) Read filters to be applied before analysis This argument may be specified 0 or more times. Default value: null. Possible Values: {AlignmentAgreesWithHeaderReadFilter, AllowAllReadsReadFilter, AmbiguousBaseReadFilter, CigarContainsNoNOperator, FirstOfPairReadFilter, FragmentLengthReadFilter, GoodCigarReadFilter, HasReadGroupReadFilter, IntervalOverlapReadFilter, LibraryReadFilter, MappedReadFilter, MappingQualityAvailableReadFilter, MappingQualityNotZeroReadFilter, MappingQualityReadFilter, MatchingBasesAndQualsReadFilter, MateDifferentStrandReadFilter, MateOnSameContigOrNoMappedMateReadFilter, MateUnmappedAndUnmappedReadFilter, MetricsReadFilter, NonChimericOriginalAlignmentReadFilter, NonZeroFragmentLengthReadFilter, NonZeroReferenceLengthAlignmentReadFilter, NotDuplicateReadFilter, NotOpticalDuplicateReadFilter, NotSecondaryAlignmentReadFilter, NotSupplementaryAlignmentReadFilter, OverclippedReadFilter, PairedReadFilter, PassesVendorQualityCheckReadFilter, PlatformReadFilter, PlatformUnitReadFilter, PrimaryLineReadFilter, ProperlyPairedReadFilter, ReadGroupBlackListReadFilter, ReadGroupReadFilter, ReadLengthEqualsCigarLengthReadFilter, ReadLengthReadFilter, ReadNameReadFilter, ReadStrandFilter, SampleReadFilter, SecondOfPairReadFilter, SeqIsStoredReadFilter, SoftClippedReadFilter, ValidAlignmentEndReadFilter, ValidAlignmentStartReadFilter, WellformedReadFilter}"
+                ),
+            ),
+            ToolInput(
+                tag="readIndex",
+                input_type=String(optional=True),
+                prefix="--read-index",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="(-read-index)  Indices to use for the read inputs. If specified, an index must be provided for every read input and in the same order as the read inputs. If this argument is not specified, the path to the index for each input will be inferred automatically.  This argument may be specified 0 or more times. Default value: null. "
+                ),
+            ),
+            ToolInput(
+                tag="readValidationStringency",
+                input_type=Boolean(optional=True),
+                prefix="--read-validation-stringency",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="(-VS)  Validation stringency for all SAM/BAM/CRAM/SRA files read by this program.  The default stringency value SILENT can improve performance when processing a BAM file in which variable-length data (read, qualities, tags) do not otherwise need to be decoded.  Default value: SILENT. Possible values: {STRICT, LENIENT, SILENT} "
+                ),
+            ),
+            ToolInput(
+                tag="secondsBetweenProgressUpdates",
+                input_type=Double(optional=True),
+                prefix="--seconds-between-progress-updates",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="(-seconds-between-progress-updates)  Output traversal statistics every time this many seconds elapse  Default value: 10.0. "
+                ),
+            ),
+            ToolInput(
+                tag="sequenceDictionary",
+                input_type=String(optional=True),
+                prefix="--sequence-dictionary",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="(-sequence-dictionary)  Use the given sequence dictionary as the master/canonical sequence dictionary.  Must be a .dict file.  Default value: null. "
+                ),
+            ),
+            ToolInput(
+                tag="sitesOnlyVcfOutput",
+                input_type=Boolean(optional=True),
+                prefix="--sites-only-vcf-output",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc=" If true, don't emit genotype fields when writing vcf file output.  Default value: false. Possible values: {true, false} "
+                ),
+            ),
+            ToolInput(
+                tag="tmpDir",
+                input_type=Boolean(optional=True),
+                prefix="--tmp-dir",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="Temp directory to use. Default value: null."
+                ),
+            ),
+            ToolInput(
+                tag="transcriptList",
+                input_type=String(optional=True),
+                prefix="--transcript-list",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="File to use as a list of transcripts (one transcript ID per line, version numbers are ignored) OR A set of transcript IDs to use for annotation to override selected transcript. This argument may be specified 0 or more times. Default value: null. "
+                ),
+            ),
+            ToolInput(
+                tag="transcriptSelectionMode",
+                input_type=Boolean(optional=True),
+                prefix="--transcript-selection-mode",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc=" Method of detailed transcript selection.  This will select the transcript for detailed annotation (CANONICAL, ALL, or BEST_EFFECT).  Default value: CANONICAL. Possible values: {BEST_EFFECT, CANONICAL, ALL} "
+                ),
+            ),
+            ToolInput(
+                tag="useJdkDeflater",
+                input_type=Boolean(optional=True),
+                prefix="--use-jdk-deflater",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="(-jdk-deflater)  Whether to use the JdkDeflater (as opposed to IntelDeflater)  Default value: false. Possible values: {true, false} "
+                ),
+            ),
+            ToolInput(
+                tag="useJdkInflater",
+                input_type=Boolean(optional=True),
+                prefix="--use-jdk-inflater",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="(-jdk-inflater)  Whether to use the JdkInflater (as opposed to IntelInflater)  Default value: false. Possible values: {true, false} "
+                ),
+            ),
+            ToolInput(
+                tag="verbosity",
+                input_type=Boolean(optional=True),
+                prefix="--verbosity",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="(-verbosity)  Control verbosity of logging.  Default value: INFO. Possible values: {ERROR, WARNING, INFO, DEBUG} "
+                ),
+            ),
+            ToolInput(
+                tag="version",
+                input_type=Boolean(optional=True),
+                prefix="--version",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="display the version number for this tool Default value: false. Possible values: {true, false} "
+                ),
+            ),
+            ToolInput(
+                tag="disableToolDefaultReadFilters",
+                input_type=Boolean(optional=True),
+                prefix="--disable-tool-default-read-filters",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="(-disable-tool-default-read-filters)  Disable all tool default read filters (WARNING: many tools will not function correctly without their default read filters on)  Default value: false. Possible values: {true, false} "
+                ),
+            ),
+            ToolInput(
+                tag="showhidden",
+                input_type=Boolean(optional=True),
+                prefix="--showHidden",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="(-showHidden)  display hidden arguments  Default value: false. Possible values: {true, false} "
+                ),
+            ),
+            ToolInput(
+                tag="ambigFilterBases",
+                input_type=Int(optional=True),
+                prefix="--ambig-filter-bases",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="Threshold number of ambiguous bases. If null, uses threshold fraction; otherwise, overrides threshold fraction.  Default value: null.  Cannot be used in conjuction with argument(s) maxAmbiguousBaseFraction"
+                ),
+            ),
+            ToolInput(
+                tag="ambigFilterFrac",
+                input_type=Double(optional=True),
+                prefix="--ambig-filter-frac",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="Threshold fraction of ambiguous bases Default value: 0.05. Cannot be used in conjuction with argument(s) maxAmbiguousBases"
+                ),
+            ),
+            ToolInput(
+                tag="maxFragmentLength",
+                input_type=Boolean(optional=True),
+                prefix="--max-fragment-length",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(doc="Default value: 1000000."),
+            ),
+            ToolInput(
+                tag="minFragmentLength",
+                input_type=Boolean(optional=True),
+                prefix="--min-fragment-length",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(doc="Default value: 0."),
+            ),
+            ToolInput(
+                tag="keepIntervals",
+                input_type=String(optional=True),
+                prefix="--keep-intervals",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="One or more genomic intervals to keep This argument must be specified at least once. Required. "
+                ),
+            ),
+            ToolInput(
+                tag="library",
+                input_type=String(optional=True),
+                prefix="--library",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="(-library) Name of the library to keep This argument must be specified at least once. Required."
+                ),
+            ),
+            ToolInput(
+                tag="maximumMappingQuality",
+                input_type=Int(optional=True),
+                prefix="--maximum-mapping-quality",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc=" Maximum mapping quality to keep (inclusive)  Default value: null. "
+                ),
+            ),
+            ToolInput(
+                tag="minimumMappingQuality",
+                input_type=Int(optional=True),
+                prefix="--minimum-mapping-quality",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc=" Minimum mapping quality to keep (inclusive)  Default value: 10. "
+                ),
+            ),
+            ToolInput(
+                tag="dontRequireSoftClipsBothEnds",
+                input_type=Boolean(optional=True),
+                prefix="--dont-require-soft-clips-both-ends",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc=" Allow a read to be filtered out based on having only 1 soft-clipped block. By default, both ends must have a soft-clipped block, setting this flag requires only 1 soft-clipped block  Default value: false. Possible values: {true, false} "
+                ),
+            ),
+            ToolInput(
+                tag="filterTooShort",
+                input_type=Int(optional=True),
+                prefix="--filter-too-short",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="Minimum number of aligned bases Default value: 30."
+                ),
+            ),
+            ToolInput(
+                tag="platformFilterName",
+                input_type=Boolean(optional=True),
+                prefix="--platform-filter-name",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="This argument must be specified at least once. Required."
+                ),
+            ),
+            ToolInput(
+                tag="blackListedLanes",
+                input_type=String(optional=True),
+                prefix="--black-listed-lanes",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="Platform unit (PU) to filter out This argument must be specified at least once. Required."
+                ),
+            ),
+            ToolInput(
+                tag="readGroupBlackList",
+                input_type=Boolean(optional=True),
+                prefix="--read-group-black-list",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="This argument must be specified at least once. Required. "
+                ),
+            ),
+            ToolInput(
+                tag="keepReadGroup",
+                input_type=String(optional=True),
+                prefix="--keep-read-group",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="The name of the read group to keep Required."
+                ),
+            ),
+            ToolInput(
+                tag="maxReadLength",
+                input_type=Int(optional=True),
+                prefix="--max-read-length",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="Keep only reads with length at most equal to the specified value Required."
+                ),
+            ),
+            ToolInput(
+                tag="minReadLength",
+                input_type=Int(optional=True),
+                prefix="--min-read-length",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="Keep only reads with length at least equal to the specified value Default value: 1."
+                ),
+            ),
+            ToolInput(
+                tag="readName",
+                input_type=String(optional=True),
+                prefix="--read-name",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="Keep only reads with this read name Required."
+                ),
+            ),
+            ToolInput(
+                tag="keepReverseStrandOnly",
+                input_type=Boolean(optional=True),
+                prefix="--keep-reverse-strand-only",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc=" Keep only reads on the reverse strand  Required. Possible values: {true, false} "
+                ),
+            ),
+            ToolInput(
+                tag="sample",
+                input_type=String(optional=True),
+                prefix="--sample",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="(-sample) The name of the sample(s) to keep, filtering out all others This argument must be specified at least once. Required. "
+                ),
+            ),
+            ToolInput(
+                tag="invertSoftClipRatioFilter",
+                input_type=Boolean(optional=True),
+                prefix="--invert-soft-clip-ratio-filter",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc=" Inverts the results from this filter, causing all variants that would pass to fail and visa-versa.  Default value: false. Possible values: {true, false} "
+                ),
+            ),
+            ToolInput(
+                tag="softClippedLeadingTrailingRatio",
+                input_type=Double(optional=True),
+                prefix="--soft-clipped-leading-trailing-ratio",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc=" Threshold ratio of soft clipped bases (leading / trailing the cigar string) to total bases in read for read to be filtered.  Default value: null.  Cannot be used in conjuction with argument(s) minimumSoftClippedRatio"
+                ),
+            ),
+            ToolInput(
+                tag="softClippedRatioThreshold",
+                input_type=Double(optional=True),
+                prefix="--soft-clipped-ratio-threshold",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc=" Threshold ratio of soft clipped bases (anywhere in the cigar string) to total bases in read for read to be filtered.  Default value: null.  Cannot be used in conjuction with argument(s) minimumLeadingTrailingSoftClippedRatio"
+                ),
+            ),
+        ]
+
+    def outputs(self):
+        return []
+
+    def metadata(self):
+        return ToolMetadata(
+            contributors=[],
+            dateCreated=datetime.fromisoformat("2020-05-18T15:04:41.398830"),
+            dateUpdated=datetime.fromisoformat("2020-05-18T15:04:41.398832"),
+            documentation="**BETA FEATURE - WORK IN PROGRESS**\nUSAGE: FuncotateSegments [arguments]\nPerform functional annotation on a segment file (tsv).  Outputs two files.  The first is a tsv where each row is a\nsegment and the annotations are the covered genes and which genes+exon is overlapped by the segment breakpoints.  The\nsecond file has a gene for each row.  The rest of the information is the segment on which it is covered.\nThe first file will have the name as specified by the output parameter.  The second will have '.gene_list.txt' appended.\nThe functionality here is the same as seen in Oncotator with a SEG file as input, but with both SIMPLE_TSV and GENE_LIST\nas outputs.  \nNote that FuncotateSegments will support seg files from the GATK, whereas Oncotator will not.\nFuncotateSegments can support hg38 seg files from the GATK.\nFuncotateSegments does not support direct reading of cloud-based datasources.\nFor more information about Oncotator, on small variants, see Ramos AH, Lichtenstein L, et al. Oncotator: Cancer Variant\nAnnotation Tool. Human Mutation (2015). http://dx.doi.org/10.1002/humu.22771\nVersion:4.1.3.0\n",
+        )
