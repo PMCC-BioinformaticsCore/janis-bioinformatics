@@ -76,7 +76,7 @@ class CutAdaptBase_1(BioinformaticsTool):
             ),
             ToolInput(
                 "outputFilename",
-                Filename(suffix="-R1", extension=".fastq.gz", guid=fastq_uuid),
+                Filename(suffix="-R1", extension=".fastq.gz"),
                 prefix="-o",
                 doc="Write trimmed reads to FILE. FASTQ or FASTA format is chosen depending on input. "
                 "The summary report is sent to standard output. Use '{name}' in FILE to demultiplex "
@@ -84,7 +84,7 @@ class CutAdaptBase_1(BioinformaticsTool):
             ),
             ToolInput(
                 "secondReadFile",
-                Filename(suffix="-R2", extension=".fastq.gz", guid=fastq_uuid),
+                Filename(suffix="-R2", extension=".fastq.gz"),
                 prefix="-p",
                 doc="Write second read in a pair to FILE.",
             ),
