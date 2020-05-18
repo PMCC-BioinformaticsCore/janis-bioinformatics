@@ -82,7 +82,9 @@ class Gatk4ApplyBqsrBase(Gatk4ToolBase, ABC):
             ToolInput(
                 "outputFilename",
                 Filename(
-                    input_to_select="bam", suffix=".recalibrated", extension=".bam"
+                    prefix=InputSelector("bam"),
+                    suffix=".recalibrated",
+                    extension=".bam",
                 ),
                 prefix="-O",
                 doc="Write output to this file",
