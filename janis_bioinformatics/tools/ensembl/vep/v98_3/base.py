@@ -887,7 +887,8 @@ Not used by default""",
                         cols=JoinOperator(InputSelector("custom1Columns"), ","),
                     ),
                     "",
-                )
+                ),
+                shell_quote=False,
             ),
             # CUSTOM 2
             ToolArgument(
