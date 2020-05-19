@@ -30,6 +30,9 @@ class VepBase_98_3(BioinformaticsTool):
     def friendly_name(self) -> str:
         return "Variant Effect Predictor (VEP)"
 
+    def tool_provider(self):
+        return "Ensembl"
+
     def base_command(self):
         return "vep"
 
@@ -792,5 +795,7 @@ Not used by default""",
         return [
             ToolOutput("std", Stdout),
             ToolOutput("out", File, glob=InputSelector("outputFilename")),
-            ToolOutput("stats"),
+            ToolOutput(
+                "stats", File(extension=".html"), glob=InputSelector("statsFile")
+            ),
         ]

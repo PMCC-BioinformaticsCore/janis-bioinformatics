@@ -353,7 +353,7 @@ Getting VEP to run faster: https://asia.ensembl.org/info/docs/tools/vep/script/v
         """
 
     def outputs(self) -> List[ToolOutput]:
-        pass
+        return []
 
     identifiers = [
         ToolInput(

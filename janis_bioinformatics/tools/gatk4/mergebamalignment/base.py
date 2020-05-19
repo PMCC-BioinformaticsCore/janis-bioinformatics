@@ -16,7 +16,7 @@ from janis_core import (
 from janis_core import get_value_for_hints_and_ordered_resource_tuple
 from janis_core import ToolMetadata
 
-from janis_bioinformatics.data_types import FastaWithDict, Bam, Sam
+from janis_bioinformatics.data_types import FastaWithDict, Bam, Sam, BamBai
 from ..gatk4toolbase import Gatk4ToolBase
 
 CORES_TUPLE = [
@@ -105,14 +105,7 @@ class Gatk4MergeBamAlignmentBase(Gatk4ToolBase, ABC):
         ]
 
     def outputs(self):
-        return [
-            ToolOutput(
-                "out",
-                Bam(),
-                glob=InputSelector("outputFilename"),
-                secondaries_present_as={".bai": "^.bai"},
-            )
-        ]
+        return [ToolOutput("out", Bam(), glob=InputSelector("outputFilename"))]
 
     def bind_metadata(self):
         from datetime import date
@@ -320,6 +313,7 @@ class Gatk4MergeBamAlignmentBase(Gatk4ToolBase, ABC):
             "createIndex",
             Boolean(optional=True),
             prefix="--CREATE_INDEX",
+            default=True,
             position=11,
             doc="Whether to create a BAM index when writing a coordinate-sorted BAM file.",
         ),

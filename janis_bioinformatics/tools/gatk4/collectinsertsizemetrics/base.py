@@ -195,4 +195,3 @@ class Gatk4CollectInsertSizeMetricsBase(Gatk4ToolBase, ABC):
             doc="display hidden  arguments  Default  value: false.  Possible values: {true, false} ",
         ),
     ]
-

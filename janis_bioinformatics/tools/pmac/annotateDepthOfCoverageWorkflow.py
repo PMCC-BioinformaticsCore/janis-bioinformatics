@@ -1,45 +1,59 @@
-from janis_core import WorkflowBuilder
+from janis_core import WorkflowBuilder, WorkflowMetadata
 
 # data types
 from janis_bioinformatics.data_types import BamBai, Bed, FastaWithDict
 from janis_core import String
 
+from janis_bioinformatics.tools import BioinformaticsWorkflow
+from janis_bioinformatics.tools.bioinformaticstoolbase import (
+    BioinformaticsWorkflowBuilder,
+)
 from janis_bioinformatics.tools.gatk3 import GATK3DepthOfCoverageLatest
 from janis_bioinformatics.tools.pmac import AddSymToDepthOfCoverageLatest
 
-wf = WorkflowBuilder(
-    "AnnotateDepthOfCoverage",
-    friendly_name="Annotate GATK3 DepthOfCoverage Workflow",
-    version="v0.1.0",
-)
-# workflow construction
-AnnotateDepthOfCoverage_0_1_0 = wf
 
-wf.input("bam", BamBai)
-wf.input("bed", Bed)
-wf.input("reference", FastaWithDict)
-# wf.input("outputprefix", String)
-wf.input("sample_name", String)
+class AnnotateDepthOfCoverage_0_1_0(BioinformaticsWorkflow):
+    def id(self) -> str:
+        return "AnnotateDepthOfCoverage"
 
-wf.step(
-    "gatk3depthofcoverage",
-    GATK3DepthOfCoverageLatest(
-        reference=wf.reference,
-        bam=wf.bam,
-        intervals=wf.bed,
-        countType="COUNT_FRAGMENTS_REQUIRE_SAME_BASE",
-        summaryCoverageThreshold=[1, 50, 100, 300, 500],
-        outputPrefix=wf.sample_name,
-    ),
-)
+    def friendly_name(self):
+        return "Annotate GATK3 DepthOfCoverage Workflow"
 
-wf.step(
-    "addsymtodepthofcoverage",
-    AddSymToDepthOfCoverageLatest(
-        inputFile=wf.gatk3depthofcoverage.sampleIntervalSummary,
-        bed=wf.bed,
-        outputFilename=wf.sample_name,
-    ),
-)
+    def tool_provider(self):
+        return "Peter MacCallum Cancer Centre"
 
-wf.output("out", source=wf.addsymtodepthofcoverage.out, output_name=wf.sample_name)
+    def bind_metadata(self):
+        return WorkflowMetadata(version="v0.1.0", contributors=["Jiaan Yu"])
+
+    def constructor(self):
+
+        self.input("bam", BamBai)
+        self.input("bed", Bed)
+        self.input("reference", FastaWithDict)
+        # self.input("outputprefix", String)
+        self.input("sample_name", String)
+
+        self.step(
+            "gatk3depthofcoverage",
+            GATK3DepthOfCoverageLatest(
+                reference=self.reference,
+                bam=self.bam,
+                intervals=self.bed,
+                countType="COUNT_FRAGMENTS_REQUIRE_SAME_BASE",
+                summaryCoverageThreshold=[1, 50, 100, 300, 500],
+                outputPrefix=self.sample_name,
+            ),
+        )
+
+        self.step(
+            "addsymtodepthofcoverage",
+            AddSymToDepthOfCoverageLatest(
+                inputFile=self.gatk3depthofcoverage.sampleIntervalSummary,
+                bed=self.bed,
+                outputFilename=self.sample_name,
+            ),
+        )
+
+        self.output(
+            "out", source=self.addsymtodepthofcoverage.out, output_name=self.sample_name
+        )
