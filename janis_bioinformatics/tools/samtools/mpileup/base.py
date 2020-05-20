@@ -14,7 +14,7 @@ from janis_core import (
     Stdout,
 )
 from janis_unix import TextFile
-from janis_bioinformatics.data_types.bam import Bam
+from janis_bioinformatics.data_types.bam import BamBai
 from janis_bioinformatics.tools.samtools.samtoolstoolbase import SamToolsToolBase
 from janis_core import ToolMetadata
 
@@ -30,7 +30,7 @@ class SamToolsMpileupBase(SamToolsToolBase, ABC):
     def inputs(self):
         return [
             *self.additional_inputs,
-            ToolInput("bam", Bam(), position=10),
+            ToolInput("bam", BamBai(), position=10),
         ]
 
     def outputs(self):
