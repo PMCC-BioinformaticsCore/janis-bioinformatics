@@ -110,7 +110,9 @@ class Mutect2JointSomaticWorkflow(BioinformaticsWorkflow):
         self.step(
             "pileup",
             Gatk4GetPileUpSummaries_4_1_4(
-                bam=self.tumorBams, sites=self.biallelic, intervals=self.biallelic
+                bam=self.tumorBams,
+                sites=self.biallelicSites,
+                intervals=self.biallelicSites,
             ),
         )
 
@@ -133,9 +135,13 @@ class Mutect2JointSomaticWorkflow(BioinformaticsWorkflow):
 
         self.step(
             "normalise",
-            BcfToolsNorm_1_9,
-            vcf=self.filtering.out,
-            reference=self.reference,
+            BcfToolsNorm_1_9(vcf=self.filtering.out, reference=self.reference),
         )
-        self.step("indexFiltered", BcfToolsIndex_1_9, vcf=self.normalise.out)
+        self.step("indexFiltered", BcfToolsIndex_1_9(vcf=self.normalise.out))
         self.output("out", source=self.indexFiltered.out)
+
+
+if __name__ == "__main__":
+
+    wf = Mutect2JointSomaticWorkflow()
+    wdl = wf.translate("wdl", to_console=True, to_disk=False, write_inputs_file=False)
