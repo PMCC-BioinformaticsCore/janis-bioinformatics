@@ -29,4 +29,5 @@ from janis_bioinformatics.tools import (
     validation,
     variantcallers,
     vcflib,
+    vcftools,
 )

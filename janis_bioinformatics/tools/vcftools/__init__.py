@@ -1,0 +1,1 @@
+from .vcfmerge.versions import VcfToolsVcfMergeLatest, VcfToolsVcfMerge_0_1_16
