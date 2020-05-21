@@ -12,11 +12,14 @@ from janis_bioinformatics.tools.dawson.createcallregions.base import CreateCallR
 from janis_bioinformatics.tools.gatk4 import (
     Gatk4CalculateContamination_4_1_4,
     Gatk4FilterMutectCalls_4_1_4,
-    Gatk4GetPileUpSummaries_4_1_4,
     Gatk4LearnReadOrientationModel_4_1_4,
     Gatk4MergeMutectStats_4_1_2,
 )
 from janis_bioinformatics.tools.gatk4.mutect2.versions_cram import GatkMutect2_4_1_4
+
+from janis_bioinformatics.tools.gatk4.getpileupsummaries.versions_cram import (
+    Gatk4GetPileUpSummaries_4_1_4,
+)
 
 
 class Mutect2JointSomaticWorkflow(BioinformaticsWorkflow):
