@@ -1,3 +1,5 @@
+from typing import Dict, Any
+
 from janis_bioinformatics.data_types import Bed, CramCrai, FastaWithDict, Vcf
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 from janis_core import (
