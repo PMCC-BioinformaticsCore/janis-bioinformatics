@@ -55,7 +55,7 @@ class VepBase_98_3(BioinformaticsTool):
             ),
             ToolInput(
                 "outputFilename",
-                Filename(extension=".vep"),
+                Filename(prefix=InputSelector("inputFile"), extension=".vcf"),
                 prefix="--output_file",
                 doc="(-o) Output file name. Results can write to STDOUT by specifying "
                 ' as the output file name - this will force quiet mode. Default = "variant_effect_output.txt"',
