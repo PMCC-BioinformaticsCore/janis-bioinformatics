@@ -22,7 +22,7 @@ from janis_unix import Tsv
 from janis_bioinformatics.data_types import (
     FastaWithDict,
     VcfTabix,
-    BamBai,
+    CramCrai,
     Bam,
     BedTabix,
 )
@@ -197,7 +197,7 @@ of capabilities and limitations.""".strip(),
         ),
         ToolInput(
             "bam",
-            BamBai(),
+            CramCrai(),
             prefix="--bam",
             position=1,
             shell_quote=False,
@@ -223,7 +223,7 @@ of capabilities and limitations.""".strip(),
         ),
         ToolInput(
             "tumorBam",
-            BamBai(optional=True),
+            CramCrai(optional=True),
             prefix="--tumorBam",
             position=1,
             shell_quote=False,

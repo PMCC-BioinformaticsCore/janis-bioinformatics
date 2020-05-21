@@ -12,13 +12,13 @@ from janis_bioinformatics.data_types import (
     BamBai,
 )
 from janis_bioinformatics.tools.gatk4 import (
-    GatkMutect2_4_1_4,
     Gatk4LearnReadOrientationModel_4_1_4,
     Gatk4MergeMutectStats_4_1_4,
     Gatk4GetPileUpSummaries_4_1_4,
     Gatk4CalculateContamination_4_1_4,
     Gatk4FilterMutectCalls_4_1_4,
 )
+from janis_bioinformatics.tools.gatk4.mutect2.versions_cram import GatkMutect2_4_1_4
 from janis_bioinformatics.tools.bcftools import (
     BcfToolsConcat_1_9,
     BcfToolsNorm_1_9,
@@ -64,8 +64,8 @@ class Mutect2JointSomaticWorkflow(BioinformaticsWorkflow):
 
         # we have to split the bam into the ones of the normal sample (can be multiple) and the
         # tumor, because some tools only work with the tumor bams
-        self.input("normalBams", Array(BamBai))
-        self.input("tumorBams", Array(BamBai))
+        self.input("normalBams", Array(CramCrai))
+        self.input("tumorBams", Array(CramCrai))
 
         # we also need the name of the normal sample (needs to be the name in the bams as well)
         self.input("normalName", String)

@@ -109,7 +109,7 @@ class StrelkaSomaticBase(IlluminaToolBase, ABC):
             #           doc="show all extended/hidden options"),
             ToolInput(
                 tag="normalBam",
-                input_type=BamBai(),
+                input_type=CramCrai(),
                 prefix="--normalBam=",
                 separate_value_from_prefix=False,
                 position=1,
@@ -117,7 +117,7 @@ class StrelkaSomaticBase(IlluminaToolBase, ABC):
             ),
             ToolInput(
                 tag="tumorBam",
-                input_type=BamBai(),
+                input_type=CramCrai(),
                 prefix="--tumourBam=",
                 separate_value_from_prefix=False,
                 position=1,

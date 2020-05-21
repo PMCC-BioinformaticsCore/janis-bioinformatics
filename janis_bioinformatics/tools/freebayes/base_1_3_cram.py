@@ -66,7 +66,7 @@ class FreeBayesBase_1_3(BioinformaticsTool):
         return [
             ToolInput(
                 tag="bams",
-                input_type=Array(BamBai),
+                input_type=Array(CramCrai),
                 prefix="-b",
                 prefix_applies_to_all_elements=True,
                 doc="Add FILE to the set of BAM files to be analyzed.",

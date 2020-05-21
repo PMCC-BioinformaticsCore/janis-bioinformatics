@@ -2,7 +2,10 @@ from datetime import date
 
 from janis_bioinformatics.data_types import FastaWithDict, CramCrai, BedTabix, VcfTabix
 from janis_bioinformatics.tools import BioinformaticsWorkflow
-from janis_bioinformatics.tools.illumina import Manta_1_5_0, StrelkaSomatic_2_9_10
+from janis_bioinformatics.tools.illumina.manta.manta_cram import Manta_1_5_0
+from janis_bioinformatics.tools.illumina.strelkasomatic.strelkasomatic_cram import (
+    StrelkaSomatic_2_9_10,
+)
 from janis_bioinformatics.tools.bcftools import BcfToolsNorm_1_9, BcfToolsIndex_1_9
 
 from janis_core import Array, Boolean

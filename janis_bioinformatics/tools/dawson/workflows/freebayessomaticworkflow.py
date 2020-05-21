@@ -14,7 +14,7 @@ from janis_core import Array, Boolean, String, Int, Filename
 
 from janis_bioinformatics.tools.dawson import CallSomaticFreeBayes_0_1
 from janis_bioinformatics.tools.dawson.createcallregions.base import CreateCallRegions
-from janis_bioinformatics.tools.freebayes import FreeBayes_1_3
+from janis_bioinformatics.tools.freebayes.versions_cram import FreeBayes_1_3
 
 from janis_bioinformatics.tools.htslib import BGZipLatest, TabixLatest
 from janis_bioinformatics.tools.bcftools import BcfToolsNormLatest, BcfToolsSortLatest
