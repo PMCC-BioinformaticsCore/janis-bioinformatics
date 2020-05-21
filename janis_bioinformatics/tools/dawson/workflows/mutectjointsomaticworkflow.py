@@ -8,6 +8,7 @@ from janis_bioinformatics.tools.bcftools import (
     BcfToolsIndex_1_9,
     BcfToolsNorm_1_9,
 )
+from janis_bioinformatics.tools.dawson.createcallregions.base import CreateCallRegions
 from janis_bioinformatics.tools.gatk4 import (
     Gatk4CalculateContamination_4_1_4,
     Gatk4FilterMutectCalls_4_1_4,
@@ -65,12 +66,18 @@ class Mutect2JointSomaticWorkflow(BioinformaticsWorkflow):
 
         self.input("reference", FastaWithDict)
 
-        # exec(open("./regions.py").read())
-        self.input("intervals", Array(String))
+        self.input("regionSize", int, default=10000000)
 
         self.input("panelOfNormals", VcfTabix)
 
         self.input("germlineResource", VcfTabix)
+
+        self.step(
+            "createCallRegions",
+            CreateCallRegions(
+                reference=self.reference, regionSize=self.regionSize, equalize=True
+            ),
+        )
 
         self.step(
             "mutect2",
@@ -78,7 +85,7 @@ class Mutect2JointSomaticWorkflow(BioinformaticsWorkflow):
                 tumorBams=self.tumorBams,
                 normalBams=self.normalBams,
                 normalSample=self.normalName,
-                intervals=self.intervals,
+                intervals=self.createCallRegions.regions,
                 reference=self.reference,
                 panelOfNormals=self.panelOfNormals,
                 germlineResource=self.germlineResource,

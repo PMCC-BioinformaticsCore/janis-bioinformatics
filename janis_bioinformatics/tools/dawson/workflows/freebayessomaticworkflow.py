@@ -57,7 +57,7 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
         self.input("bams", Array(CramCrai))
 
         self.input("reference", FastaWithDict)
-        self.input("regionSize", int, default=15000000)
+        self.input("regionSize", int, default=10000000)
 
         self.input("normalSample", String)
         self.input("sampleNames", Array(String, optional=True))
