@@ -1,5 +1,6 @@
 from abc import ABC
 from datetime import datetime
+from typing import Dict, any
 
 from janis_bioinformatics.data_types import BamBai, BedTabix, FastaWithDict, VcfTabix
 from janis_bioinformatics.tools.illumina.illuminabase import IlluminaToolBase

@@ -1,4 +1,5 @@
 from abc import ABC
+from typing import Dict, any
 from datetime import datetime
 
 from janis_bioinformatics.data_types import BedTabix, CramCrai, FastaWithDict, VcfTabix

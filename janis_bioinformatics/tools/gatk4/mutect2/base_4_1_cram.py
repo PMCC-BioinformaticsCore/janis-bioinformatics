@@ -1,4 +1,5 @@
 from abc import ABC
+from typing import Dict, any
 
 from janis_bioinformatics.data_types import Bed, CramCrai, FastaWithDict, VcfTabix
 from janis_core import (
