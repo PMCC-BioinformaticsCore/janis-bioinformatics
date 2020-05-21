@@ -106,7 +106,6 @@ class StarAlignerBase(BioinformaticsTool, ABC):
             ToolInput(
                 "outFileNamePrefix",
                 Filename(),
-                String(optional=True),
                 prefix="--outFileNamePrefix",
                 doc="string: output files name prefix (including full or relative path). Can only be defined on the command line.",
             ),

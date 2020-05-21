@@ -1,4 +1,4 @@
-from janis_core import Array, Boolean, Int
+from janis_core import Array, Boolean, Int, String
 
 from janis_bioinformatics.data_types import BamBai
 from janis_bioinformatics.tools.gatk4 import (
@@ -26,6 +26,7 @@ class MergeAndMarkBams_4_1_3(BioinformaticsWorkflow):
         self.input("bams", Array(BamBai()))
         self.input("createIndex", Boolean, default=True)
         self.input("maxRecordsInRam", Int, default=5000000)
+        self.input("sampleName", String(optional=True))
 
         self.step(
             "mergeSamFiles",
@@ -35,6 +36,7 @@ class MergeAndMarkBams_4_1_3(BioinformaticsWorkflow):
                 createIndex=self.createIndex,
                 maxRecordsInRam=self.maxRecordsInRam,
                 validationStringency="SILENT",
+                sampleName=self.sampleName,
             ),
         )
 

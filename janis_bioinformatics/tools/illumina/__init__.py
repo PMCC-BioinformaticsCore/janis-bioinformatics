@@ -14,3 +14,5 @@ from .manta.manta import Manta_1_5_0
 from .manta.manta import MantaLatest
 
 from .happy.versions import HapPyValidator_0_3_9, HapPyValidatorLatest
+
+from .bcl2fastq.versions import *
