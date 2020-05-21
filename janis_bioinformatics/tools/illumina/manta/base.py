@@ -127,11 +127,6 @@ class MantaBase(IlluminaToolBase, ABC):
                 VcfTabix(),
                 glob=InputSelector("runDir") + "/results/variants/somaticSV.vcf.gz",
             ),
-            ToolOutput(
-                "tumorSV",
-                VcfTabix(),
-                glob=InputSelector("runDir") + "/results/variants/tumorSV.vcf.gz",
-            ),
         ]
 
     def arguments(self) -> List[ToolArgument]:
