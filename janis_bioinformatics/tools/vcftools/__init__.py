@@ -1,1 +1,2 @@
 from .vcfmerge.versions import VcfToolsVcfMergeLatest, VcfToolsVcfMerge_0_1_16
+from .vcfconcat.versions import VcfToolsVcfConcatLatest, VcfToolsVcfConcat_0_1_16
