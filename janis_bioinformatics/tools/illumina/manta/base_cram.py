@@ -1,32 +1,24 @@
 from abc import ABC, abstractmethod
-from typing import List, Dict, Any
 
-from janis_core import CpuSelector
+from janis_bioinformatics.data_types import BedTabix, CramCrai, FastaWithDict, VcfTabix
+from janis_bioinformatics.tools.illumina.illuminabase import IlluminaToolBase
 from janis_core import (
-    ToolOutput,
-    ToolInput,
-    ToolArgument,
     Boolean,
-    String,
+    CaptureType,
+    CpuSelector,
     File,
     Filename,
     InputSelector,
     Int,
-    CaptureType,
+    String,
     StringFormatter,
+    ToolArgument,
+    ToolInput,
     ToolMetadata,
+    ToolOutput,
+    get_value_for_hints_and_ordered_resource_tuple,
 )
-from janis_core import get_value_for_hints_and_ordered_resource_tuple
 from janis_unix import Tsv
-
-from janis_bioinformatics.data_types import (
-    FastaWithDict,
-    VcfTabix,
-    CramCrai,
-    Bam,
-    BedTabix,
-)
-from janis_bioinformatics.tools.illumina.illuminabase import IlluminaToolBase
 
 CORES_TUPLE = [
     (

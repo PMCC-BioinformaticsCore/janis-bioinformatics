@@ -1,30 +1,21 @@
-from janis import WorkflowBuilder, String, Array
+from datetime import date
 
+from janis import Array, String
+from janis_bioinformatics.data_types import CramCrai, FastaWithDict, VcfTabix
 from janis_bioinformatics.tools import BioinformaticsWorkflow
-
-from janis_bioinformatics.data_types import (
-    FastaWithDict,
-    Bam,
-    Vcf,
-    Bed,
-    VcfTabix,
-    VcfIdx,
-    BamBai,
-)
-from janis_bioinformatics.tools.gatk4 import (
-    Gatk4LearnReadOrientationModel_4_1_4,
-    Gatk4MergeMutectStats_4_1_4,
-    Gatk4GetPileUpSummaries_4_1_4,
-    Gatk4CalculateContamination_4_1_4,
-    Gatk4FilterMutectCalls_4_1_4,
-)
-from janis_bioinformatics.tools.gatk4.mutect2.versions_cram import GatkMutect2_4_1_4
 from janis_bioinformatics.tools.bcftools import (
     BcfToolsConcat_1_9,
-    BcfToolsNorm_1_9,
     BcfToolsIndex_1_9,
+    BcfToolsNorm_1_9,
 )
-from janis_unix import TextFile
+from janis_bioinformatics.tools.gatk4 import (
+    Gatk4CalculateContamination_4_1_4,
+    Gatk4FilterMutectCalls_4_1_4,
+    Gatk4GetPileUpSummaries_4_1_4,
+    Gatk4LearnReadOrientationModel_4_1_4,
+    Gatk4MergeMutectStats_4_1_2,
+)
+from janis_bioinformatics.tools.gatk4.mutect2.versions_cram import GatkMutect2_4_1_4
 
 
 class Mutect2JointSomaticWorkflow(BioinformaticsWorkflow):
@@ -95,43 +86,49 @@ class Mutect2JointSomaticWorkflow(BioinformaticsWorkflow):
             scatter="intervals",
         )
 
-        self.step("concat", BcfToolsConcat_1_9(vcf=w.mutect2.out))
-        self.step("indexUnfiltered", BcfToolsIndex_1_9(vcf=w.concat.out))
+        self.step("concat", BcfToolsConcat_1_9(vcf=self.mutect2.out))
+        self.step("indexUnfiltered", BcfToolsIndex_1_9(vcf=self.concat.out))
 
         self.step(
             "learn",
-            Gatk4LearnReadOrientationModel_4_1_4(f1r2CountsFiles=w.mutect2.f1f2r_out),
+            Gatk4LearnReadOrientationModel_4_1_4(
+                f1r2CountsFiles=self.mutect2.f1f2r_out
+            ),
         )
 
         self.step(
-            "mergeMutect2", Gatk4MergeMutectStats_4_1_2(statsFiles=w.mutect2.stats)
+            "mergeMutect2", Gatk4MergeMutectStats_4_1_2(statsFiles=self.mutect2.stats)
         )
 
         self.step(
             "pileup",
             Gatk4GetPileUpSummaries_4_1_4(
-                bam=w.tumorBams, sites=w.biallelic, intervals=w.biallelic
+                bam=self.tumorBams, sites=self.biallelic, intervals=self.biallelic
             ),
         )
 
         self.step(
-            "contamination", Gatk4CalculateContamination_4_1_4(pileupTable=w.pileup.out)
+            "contamination",
+            Gatk4CalculateContamination_4_1_4(pileupTable=self.pileup.out),
         )
 
         self.step(
             "filtering",
             Gatk4FilterMutectCalls_4_1_4(
-                vcf=w.indexUnfiltered.out,
-                reference=w.reference,
-                segmentationFile=w.contamination.segOut,
-                contaminationTable=w.contamination.contOut,
-                readOrientationModel=w.learn.out,
-                statsFile=w.mergeMutect2.out,
+                vcf=self.indexUnfiltered.out,
+                reference=self.reference,
+                segmentationFile=self.contamination.segOut,
+                contaminationTable=self.contamination.contOut,
+                readOrientationModel=self.learn.out,
+                statsFile=self.mergeMutect2.out,
             ),
         )
 
         self.step(
-            "normalise", BcfToolsNorm_1_9, vcf=w.filtering.out, reference=w.reference
+            "normalise",
+            BcfToolsNorm_1_9,
+            vcf=self.filtering.out,
+            reference=self.reference,
         )
-        self.step("indexFiltered", BcfToolsIndex_1_9, vcf=w.normalise.out)
-        self.output("out", source=w.indexFiltered.out)
+        self.step("indexFiltered", BcfToolsIndex_1_9, vcf=self.normalise.out)
+        self.output("out", source=self.indexFiltered.out)

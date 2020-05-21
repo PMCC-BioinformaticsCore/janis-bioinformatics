@@ -1,29 +1,19 @@
 from abc import ABC
-from typing import Dict, Any
 
+from janis_bioinformatics.data_types import BamBai, Bed, FastaWithDict, VcfIdx, VcfTabix
 from janis_core import (
-    ToolInput,
+    CaptureType,
     Filename,
-    ToolOutput,
-    String,
     Float,
     InputSelector,
-    CaptureType,
-    ToolArgument,
-    MemorySelector,
+    String,
+    ToolInput,
+    ToolMetadata,
+    ToolOutput,
+    get_value_for_hints_and_ordered_resource_tuple,
 )
-from janis_core import get_value_for_hints_and_ordered_resource_tuple
 
-from janis_bioinformatics.data_types import (
-    BamBai,
-    Bed,
-    FastaWithDict,
-    VcfIdx,
-    Vcf,
-    VcfTabix,
-)
 from ..gatk4toolbase import Gatk4ToolBase
-from janis_core import ToolMetadata
 
 CORES_TUPLE = [
     # (CaptureType.key(), {
@@ -179,14 +169,14 @@ class Gatk4Mutect2Base_4_0(Gatk4ToolBase, ABC):
             keywords=["gatk", "gatk4", "broad", "mutect2"],
             documentationUrl="https://software.broadinstitute.org/gatk/documentation/tooldocs/4.0.10.0/org_broadinstitute_hellbender_tools_walkers_mutect_Mutect2.php",
             documentation="""
-Call somatic short variants via local assembly of haplotypes. Short variants include single nucleotide (SNV) 
-and insertion and deletion (indel) variants. The caller combines the DREAM challenge-winning somatic 
+Call somatic short variants via local assembly of haplotypes. Short variants include single nucleotide (SNV)
+and insertion and deletion (indel) variants. The caller combines the DREAM challenge-winning somatic
 genotyping engine of the original MuTect (Cibulskis et al., 2013) with the assembly-based machinery of HaplotypeCaller.
 
-This tool is featured in the Somatic Short Mutation calling Best Practice Workflow. See Tutorial#11136 
-for a step-by-step description of the workflow and Article#11127 for an overview of what traditional 
-somatic calling entails. For the latest pipeline scripts, see the Mutect2 WDL scripts directory. 
-Although we present the tool for somatic calling, it may apply to other contexts, 
+This tool is featured in the Somatic Short Mutation calling Best Practice Workflow. See Tutorial#11136
+for a step-by-step description of the workflow and Article#11127 for an overview of what traditional
+somatic calling entails. For the latest pipeline scripts, see the Mutect2 WDL scripts directory.
+Although we present the tool for somatic calling, it may apply to other contexts,
 such as mitochondrial variant calling.
 """.strip(),
         )

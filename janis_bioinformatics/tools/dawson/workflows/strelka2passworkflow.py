@@ -1,11 +1,7 @@
 from datetime import date
 
+from janis_bioinformatics.data_types import BedTabix, CramCrai, FastaWithDict
 from janis_bioinformatics.tools import BioinformaticsWorkflow
-
-from janis_bioinformatics.data_types import FastaWithDict, CramCrai, BedTabix, VcfTabix
-
-from janis_core import Array, Boolean, String
-
 from janis_bioinformatics.tools.dawson import RefilterStrelka2Calls_0_1
 from janis_bioinformatics.tools.dawson.workflows.strelka2passanalysisstep1 import (
     Strelka2PassWorkflowStep1,
@@ -13,8 +9,8 @@ from janis_bioinformatics.tools.dawson.workflows.strelka2passanalysisstep1 impor
 from janis_bioinformatics.tools.dawson.workflows.strelka2passanalysisstep2 import (
     Strelka2PassWorkflowStep2,
 )
-
 from janis_bioinformatics.tools.htslib import BGZipLatest, TabixLatest
+from janis_core import Array, Boolean, String
 
 
 class Strelka2PassWorkflow(BioinformaticsWorkflow):

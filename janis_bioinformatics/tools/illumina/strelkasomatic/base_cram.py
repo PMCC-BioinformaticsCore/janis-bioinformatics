@@ -1,34 +1,26 @@
 from abc import ABC
 from datetime import datetime
-from typing import Dict, Any
 
+from janis_bioinformatics.data_types import BedTabix, CramCrai, FastaWithDict, VcfTabix
+from janis_bioinformatics.tools.illumina.illuminabase import IlluminaToolBase
 from janis_core import (
-    ToolInput,
-    ToolOutput,
-    File,
-    Boolean,
-    String,
-    Int,
-    InputSelector,
-    Filename,
-    ToolMetadata,
-    CpuSelector,
-    ToolArgument,
-    CaptureType,
-    StringFormatter,
-    get_value_for_hints_and_ordered_resource_tuple,
     Array,
+    Boolean,
+    CaptureType,
+    CpuSelector,
+    File,
+    Filename,
+    InputSelector,
+    Int,
+    String,
+    StringFormatter,
+    ToolArgument,
+    ToolInput,
+    ToolMetadata,
+    ToolOutput,
+    get_value_for_hints_and_ordered_resource_tuple,
 )
 from janis_unix import Tsv
-
-from janis_bioinformatics.data_types import (
-    CramCrai,
-    Bed,
-    FastaWithDict,
-    VcfTabix,
-    BedTabix,
-)
-from janis_bioinformatics.tools.illumina.illuminabase import IlluminaToolBase
 
 CORES_TUPLE = [
     (

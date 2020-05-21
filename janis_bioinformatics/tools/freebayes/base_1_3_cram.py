@@ -1,24 +1,21 @@
-from typing import Dict, Any
-
+from janis_bioinformatics.data_types import Bed, CramCrai, FastaWithDict, Vcf
+from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 from janis_core import (
-    ToolInput,
+    Array,
+    Boolean,
+    CaptureType,
+    File,
     Filename,
-    ToolOutput,
-    String,
     Float,
     InputSelector,
-    CaptureType,
-    Array,
     Int,
-    Boolean,
-    File,
-    get_value_for_hints_and_ordered_resource_tuple,
+    String,
+    ToolInput,
     ToolMetadata,
+    ToolOutput,
+    get_value_for_hints_and_ordered_resource_tuple,
 )
 from janis_unix import TextFile
-
-from janis_bioinformatics.data_types import BamBai, Bed, FastaWithDict, Vcf, CramCrai
-from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 
 CORES_TUPLE = [
     (

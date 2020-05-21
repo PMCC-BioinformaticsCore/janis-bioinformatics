@@ -1,36 +1,25 @@
 from abc import ABC
-from typing import Dict, Any
 
+from janis_bioinformatics.data_types import BamBai, Bed, FastaWithDict, VcfTabix
 from janis_core import (
-    ToolInput,
+    Array,
+    Boolean,
+    CaptureType,
+    CpuSelector,
+    Double,
+    File,
     Filename,
-    ToolOutput,
-    String,
     Float,
     InputSelector,
-    CaptureType,
-    ToolArgument,
-    MemorySelector,
-    Array,
     Int,
-    Boolean,
-    File,
-    Double,
-    CpuSelector,
-    get_value_for_hints_and_ordered_resource_tuple,
+    String,
+    ToolInput,
     ToolMetadata,
+    ToolOutput,
+    get_value_for_hints_and_ordered_resource_tuple,
 )
 from janis_unix import TarFileGz, TextFile
 
-from janis_bioinformatics.data_types import (
-    BamBai,
-    Bed,
-    FastaWithDict,
-    VcfIdx,
-    Vcf,
-    VcfTabix,
-    CompressedVcf,
-)
 from ..gatk4toolbase import Gatk4ToolBase
 
 CORES_TUPLE = [

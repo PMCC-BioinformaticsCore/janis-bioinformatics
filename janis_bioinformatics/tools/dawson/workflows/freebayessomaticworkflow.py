@@ -1,32 +1,21 @@
 from datetime import date
 
+from janis_bioinformatics.data_types import CramCrai, FastaWithDict
 from janis_bioinformatics.tools import BioinformaticsWorkflow
-
-from janis_bioinformatics.data_types import (
-    FastaWithDict,
-    BamBai,
-    BedTabix,
-    VcfTabix,
-    CramCrai,
-)
-
-from janis_core import Array, Boolean, String, Int, Filename
-
+from janis_bioinformatics.tools.bcftools import BcfToolsNormLatest
 from janis_bioinformatics.tools.dawson import CallSomaticFreeBayes_0_1
 from janis_bioinformatics.tools.dawson.createcallregions.base import CreateCallRegions
 from janis_bioinformatics.tools.freebayes.versions_cram import FreeBayes_1_3
-
 from janis_bioinformatics.tools.htslib import BGZipLatest, TabixLatest
-from janis_bioinformatics.tools.bcftools import BcfToolsNormLatest, BcfToolsSortLatest
-
 from janis_bioinformatics.tools.vcflib import (
-    VcfUniqLatest,
-    VcfFixUpLatest,
-    VcfUniqAllelesLatest,
     VcfAllelicPrimitivesLatest,
     VcfCombineLatest,
+    VcfFixUpLatest,
     VcfStreamSortLatest,
+    VcfUniqAllelesLatest,
+    VcfUniqLatest,
 )
+from janis_core import Array, Int, String
 
 
 class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
