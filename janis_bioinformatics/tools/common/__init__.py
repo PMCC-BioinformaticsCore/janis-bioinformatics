@@ -6,3 +6,5 @@ from .bwamem_samtoolsview import BwaMem_SamToolsView
 from .indexfasta import IndexFasta
 from .vcf.vcf_merge_header import VcfMergeHeader
 from .vcf.vcf_concat_content import VcfConcatContent
+from .concat_strelkasomaticvcf import ConcatStrelkaSomaticVcf
+from .splitmultiallele_normalistvcf import SplitMultiAlleleNormaliseVcf
