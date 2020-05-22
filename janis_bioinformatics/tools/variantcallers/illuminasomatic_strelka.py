@@ -2,9 +2,12 @@ from janis_core import Boolean
 
 from janis_bioinformatics.data_types import FastaWithDict, BamBai, BedTabix
 from janis_bioinformatics.tools import BioinformaticsWorkflow
-from janis_bioinformatics.tools.bcftools import BcfToolsView_1_5
-from janis_bioinformatics.tools.common import SplitMultiAllele
+from janis_bioinformatics.tools.common import (
+    SplitMultiAlleleNormaliseVcf,
+    ConcatStrelkaSomaticVcf,
+)
 from janis_bioinformatics.tools.illumina import Manta_1_5_0, StrelkaSomatic_2_9_10
+from janis_bioinformatics.tools.vcftools import VcfToolsvcftoolsLatest
 
 
 class IlluminaSomaticVariantCaller(BioinformaticsWorkflow):
@@ -51,17 +54,34 @@ class IlluminaSomaticVariantCaller(BioinformaticsWorkflow):
                 exome=self.is_exome,
             ),
         )
+
         self.step(
-            "bcf_view", BcfToolsView_1_5(file=self.strelka.snvs, applyFilters=["PASS"])
+            "concatvcf",
+            ConcatStrelkaSomaticVcf(
+                headerVcfs=[self.strelka.snvs, self.strelka.indels],
+                contentVcfs=[self.strelka.snvs, self.strelka.indels],
+            ),
         )
         self.step(
-            "split_multi_allele",
-            SplitMultiAllele(vcf=self.bcf_view.out, reference=self.reference),
+            "splitnormalisevcf",
+            SplitMultiAlleleNormaliseVcf(
+                vcf=self.concatvcf.out, reference=self.reference
+            ),
         )
 
-        self.output("diploid", source=self.manta.diploidSV)
-        self.output("variants", source=self.strelka.snvs)
-        self.output("out", source=self.split_multi_allele.out)
+        self.step(
+            "fileterpass",
+            VcfToolsvcftoolsLatest(
+                vcf=self.splitnormalisevcf.out,
+                prefix="out",
+                removeFileteredAll=True,
+                recode=True,
+                recodeINFOAll=True,
+            ),
+        )
+
+        self.output("sv", source=self.manta.diploidSV)
+        self.output("variants", source=self.fileterpass.out)
 
 
 if __name__ == "__main__":
