@@ -1,3 +1,6 @@
 from .illuminagermline_strelka import IlluminaGermlineVariantCaller
+from .illuminasomatic_strelka import IlluminaSomaticVariantCaller
 from .vardictgermline_variants import VardictGermlineVariantCaller
+from .gridssgermline import GridssGermlineVariantCaller
+from .vardictsomatic_variants import VardictSomaticVariantCaller
 from .gatk import *
