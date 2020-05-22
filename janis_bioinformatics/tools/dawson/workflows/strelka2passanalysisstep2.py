@@ -2,9 +2,12 @@ from datetime import date
 
 from janis_bioinformatics.data_types import BedTabix, CramCrai, FastaWithDict, VcfTabix
 from janis_bioinformatics.tools import BioinformaticsWorkflow
-from janis_bioinformatics.tools.bcftools import BcfToolsIndex_1_9, BcfToolsNorm_1_9
-from janis_bioinformatics.tools.illumina.strelkasomatic.strelkasomatic_cram import (
-    StrelkaSomatic_2_9_10,
+from janis_bioinformatics.tools.bcftools import (
+    BcfToolsIndex_1_9 as BcfToolsIndex,
+    BcfToolsNorm_1_9 as BcfToolsNorm,
+)
+from janis_bioinformatics.tools.illumina.strelkasomatic.strelkasomatic import (
+    StrelkaSomaticCram_2_9_10 as Strelka,
 )
 from janis_core import Array, Boolean
 
@@ -60,7 +63,7 @@ class Strelka2PassWorkflowStep2(BioinformaticsWorkflow):
 
         self.step(
             "strelka2pass",
-            StrelkaSomatic_2_9_10(
+            Strelka(
                 indelCandidates=self.indelCandidates,
                 # indelCandidates=self.strelkaIndels,
                 forcedgt=self.strelkaSNVs,
@@ -73,15 +76,15 @@ class Strelka2PassWorkflowStep2(BioinformaticsWorkflow):
         )
         self.step(
             "normaliseSNVs",
-            BcfToolsNorm_1_9(vcf=self.strelka2pass.snvs, reference=self.reference),
+            BcfToolsNorm(vcf=self.strelka2pass.snvs, reference=self.reference),
         )
-        self.step("indexSNVs", BcfToolsIndex_1_9(vcf=self.normaliseSNVs.out))
+        self.step("indexSNVs", BcfToolsIndex(vcf=self.normaliseSNVs.out))
 
         self.step(
             "normaliseINDELs",
-            BcfToolsNorm_1_9(vcf=self.strelka2pass.indels, reference=self.reference),
+            BcfToolsNorm(vcf=self.strelka2pass.indels, reference=self.reference),
         )
-        self.step("indexINDELs", BcfToolsIndex_1_9(vcf=self.normaliseINDELs.out))
+        self.step("indexINDELs", BcfToolsIndex(vcf=self.normaliseINDELs.out))
 
         self.output("indels", source=self.indexINDELs.out)
         self.output("snvs", source=self.indexSNVs.out)

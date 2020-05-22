@@ -2,10 +2,13 @@ from datetime import date
 
 from janis_bioinformatics.data_types import BedTabix, CramCrai, FastaWithDict
 from janis_bioinformatics.tools import BioinformaticsWorkflow
-from janis_bioinformatics.tools.bcftools import BcfToolsIndex_1_9, BcfToolsNorm_1_9
-from janis_bioinformatics.tools.illumina.manta.manta_cram import Manta_1_5_0
-from janis_bioinformatics.tools.illumina.strelkasomatic.strelkasomatic_cram import (
-    StrelkaSomatic_2_9_10,
+from janis_bioinformatics.tools.bcftools import (
+    BcfToolsIndex_1_9 as BcfToolsIndex,
+    BcfToolsNorm_1_9 as BcfToolsNorm,
+)
+from janis_bioinformatics.tools.illumina.manta.manta import MantaCram_1_5_0 as Manta
+from janis_bioinformatics.tools.illumina.strelkasomatic.strelkasomatic import (
+    StrelkaSomaticCram_2_9_10 as Strelka,
 )
 from janis_core import Boolean
 
@@ -58,7 +61,7 @@ class Strelka2PassWorkflowStep1(BioinformaticsWorkflow):
 
         self.step(
             "manta",
-            Manta_1_5_0(
+            Manta(
                 bam=self.normalBam,
                 tumorBam=self.tumorBam,
                 reference=self.reference,
@@ -68,7 +71,7 @@ class Strelka2PassWorkflowStep1(BioinformaticsWorkflow):
         )
         self.step(
             "strelka",
-            StrelkaSomatic_2_9_10(
+            Strelka(
                 indelCandidates=self.manta.candidateSmallIndels,
                 normalBam=self.normalBam,
                 tumorBam=self.tumorBam,
@@ -79,15 +82,15 @@ class Strelka2PassWorkflowStep1(BioinformaticsWorkflow):
         )
         self.step(
             "normaliseSNVs",
-            BcfToolsNorm_1_9(vcf=self.strelka.snvs, reference=self.reference),
+            BcfToolsNorm(vcf=self.strelka.snvs, reference=self.reference),
         )
-        self.step("indexSNVs", BcfToolsIndex_1_9(vcf=self.normaliseSNVs.out))
+        self.step("indexSNVs", BcfToolsIndex(vcf=self.normaliseSNVs.out))
 
         self.step(
             "normaliseINDELs",
-            BcfToolsNorm_1_9(vcf=self.strelka.indels, reference=self.reference),
+            BcfToolsNorm(vcf=self.strelka.indels, reference=self.reference),
         )
-        self.step("indexINDELs", BcfToolsIndex_1_9(vcf=self.normaliseINDELs.out))
+        self.step("indexINDELs", BcfToolsIndex(vcf=self.normaliseINDELs.out))
 
         self.output("diploid", source=self.manta.diploidSV)
         self.output("candIndels", source=self.manta.candidateSmallIndels)

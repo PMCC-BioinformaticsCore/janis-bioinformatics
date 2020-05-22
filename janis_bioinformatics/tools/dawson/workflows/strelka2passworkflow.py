@@ -2,14 +2,16 @@ from datetime import date
 
 from janis_bioinformatics.data_types import BedTabix, CramCrai, FastaWithDict
 from janis_bioinformatics.tools import BioinformaticsWorkflow
-from janis_bioinformatics.tools.dawson import RefilterStrelka2Calls_0_1
+from janis_bioinformatics.tools.dawson import (
+    RefilterStrelka2Calls_0_1 as RefilterStrelka2Calls,
+)
 from janis_bioinformatics.tools.dawson.workflows.strelka2passanalysisstep1 import (
     Strelka2PassWorkflowStep1,
 )
 from janis_bioinformatics.tools.dawson.workflows.strelka2passanalysisstep2 import (
     Strelka2PassWorkflowStep2,
 )
-from janis_bioinformatics.tools.htslib import BGZipLatest, TabixLatest
+from janis_bioinformatics.tools.htslib import BGZipLatest as BGZip, TabixLatest as Tabix
 from janis_core import Array, Boolean, String
 
 
@@ -93,27 +95,21 @@ class Strelka2PassWorkflow(BioinformaticsWorkflow):
 
         self.step(
             "refilterSNVs",
-            RefilterStrelka2Calls_0_1(
+            RefilterStrelka2Calls(
                 inputFiles=self.step2.snvs, sampleNames=self.sampleNames
             ),
         )
-        self.step(
-            "compressSNVs", BGZipLatest(file=self.refilterSNVs.out), scatter="file"
-        )
-        self.step("indexSNVs", TabixLatest(file=self.compressSNVs.out), scatter="file")
+        self.step("compressSNVs", BGZip(file=self.refilterSNVs.out), scatter="file")
+        self.step("indexSNVs", Tabix(file=self.compressSNVs.out), scatter="file")
 
         self.step(
             "refilterINDELs",
-            RefilterStrelka2Calls_0_1(
+            RefilterStrelka2Calls(
                 inputFiles=self.step2.indels, sampleNames=self.sampleNames
             ),
         )
-        self.step(
-            "compressINDELs", BGZipLatest(file=self.refilterINDELs.out), scatter="file"
-        )
-        self.step(
-            "indexINDELs", TabixLatest(file=self.compressINDELs.out), scatter="file"
-        )
+        self.step("compressINDELs", BGZip(file=self.refilterINDELs.out), scatter="file")
+        self.step("indexINDELs", Tabix(file=self.compressINDELs.out), scatter="file")
 
         self.output("snvs", source=self.indexSNVs, output_folder=self.sampleNames)
         self.output("indels", source=self.indexINDELs, output_folder=self.sampleNames)

@@ -2,18 +2,20 @@ from datetime import date
 
 from janis_bioinformatics.data_types import CramCrai, FastaWithDict
 from janis_bioinformatics.tools import BioinformaticsWorkflow
-from janis_bioinformatics.tools.bcftools import BcfToolsNormLatest
-from janis_bioinformatics.tools.dawson import CallSomaticFreeBayes_0_1
+from janis_bioinformatics.tools.bcftools import BcfToolsNormLatest as BcfToolsNorm
+from janis_bioinformatics.tools.dawson import (
+    CallSomaticFreeBayes_0_1 as CallSomaticFreeBayes,
+)
 from janis_bioinformatics.tools.dawson.createcallregions.base import CreateCallRegions
-from janis_bioinformatics.tools.freebayes.versions_cram import FreeBayes_1_3
-from janis_bioinformatics.tools.htslib import BGZipLatest, TabixLatest
+from janis_bioinformatics.tools.freebayes.versions import FreeBayesCram_1_3 as FreeBayes
+from janis_bioinformatics.tools.htslib import BGZipLatest as BGZip, TabixLatest as Tabix
 from janis_bioinformatics.tools.vcflib import (
-    VcfAllelicPrimitivesLatest,
-    VcfCombineLatest,
-    VcfFixUpLatest,
-    VcfStreamSortLatest,
-    VcfUniqAllelesLatest,
-    VcfUniqLatest,
+    VcfAllelicPrimitivesLatest as VcfAllelicPrimitives,
+    VcfCombineLatest as VcfCombine,
+    VcfFixUpLatest as VcfFixUp,
+    VcfStreamSortLatest as VcfStreamSort,
+    VcfUniqAllelesLatest as VcfUniqAlleles,
+    VcfUniqLatest as VcfUniq,
 )
 from janis_core import Array, Int, String
 
@@ -84,7 +86,7 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
 
         self.step(
             "callVariants",
-            FreeBayes_1_3(
+            FreeBayes(
                 bams=self.bams,
                 reference=self.reference,
                 pooledDiscreteFlag=True,
@@ -118,34 +120,34 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
         )
         # might actually rewrite this once everything works, to not combine the files here, but do
         # all of it scattered and then only combine the final output
-        # self.step("combineRegions", VcfCombineLatest(vcf=self.callVariants.out))
+        # self.step("combineRegions", VcfCombine(vcf=self.callVariants.out))
 
         #
 
-        # self.step("compressAll", BGZipLatest(file=self.sortAll.out))
-        # self.step("indexAll", TabixLatest(file=self.compressAll.out))
+        # self.step("compressAll", BGZip(file=self.sortAll.out))
+        # self.step("indexAll", Tabix(file=self.compressAll.out))
 
         self.step(
             "callSomatic",
-            CallSomaticFreeBayes_0_1(
+            CallSomaticFreeBayes(
                 vcf=self.callVariants.out, normalSampleName=self.normalSample
             ),
             # added for parallel
             scatter="vcf",
         )
 
-        self.step("combineRegions", VcfCombineLatest(vcf=self.callSomatic.out))
+        self.step("combineRegions", VcfCombine(vcf=self.callSomatic.out))
 
         # should not be necessary here, but just to be save
         self.step(
             "sortSomatic1",
-            VcfStreamSortLatest(vcf=self.combineRegions.out, inMemoryFlag=True),
+            VcfStreamSort(vcf=self.combineRegions.out, inMemoryFlag=True),
         )
 
         # no need to compress this here if it leads to problems when we dont have an index for the allelic allelicPrimitves
         self.step(
             "normalizeSomatic1",
-            BcfToolsNormLatest(
+            BcfToolsNorm(
                 vcf=self.sortSomatic1.out,
                 reference=self.reference,
                 outputType="v",
@@ -155,23 +157,22 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
 
         self.step(
             "allelicPrimitves",
-            VcfAllelicPrimitivesLatest(
+            VcfAllelicPrimitives(
                 vcf=self.normalizeSomatic1.out,
                 tagParsed="DECOMPOSED",
                 keepGenoFlag=True,
             ),
         )
 
-        self.step("fixSplitLines", VcfFixUpLatest(vcf=self.allelicPrimitves.out))
+        self.step("fixSplitLines", VcfFixUp(vcf=self.allelicPrimitves.out))
 
         self.step(
-            "sortSomatic2",
-            VcfStreamSortLatest(vcf=self.fixSplitLines.out, inMemoryFlag=True),
+            "sortSomatic2", VcfStreamSort(vcf=self.fixSplitLines.out, inMemoryFlag=True)
         )
 
         self.step(
             "normalizeSomatic2",
-            BcfToolsNormLatest(
+            BcfToolsNorm(
                 vcf=self.sortSomatic2.out,
                 reference=self.reference,
                 outputType="v",
@@ -179,18 +180,17 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
             ),
         )
 
-        self.step("uniqueAlleles", VcfUniqAllelesLatest(vcf=self.normalizeSomatic2.out))
+        self.step("uniqueAlleles", VcfUniqAlleles(vcf=self.normalizeSomatic2.out))
 
         self.step(
-            "sortFinal",
-            VcfStreamSortLatest(vcf=self.uniqueAlleles.out, inMemoryFlag=True),
+            "sortFinal", VcfStreamSort(vcf=self.uniqueAlleles.out, inMemoryFlag=True)
         )
 
-        self.step("uniqVcf", VcfUniqLatest(vcf=self.sortFinal.out))
+        self.step("uniqVcf", VcfUniq(vcf=self.sortFinal.out))
 
-        self.step("compressFinal", BGZipLatest(file=self.uniqVcf.out))
+        self.step("compressFinal", BGZip(file=self.uniqVcf.out))
 
-        self.step("indexFinal", TabixLatest(file=self.compressFinal.out))
+        self.step("indexFinal", Tabix(file=self.compressFinal.out))
 
         self.output("somaticOutVcf", source=self.indexFinal)
 
