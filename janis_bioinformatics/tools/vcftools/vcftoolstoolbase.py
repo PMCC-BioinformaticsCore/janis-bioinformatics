@@ -14,7 +14,7 @@ class VcfToolsToolBase(BioinformaticsTool, ABC):
 
     @classmethod
     def base_command(cls):
-        return [""]
+        return ["", cls.vcftools_command()]
 
     def inputs(self):
         return []
