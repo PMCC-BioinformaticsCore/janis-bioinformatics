@@ -11,12 +11,16 @@ from janis_core import (
     ToolMetadata,
     InputDocumentation,
     Filename,
+    InputSelector,
+    ToolOutput,
+    Array,
 )
 
+from janis_bioinformatics.data_types import Bam, BamBai
 from janis_bioinformatics.tools.gatk4.gatk4toolbase import Gatk4ToolBase
 
 
-class GatkSplitNCigarReadsBase(Gatk4ToolBase, ABC):
+class Gatk4SplitNCigarReadsBase(Gatk4ToolBase, ABC):
     @classmethod
     def gatk_command(cls):
         return "SplitNCigarReads"
@@ -31,9 +35,10 @@ class GatkSplitNCigarReadsBase(Gatk4ToolBase, ABC):
         return [
             ToolInput(
                 tag="inp",
-                input_type=String(optional=True),
+                input_type=Array(Bam, optional=True),
                 prefix="--input",
                 separate_value_from_prefix=True,
+                prefix_applies_to_all_elements=True,
                 doc=InputDocumentation(
                     doc="(-I) BAM/SAM/CRAM file containing reads."
                     " This argument must be specified at least once. Required. "
@@ -41,7 +46,7 @@ class GatkSplitNCigarReadsBase(Gatk4ToolBase, ABC):
             ),
             ToolInput(
                 tag="outputFilename",
-                input_type=Filename(optional=True),
+                input_type=Filename(prefix=InputSelector("inp"), extension=".bam"),
                 prefix="--output",
                 separate_value_from_prefix=True,
                 doc=InputDocumentation(
@@ -106,6 +111,7 @@ class GatkSplitNCigarReadsBase(Gatk4ToolBase, ABC):
             ToolInput(
                 tag="createOutputBamIndex",
                 input_type=Boolean(optional=True),
+                default=True,
                 prefix="--create-output-bam-index",
                 separate_value_from_prefix=True,
                 doc=InputDocumentation(
@@ -647,7 +653,15 @@ class GatkSplitNCigarReadsBase(Gatk4ToolBase, ABC):
         ]
 
     def outputs(self):
-        return []
+        return [
+            ToolOutput(
+                "out",
+                BamBai(),
+                glob=InputSelector("outputFilename"),
+                doc="BAM file with reads split at N CIGAR elements and CIGAR strings updated.",
+                secondaries_present_as={".bai": "^.bai"},
+            )
+        ]
 
     def metadata(self):
         return ToolMetadata(

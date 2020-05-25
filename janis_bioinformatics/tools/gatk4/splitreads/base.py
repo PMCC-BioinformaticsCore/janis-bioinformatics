@@ -13,6 +13,7 @@ from janis_core import (
     InputSelector,
     CaptureType,
     get_value_for_hints_and_ordered_resource_tuple,
+    Filename,
 )
 
 from janis_bioinformatics.data_types import FastaWithDict, Bed, BamBai
@@ -47,7 +48,7 @@ class Gatk4SplitReadsBase(Gatk4ToolBase):
         return [
             ToolInput(
                 "outputFilename",
-                String,
+                String(),
                 prefix="--output",
                 default=".",
                 doc="The directory to output SAM/BAM/CRAM files. Default value: '.' ",

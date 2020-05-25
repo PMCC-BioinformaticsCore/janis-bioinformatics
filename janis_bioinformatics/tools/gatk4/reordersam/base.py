@@ -16,6 +16,7 @@ from janis_core import (
     InputDocumentation,
 )
 
+from janis_bioinformatics.data_types import BamBai, Bam, FastaWithIndexes
 from janis_bioinformatics.tools.gatk4.gatk4toolbase import Gatk4ToolBase
 
 
@@ -34,7 +35,7 @@ class Gatk4ReorderSamBase(Gatk4ToolBase, ABC):
         return [
             ToolInput(
                 tag="inp",
-                input_type=File(optional=True),
+                input_type=Bam(),
                 prefix="--INPUT",
                 separate_value_from_prefix=True,
                 doc=InputDocumentation(
@@ -43,7 +44,7 @@ class Gatk4ReorderSamBase(Gatk4ToolBase, ABC):
             ),
             ToolInput(
                 tag="outputFilename",
-                input_type=Filename(optional=True),
+                input_type=Filename(prefix=InputSelector("inp"), extension=".bam"),
                 prefix="--OUTPUT",
                 separate_value_from_prefix=True,
                 doc=InputDocumentation(
@@ -52,7 +53,7 @@ class Gatk4ReorderSamBase(Gatk4ToolBase, ABC):
             ),
             ToolInput(
                 tag="reference",
-                input_type=File(optional=True),
+                input_type=FastaWithIndexes(),
                 prefix="--REFERENCE",
                 separate_value_from_prefix=True,
                 doc=InputDocumentation(
@@ -98,6 +99,7 @@ class Gatk4ReorderSamBase(Gatk4ToolBase, ABC):
             ToolInput(
                 tag="create_index",
                 input_type=Boolean(optional=True),
+                default=True,
                 prefix="--CREATE_INDEX",
                 separate_value_from_prefix=True,
                 doc=InputDocumentation(
@@ -213,12 +215,37 @@ class Gatk4ReorderSamBase(Gatk4ToolBase, ABC):
         ]
 
     def outputs(self):
-        return []
+        return [
+            ToolOutput(
+                "out",
+                BamBai(),
+                glob=InputSelector("outputFilename"),
+                doc="BAM to write extracted reads to",
+                secondaries_present_as={".bai": "^.bai"},
+            )
+        ]
 
     def metadata(self):
         return ToolMetadata(
-            contributors=[],
+            contributors=["illusional"],
             dateCreated=datetime.fromisoformat("2020-05-15T16:11:13.566578"),
             dateUpdated=datetime.fromisoformat("2020-05-15T16:11:13.566579"),
-            documentation="b'USAGE: ReorderSam [arguments]\nNot to be confused with SortSam which sorts a SAM or BAM file with a valid sequence dictionary, ReorderSam reorders\nreads in a SAM/BAM file to match the contig ordering in a provided reference file, as determined by exact name matching\nof contigs.  Reads mapped to contigs absent in the new reference are dropped. Runs substantially faster if the input is\nan indexed BAM file.\nExample\njava -jar picard.jar ReorderSam \\\nINPUT=sample.bam \\\nOUTPUT=reordered.bam \\\nREFERENCE=reference_with_different_order.fasta\nVersion:4.1.3.0\n",
+            documentation="""
+USAGE: ReorderSam [arguments]
+
+Not to be confused with SortSam which sorts a SAM or BAM file with a valid sequence dictionary, 
+ReorderSam reorders\nreads in a SAM/BAM file to match the contig ordering in a provided reference file, 
+as determined by exact name matching\nof contigs.  Reads mapped to contigs absent in the new reference 
+are dropped. Runs substantially faster if the input is\nan indexed BAM file.
+
+Example:
+
+.. code-tool: none
+
+   java -jar picard.jar ReorderSam \\
+       INPUT=sample.bam \\
+       OUTPUT=reordered.bam \\
+       REFERENCE=reference_with_different_order.fasta
+       
+Version:4.1.3.0""",
         )

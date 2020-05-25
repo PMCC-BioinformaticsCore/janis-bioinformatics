@@ -16,10 +16,11 @@ from janis_core import (
     InputDocumentation,
 )
 
+from janis_bioinformatics.data_types import Vcf
 from janis_bioinformatics.tools.gatk4.gatk4toolbase import Gatk4ToolBase
 
 
-class GatkVariantFiltrationBase(Gatk4ToolBase):
+class Gatk4VariantFiltrationBase(Gatk4ToolBase):
     @classmethod
     def gatk_command(cls):
         return "VariantFiltration"
@@ -34,7 +35,11 @@ class GatkVariantFiltrationBase(Gatk4ToolBase):
         return [
             ToolInput(
                 tag="outputFilename",
-                input_type=Filename(optional=True),
+                input_type=Filename(
+                    prefix=InputSelector("variant"),
+                    suffix=".filtered",
+                    extension=".vcf",
+                ),
                 prefix="--output",
                 separate_value_from_prefix=True,
                 doc=InputDocumentation(
@@ -43,7 +48,7 @@ class GatkVariantFiltrationBase(Gatk4ToolBase):
             ),
             ToolInput(
                 tag="variant",
-                input_type=String(optional=True),
+                input_type=Vcf(),
                 prefix="--variant",
                 separate_value_from_prefix=True,
                 doc=InputDocumentation(
@@ -729,7 +734,7 @@ class GatkVariantFiltrationBase(Gatk4ToolBase):
         ]
 
     def outputs(self):
-        return []
+        return [ToolOutput("out", Vcf(), glob=InputSelector("outputFilename"),)]
 
     def metadata(self):
         return ToolMetadata(

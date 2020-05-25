@@ -1,24 +1,24 @@
-from .base import GatkSplitNCigarReadsBase
+from .base import Gatk4SplitNCigarReadsBase
 from ..versions import Gatk_4_0_12, Gatk_4_1_2_0, Gatk_4_1_3_0, Gatk_4_1_4_0
 
 
-class GatkSplitNCigarReads_4_0(Gatk_4_0_12, GatkSplitNCigarReadsBase):
+class Gatk4SplitNCigarReads_4_0(Gatk_4_0_12, Gatk4SplitNCigarReadsBase):
     pass
 
 
-class GatkSplitNCigarReads_4_1_2(Gatk_4_1_2_0, GatkSplitNCigarReadsBase):
+class Gatk4SplitNCigarReads_4_1_2(Gatk_4_1_2_0, Gatk4SplitNCigarReadsBase):
     pass
 
 
-class GatkSplitNCigarReads_4_1_3(Gatk_4_1_3_0, GatkSplitNCigarReadsBase):
+class Gatk4SplitNCigarReads_4_1_3(Gatk_4_1_3_0, Gatk4SplitNCigarReadsBase):
     pass
 
 
-class GatkSplitNCigarReads_4_1_4(Gatk_4_1_4_0, GatkSplitNCigarReadsBase):
+class Gatk4SplitNCigarReads_4_1_4(Gatk_4_1_4_0, Gatk4SplitNCigarReadsBase):
     pass
 
 
-GatkSplitNCigarReadsLatest = GatkSplitNCigarReads_4_1_4
+Gatk4SplitNCigarReadsLatest = Gatk4SplitNCigarReads_4_1_4
 
 if __name__ == "__main__":
-    print(GatkSplitNCigarReadsLatest().help())
+    print(Gatk4SplitNCigarReadsLatest().help())
