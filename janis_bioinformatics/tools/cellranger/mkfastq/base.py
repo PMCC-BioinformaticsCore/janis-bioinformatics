@@ -211,7 +211,7 @@ class CellRangerMkfastqBase(BioinformaticsTool):
     def outputs(self):
         return [ToolOutput("out", Directory, glob=InputSelector("outputFoldername"))]
 
-    def metadata(self):
+    def bind_metadata(self):
         return ToolMetadata(
             contributors=["Michael Franklin"],
             dateCreated=datetime.fromisoformat("2019-10-24T12:29:47.687842"),

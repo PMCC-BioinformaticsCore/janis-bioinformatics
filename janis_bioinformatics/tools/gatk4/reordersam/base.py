@@ -225,7 +225,7 @@ class Gatk4ReorderSamBase(Gatk4ToolBase, ABC):
             )
         ]
 
-    def metadata(self):
+    def bind_metadata(self):
         return ToolMetadata(
             contributors=["illusional"],
             dateCreated=datetime.fromisoformat("2020-05-15T16:11:13.566578"),

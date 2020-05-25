@@ -663,7 +663,7 @@ class Gatk4SplitNCigarReadsBase(Gatk4ToolBase, ABC):
             )
         ]
 
-    def metadata(self):
+    def bind_metadata(self):
         return ToolMetadata(
             contributors=[],
             dateCreated=datetime.fromisoformat("2020-05-15T15:42:57.592654"),

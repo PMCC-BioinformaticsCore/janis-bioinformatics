@@ -736,7 +736,7 @@ class Gatk4VariantFiltrationBase(Gatk4ToolBase):
     def outputs(self):
         return [ToolOutput("out", Vcf(), glob=InputSelector("outputFilename"),)]
 
-    def metadata(self):
+    def bind_metadata(self):
         return ToolMetadata(
             contributors=[],
             dateCreated=datetime.fromisoformat("2020-05-18T08:00:02.265505"),

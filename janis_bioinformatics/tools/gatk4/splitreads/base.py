@@ -87,7 +87,7 @@ class Gatk4SplitReadsBase(Gatk4ToolBase):
             )
         ]
 
-    def metadata(self):
+    def bind_metadata(self):
         return ToolMetadata(
             dateCreated=datetime.fromisoformat("2019-09-16T15:53:15.813130"),
             dateUpdated=datetime.fromisoformat("2019-09-16T15:53:15.813131"),
