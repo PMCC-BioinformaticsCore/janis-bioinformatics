@@ -6,6 +6,7 @@ from janis_bioinformatics.tools.bcftools import BcfToolsAnnotate_1_5
 from janis_bioinformatics.tools.common import SplitMultiAlleleNormaliseVcf
 from janis_bioinformatics.tools.vardict import VarDictGermline_1_6_0
 from janis_bioinformatics.tools.pmac.trimiupac.versions import TrimIUPAC_0_0_5
+from janis_bioinformatics.tools.vcftools import VcfToolsvcftoolsLatest
 
 
 class VardictGermlineVariantCaller(BioinformaticsWorkflow):
@@ -61,8 +62,19 @@ class VardictGermlineVariantCaller(BioinformaticsWorkflow):
         )
         self.step("trim", TrimIUPAC_0_0_5(vcf=self.splitnormalisevcf.out))
 
+        self.step(
+            "fileterpass",
+            VcfToolsvcftoolsLatest(
+                vcf=self.trim.out,
+                prefix="out",
+                removeFileteredAll=True,
+                recode=True,
+                recodeINFOAll=True,
+            ),
+        )
+
         self.output("vardict_variants", source=self.vardict.out)
-        self.output("out", source=self.trim.out)
+        self.output("out", source=self.fileterpass.out)
 
 
 if __name__ == "__main__":
