@@ -26,6 +26,7 @@ from janis_bioinformatics.tools import (
     sequenza,
     star,
     ucsf,
+    usadellab,
     validation,
     variantcallers,
     vcflib,

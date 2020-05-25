@@ -1,0 +1,1 @@
+from .trimmomatic.versions import *
