@@ -87,10 +87,12 @@ class BcfToolsAnnotateBase(BcfToolsToolBase, ABC):
 
     def inputs(self):
         return [
-            ToolInput("file", CompressedVcf, position=100),
+            ToolInput("compressedVcf", CompressedVcf(optional=True), position=100),
+            ToolInput("vcf", Vcf(optional=True), position=100),
             ToolInput(
                 "outputFilename",
-                Filename(extension=".vcf.gz"),
+                # Filename(extension=".vcf.gz"),
+                Filename(),
                 prefix="--output",
                 doc="[-o] see Common Options",
             ),
@@ -98,7 +100,7 @@ class BcfToolsAnnotateBase(BcfToolsToolBase, ABC):
         ]
 
     def outputs(self):
-        return [ToolOutput("out", CompressedVcf, glob=InputSelector("outputFilename"))]
+        return [ToolOutput("out", Vcf, glob=InputSelector("outputFilename"))]
 
     def docurl():
         return "https://samtools.github.io/bcftools/bcftools.html#annotate"
