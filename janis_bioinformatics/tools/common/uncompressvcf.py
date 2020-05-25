@@ -20,7 +20,7 @@ class UncompressVcf(BioinformaticsTool):
         return "unix"
 
     def base_command(self):
-        return "gzip"
+        return "gunzip"
 
     def container(self):
         return "ubuntu:latest"
