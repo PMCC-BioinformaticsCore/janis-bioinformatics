@@ -81,7 +81,8 @@ class IlluminaSomaticVariantCaller(BioinformaticsWorkflow):
         )
 
         self.output("sv", source=self.manta.diploidSV)
-        self.output("variants", source=self.fileterpass.out)
+        self.output("variants", source=self.strelka.variants)
+        self.output("out", source=self.fileterpass.out)
 
 
 if __name__ == "__main__":
