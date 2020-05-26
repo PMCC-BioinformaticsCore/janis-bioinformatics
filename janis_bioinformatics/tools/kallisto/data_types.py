@@ -1,5 +1,6 @@
 from janis_core import File, DataType
 
+
 class KallistoIdx(File):
     def __init__(self, optional=False):
         super().__init__(optional, extension=".kidx")
@@ -10,4 +11,3 @@ class KallistoIdx(File):
 
     def can_receive_from(self, other, source_has_default=False):
         return False
-

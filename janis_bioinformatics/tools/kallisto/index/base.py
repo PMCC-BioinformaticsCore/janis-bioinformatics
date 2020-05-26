@@ -1,7 +1,15 @@
 from abc import ABC
 from typing import Any, Dict
 
-from janis_core import ToolInput, ToolOutput, ToolMetadata, String, Int, Filename, InputSelector
+from janis_core import (
+    ToolInput,
+    ToolOutput,
+    ToolMetadata,
+    String,
+    Int,
+    Filename,
+    InputSelector,
+)
 
 from janis_bioinformatics.data_types import Fasta
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
@@ -38,11 +46,13 @@ class KallistoIndexBase(BioinformaticsTool, ABC):
                 position=2,
                 doc="Filename for the kallisto index to be constructed",
             ),
-            ToolInput("reference",
+            ToolInput(
+                "reference",
                 Fasta,
                 position=3,
                 localise_file=True,
-                doc="Filename for a reference transcriptome"),
+                doc="Filename for a reference transcriptome",
+            ),
             # --make-unique           Replace repeated target names with unique names
         ]
 
@@ -67,5 +77,5 @@ class KallistoIndexBase(BioinformaticsTool, ABC):
             citation="NL Bray, H Pimentel, P Melsted and L Pachter, Near optimal probabilistic RNA-seq quantification, Nature Biotechnology 34, p 525--527 (2016).",
             keywords=["kallisto", "index", "reference"],
             documentationUrl="https://pachterlab.github.io/kallisto/manual.html",
-            documentation="Builds a kallisto index"
+            documentation="Builds a kallisto index",
         )

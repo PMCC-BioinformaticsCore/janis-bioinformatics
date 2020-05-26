@@ -1,7 +1,19 @@
 from abc import ABC
 from typing import Any, Dict
 
-from janis_core import ToolInput, ToolOutput, ToolMetadata, Array, Boolean, String, Int, Double, Filename, File, InputSelector
+from janis_core import (
+    ToolInput,
+    ToolOutput,
+    ToolMetadata,
+    Array,
+    Boolean,
+    String,
+    Int,
+    Double,
+    Filename,
+    File,
+    InputSelector,
+)
 
 from janis_bioinformatics.data_types import Fasta, Fastq
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
@@ -36,14 +48,9 @@ class KallistoQuantBase(BioinformaticsTool, ABC):
                 Filename,
                 prefix="-o",
                 position=3,
-                doc="directory to put outputs in"
+                doc="directory to put outputs in",
             ),
-            ToolInput(
-                "fastq",
-                Array(Fastq),
-                position=4,
-                doc="FASTQ files to process"
-            ),
+            ToolInput("fastq", Array(Fastq), position=4, doc="FASTQ files to process"),
             ToolInput(
                 "bias",
                 Boolean(optional=True),
@@ -91,12 +98,14 @@ class KallistoQuantBase(BioinformaticsTool, ABC):
                 Double(optional=True),
                 prefix="-s",
                 doc="Estimated standard deviation of fragment length",
-            )
+            ),
         ]
 
     def outputs(self):
-        return [ToolOutput("out", File, glob=InputSelector("outdir") + "/abundance.tsv"),
-                ToolOutput("stats", File, glob=InputSelector("outdir") + "/run_info.json")]
+        return [
+            ToolOutput("out", File, glob=InputSelector("outdir") + "/abundance.tsv"),
+            ToolOutput("stats", File, glob=InputSelector("outdir") + "/run_info.json"),
+        ]
 
     def memory(self, hints: Dict[str, Any]):
         return 2
@@ -116,5 +125,5 @@ class KallistoQuantBase(BioinformaticsTool, ABC):
             citation="NL Bray, H Pimentel, P Melsted and L Pachter, Near optimal probabilistic RNA-seq quantification, Nature Biotechnology 34, p 525--527 (2016).",
             keywords=["kallisto", "index", "reference"],
             documentationUrl="https://pachterlab.github.io/kallisto/manual.html",
-            documentation="Builds a kallisto index"
+            documentation="Builds a kallisto index",
         )
