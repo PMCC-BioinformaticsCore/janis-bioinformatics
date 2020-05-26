@@ -65,8 +65,7 @@ class IlluminaGermlineVariantCaller(BioinformaticsWorkflow):
         self.step(
             "fileterpass",
             VcfToolsvcftoolsLatest(
-                vcf=self.splitnormalisevcf.out,
-                prefix="out",
+                compressedVcf=self.splitnormalisevcf.out,
                 removeFileteredAll=True,
                 recode=True,
                 recodeINFOAll=True,
