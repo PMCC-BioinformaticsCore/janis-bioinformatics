@@ -1,20 +1,20 @@
 from abc import ABC
 from datetime import datetime
+
 from janis_core import (
     CommandTool,
     ToolInput,
-    ToolOutput,
+    Array,
     File,
     Boolean,
     String,
-    Int,
-    Double,
-    Float,
-    InputSelector,
     Filename,
     ToolMetadata,
     InputDocumentation,
+    ToolOutput,
+    InputSelector,
 )
+from janis_unix import TextFile
 
 
 class FilterVepBase(CommandTool, ABC):
@@ -54,7 +54,7 @@ class FilterVepBase(CommandTool, ABC):
                 ),
             ),
             ToolInput(
-                tag="outputFilenmame",
+                tag="outputFilename",
                 input_type=Filename(extension=".txt"),
                 prefix="--output_file",
                 separate_value_from_prefix=True,
@@ -145,7 +145,7 @@ class FilterVepBase(CommandTool, ABC):
         ]
 
     def outputs(self):
-        return []
+        return [ToolOutput("out", TextFile, glob=InputSelector("outputFilename"))]
 
     def metadata(self):
         return ToolMetadata(

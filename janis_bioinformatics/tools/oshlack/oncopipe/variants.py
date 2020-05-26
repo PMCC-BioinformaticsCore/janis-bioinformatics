@@ -1,8 +1,7 @@
-from janis_core import File, Double
+from janis_core import Double
 
 from janis_bioinformatics.data_types import Bam, FastaWithIndexes
 from janis_bioinformatics.tools import BioinformaticsWorkflow
-from janis_bioinformatics.tools.ensembl import VepCacheLatest
 from janis_bioinformatics.tools.gatk4 import (
     Gatk4AddOrReplaceReadGroups_4_1_4,
     Gatk4MarkDuplicates_4_1_4,
@@ -30,8 +29,7 @@ class OncopipeVariantCaller(BioinformaticsWorkflow):
         #     splitncigar +
         #     rnaseq_call_variants +
         #     filter_variants +
-        #     [vep + vepfilter + report_vep_cleanup + report_vep_text,
-        #      vepvcf + vepfiltervcf + [chr_rename + liftover + oncotator_format, report_vep_vcf_cleanup + report_vep]]
+        #     + [annotate variants]
         # }
 
         self.input("bam", Bam)
@@ -105,31 +103,6 @@ class OncopipeVariantCaller(BioinformaticsWorkflow):
                 clusterWindowSize=35,
                 clusterSize=3,
                 filterName=['FS -filter "FS > 30.0"', 'QD -filter "QD < 2.0"'],
-            ),
-        )
-
-        self.step(
-            "vep",
-            VepCacheLatest(
-                inputFile=self.filter_variants.out,
-                symbol=True,
-                filterCommon=True,
-                sift="b",
-                polyphen="b",
-                outputFilename="generated.txt",
-                vcf=False,
-            ),
-        )
-
-        self.step(
-            "vepvcf",
-            VepCacheLatest(
-                inputFile=self.filter_variants.out,
-                symbol=True,
-                filterCommon=True,
-                alleleNumber=True,
-                sift="b",
-                polyphen="b",
             ),
         )
 
