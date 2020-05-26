@@ -14,6 +14,7 @@ from janis_core import (
     Filename,
     ToolMetadata,
     InputDocumentation,
+    Array,
 )
 
 from janis_bioinformatics.data_types import Vcf
@@ -201,9 +202,10 @@ class Gatk4VariantFiltrationBase(Gatk4ToolBase):
             ),
             ToolInput(
                 tag="filterName",
-                input_type=String(optional=True),
+                input_type=Array(String(optional=True)),
                 prefix="--filter-name",
                 separate_value_from_prefix=True,
+                prefix_applies_to_all_elements=True,
                 doc=InputDocumentation(
                     doc="Names to use for the list of filters This argument may be specified 0 or more times. Default value: null. "
                 ),

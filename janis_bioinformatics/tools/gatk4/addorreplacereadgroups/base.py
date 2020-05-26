@@ -248,7 +248,7 @@ class Gatk4AddOrReplaceReadGroupsBase(Gatk4ToolBase, ABC):
             ),
             ToolInput(
                 tag="sort_order",
-                input_type=Boolean(optional=True),
+                input_type=String(optional=True),
                 prefix="--SORT_ORDER",
                 separate_value_from_prefix=True,
                 doc=InputDocumentation(
@@ -288,7 +288,7 @@ class Gatk4AddOrReplaceReadGroupsBase(Gatk4ToolBase, ABC):
             ),
             ToolInput(
                 tag="validation_stringency",
-                input_type=Boolean(optional=True),
+                input_type=String(optional=True),
                 prefix="--VALIDATION_STRINGENCY",
                 separate_value_from_prefix=True,
                 doc=InputDocumentation(

@@ -103,7 +103,7 @@ class Gatk4HaplotypeCallerBase(Gatk4ToolBase, ABC):
             ),
             ToolInput(
                 "dbsnp",
-                VcfTabix(),
+                VcfTabix(optional=True),
                 position=7,
                 prefix="--dbsnp",
                 doc="(Also: -D) A dbSNP VCF file.",
@@ -425,5 +425,11 @@ to our recommendations as documented (https://software.broadinstitute.org/gatk/d
             Boolean(optional=True),
             prefix="--use-new-qual-calculator",
             doc="-new-qual If provided, we will use the new AF model instead of the so-called exact model",
+        ),
+        ToolInput(
+            "dontUseSoftClippedBases",
+            Boolean(optional=True),
+            prefix="--dont-use-soft-clipped-bases",
+            doc="Do not analyze soft clipped bases in the reads",
         ),
     ]

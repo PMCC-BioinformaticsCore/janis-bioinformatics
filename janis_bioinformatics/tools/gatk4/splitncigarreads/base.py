@@ -16,7 +16,7 @@ from janis_core import (
     Array,
 )
 
-from janis_bioinformatics.data_types import Bam, BamBai
+from janis_bioinformatics.data_types import Bam, BamBai, FastaWithIndexes
 from janis_bioinformatics.tools.gatk4.gatk4toolbase import Gatk4ToolBase
 
 
@@ -55,7 +55,7 @@ class Gatk4SplitNCigarReadsBase(Gatk4ToolBase, ABC):
             ),
             ToolInput(
                 tag="reference",
-                input_type=String(optional=True),
+                input_type=FastaWithIndexes(optional=True),
                 prefix="--reference",
                 separate_value_from_prefix=True,
                 doc=InputDocumentation(doc="(-R) Reference sequence file Required."),
