@@ -199,6 +199,7 @@ class VepBase_98_3(BioinformaticsTool):
             ToolInput(
                 "fork",
                 Int(optional=True),
+                default=CpuSelector(),
                 prefix="--fork",
                 doc="Enable forking, using the specified number of forks. Forking can dramatically improve runtime. "
                 "Not used by default",
