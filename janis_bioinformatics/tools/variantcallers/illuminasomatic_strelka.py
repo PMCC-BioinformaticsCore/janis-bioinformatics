@@ -8,6 +8,7 @@ from janis_bioinformatics.tools.common import (
 )
 from janis_bioinformatics.tools.illumina import Manta_1_5_0, StrelkaSomatic_2_9_10
 from janis_bioinformatics.tools.vcftools import VcfToolsvcftoolsLatest
+from janis_bioinformatics.tools.htslib import TabixLatest
 
 
 class IlluminaSomaticVariantCaller(BioinformaticsWorkflow):
@@ -62,27 +63,29 @@ class IlluminaSomaticVariantCaller(BioinformaticsWorkflow):
                 contentVcfs=[self.strelka.snvs, self.strelka.indels],
             ),
         )
+
         self.step(
             "splitnormalisevcf",
             SplitMultiAlleleNormaliseVcf(
-                vcf=self.concatvcf.out, reference=self.reference
+                compressedTabixVcf=self.concatvcf.out, reference=self.reference
             ),
         )
 
         self.step(
             "fileterpass",
             VcfToolsvcftoolsLatest(
-                vcf=self.splitnormalisevcf.out,
-                prefix="out",
+                compressedVcf=self.splitnormalisevcf.out,
                 removeFileteredAll=True,
                 recode=True,
                 recodeINFOAll=True,
             ),
         )
 
+        self.step("tabixvcf", TabixLatest(file=self.fileterpass.out))
+
         self.output("sv", source=self.manta.diploidSV)
-        self.output("variants", source=self.strelka.variants)
-        self.output("out", source=self.fileterpass.out)
+        self.output("variants", source=self.concatvcf.out)
+        self.output("out", source=self.tabixvcf.out)
 
 
 if __name__ == "__main__":
