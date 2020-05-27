@@ -1,6 +1,6 @@
 from typing import List
 
-from janis_bioinformatics.data_types import Vcf, FastaWithDict, CompressedVcf
+from janis_bioinformatics.data_types import Vcf, FastaWithDict, CompressedVcf, VcfTabix
 from janis_bioinformatics.tools import BioinformaticsTool
 from janis_core import (
     ToolOutput,
@@ -33,6 +33,12 @@ class SplitMultiAlleleNormaliseVcf(BioinformaticsTool):
     def inputs(self) -> List[ToolInput]:
         return [
             ToolInput("vcf", Vcf(optional=True), position=1, shell_quote=False),
+            ToolInput(
+                "compressedTabixVcf",
+                VcfTabix(optional=True),
+                position=1,
+                shell_quote=False,
+            ),
             ToolInput(
                 "compressedVcf",
                 CompressedVcf(optional=True),
