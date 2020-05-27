@@ -2,12 +2,10 @@ from janis_core import Boolean
 
 from janis_bioinformatics.data_types import FastaWithDict, BamBai, BedTabix
 from janis_bioinformatics.tools import BioinformaticsWorkflow
-from janis_bioinformatics.tools.common import (
-    SplitMultiAlleleNormaliseVcf,
-    UncompressVcf,
-)
+from janis_bioinformatics.tools.common import SplitMultiAlleleNormaliseVcf
 from janis_bioinformatics.tools.illumina import StrelkaGermline_2_9_10, Manta_1_5_0
 from janis_bioinformatics.tools.vcftools import VcfToolsvcftoolsLatest
+from janis_bioinformatics.tools.htslib import TabixLatest
 
 
 class IlluminaGermlineVariantCaller(BioinformaticsWorkflow):
@@ -52,13 +50,9 @@ class IlluminaGermlineVariantCaller(BioinformaticsWorkflow):
         )
 
         self.step(
-            "uncompressvcf", UncompressVcf(vcfTabix=self.strelka.variants, stdout=True,)
-        )
-
-        self.step(
             "splitnormalisevcf",
             SplitMultiAlleleNormaliseVcf(
-                vcf=self.uncompressvcf.out, reference=self.reference
+                compressedTabixVcf=self.strelka.variants, reference=self.reference
             ),
         )
 
@@ -72,9 +66,11 @@ class IlluminaGermlineVariantCaller(BioinformaticsWorkflow):
             ),
         )
 
-        self.output("diploid", source=self.manta.diploidSV)
+        self.step("tabixvcf", TabixLatest(file=self.fileterpass.out))
+
+        self.output("sv", source=self.manta.diploidSV)
         self.output("variants", source=self.strelka.variants)
-        self.output("out", source=self.fileterpass.out)
+        self.output("out", source=self.tabixvcf.out)
 
 
 if __name__ == "__main__":
