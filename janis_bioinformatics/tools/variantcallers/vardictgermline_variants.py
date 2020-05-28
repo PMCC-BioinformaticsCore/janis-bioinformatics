@@ -7,6 +7,7 @@ from janis_bioinformatics.tools.common import SplitMultiAlleleNormaliseVcf
 from janis_bioinformatics.tools.vardict import VarDictGermline_1_6_0
 from janis_bioinformatics.tools.pmac.trimiupac.versions import TrimIUPAC_0_0_5
 from janis_bioinformatics.tools.vcftools import VcfToolsvcftoolsLatest
+from janis_bioinformatics.tools.htslib import TabixLatest
 
 
 class VardictGermlineVariantCaller(BioinformaticsWorkflow):
@@ -75,9 +76,10 @@ class VardictGermlineVariantCaller(BioinformaticsWorkflow):
                 headerLines=self.header_lines,
             ),
         )
+        self.step("tabixvcf", TabixLatest(file=self.annotate.out))
 
         self.output("variants", source=self.vardict.out)
-        self.output("out", source=self.annotate.out)
+        self.output("out", source=self.tabixvcf.out)
 
 
 if __name__ == "__main__":
