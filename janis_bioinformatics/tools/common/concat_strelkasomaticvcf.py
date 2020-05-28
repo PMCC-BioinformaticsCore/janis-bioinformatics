@@ -54,7 +54,7 @@ class ConcatStrelkaSomaticVcf(BioinformaticsTool):
             ToolArgument("| grep '^##' > header.vcf;", position=2, shell_quote=False),
             ToolArgument("vcf-merge", position=3, shell_quote=False),
             ToolArgument(
-                "| grep -v '^##' > content.vcf; cat header.vcf content.vcf | gzip -c ",
+                "| grep -v '^##' > content.vcf; cat header.vcf content.vcf | bgzip -c ",
                 position=5,
                 shell_quote=False,
             ),
