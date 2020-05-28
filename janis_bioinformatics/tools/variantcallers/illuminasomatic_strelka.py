@@ -69,7 +69,7 @@ class IlluminaSomaticVariantCaller(BioinformaticsWorkflow):
         self.step(
             "splitnormalisevcf",
             SplitMultiAlleleNormaliseVcf(
-                compressedTabixVcf=self.concatvcf.out, reference=self.reference
+                compressedTabixVcf=self.tabixvcf.out, reference=self.reference
             ),
         )
 
