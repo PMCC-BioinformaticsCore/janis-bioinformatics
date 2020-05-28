@@ -100,7 +100,7 @@ class BcfToolsAnnotateBase(BcfToolsToolBase, ABC):
         ]
 
     def outputs(self):
-        return [ToolOutput("out", VcfTabix, glob=InputSelector("outputFilename"))]
+        return [ToolOutput("out", CompressedVcf, glob=InputSelector("outputFilename"))]
 
     def docurl():
         return "https://samtools.github.io/bcftools/bcftools.html#annotate"
