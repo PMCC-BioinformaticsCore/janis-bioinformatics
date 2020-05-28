@@ -90,7 +90,7 @@ class SplitMultiAlleleNormaliseVcf(BioinformaticsTool):
             ),
             ToolInput(
                 "outputFilename",
-                Filename(extension=".vcf.gz", suffix=".norm"),
+                Filename(extension=".vcf", suffix=".norm"),
                 position=6,
                 prefix="-o",
                 shell_quote=False,
@@ -104,9 +104,7 @@ class SplitMultiAlleleNormaliseVcf(BioinformaticsTool):
         ]
 
     def outputs(self) -> List[ToolOutput]:
-        return [
-            ToolOutput("out", CompressedVcf(), glob=InputSelector("outputFilename"))
-        ]
+        return [ToolOutput("out", Vcf(), glob=InputSelector("outputFilename"))]
 
     def doc(self):
         return """

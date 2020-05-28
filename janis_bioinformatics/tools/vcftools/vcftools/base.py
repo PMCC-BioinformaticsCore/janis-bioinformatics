@@ -62,7 +62,7 @@ class VcfToolsvcftoolsBase(VcfToolsToolBase, ABC):
 
     def arguments(self):
         return [
-            ToolArgument("--stdout | gzip -c ", position=3, shell_quote=False),
+            ToolArgument("--stdout | bgzip -c ", position=3, shell_quote=False),
         ]
 
     def friendly_name(self):
