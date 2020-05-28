@@ -10,7 +10,7 @@ from janis_core import (
     InputSelector,
     String,
 )
-from janis_bioinformatics.data_types import Vcf, VcfTabix
+from janis_bioinformatics.data_types import CompressedVcf, VcfTabix
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 
 
@@ -41,18 +41,12 @@ class ConcatStrelkaSomaticVcf(BioinformaticsTool):
                 position=6,
                 shell_quote=False,
             ),
-            # second filename used to generate index
-            ToolInput(
-                "vcfFilename",
-                String(InputSelector("outputFilename")),
-                prefix="tabix",
-                position=8,
-                shell_quote=False,
-            ),
         ]
 
     def outputs(self) -> List[ToolOutput]:
-        return [ToolOutput("out", VcfTabix(), glob=InputSelector("outputFilename"))]
+        return [
+            ToolOutput("out", CompressedVcf(), glob=InputSelector("outputFilename"),)
+        ]
 
     def arguments(self):
         return [
@@ -64,7 +58,6 @@ class ConcatStrelkaSomaticVcf(BioinformaticsTool):
                 position=5,
                 shell_quote=False,
             ),
-            ToolArgument("; ", position=7, shell_quote=False),
         ]
 
     def doc(self):
