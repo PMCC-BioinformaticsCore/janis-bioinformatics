@@ -51,13 +51,9 @@ class VardictGermlineVariantCaller(BioinformaticsWorkflow):
             ),
         )
         self.step(
-            "annotate",
-            BcfToolsAnnotate_1_5(vcf=self.vardict.out, headerLines=self.header_lines),
-        )
-        self.step(
             "splitnormalisevcf",
             SplitMultiAlleleNormaliseVcf(
-                vcf=self.annotate.out, reference=self.reference
+                vcf=self.vardict.out, reference=self.reference
             ),
         )
         self.step("trim", TrimIUPAC_0_0_5(vcf=self.splitnormalisevcf.out))
@@ -66,15 +62,22 @@ class VardictGermlineVariantCaller(BioinformaticsWorkflow):
             "fileterpass",
             VcfToolsvcftoolsLatest(
                 vcf=self.trim.out,
-                prefix="out",
                 removeFileteredAll=True,
                 recode=True,
                 recodeINFOAll=True,
             ),
         )
+        self.step(
+            "annotate",
+            BcfToolsAnnotate_1_5(
+                compressedVcf=self.fileterpass.out,
+                outputType="z",
+                headerLines=self.header_lines,
+            ),
+        )
 
-        self.output("vardict_variants", source=self.vardict.out)
-        self.output("out", source=self.fileterpass.out)
+        self.output("variants", source=self.vardict.out)
+        self.output("out", source=self.annotate.out)
 
 
 if __name__ == "__main__":
