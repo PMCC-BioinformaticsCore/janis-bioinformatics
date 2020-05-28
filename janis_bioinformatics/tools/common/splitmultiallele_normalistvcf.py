@@ -1,6 +1,6 @@
-from typing import List
-
-from janis_bioinformatics.data_types import Vcf, FastaWithDict, CompressedVcf, VcfTabix
+from typing import List, Dict, Any
+from janis_core import get_value_for_hints_and_ordered_resource_tuple
+from janis_bioinformatics.data_types import FastaWithDict, CompressedVcf, Vcf, VcfTabix
 from janis_bioinformatics.tools import BioinformaticsTool
 from janis_core import (
     ToolOutput,
@@ -8,7 +8,35 @@ from janis_core import (
     Filename,
     ToolArgument,
     InputSelector,
+    CaptureType,
 )
+
+
+CORES_TUPLE = [
+    (
+        CaptureType.key(),
+        {
+            CaptureType.CHROMOSOME: 1,
+            CaptureType.EXOME: 1,
+            CaptureType.THIRTYX: 1,
+            CaptureType.NINETYX: 1,
+            CaptureType.THREEHUNDREDX: 1,
+        },
+    )
+]
+
+MEM_TUPLE = [
+    (
+        CaptureType.key(),
+        {
+            CaptureType.CHROMOSOME: 8,
+            CaptureType.EXOME: 8,
+            CaptureType.THIRTYX: 8,
+            CaptureType.NINETYX: 12,
+            CaptureType.THREEHUNDREDX: 16,
+        },
+    )
+]
 
 
 class SplitMultiAlleleNormaliseVcf(BioinformaticsTool):
@@ -25,10 +53,22 @@ class SplitMultiAlleleNormaliseVcf(BioinformaticsTool):
         return None
 
     def container(self):
-        return "heuermh/vt"
+        return "heuermh/vt"  # "SEE (mfranklin's notes in) DOCUMENTATION"
 
     def version(self):
         return "v0.5772"
+
+    def cpus(self, hints: Dict[str, Any]):
+        val = get_value_for_hints_and_ordered_resource_tuple(hints, CORES_TUPLE)
+        if val:
+            return val
+        return 1
+
+    def memory(self, hints: Dict[str, Any]):
+        val = get_value_for_hints_and_ordered_resource_tuple(hints, MEM_TUPLE)
+        if val:
+            return val
+        return 8
 
     def inputs(self) -> List[ToolInput]:
         return [
@@ -57,22 +97,25 @@ class SplitMultiAlleleNormaliseVcf(BioinformaticsTool):
             ),
         ]
 
-    def outputs(self) -> List[ToolOutput]:
-        return [
-            ToolOutput("out", CompressedVcf(), glob=InputSelector("outputFilename"))
-        ]
-
     def arguments(self):
         return [
             ToolArgument("vt decompose -s ", position=0, shell_quote=False),
             ToolArgument("| vt normalize -n -q - ", position=2, shell_quote=False),
         ]
 
+    def outputs(self) -> List[ToolOutput]:
+        return [
+            ToolOutput("out", CompressedVcf(), glob=InputSelector("outputFilename"))
+        ]
+
     def doc(self):
-        return """Use vt to split multiallelic variants, and left-most align normalisation.
-        Original command:
-        vt decompose -s $input.vcf | vt normalize -n -q - -r $reference -o $output.vcf
-            VT decompose documentation:
+        return """
+    Use vt to split multiallelic variants, and left-most align normalisation.
+    Original command:
+    vt decompose -s $input.vcf | vt normalize -n -q - -r $reference -o $output.vcf
+
+    ========
+    VT decompose documentation:
         options : -s  smart decomposition [false]
               -d  debug [false]
               -f  filter expression []
@@ -95,4 +138,9 @@ class SplitMultiAlleleNormaliseVcf(BioinformaticsTool):
               -I  file containing list of intervals []
               -i  intervals []
               -r  reference sequence fasta file []
-              -?  displays help """.strip()
+              -?  displays help 
+        """.strip()
+
+
+if __name__ == "__main__":
+    print(SplitMultiAlleleNormaliseVcf().help())
