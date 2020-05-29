@@ -15,7 +15,7 @@ from .vardictsomatic import (
 
 # output compressed vcf
 from .vardictgermline_compressed import VarDictGermlineCompressed_1_6_0
-from .vardictsomatic_compressed import VarDictSomatic_1_6_0
+from .vardictsomatic_compressed import VarDictSomaticCompressed_1_6_0
 
 
 VarDictGermlineLatest = VarDictGermline_1_6_0
