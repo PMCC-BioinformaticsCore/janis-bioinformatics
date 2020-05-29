@@ -3,9 +3,14 @@ from janis_core import File, String, Float, Int, Boolean
 from janis_bioinformatics.data_types import FastaWithDict, BamBai, Bed
 from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.bcftools import BcfToolsAnnotate_1_5
-from janis_bioinformatics.tools.common import SplitMultiAllele
+from janis_bioinformatics.tools.common import (
+    SplitMultiAlleleNormaliseVcf,
+    FileVardictSomaticVcf,
+)
 from janis_bioinformatics.tools.vardict import VarDictSomatic_1_6_0
 from janis_bioinformatics.tools.pmac import TrimIUPAC_0_0_5
+from janis_bioinformatics.tools.vcftools import VcfToolsvcftoolsLatest
+from janis_bioinformatics.tools.htslib import TabixLatest
 
 
 class VardictSomaticVariantCaller(BioinformaticsWorkflow):
@@ -53,18 +58,31 @@ class VardictSomaticVariantCaller(BioinformaticsWorkflow):
                 geneEndCol=3,
             ),
         )
+
+        self.step(
+            "splitnormalisevcf",
+            SplitMultiAlleleNormaliseVcf(
+                vcf=self.vardict.out, reference=self.reference
+            ),
+        )
+
+        self.step("trim", TrimIUPAC_0_0_5(vcf=self.splitnormalisevcf.out))
+
         self.step(
             "annotate",
-            BcfToolsAnnotate_1_5(file=self.vardict.out, headerLines=self.header_lines),
+            BcfToolsAnnotate_1_5(
+                compressedVcf=self.trim.out,
+                outputType="z",
+                headerLines=self.header_lines,
+            ),
         )
-        self.step(
-            "split_multi_allele",
-            SplitMultiAllele(reference=self.reference, vcf=self.annotate.out),
-        )
-        self.step("trim", TrimIUPAC_0_0_5(vcf=self.split_multi_allele.out))
 
-        self.output("vardict_variants", source=self.vardict.out)
-        self.output("out", source=self.trim.out)
+        self.step("filetervcf", FileVardictSomaticVcf(compressedVcf=self.annotate.out))
+
+        self.step("tabixvcf", TabixLatest(file=self.filetervcf.out))
+
+        self.output("variants", source=self.vardict.out)
+        self.output("out", source=self.tabixvcf.out)
 
 
 if __name__ == "__main__":
