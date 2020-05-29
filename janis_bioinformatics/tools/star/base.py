@@ -10,6 +10,7 @@ from janis_core import (
     Double,
     ToolArgument,
     CpuSelector,
+    ToolMetadata,
 )
 
 from janis_bioinformatics.data_types import FastaWithIndexes, Vcf, Bam
@@ -1183,3 +1184,26 @@ class StarBase(BioinformaticsTool, ABC):
                 doc='(default: CellRanger2.2 3000 0.99 10) ... all UMIs with 1 mismatch distance to each other are collapsed (i.e. counted once)     1MM_Directional     ... follows the "directional" method from the UMI-tools by Smith, Heger and Sudbery (Genome Research 2017).     Exact       ... only exactly matching UMIs are collapsed',
             ),
         ]
+
+    def bind_metadata(self):
+        from datetime import date
+
+        return ToolMetadata(
+            contributors=["Jiaan Yu", "Michael Franklin"],
+            dateCreated=date(2020, 5, 29),
+            dateUpdated=date(2020, 5, 29),
+            institution="Cold Spring Harbor Laboratory",
+            doi="https://doi.org/10.1093/bioinformatics/bts635",
+            citation="Dobin A, Davis CA, Schlesinger F, et al. STAR: ultrafast universal RNA-seq aligner. Bioinformatics. 2013;29(1):15‐21. doi:10.1093/bioinformatics/bts635",
+            keywords=["star", "align", "rna", "rnaSeq"],
+            documentationUrl="https://github.com/alexdobin/STAR",
+            documentation="""\
+Spliced Transcripts Alignment to a Reference © Alexander Dobin, 2009-2019 
+
+For more details see:
+
+- https://www.ncbi.nlm.nih.gov/pubmed/23104886
+- https://github.com/alexdobin/STAR
+- https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf
+""",
+        )
