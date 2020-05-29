@@ -52,12 +52,14 @@ class FileVardictSomaticVcf(BioinformaticsTool):
     def arguments(self):
         return [
             ToolArgument(
-                "bcftools filter -e STATUS=GERMLINE -O z -o - ",
+                "bcftools filter -e 'STATUS=\"GERMLINE\"' -O z -o - ",
                 position=0,
                 shell_quote=False,
             ),
             ToolArgument(
-                "| bcftools filter -i FILTER==PASS -O z", position=2, shell_quote=False
+                "| bcftools filter -i 'FILTER==\"PASS\"' -O z",
+                position=2,
+                shell_quote=False,
             ),
         ]
 
