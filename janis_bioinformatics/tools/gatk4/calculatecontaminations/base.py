@@ -105,12 +105,6 @@ class Gatk4CalculateContaminationBase(Gatk4ToolBase, ABC):
             doc="Tables containing contamination information.",
         ),
         ToolInput(
-            "segmentationFile",
-            File(optional=True),
-            prefix="--tumor-segmentation",
-            doc="Tables containing tumor segments' minor allele fractions for germline hets emitted by CalculateContamination",
-        ),
-        ToolInput(
             "statsFile",
             File(optional=True),
             prefix="--stats",
