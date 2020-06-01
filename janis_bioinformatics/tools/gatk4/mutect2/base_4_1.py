@@ -80,14 +80,14 @@ class Gatk4Mutect2Base_4_1(Gatk4ToolBase, ABC):
             ),
             ToolInput(
                 tag="normalBams",
-                input_type=Array(BamBai),
+                input_type=Array(BamBai, optional=True),
                 prefix="-I",
                 prefix_applies_to_all_elements=True,
                 doc="(--input) Extra BAM/SAM/CRAM file containing reads This argument must be specified at least once. Required. ",
             ),
             ToolInput(
                 tag="normalSample",
-                input_type=String,
+                input_type=String(optional=True),
                 prefix="--normal-sample",
                 doc="(--normal-sample, if) May be URL-encoded as output by GetSampleName with",
             ),
