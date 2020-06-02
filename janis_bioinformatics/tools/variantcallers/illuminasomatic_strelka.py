@@ -74,7 +74,7 @@ class IlluminaSomaticVariantCaller(BioinformaticsWorkflow):
         )
 
         self.step(
-            "fileterpass",
+            "filterpass",
             VcfToolsvcftoolsLatest(
                 compressedVcf=self.splitnormalisevcf.out,
                 removeFileteredAll=True,
@@ -83,7 +83,7 @@ class IlluminaSomaticVariantCaller(BioinformaticsWorkflow):
             ),
         )
 
-        self.step("tabixnormvcf", TabixLatest(file=self.fileterpass.out))
+        self.step("tabixnormvcf", TabixLatest(file=self.filterpass.out))
 
         self.output("sv", source=self.manta.diploidSV)
         self.output("variants", source=self.tabixvcf.out)

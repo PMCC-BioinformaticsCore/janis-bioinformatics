@@ -31,7 +31,7 @@ class GatkSomaticVariantCallerPairedTargeted(BioinformaticsWorkflow):
         self.input("tumor_name", str)
 
         self.input(
-            "targeted_bed",
+            "intervals",
             Bed(),
             doc="If this file resolves "
             "to null, then GATK will process the whole genome per each tool's spec",
@@ -128,7 +128,7 @@ class GatkSomaticVariantCallerPairedTargeted(BioinformaticsWorkflow):
         )
 
         self.step(
-            "fileterpass",
+            "filterpass",
             VcfToolsvcftoolsLatest(
                 compressedVcf=self.splitnormalisevcf.out,
                 removeFileteredAll=True,
@@ -137,7 +137,7 @@ class GatkSomaticVariantCallerPairedTargeted(BioinformaticsWorkflow):
             ),
         )
 
-        self.step("tabixvcf", TabixLatest(file=self.fileterpass.out))
+        self.step("tabixvcf", TabixLatest(file=self.filterpass.out))
 
         self.output("variants", source=self.mutect2.out)
         self.output("out", source=self.tabixvcf.out)

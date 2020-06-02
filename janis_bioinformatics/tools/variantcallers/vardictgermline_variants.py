@@ -60,7 +60,7 @@ class VardictGermlineVariantCaller(BioinformaticsWorkflow):
         self.step("trim", TrimIUPAC_0_0_5(vcf=self.splitnormalisevcf.out))
 
         self.step(
-            "fileterpass",
+            "filterpass",
             VcfToolsvcftoolsLatest(
                 vcf=self.trim.out,
                 removeFileteredAll=True,
@@ -71,7 +71,7 @@ class VardictGermlineVariantCaller(BioinformaticsWorkflow):
         self.step(
             "annotate",
             BcfToolsAnnotate_1_5(
-                compressedVcf=self.fileterpass.out,
+                compressedVcf=self.filterpass.out,
                 outputType="z",
                 headerLines=self.header_lines,
             ),

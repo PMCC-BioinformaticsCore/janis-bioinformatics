@@ -57,7 +57,7 @@ class IlluminaGermlineVariantCaller(BioinformaticsWorkflow):
         )
 
         self.step(
-            "fileterpass",
+            "filterpass",
             VcfToolsvcftoolsLatest(
                 vcf=self.splitnormalisevcf.out,
                 removeFileteredAll=True,
@@ -66,7 +66,7 @@ class IlluminaGermlineVariantCaller(BioinformaticsWorkflow):
             ),
         )
 
-        self.step("tabixvcf", TabixLatest(file=self.fileterpass.out))
+        self.step("tabixvcf", TabixLatest(file=self.filterpass.out))
 
         self.output("sv", source=self.manta.diploidSV)
         self.output("variants", source=self.strelka.variants)
