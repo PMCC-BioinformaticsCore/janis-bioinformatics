@@ -16,17 +16,17 @@ class Star_2_7_1:
         return "v2.7.1a"
 
 
-class StarAlignReads(Star_2_7_1, StarAlignReadsBase):
+class StarAlignReads_2_7_1(Star_2_7_1, StarAlignReadsBase):
     pass
 
 
-class StarGenerateIndexes(Star_2_7_1, StarGenerateIndexesBase):
+class StarGenerateIndexes_2_7_1(Star_2_7_1, StarGenerateIndexesBase):
     pass
 
 
-class StarLiftOver(Star_2_7_1, StarLiftOverBase):
+class StarLiftOver_2_7_1(Star_2_7_1, StarLiftOverBase):
     pass
 
 
-class StarInputAlignmentsFromBam(Star_2_7_1, StarInputAlignmentsFromBamBase):
+class StarInputAlignmentsFromBam_2_7_1(Star_2_7_1, StarInputAlignmentsFromBamBase):
     pass

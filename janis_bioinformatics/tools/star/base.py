@@ -11,9 +11,10 @@ from janis_core import (
     ToolArgument,
     CpuSelector,
     ToolMetadata,
+    Float,
 )
 
-from janis_bioinformatics.data_types import FastaWithIndexes, Vcf, Bam
+from janis_bioinformatics.data_types import FastaWithIndexes, Fasta, Vcf, Bam
 from janis_bioinformatics.tools import BioinformaticsTool
 
 
@@ -125,7 +126,7 @@ class StarBase(BioinformaticsTool, ABC):
             ),
             ToolInput(
                 "genomeFastaFiles",
-                Array(FastaWithIndexes, optional=True),
+                Array(Fasta, optional=True),
                 prefix="--genomeFastaFiles",
                 doc="(default: -) path(s) to the fasta files with the genome sequences, separated by spaces. "
                 "These files should be plain text FASTA files, they *cannot* be zipped. Required for the genome "
@@ -230,7 +231,7 @@ class StarBase(BioinformaticsTool, ABC):
                 doc="(default: gene_type gene_biotype) GTF attrbute name for parent gene type",
             ),
             ToolInput(
-                " ",
+                "sjdbOverhang",
                 Int(optional=True),
                 prefix="--sjdbOverhang",
                 doc="(default: 100) length of the donor/acceptor sequence on each side of the junctions, "
@@ -735,37 +736,37 @@ class StarBase(BioinformaticsTool, ABC):
             ),
             ToolInput(
                 "scoreGenomicLengthLog2scale",
-                extroptional=Truea,
+                Float(optional=True),
                 prefix="--scoreGenomicLengthLog2scale",
                 doc="(default: -0.25) scoreGenomicLengthLog2scale*log2(genomicLength)",
             ),
             ToolInput(
                 "scoreDelOpen",
-                deletiooptional=Truen,
+                Int(optional=True),
                 prefix="--scoreDelOpen",
                 doc="(default: 2) deletion open penalty",
             ),
             ToolInput(
                 "scoreDelBase",
-                deletiooptional=Truen,
+                Int(optional=True),
                 prefix="--scoreDelBase",
                 doc="(default: 2) deletion extension penalty per base (in addition to scoreDelOpen)",
             ),
             ToolInput(
                 "scoreInsOpen",
-                insertiooptional=Truen,
+                Int(optional=True),
                 prefix="--scoreInsOpen",
                 doc="(default: 2) insertion open penalty",
             ),
             ToolInput(
                 "scoreInsBase",
-                insertiooptional=Truen,
+                Int(optional=True),
                 prefix="--scoreInsBase",
                 doc="(default: 2) insertion extension penalty per base (in addition to scoreInsOpen)",
             ),
             ToolInput(
                 "scoreStitchSJshift",
-                maximuoptional=Truem,
+                Int(optional=True),
                 prefix="--scoreStitchSJshift",
                 doc="(default: 1) maximum score reduction while searching for SJ boundaries inthe stitching step",
             ),
@@ -819,19 +820,19 @@ class StarBase(BioinformaticsTool, ABC):
             ),
             ToolInput(
                 "alignIntronMin",
-                minimuoptional=Truem,
+                Int(optional=True),
                 prefix="--alignIntronMin",
                 doc="(default: 21) genomic gap is considered intron if its length>=alignIntronMin, otherwise it is considered Deletion",
             ),
             ToolInput(
                 "alignIntronMax",
-                maximuoptional=Truem,
+                Int(optional=True),
                 prefix="--alignIntronMax",
                 doc="(default: 0) maximum intron size, if 0, max intron size will be determined by (2^winBinNbits)*winAnchorDistNbins",
             ),
             ToolInput(
                 "alignMatesGapMax",
-                maximuoptional=Truem,
+                Int(optional=True),
                 prefix="--alignMatesGapMax",
                 doc="(default: 0) maximum gap between two mates, if 0, max intron gap will be determined by (2^winBinNbits)*winAnchorDistNbins",
             ),
@@ -1179,7 +1180,7 @@ class StarBase(BioinformaticsTool, ABC):
             ),
             ToolInput(
                 "soloCellFilter",
-                String(),
+                String(optional=True),
                 prefix="--soloCellFilter",
                 doc='(default: CellRanger2.2 3000 0.99 10) ... all UMIs with 1 mismatch distance to each other are collapsed (i.e. counted once)     1MM_Directional     ... follows the "directional" method from the UMI-tools by Smith, Heger and Sudbery (Genome Research 2017).     Exact       ... only exactly matching UMIs are collapsed',
             ),

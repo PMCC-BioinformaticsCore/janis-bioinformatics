@@ -11,4 +11,4 @@ class StarAlignReadsBase(StarBase, ABC):
         return "alignReads"
 
     def outputs(self) -> List[ToolOutput]:
-        pass
+        return []

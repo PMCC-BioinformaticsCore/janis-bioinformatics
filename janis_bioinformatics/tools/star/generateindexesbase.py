@@ -11,4 +11,4 @@ class StarGenerateIndexesBase(StarBase, ABC):
         return "genomeGenerate"
 
     def outputs(self) -> List[ToolOutput]:
-        pass
+        return []
