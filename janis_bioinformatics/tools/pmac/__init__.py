@@ -10,3 +10,4 @@ from .performanceSummaryTargetedWorkflow import PerformanceSummaryTargeted_0_1_0
 from .performanceSummaryGenomeWorkflow import PerformanceSummaryGenome_0_1_0
 from .addBamStatsSomaticWorkflow import AddBamStatsSomatic_0_1_0
 from .addBamStatsGermlineWorkflow import AddBamStatsGermline_0_1_0
+from .molpathGermlineWorkflow import MolpathGermline_1_0_0
