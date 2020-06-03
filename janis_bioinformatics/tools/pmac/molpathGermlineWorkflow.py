@@ -29,7 +29,7 @@ from janis_bioinformatics.tools.pmac import (
     AnnotateDepthOfCoverage_0_1_0,
     PerformanceSummaryTargeted_0_1_0,
 )
-from janis_bioinformatics.tools.variantcallers import GatkGermlineVariantCaller_4_0_12
+from janis_bioinformatics.tools.variantcallers import GatkGermlineVariantCaller_4_1_3
 
 
 class MolpathGermline_1_0_0(BioinformaticsWorkflow):
@@ -77,9 +77,9 @@ class MolpathGermline_1_0_0(BioinformaticsWorkflow):
                 sample_name=self.sample_name,
                 sortsam_tmpDir=".",
                 cutadapt_adapter=self.getfastqc_adapters,
+                cutadapt_removeMiddle3Adapter=self.getfastqc_adapters,
             ),
-            # why scatter?
-            # scatter=["fastq", "cutadapt_adapter", "cutadapt_removeMiddle3Adapter"],
+            scatter=["fastq", "cutadapt_adapter", "cutadapt_removeMiddle3Adapter"],
         )
         # merge into one bam and markdups
         self.step(
@@ -120,7 +120,7 @@ class MolpathGermline_1_0_0(BioinformaticsWorkflow):
         # variant calling
         self.step(
             "variant_calling",
-            GatkGermlineVariantCaller_4_0_12(
+            GatkGermlineVariantCaller_4_1_3(
                 bam=self.merge_and_mark.out,
                 intervals=self.bed,
                 reference=self.reference,
