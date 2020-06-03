@@ -34,7 +34,15 @@ class AddBamStatsGermline_0_1_0(BioinformaticsWorkflow):
         self.input("vcf", Vcf)
 
         self.step(
-            "samtoolsmpileup", SamToolsMpileupLatest(bam=self.bam, positions=self.vcf)
+            "samtoolsmpileup",
+            SamToolsMpileupLatest(
+                bam=self.bam,
+                positions=self.vcf,
+                countOrphans=True,
+                noBAQ=True,
+                minBQ=0,
+                maxDepth=10000,
+            ),
         )
 
         self.step(

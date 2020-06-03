@@ -68,6 +68,16 @@ class AddBamStatsSomatic_0_1_0(BioinformaticsWorkflow):
         w = WorkflowBuilder("somatic_subpipeline")
         w.input("vcf", Vcf)
         w.input("bam", BamBai)
-        w.step("samtools_mpileup", SamToolsMpileupLatest(bam=w.bam, positions=w.vcf))
+        w.step(
+            "samtools_mpileup",
+            SamToolsMpileupLatest(
+                bam=w.bam,
+                positions=w.vcf,
+                countOrphans=True,
+                noBAQ=True,
+                minBQ=0,
+                maxDepth=10000,
+            ),
+        )
         w.output("out", source=w.samtools_mpileup.out)
         return w(**connections)
