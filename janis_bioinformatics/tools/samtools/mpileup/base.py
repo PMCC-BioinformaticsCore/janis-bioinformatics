@@ -116,6 +116,12 @@ Note that there are two orthogonal ways to specify locations in the input file; 
             doc="skip unlisted positions (chr pos) or regions (BED)",
         ),
         ToolInput(
+            "minBQ",
+            Int(optional=True),
+            prefix="--min-BQ",
+            doc="Minimum base quality for a base to be considered [13]",
+        ),
+        ToolInput(
             "minMQ",
             Int(optional=True),
             prefix="--min-MQ",
