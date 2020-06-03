@@ -5,7 +5,7 @@ from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.bcftools import BcfToolsAnnotate_1_5
 from janis_bioinformatics.tools.common import (
     SplitMultiAlleleNormaliseVcf,
-    FileVardictSomaticVcf,
+    FilterVardictSomaticVcf,
 )
 from janis_bioinformatics.tools.vardict import VarDictSomatic_1_6_0
 from janis_bioinformatics.tools.pmac import TrimIUPAC_0_0_5
@@ -77,7 +77,9 @@ class VardictSomaticVariantCaller(BioinformaticsWorkflow):
             ),
         )
 
-        self.step("filetervcf", FileVardictSomaticVcf(compressedVcf=self.annotate.out))
+        self.step(
+            "filetervcf", FilterVardictSomaticVcf(compressedVcf=self.annotate.out)
+        )
 
         self.step("tabixvcf", TabixLatest(file=self.filetervcf.out))
 

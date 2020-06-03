@@ -14,9 +14,9 @@ from janis_bioinformatics.data_types import Vcf, CompressedVcf, VcfTabix
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 
 
-class FileVardictSomaticVcf(BioinformaticsTool):
+class FilterVardictSomaticVcf(BioinformaticsTool):
     def tool(self) -> str:
-        return "FileVardictSomaticVcf"
+        return "FilterVardictSomaticVcf"
 
     def tool_provider(self):
         return "common"
