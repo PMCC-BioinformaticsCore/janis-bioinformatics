@@ -47,6 +47,9 @@ class GenerateVardictHeaderLines(BioinformaticsPythonTool):
     def id(self) -> str:
         return "GenerateVardictHeaderLines"
 
+    def friendly_name(self) -> str:
+        return "GenerateVardictHeaderLines"
+
     def tool_provider(self):
         return "Peter MacCallum Cancer Centre"
 
