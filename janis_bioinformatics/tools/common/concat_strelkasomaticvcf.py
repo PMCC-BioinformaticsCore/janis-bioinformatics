@@ -18,6 +18,9 @@ class ConcatStrelkaSomaticVcf(BioinformaticsTool):
     def tool(self) -> str:
         return "ConcatStrelkaSomaticVcf"
 
+    def friendly_name(self):
+        return "Concat Strelka Somatic Vcf"
+
     def tool_provider(self):
         return "common"
 

@@ -18,6 +18,9 @@ class FilterVardictSomaticVcf(BioinformaticsTool):
     def tool(self) -> str:
         return "FilterVardictSomaticVcf"
 
+    def friendly_name(self):
+        return "Filter Vardict Somatic Vcf"
+
     def tool_provider(self):
         return "common"
 
