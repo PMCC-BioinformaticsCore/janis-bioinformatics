@@ -51,12 +51,11 @@ class GatkGermlineVariantCaller_4_0_12(BioinformaticsWorkflow):
 
         # self.step(
         #     "split_bam",
-        #     gatk4.Gatk4SplitReads_4_1_3(bam=self.bam, intervals=self.intervals),
+        #     gatk4.Gatk4SplitReads_4_0(bam=self.bam, intervals=self.intervals),
         # )
-
         self.step(
             "base_recalibrator",
-            gatk4.Gatk4BaseRecalibrator_4_1_3(
+            gatk4.Gatk4BaseRecalibrator_4_0(
                 bam=self.bam,
                 intervals=self.intervals,
                 reference=self.reference,
@@ -70,7 +69,7 @@ class GatkGermlineVariantCaller_4_0_12(BioinformaticsWorkflow):
         )
         self.step(
             "apply_bqsr",
-            gatk4.Gatk4ApplyBqsr_4_1_3(
+            gatk4.Gatk4ApplyBqsr_4_0(
                 bam=self.bam,
                 intervals=self.intervals,
                 recalFile=self.base_recalibrator.out,
@@ -79,7 +78,7 @@ class GatkGermlineVariantCaller_4_0_12(BioinformaticsWorkflow):
         )
         self.step(
             "haplotype_caller",
-            gatk4.Gatk4HaplotypeCaller_4_1_3(
+            gatk4.Gatk4HaplotypeCaller_4_0(
                 inputRead=self.apply_bqsr,
                 intervals=self.intervals,
                 reference=self.reference,
@@ -90,7 +89,7 @@ class GatkGermlineVariantCaller_4_0_12(BioinformaticsWorkflow):
         self.step(
             "splitnormalisevcf",
             SplitMultiAlleleNormaliseVcf(
-                compressedTabixVcf=self.haplotype_caller.out, reference=self.reference
+                compressedVcf=self.haplotype_caller.out, reference=self.reference
             ),
         )
         self.step(
