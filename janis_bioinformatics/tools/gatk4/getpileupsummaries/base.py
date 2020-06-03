@@ -73,7 +73,7 @@ class Gatk4GetPileUpSummariesBase(Gatk4ToolBase, ABC):
             ),
             ToolInput(
                 "intervals",
-                VcfTabix(optional=True),
+                Bed(optional=True),
                 prefix="--intervals",
                 doc="-L (BASE) One or more genomic intervals over which to operate",
             ),

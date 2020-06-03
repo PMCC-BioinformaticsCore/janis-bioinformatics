@@ -4,6 +4,6 @@ from ..bioinformaticstoolbase import BioinformaticsTool
 from janis_core import ToolMetadata
 
 
-class VcfToolsToolBase(BioinformaticsTool, ABC):
+class VcfLibToolBase(BioinformaticsTool, ABC):
     def tool_provider(self):
         return "ekg"
