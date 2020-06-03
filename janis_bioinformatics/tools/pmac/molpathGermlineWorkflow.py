@@ -153,6 +153,8 @@ class MolpathGermline_1_0_0(BioinformaticsWorkflow):
         self.output("gridss_vcf", source=self.gridss.out, output_folder="SV")
         self.output("gridss_bam", source=self.gridss.assembly, output_folder="SV")
 
-        self.output("hap", source=self.variant_calling.variants)
-        self.output("hap_bam", source=self.variant_calling.out_bam)
-        self.output("normalise_vcf", source=self.variant_calling.out)
+        self.output("hap", source=self.variant_calling.variants, output_folder="VCF")
+        self.output("hap_bam", source=self.variant_calling.out_bam, output_folder="VCF")
+        self.output(
+            "normalise_vcf", source=self.variant_calling.out, output_folder="VCF"
+        )
