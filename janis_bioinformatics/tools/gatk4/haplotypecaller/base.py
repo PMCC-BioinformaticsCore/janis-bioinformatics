@@ -137,6 +137,7 @@ class Gatk4HaplotypeCallerBase(Gatk4ToolBase, ABC):
                 BamBai,
                 glob=InputSelector("outputBamName"),
                 doc="File to which assembled haplotypes should be written",
+                secondaries_present_as={".bai": "^.bai"},
             ),
         ]
 
