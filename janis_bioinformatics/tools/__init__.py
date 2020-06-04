@@ -17,6 +17,7 @@ from janis_bioinformatics.tools import (
     gatk3,
     gatk4,
     htslib,
+    igvtools,
     illumina,
     io_lib,
     kallisto,
