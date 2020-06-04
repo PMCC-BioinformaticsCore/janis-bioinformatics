@@ -33,7 +33,7 @@ class CloneFinderBase(BioinformaticsTool, ABC):
 
     @staticmethod
     def base_command():
-        return "clonefinder.py snv"
+        return ["clonefinder.py" "snv"]
 
     def cpus(self, hints: Dict[str, Any]):
         val = get_value_for_hints_and_ordered_resource_tuple(hints, CORES_TUPLE)
