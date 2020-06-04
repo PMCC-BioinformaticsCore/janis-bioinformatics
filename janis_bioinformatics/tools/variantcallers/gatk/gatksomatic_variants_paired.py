@@ -87,7 +87,7 @@ class GatkSomaticVariantCallerPairedTargeted(BioinformaticsWorkflow):
             ),
         )
         self.step(
-            "learnorientationmoduel",
+            "learnorientationmodel",
             gatk4.Gatk4LearnReadOrientationModelLatest(
                 f1r2CountsFiles=self.mutect2.f1f2r_out,
             ),
@@ -114,7 +114,7 @@ class GatkSomaticVariantCallerPairedTargeted(BioinformaticsWorkflow):
                 reference=self.reference,
                 segmentationFile=self.calculatecontamination.segOut,
                 contaminationTable=self.calculatecontamination.contOut,
-                readOrientationModel=self.learnorientationmoduel.out,
+                readOrientationModel=self.learnorientationmodel.out,
                 statsFile=self.mutect2.stats,
             ),
         )
