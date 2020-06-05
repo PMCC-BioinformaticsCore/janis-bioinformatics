@@ -26,7 +26,7 @@ class VcfFilterBase(VcfLibToolBase, ABC):
         return "VcfLib: Vcf Filter"
 
     def base_command(self):
-        return "vcflength"
+        return "vcffilter"
 
     def inputs(self):
         return [
