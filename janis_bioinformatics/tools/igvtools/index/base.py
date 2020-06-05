@@ -21,7 +21,9 @@ class IgvIndexFeatureBase(IgvIndexBase, ABC):
 
     def inputs(self) -> List[ToolInput]:
         return [
-            ToolInput("inp", Vcf, position=1, localise_file=True),
+            ToolInput(
+                "inp", Vcf, position=1, presents_as="sample.vcf", localise_file=True
+            ),
         ]
 
     def outputs(self) -> List[ToolOutput]:
