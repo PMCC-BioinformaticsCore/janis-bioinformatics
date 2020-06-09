@@ -1,4 +1,4 @@
-from janis_bioinformatics.data_types import Vcf, VcfTabix
+from janis_bioinformatics.data_types import Vcf, VcfTabix, File
 from janis_bioinformatics.tools import BioinformaticsTool
 from janis_core import (
     ToolOutput,
@@ -29,7 +29,7 @@ class UncompressVcf(BioinformaticsTool):
         return "v1.0.0"
 
     def inputs(self):
-        return [ToolInput("vcfTabix", VcfTabix(), position=1), *self.additional_inputs]
+        return [ToolInput("vcf", File(), position=1), *self.additional_inputs]
 
     def outputs(self):
         return [ToolOutput("out", Stdout(Vcf),)]

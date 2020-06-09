@@ -104,6 +104,13 @@ class Gatk4Mutect2Base_4_1(Gatk4ToolBase, ABC):
                 doc="(-R) Reference sequence file Required.",
             ),
             ToolInput(
+                "outputBamName",
+                Filename(prefix=InputSelector("inputRead"), extension=".bam"),
+                position=8,
+                prefix="-bamout",
+                doc="File to which assembled haplotypes should be written",
+            ),
+            ToolInput(
                 tag="activityProfileOut",
                 input_type=String(optional=True),
                 prefix="--activity-profile-out",
@@ -887,6 +894,13 @@ class Gatk4Mutect2Base_4_1(Gatk4ToolBase, ABC):
                 TarFileGz,
                 glob=InputSelector("f1r2TarGz_outputFilename"),
                 doc="To determine type",
+            ),
+            ToolOutput(
+                "bam",
+                BamBai,
+                glob=InputSelector("outputBamName"),
+                doc="File to which assembled haplotypes should be written",
+                secondaries_present_as={".bai": "^.bai"},
             ),
         ]
 
