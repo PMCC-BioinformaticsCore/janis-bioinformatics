@@ -104,9 +104,8 @@ class Gatk4Mutect2Base_4_1(Gatk4ToolBase, ABC):
                 doc="(-R) Reference sequence file Required.",
             ),
             ToolInput(
-                "outputBamName",
-                Filename(prefix=InputSelector("inputRead"), extension=".bam"),
-                position=8,
+                tag="outputBamName",
+                input_type=Filename(extension=".bam"),
                 prefix="-bamout",
                 doc="File to which assembled haplotypes should be written",
             ),
@@ -554,12 +553,6 @@ class Gatk4Mutect2Base_4_1(Gatk4ToolBase, ABC):
                 input_type=Int(optional=True),
                 prefix="--assembly-region-padding",
                 doc=" Number of additional bases of context to include around each assembly region  Default value: 100. ",
-            ),
-            ToolInput(
-                tag="bamout",
-                input_type=String(optional=True),
-                prefix="-bamout",
-                doc="(--bam-output) File to which assembled haplotypes should be written Default value: null.",
             ),
             ToolInput(
                 tag="bamWriterType",
