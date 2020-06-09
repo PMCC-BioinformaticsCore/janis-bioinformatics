@@ -1,12 +1,8 @@
 from abc import ABC
 from typing import List, Dict, Any
 
-from janis_core import CpuSelector
-from janis_core import get_value_for_hints_and_ordered_resource_tuple
-
-from janis_bioinformatics.tools import BioinformaticsTool
-from janis_bioinformatics.data_types import BamBai, Bed, FastaFai, Vcf
 from janis_core import (
+    CpuSelector,
     ToolOutput,
     ToolInput,
     Filename,
@@ -17,8 +13,11 @@ from janis_core import (
     String,
     InputSelector,
     CaptureType,
+    get_value_for_hints_and_ordered_resource_tuple,
 )
 
+from janis_bioinformatics.data_types import BamBai, Bed, FastaFai, Vcf
+from janis_bioinformatics.tools import BioinformaticsTool
 from janis_bioinformatics.tools.vardict.vardict import (
     VarDict_1_5_6,
     VarDict_1_5_7,

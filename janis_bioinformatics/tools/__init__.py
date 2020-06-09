@@ -17,8 +17,10 @@ from janis_bioinformatics.tools import (
     gatk3,
     gatk4,
     htslib,
+    igvtools,
     illumina,
     io_lib,
+    kallisto,
     multiqc,
     papenfuss,
     pmac,
@@ -29,4 +31,5 @@ from janis_bioinformatics.tools import (
     validation,
     variantcallers,
     vcflib,
+    vcftools,
 )

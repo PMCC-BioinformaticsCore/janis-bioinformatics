@@ -4,3 +4,7 @@ from .mergeandmark.mergeandmark_4_1_3 import MergeAndMarkBams_4_1_3
 from .splitmultiallele import SplitMultiAllele
 from .bwamem_samtoolsview import BwaMem_SamToolsView
 from .indexfasta import IndexFasta
+from .concat_strelkasomaticvcf import ConcatStrelkaSomaticVcf
+from .splitmultiallele_normalistvcf import SplitMultiAlleleNormaliseVcf
+from .uncompressvcf import UncompressVcf
+from .filtervardictsomaticvcf import FilterVardictSomaticVcf
