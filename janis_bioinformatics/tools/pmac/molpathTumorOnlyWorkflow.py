@@ -30,7 +30,7 @@ from janis_bioinformatics.tools.common import (
     GATKBaseRecalBam_4_1_3,
     UncompressVcf,
 )
-from janis_bioinformatics.tools.htslib import BGZip_1_9
+from janis_bioinformatics.tools.htslib import BGZip_1_9, TabixLatest
 from janis_bioinformatics.tools.papenfuss import Gridss_2_6_2
 from janis_bioinformatics.tools.pmac import (
     ParseFastqcAdaptors,
@@ -203,7 +203,7 @@ class MolpathTumorOnly_1_0_0(BioinformaticsWorkflow):
         )
         self.step("compressvcf", BGZip_1_9(file=self.combinevariants.out))
         self.step("sortvcf", BcfToolsSort_1_9(vcf=self.compressvcf.out))
-        self.step("uncompressvcf", UncompressVcf(vcf=self.sortvcf.out, decompress=True))
+        self.step("uncompressvcf", UncompressVcf(vcf=self.sortvcf.out, stdout=True))
         # addbamstats
         self.step(
             "addbamstats",
@@ -213,9 +213,10 @@ class MolpathTumorOnly_1_0_0(BioinformaticsWorkflow):
         )
         # Molpath specific processes
         self.step("compressvcf2", BGZip_1_9(file=self.addbamstats.out))
+        self.step("tabixvcf", TabixLatest(file=self.compressvcf2.out))
         self.step(
             "calculate_variant_length",
-            VcfLength_1_0_1(vcf=self.compressvcf2.out),
+            VcfLength_1_0_1(vcf=self.tabixvcf.out),
             doc="Add the length column for the output of AddBamStats",
         )
 
@@ -283,7 +284,9 @@ class MolpathTumorOnly_1_0_0(BioinformaticsWorkflow):
 
         self.output("markdups_bam", source=self.merge_and_mark.out, output_folder="BAM")
 
-        self.output("doc", source=self.annotate_doc.out, output_folder="PERFORMANCE")
+        self.output(
+            "doc_out", source=self.annotate_doc.out, output_folder="PERFORMANCE"
+        )
         self.output(
             "summary", source=self.performance_summary.out, output_folder="PERFORMANCE"
         )

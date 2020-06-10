@@ -85,7 +85,6 @@ class GatkSomaticVariantCallerTumorOnlyTargeted(BioinformaticsWorkflow):
             "calculatecontamination",
             gatk4.Gatk4CalculateContaminationLatest(
                 pileupTable=self.getpileupsummaries.out,
-                segmentationFileOut="tumor_segmentation.mutect2_segments",
             ),
         )
 
