@@ -11,7 +11,7 @@ from janis_core import (
     InputDocumentation,
     InputQualityType,
 )
-
+from janis_unix.data_types import TextFile
 from janis_bioinformatics.data_types import (
     FastaWithDict,
     VcfTabix,
@@ -62,6 +62,7 @@ class MolpathGermline_1_0_0(BioinformaticsWorkflow):
         self.input("region_bed_extended", Bed)
         self.input("region_bed_annotated", Bed)
         self.input("genecoverage_bed", Bed)
+        self.input("genome_file", TextFile)
         self.input("black_list", Bed(optional=True))
         self.input("snps_dbsnp", VcfTabix)
         self.input("snps_1000gp", VcfTabix)
@@ -115,7 +116,7 @@ class MolpathGermline_1_0_0(BioinformaticsWorkflow):
                 bam=self.merge_and_mark.out,
                 bed=self.genecoverage_bed,
                 sample_name=self.sample_name,
-                reference=self.reference,
+                genome_file=self.genome_file,
             ),
         )
         # gridss

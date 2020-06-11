@@ -2,7 +2,8 @@ from janis_core import String
 from janis_core import WorkflowMetadata
 
 # data types
-from janis_bioinformatics.data_types import BamBai, Bed, FastaWithDict
+from janis_bioinformatics.data_types import BamBai, Bed
+from janis_unix.data_types import TextFile
 from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.bedtools import (
     BedToolsCoverageBedLatest,
@@ -38,7 +39,7 @@ class PerformanceSummaryTargeted_0_1_0(BioinformaticsWorkflow):
         self.input("bam", BamBai)
         self.input("bed", Bed)
         self.input("sample_name", String)
-        self.input("reference", FastaWithDict)
+        self.input("genome_file", TextFile)
         # Steps
         self.step(
             "gatk4collectinsertsizemetrics",
@@ -59,7 +60,7 @@ class PerformanceSummaryTargeted_0_1_0(BioinformaticsWorkflow):
             BedToolsIntersectBedLatest(
                 inputABam=self.samtoolsview.out,
                 inputBBed=self.bed,
-                genome=self.reference,
+                genome=self.genome_file,
                 sorted=True,
             ),
         )
@@ -72,7 +73,7 @@ class PerformanceSummaryTargeted_0_1_0(BioinformaticsWorkflow):
             BedToolsCoverageBedLatest(
                 inputABed=self.bed,
                 inputBBam=self.bedtoolsintersectbed.out,
-                genome=self.reference,
+                genome=self.genome_file,
                 sorted=True,
                 histogram=True,
             ),
@@ -96,7 +97,7 @@ class PerformanceSummaryTargeted_0_1_0(BioinformaticsWorkflow):
             BedToolsCoverageBedLatest(
                 inputABed=self.bed,
                 inputBBam=self.samtoolsview.out,
-                genome=self.reference,
+                genome=self.genome_file,
                 sorted=True,
                 histogram=True,
             ),

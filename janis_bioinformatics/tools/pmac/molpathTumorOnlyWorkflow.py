@@ -74,6 +74,7 @@ class MolpathTumorOnly_1_0_0(BioinformaticsWorkflow):
         self.input("region_bed_extended", Bed)
         self.input("region_bed_annotated", Bed)
         self.input("genecoverage_bed", Bed)
+        self.input("genome_file", TextFile)
         self.input("panel_name", String)
         self.input("vcfcols", TextFile)
         self.input("black_list", Bed(optional=True))
@@ -140,7 +141,7 @@ class MolpathTumorOnly_1_0_0(BioinformaticsWorkflow):
                 bam=self.merge_and_mark.out,
                 bed=self.genecoverage_bed,
                 sample_name=self.sample_name,
-                reference=self.reference,
+                genome_file=self.genome_file,
             ),
         )
         # gridss
