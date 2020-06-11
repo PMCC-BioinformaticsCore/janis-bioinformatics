@@ -13,6 +13,7 @@ from janis_core import (
     Int,
 )
 from janis_unix.data_types import TextFile
+from janis_unix.tools import UncompressArchive
 from janis_bioinformatics.data_types import (
     FastaWithDict,
     VcfTabix,
@@ -28,7 +29,6 @@ from janis_bioinformatics.tools.common import (
     BwaAligner,
     MergeAndMarkBams_4_1_3,
     GATKBaseRecalBQSRWorkflow_4_1_3,
-    UncompressVcf,
     SplitMultiAlleleNormaliseVcf,
 )
 from janis_bioinformatics.tools.gatk4 import Gatk4HaplotypeCaller_4_1_3
@@ -210,7 +210,7 @@ class MolpathTumorOnly_1_0_0(BioinformaticsWorkflow):
         )
         self.step("compressvcf", BGZip_1_9(file=self.combinevariants.out))
         self.step("sortvcf", BcfToolsSort_1_9(vcf=self.compressvcf.out))
-        self.step("uncompressvcf", UncompressVcf(vcf=self.sortvcf.out, stdout=True))
+        self.step("uncompressvcf", UncompressArchive(file=self.sortvcf.out))
         # addbamstats
         self.step(
             "addbamstats",
