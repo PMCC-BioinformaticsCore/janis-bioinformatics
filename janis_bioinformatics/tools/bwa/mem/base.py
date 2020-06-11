@@ -73,9 +73,7 @@ class BwaMemBase(BioinformaticsTool, ABC):
         ]
 
     def outputs(self):
-        return [
-            ToolOutput("out", Stdout(Sam(), stdoutname=InputSelector("outputFilename")))
-        ]
+        return [ToolOutput("out", Stdout(Sam()))]
 
     def memory(self, hints: Dict[str, Any]):
         val = get_value_for_hints_and_ordered_resource_tuple(hints, BWA_MEM_TUPLE)

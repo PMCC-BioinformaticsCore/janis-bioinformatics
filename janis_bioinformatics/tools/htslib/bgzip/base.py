@@ -26,12 +26,7 @@ class BGZipBase(HtsLibBase, ABC):
         ]
 
     def outputs(self) -> List[ToolOutput]:
-        return [
-            ToolOutput(
-                "out",
-                Stdout(CompressedVcf(), stdoutname="$(inputs.file.basename + '.gz')"),
-            )
-        ]
+        return [ToolOutput("out", Stdout(CompressedVcf()),)]
 
     def friendly_name(self):
         return "BGZip"
