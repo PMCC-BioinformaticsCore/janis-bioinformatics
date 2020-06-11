@@ -140,6 +140,7 @@ class MolpathTumorOnly_1_0_0(BioinformaticsWorkflow):
                 bam=self.merge_and_mark.out,
                 bed=self.genecoverage_bed,
                 sample_name=self.sample_name,
+                reference=self.reference,
             ),
         )
         # gridss
