@@ -43,11 +43,7 @@ class PerformanceSummaryTargeted_0_1_0(BioinformaticsWorkflow):
         # Steps
         self.step(
             "gatk4collectinsertsizemetrics",
-            Gatk4CollectInsertSizeMetricsLatest(
-                bam=self.bam,
-                outputFilename="insertsizemetrics.txt",
-                outputHistogram="insertsizemetrics.pdf",
-            ),
+            Gatk4CollectInsertSizeMetricsLatest(bam=self.bam,),
         )
         self.step("bamflagstat", SamToolsFlagstatLatest(bam=self.bam))
         self.step(
@@ -107,8 +103,6 @@ class PerformanceSummaryTargeted_0_1_0(BioinformaticsWorkflow):
             GeneCoveragePerSampleLatest(
                 sampleName=self.sample_name,
                 bedtoolsOutputPath=self.bedtoolscoverage.out,
-                outputGeneFile="gene.txt",
-                outputRegionFile="region.txt",
             ),
         )
 
