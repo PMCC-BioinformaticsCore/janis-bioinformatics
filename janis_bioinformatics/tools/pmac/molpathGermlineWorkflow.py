@@ -22,12 +22,19 @@ from janis_bioinformatics.data_types import (
 )
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsWorkflow
 from janis_bioinformatics.tools.babrahambioinformatics import FastQC_0_11_5
-from janis_bioinformatics.tools.common import BwaAligner, MergeAndMarkBams_4_1_3
+from janis_bioinformatics.tools.common import (
+    BwaAligner,
+    MergeAndMarkBams_4_1_3,
+    GATKBaseRecalBam_4_1_3,
+    SplitMultiAlleleNormaliseVcf,
+)
+from janis_bioinformatics.tools.gatk4 import Gatk4HaplotypeCaller_4_1_3
 from janis_bioinformatics.tools.papenfuss import Gridss_2_6_2
 from janis_bioinformatics.tools.pmac import (
     ParseFastqcAdaptors,
     AnnotateDepthOfCoverage_0_1_0,
     PerformanceSummaryTargeted_0_1_0,
+    AddBamStatsGermline_0_1_0,
 )
 from janis_bioinformatics.tools.variantcallers import GatkGermlineVariantCaller_4_1_3
 
@@ -51,7 +58,10 @@ class MolpathGermline_1_0_0(BioinformaticsWorkflow):
         self.input("sample_name", String)
         self.input("fastqs", Array(FastqGzPair))
         self.input("reference", FastaWithDict)
-        self.input("bed", Bed)
+        self.input("region_bed", Bed)
+        self.input("region_bed_extended", Bed)
+        self.input("region_bed_annotated", Bed)
+        self.input("genecoverage_bed", Bed)
         self.input("black_list", Bed(optional=True))
         self.input("snps_dbsnp", VcfTabix)
         self.input("snps_1000gp", VcfTabix)
@@ -93,7 +103,7 @@ class MolpathGermline_1_0_0(BioinformaticsWorkflow):
             "annotate_doc",
             AnnotateDepthOfCoverage_0_1_0(
                 bam=self.merge_and_mark.out,
-                bed=self.bed,
+                bed=self.region_bed_annotated,
                 reference=self.reference,
                 sample_name=self.sample_name,
             ),
@@ -102,7 +112,9 @@ class MolpathGermline_1_0_0(BioinformaticsWorkflow):
         self.step(
             "performance_summary",
             PerformanceSummaryTargeted_0_1_0(
-                bam=self.merge_and_mark.out, bed=self.bed, sample_name=self.sample_name,
+                bam=self.merge_and_mark.out,
+                bed=self.genecoverage_bed,
+                sample_name=self.sample_name,
             ),
         )
         # gridss
@@ -117,17 +129,40 @@ class MolpathGermline_1_0_0(BioinformaticsWorkflow):
         )
         # post gridss r script here
         # self.step("gridss_post_r", )
-        # variant calling
+        # gatk bqsr bam
         self.step(
-            "variant_calling",
-            GatkGermlineVariantCaller_4_1_3(
+            "bqsr",
+            GATKBaseRecalBam_4_1_3(
                 bam=self.merge_and_mark.out,
-                intervals=self.bed,
+                intervals=self.region_bed_extended,
                 reference=self.reference,
                 snps_dbsnp=self.snps_dbsnp,
                 snps_1000gp=self.snps_1000gp,
                 known_indels=self.known_indels,
                 mills_indels=self.mills_indels,
+            ),
+        )
+        # haploytype caller
+        self.step(
+            "haplotype_caller",
+            Gatk4HaplotypeCaller_4_1_3(
+                inputRead=self.bqsr.out,
+                intervals=self.region_bed_extended,
+                reference=self.reference,
+                dbsnp=self.snps_dbsnp,
+                pairHmmImplementation="LOGLESS_CACHING",
+            ),
+        )
+        self.step(
+            "splitnormalisevcf",
+            SplitMultiAlleleNormaliseVcf(
+                compressedVcf=self.haplotype_caller.out, reference=self.reference
+            ),
+        )
+        self.step(
+            "addbamstats",
+            AddBamStatsGermline_0_1_0(
+                bam=self.merge_and_mark.out, vcf=self.splitnormalisevcf.out
             ),
         )
         # output
@@ -153,8 +188,6 @@ class MolpathGermline_1_0_0(BioinformaticsWorkflow):
         self.output("gridss_vcf", source=self.gridss.out, output_folder="SV")
         self.output("gridss_bam", source=self.gridss.assembly, output_folder="SV")
 
-        self.output("hap", source=self.variant_calling.variants, output_folder="VCF")
-        self.output("hap_bam", source=self.variant_calling.out_bam, output_folder="VCF")
-        self.output(
-            "normalise_vcf", source=self.variant_calling.out, output_folder="VCF"
-        )
+        self.output("hap_vcf", source=self.haplotype_caller.out, output_folder="VCF")
+        self.output("hap_bam", source=self.haplotype_caller.bam, output_folder="VCF")
+        self.output("normalise_vcf", source=self.addbamstats.out, output_folder="VCF")
