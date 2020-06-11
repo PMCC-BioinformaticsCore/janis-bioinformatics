@@ -27,9 +27,11 @@ from janis_bioinformatics.tools.bcftools import BcfToolsSort_1_9
 from janis_bioinformatics.tools.common import (
     BwaAligner,
     MergeAndMarkBams_4_1_3,
-    GATKBaseRecalBam_4_1_3,
+    GATKBaseRecalBQSRWorkflow_4_1_3,
     UncompressVcf,
+    SplitMultiAlleleNormaliseVcf,
 )
+from janis_bioinformatics.tools.gatk4 import Gatk4HaplotypeCaller_4_1_3
 from janis_bioinformatics.tools.htslib import BGZip_1_9, TabixLatest
 from janis_bioinformatics.tools.papenfuss import Gridss_2_6_2
 from janis_bioinformatics.tools.pmac import (
@@ -41,7 +43,6 @@ from janis_bioinformatics.tools.pmac import (
 )
 from janis_bioinformatics.tools.variantcallers import (
     GatkSomaticVariantCallerTumorOnlyTargeted,
-    GatkGermlineVariantCaller_4_1_3,
 )
 from janis_bioinformatics.tools.vcflib import VcfLength_1_0_1, VcfFilter_1_0_1
 from janis_bioinformatics.tools.igvtools import IgvIndexFeature_2_5_3
@@ -159,7 +160,7 @@ class MolpathTumorOnly_1_0_0(BioinformaticsWorkflow):
         # gatk bqsr bam
         self.step(
             "bqsr",
-            GATKBaseRecalBam_4_1_3(
+            GATKBaseRecalBQSRWorkflow_4_1_3(
                 bam=self.merge_and_mark.out,
                 intervals=self.region_bed_extended,
                 reference=self.reference,
@@ -183,22 +184,26 @@ class MolpathTumorOnly_1_0_0(BioinformaticsWorkflow):
         )
         # haplotypecaller to do: take base recal away from the
         self.step(
-            "haplotypecaller",
-            GatkGermlineVariantCaller_4_1_3(
-                bam=self.merge_and_mark.out,
+            "haplotype_caller",
+            Gatk4HaplotypeCaller_4_1_3(
+                inputRead=self.bqsr.out,
                 intervals=self.region_bed_extended,
                 reference=self.reference,
-                snps_dbsnp=self.snps_dbsnp,
-                snps_1000gp=self.snps_1000gp,
-                known_indels=self.known_indels,
-                mills_indels=self.mills_indels,
+                dbsnp=self.snps_dbsnp,
+                pairHmmImplementation="LOGLESS_CACHING",
+            ),
+        )
+        self.step(
+            "splitnormalisevcf",
+            SplitMultiAlleleNormaliseVcf(
+                compressedVcf=self.haplotype_caller.out, reference=self.reference
             ),
         )
         # combine variants
         self.step(
             "combinevariants",
             CombineVariants_0_0_5(
-                vcfs=[self.haplotypecaller.out, self.mutect2.out],
+                vcfs=[self.splitnormalisevcf.out, self.mutect2.out],
                 type="germline",
                 columns=["AD", "DP", "AF", "GT"],
             ),
@@ -308,16 +313,18 @@ class MolpathTumorOnly_1_0_0(BioinformaticsWorkflow):
 
         self.output(
             "haplotypecaller_vcf",
-            source=self.haplotypecaller.variants,
+            source=self.haplotype_caller.out,
             output_folder="VCF",
         )
         self.output(
             "haplotypecaller_bam",
-            source=self.haplotypecaller.out_bam,
+            source=self.haplotype_caller.bam,
             output_folder="VCF",
         )
         self.output(
-            "haplotypecaller_norm", source=self.haplotypecaller.out, output_folder="VCF"
+            "haplotypecaller_norm",
+            source=self.splitnormalisevcf.out,
+            output_folder="VCF",
         )
         self.output("mutect2_vcf", source=self.mutect2.variants, output_folder="VCF")
         self.output("mutect2_bam", source=self.mutect2.out_bam, output_folder="VCF")
