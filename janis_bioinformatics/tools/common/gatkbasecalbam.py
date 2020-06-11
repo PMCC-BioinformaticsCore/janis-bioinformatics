@@ -6,9 +6,9 @@ from janis_bioinformatics.tools.gatk4 import (
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsWorkflow
 
 
-class GATKBaseRecalBam_4_1_3(BioinformaticsWorkflow):
+class GATKBaseRecalBQSRWorkflow_4_1_3(BioinformaticsWorkflow):
     def id(self):
-        return "GATKBaseRecalBam"
+        return "GATKBaseRecalBQSRWorkflow"
 
     def friendly_name(self):
         return "GATK Base Recalibration on Bam"

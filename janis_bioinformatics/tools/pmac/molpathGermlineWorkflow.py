@@ -25,7 +25,7 @@ from janis_bioinformatics.tools.babrahambioinformatics import FastQC_0_11_5
 from janis_bioinformatics.tools.common import (
     BwaAligner,
     MergeAndMarkBams_4_1_3,
-    GATKBaseRecalBam_4_1_3,
+    GATKBaseRecalBQSRWorkflow_4_1_3,
     SplitMultiAlleleNormaliseVcf,
 )
 from janis_bioinformatics.tools.gatk4 import Gatk4HaplotypeCaller_4_1_3
@@ -134,7 +134,7 @@ class MolpathGermline_1_0_0(BioinformaticsWorkflow):
         # gatk bqsr bam
         self.step(
             "bqsr",
-            GATKBaseRecalBam_4_1_3(
+            GATKBaseRecalBQSRWorkflow_4_1_3(
                 bam=self.merge_and_mark.out,
                 intervals=self.region_bed_extended,
                 reference=self.reference,
