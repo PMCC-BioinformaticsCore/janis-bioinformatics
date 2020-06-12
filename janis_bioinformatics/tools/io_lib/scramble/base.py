@@ -83,11 +83,7 @@ class ScrambleBase(BioinformaticsTool, ABC):
         ]
 
     def outputs(self):
-        return [
-            ToolOutput(
-                "out", Stdout(Cram(), stdoutname=InputSelector("outputFilename"))
-            )
-        ]
+        return [ToolOutput("out", Stdout(Cram()))]
 
     def memory(self, hints: Dict[str, Any]):
         val = get_value_for_hints_and_ordered_resource_tuple(hints, SCRAMBLE_MEM_TUPLE)
