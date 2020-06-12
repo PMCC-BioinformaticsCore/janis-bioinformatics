@@ -20,7 +20,12 @@ class AddBamStatsBase(BioinformaticsTool, ABC):
         return [
             *self.additional_inputs,
             ToolInput("inputVcf", Vcf(), prefix="-i", doc="input vcf"),
-            ToolInput("outputFilename", Filename(), prefix="-o", doc="output vcf name"),
+            ToolInput(
+                "outputFilename",
+                Filename(extension=".vcf", suffix=".addbamstats"),
+                prefix="-o",
+                doc="output vcf name",
+            ),
             ToolInput(
                 "type",
                 String(),

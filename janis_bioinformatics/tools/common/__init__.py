@@ -6,5 +6,5 @@ from .bwamem_samtoolsview import BwaMem_SamToolsView
 from .indexfasta import IndexFasta
 from .concat_strelkasomaticvcf import ConcatStrelkaSomaticVcf
 from .splitmultiallele_normalistvcf import SplitMultiAlleleNormaliseVcf
-from .uncompressvcf import UncompressVcf
 from .filtervardictsomaticvcf import FilterVardictSomaticVcf
+from .gatkbasecalbam import GATKBaseRecalBQSRWorkflow_4_1_3

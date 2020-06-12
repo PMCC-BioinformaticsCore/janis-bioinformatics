@@ -52,7 +52,6 @@ class AddBamStatsSomatic_0_1_0(BioinformaticsWorkflow):
                 normalID=self.normal_id,
                 tumorID=self.tumor_id,
                 type="somatic",
-                outputFilename="out.vcf",
             ),
         )
 

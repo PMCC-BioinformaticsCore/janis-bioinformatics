@@ -2,7 +2,7 @@ from abc import ABC
 
 from janis_core import ToolInput, String, Int, ToolOutput, Float, Stdout, ToolMetadata
 
-from janis_bioinformatics.data_types import CompressedVcf
+from janis_bioinformatics.data_types import CompressedVcf, VcfTabix
 from janis_bioinformatics.data_types import Vcf
 from janis_bioinformatics.tools.vcflib.vcflibtoolbase import VcfLibToolBase
 
@@ -21,7 +21,7 @@ class VcfLengthBase(VcfLibToolBase, ABC):
         return [
             ToolInput(
                 "vcf",
-                CompressedVcf,
+                VcfTabix,
                 position=1,
                 doc="VCF to add length of variant record relative to the reference allele to.",
             )
