@@ -11,6 +11,7 @@ from janis_core import (
     File,
     InputSelector,
     Filename,
+    ToolArgument,
 )
 
 from janis_bioinformatics.data_types import Vcf, CompressedVcf
@@ -33,12 +34,14 @@ class BGZipBase(HtsLibBase, ABC):
             ToolInput(
                 "outputFilename",
                 Filename(extension=".vcf.gz"),
-                prefix=">",
-                position=101,
+                position=102,
                 shell_quote=False,
             ),
             *self.additional_args,
         ]
+
+    def arguments(self):
+        return [ToolArgument(">", position=101, shell_quote=False)]
 
     def outputs(self) -> List[ToolOutput]:
         return [
