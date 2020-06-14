@@ -133,11 +133,7 @@ class VcfFilterBase(VcfLibToolBase, ABC):
         ]
 
     def outputs(self):
-        return [
-            ToolOutput(
-                "out", Stdout(Vcf, stdoutname="filtered.vcf"), doc="Filtered VCF",
-            )
-        ]
+        return [ToolOutput("out", Stdout(Vcf), doc="Filtered VCF",)]
 
     def bind_metadata(self):
         from datetime import date
