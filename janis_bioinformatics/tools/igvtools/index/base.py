@@ -19,6 +19,9 @@ class IgvIndexFeatureBase(IgvIndexBase, ABC):
     def tool(self) -> str:
         return "IgvToolsIndexFeatures"
 
+    def friendly_name(self) -> Optional[str]:
+        return "IGVTools: Index Features"
+
     def inputs(self) -> List[ToolInput]:
         return [
             ToolInput(
