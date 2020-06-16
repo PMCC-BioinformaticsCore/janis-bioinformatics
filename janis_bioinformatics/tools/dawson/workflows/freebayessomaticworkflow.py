@@ -190,7 +190,7 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
 
         self.step("compressFinal", BGZip(file=self.uniqVcf.out))
 
-        self.step("indexFinal", Tabix(file=self.compressFinal.out))
+        self.step("indexFinal", Tabix(inp=self.compressFinal.out))
 
         self.output("somaticOutVcf", source=self.indexFinal)
 

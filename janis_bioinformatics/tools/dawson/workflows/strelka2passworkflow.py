@@ -100,7 +100,7 @@ class Strelka2PassWorkflow(BioinformaticsWorkflow):
             ),
         )
         self.step("compressSNVs", BGZip(file=self.refilterSNVs.out), scatter="file")
-        self.step("indexSNVs", Tabix(file=self.compressSNVs.out), scatter="file")
+        self.step("indexSNVs", Tabix(inp=self.compressSNVs.out), scatter="inp")
 
         self.step(
             "refilterINDELs",
@@ -109,7 +109,7 @@ class Strelka2PassWorkflow(BioinformaticsWorkflow):
             ),
         )
         self.step("compressINDELs", BGZip(file=self.refilterINDELs.out), scatter="file")
-        self.step("indexINDELs", Tabix(file=self.compressINDELs.out), scatter="file")
+        self.step("indexINDELs", Tabix(inp=self.compressINDELs.out), scatter="inp")
 
         self.output("snvs", source=self.indexSNVs, output_folder=self.sampleNames)
         self.output("indels", source=self.indexINDELs, output_folder=self.sampleNames)
