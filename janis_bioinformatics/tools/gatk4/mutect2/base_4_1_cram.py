@@ -1,9 +1,8 @@
-from janis_bioinformatics.data_types import Bam, BamBai, Cram, CramCrai
-from janis_core import Array, String
-
 from janis_bioinformatics.tools.dawson.utils.typeconversion import (
     cast_input_bams_to_crams,
 )
+from janis_core import String
+
 from .base_4_1 import Gatk4Mutect2Base_4_1
 
 
