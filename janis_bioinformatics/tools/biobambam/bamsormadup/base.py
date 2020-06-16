@@ -95,9 +95,7 @@ class BamSorMaDupBase(BioinformaticsTool, ABC):
 
     def outputs(self):
         return [
-            ToolOutput(
-                "out", Stdout(Bam(), stdoutname=InputSelector("outputFilename"))
-            ),
+            ToolOutput("out", Stdout(Bam())),
             ToolOutput("metrics", File(), glob=WildcardSelector("metrics.txt")),
         ]
 

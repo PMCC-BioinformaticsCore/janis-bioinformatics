@@ -19,6 +19,7 @@ from janis_bioinformatics.tools import (
     htslib,
     illumina,
     io_lib,
+    kallisto,
     multiqc,
     papenfuss,
     pmac,
