@@ -57,5 +57,5 @@ class CreateCallRegions(PythonTool):
     def version(self):
         return "v0.1.0"
 
-
-# CreateCallRegions().translate("cwl")
+    def friendly_name(self):
+        return "Create genomic call regions"
