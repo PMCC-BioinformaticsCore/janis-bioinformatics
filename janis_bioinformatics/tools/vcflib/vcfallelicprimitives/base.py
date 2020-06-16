@@ -1,6 +1,6 @@
 from abc import ABC
 
-from janis_core import ToolInput, String, Boolean, ToolOutput, Stdout
+from janis_core import ToolInput, String, Boolean, ToolOutput, Stdout, Int
 from janis_core import ToolMetadata
 
 from janis_bioinformatics.data_types import CompressedVcf
@@ -33,6 +33,24 @@ class VcfAllelicPrimitivesBase(VcfToolsToolBase, ABC):
                 String(optional=True),
                 prefix="-t",
                 doc="Tag records which are split apart of a complex allele with this flag",
+            ),
+            ToolInput(
+                "keepInfoFlag",
+                Boolean(optional=True),
+                prefix="-k",
+                doc="Maintain site and allele-level annotations when decomposing. Note that in many cases, such as multisample VCFs, these won't be valid post-decomposition.  For biallelic loci in single-sample VCFs, they should be usable with caution.",
+            ),
+            ToolInput(
+                "keepGenoFlag",
+                Boolean(optional=True),
+                prefix="-g",
+                doc="Maintain genotype-level annotations when decomposing.  Similar caution should be used for this as for --keep-info.",
+            ),
+            ToolInput(
+                "maxLength",
+                Int(optional=True),
+                prefix="-L",
+                doc="Do not manipulate records in which either the ALT or REF is longer than LEN (default: 200).",
             ),
         ]
 
