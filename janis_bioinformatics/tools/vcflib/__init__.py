@@ -9,3 +9,5 @@ from .vcfuniq.versions import VcfUniq_1_0_1, VcfUniqLatest
 from .vcfuniqalleles.versions import VcfUniqAlleles_1_0_1, VcfUniqAllelesLatest
 from .vcffilter.versions import VcfFilter_1_0_1, VcfFilterLatest
 from .vcflength.versions import VcfLength_1_0_1, VcfLengthLatest
+from .vcfcombine.versions import VcfCombine_1_0_1, VcfCombineLatest
+from .vcfstreamsort.versions import VcfStreamSort_1_0_1, VcfStreamSortLatest
