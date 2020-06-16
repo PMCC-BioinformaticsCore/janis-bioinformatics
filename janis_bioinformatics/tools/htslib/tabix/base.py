@@ -29,7 +29,7 @@ class TabixBase(HtsLibBase, ABC):
     def inputs(self) -> List[ToolInput]:
         return [
             ToolInput(
-                "vcf",
+                "inp",
                 CompressedVcf(),
                 position=8,
                 localise_file=True,
@@ -52,7 +52,7 @@ class TabixBase(HtsLibBase, ABC):
     def outputs(self) -> List[ToolOutput]:
         return [
             ToolOutput(
-                "out", VcfTabix(), glob=InputSelector("file", use_basename=True)
+                "out", VcfTabix(), glob=InputSelector("inp", use_basename=True)
             )  # "$(inputs.file.basename)"
         ]
 
