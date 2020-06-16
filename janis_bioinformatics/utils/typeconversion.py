@@ -1,3 +1,7 @@
+from janis_bioinformatics.data_types import Bam, BamBai, Cram, CramCrai
+from janis_core import Array
+
+
 # function that takes the inputs of a tool and changes every bam type into the respecitve cram type
 # while also keeping anything else the same
 def cast_input_bams_to_crams(inputs):
@@ -20,8 +24,6 @@ def cast_input_bams_to_crams(inputs):
             inp.input_type.subtype(), Bam
         ):
             inp.input_type = Array(Cram)
-        elif inp.id() == "intervals":
-            inp.input_type = String()
 
         # and now that we changed things, we set the optional state again
         inp.input_type.optional = is_optional

@@ -1,6 +1,4 @@
-from janis_bioinformatics.tools.dawson.utils.typeconversion import (
-    cast_input_bams_to_crams,
-)
+from janis_bioinformatics.utils.typeconversion import cast_input_bams_to_crams
 
 from .base import StrelkaSomaticBase
 
