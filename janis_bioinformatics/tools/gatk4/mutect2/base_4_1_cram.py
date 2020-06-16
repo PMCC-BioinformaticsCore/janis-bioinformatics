@@ -1,27 +1,26 @@
 from janis_bioinformatics.data_types import Bam, BamBai, Cram, CramCrai
 from janis_core import Array, String
 
+from janis_bioinformatics.tools.dawson.utils.typeconversion import (
+    cast_input_bams_to_crams,
+)
 from .base_4_1 import Gatk4Mutect2Base_4_1
 
 
 class Gatk4Mutect2CramBase_4_1(Gatk4Mutect2Base_4_1):
     def inputs(self):
-        # we want every input which is a bam in the original to be a cram now (with index if the bam had an index)
-        ins = super().inputs()
+        # we want every input which is a bam in the original to be a cram now
+        ins = cast_input_bams_to_crams(super().inputs())
+
+        # for this workflow to work, the intervals needs to be a string and not a file so we change
+        # this here as well (GATK allows both a bed file or a samtools like region string)
         for inp in ins:
-            # we need to check for BamBai first, as due to inheritance, the bambai is also a bam
-            if isinstance(inp.input_type, BamBai):
-                inp.input_type = CramCrai()
-            elif isinstance(inp.input_type, Bam):
-                inp.input_type = Cram()
-            elif isinstance(inp.input_type, Array) and isinstance(
-                inp.input_type.subtype(), BamBai
-            ):
-                inp.input_type = Array(CramCrai)
-            elif isinstance(inp.input_type, Array) and isinstance(
-                inp.input_type.subtype(), Bam
-            ):
-                inp.input_type = Array(Cram)
-            elif inp.id() == "intervals":
+            if inp.id() == "intervals":
+                # getting original optional status
+                is_optional = inp.input_type.optional
+                # set to string
                 inp.input_type = String()
+                # restore original optionality
+                inp.input_type.optional = is_optional
+
         return ins
