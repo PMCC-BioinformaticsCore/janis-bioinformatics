@@ -137,7 +137,7 @@ class GatkSomaticVariantCallerPairedTargeted(BioinformaticsWorkflow):
             ),
         )
 
-        self.step("tabixvcf", TabixLatest(file=self.filterpass.out))
+        self.step("tabixvcf", TabixLatest(inp=self.filterpass.out))
 
         self.output("variants", source=self.mutect2.out)
         self.output("out", source=self.tabixvcf.out)

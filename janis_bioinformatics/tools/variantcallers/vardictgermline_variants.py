@@ -76,7 +76,7 @@ class VardictGermlineVariantCaller(BioinformaticsWorkflow):
                 headerLines=self.header_lines,
             ),
         )
-        self.step("tabixvcf", TabixLatest(file=self.annotate.out))
+        self.step("tabixvcf", TabixLatest(inp=self.annotate.out))
 
         self.output("variants", source=self.vardict.out)
         self.output("out", source=self.tabixvcf.out)
