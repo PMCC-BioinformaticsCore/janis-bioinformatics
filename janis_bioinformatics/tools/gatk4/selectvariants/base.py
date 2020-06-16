@@ -1,16 +1,18 @@
 from abc import ABC
 from datetime import datetime
+
+from janis_bioinformatics.data_types import BamBai, FastaWithDict, VcfTabix
 from janis_core import (
-    CommandTool,
-    ToolInput,
-    ToolOutput,
-    File,
     Boolean,
-    String,
-    Int,
-    InputSelector,
+    Double,
+    File,
     Filename,
+    InputSelector,
+    Int,
+    String,
+    ToolInput,
     ToolMetadata,
+    ToolOutput,
 )
 
 from ..gatk4toolbase import Gatk4ToolBase
