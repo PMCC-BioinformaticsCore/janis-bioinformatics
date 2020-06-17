@@ -21,7 +21,7 @@ class VcfLengthBase(VcfLibToolBase, ABC):
         return [
             ToolInput(
                 "vcf",
-                VcfTabix,
+                Vcf,
                 position=1,
                 doc="VCF to add length of variant record relative to the reference allele to.",
             )
