@@ -74,12 +74,13 @@ class CombineVariantsBase(BioinformaticsTool, ABC):
                 Filename(extension=".vcf", suffix=".combined"),
                 prefix="-o",
             ),
-            ToolInput(
-                "regions",
-                Filename(extension=".tsv"),
-                prefix="--regions",
-                doc="Region file containing all the variants, used as samtools mpileup",
-            ),
+            # deprecated
+            # ToolInput(
+            #     "regions",
+            #     Filename(extension=".tsv"),
+            #     prefix="--regions",
+            #     doc="Region file containing all the variants, used as samtools mpileup",
+            # ),
             ToolInput(
                 "vcfs",
                 Array(Vcf()),
@@ -117,8 +118,7 @@ class CombineVariantsBase(BioinformaticsTool, ABC):
 
     def outputs(self) -> List[ToolOutput]:
         return [
-            ToolOutput("vcf", Vcf(), InputSelector("outputFilename")),
-            (ToolOutput("tsv", Tsv(), InputSelector("regions"))),
+            ToolOutput("out", Vcf(), InputSelector("outputFilename")),
         ]
 
     def bind_metadata(self):

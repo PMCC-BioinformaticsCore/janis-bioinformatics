@@ -62,11 +62,21 @@ class Gatk4CalculateContaminationBase(Gatk4ToolBase, ABC):
             ),
             ToolInput(
                 "segmentationFileOut",
-                Filename(),
+                Filename(
+                    prefix=InputSelector("pileupTable"), extension=".mutect2_segments"
+                ),
                 prefix="--tumor-segmentation",
                 doc="Reference sequence file",
             ),
-            ToolInput("contaminationFileOut", Filename(), position=2, prefix="-O"),
+            ToolInput(
+                "contaminationFileOut",
+                Filename(
+                    prefix=InputSelector("pileupTable"),
+                    extension=".mutect2_contamination",
+                ),
+                position=2,
+                prefix="-O",
+            ),
         ]
 
     def outputs(self):
@@ -103,12 +113,6 @@ class Gatk4CalculateContaminationBase(Gatk4ToolBase, ABC):
             File(optional=True),
             prefix="--contamination-table",
             doc="Tables containing contamination information.",
-        ),
-        ToolInput(
-            "segmentationFile",
-            File(optional=True),
-            prefix="--tumor-segmentation",
-            doc="Tables containing tumor segments' minor allele fractions for germline hets emitted by CalculateContamination",
         ),
         ToolInput(
             "statsFile",

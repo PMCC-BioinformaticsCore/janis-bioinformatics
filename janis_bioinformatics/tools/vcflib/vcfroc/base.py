@@ -5,10 +5,10 @@ from janis_core import ToolMetadata
 
 from janis_bioinformatics.data_types import FastaWithDict, CompressedVcf
 from janis_bioinformatics.data_types import Vcf
-from janis_bioinformatics.tools.vcflib.vcflibtoolbase import VcfToolsToolBase
+from janis_bioinformatics.tools.vcflib.vcflibtoolbase import VcfLibToolBase
 
 
-class VcfRocBase(VcfToolsToolBase, ABC):
+class VcfRocBase(VcfLibToolBase, ABC):
     def tool(self):
         return "vcfroc"
 

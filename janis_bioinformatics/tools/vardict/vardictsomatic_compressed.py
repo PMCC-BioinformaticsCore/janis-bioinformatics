@@ -532,5 +532,5 @@ class VarDictSomaticCompressedBase(BioinformaticsTool, ABC):
     """
 
 
-class VarDictSomatic_1_6_0(VarDictSomaticCompressedBase, VarDict_1_6_0):
+class VarDictSomaticCompressed_1_6_0(VarDictSomaticCompressedBase, VarDict_1_6_0):
     pass
