@@ -1,11 +1,12 @@
 from janis_core import Boolean
+from janis_unix.tools import UncompressArchive
 
 from janis_bioinformatics.data_types import FastaWithDict, BamBai, BedTabix
 from janis_bioinformatics.tools import BioinformaticsWorkflow
-from janis_bioinformatics.tools.common import SplitMultiAlleleNormaliseVcf
+from janis_bioinformatics.tools.common import SplitMultiAllele
+from janis_bioinformatics.tools.htslib import BGZipLatest, TabixLatest
 from janis_bioinformatics.tools.illumina import StrelkaGermline_2_9_10, Manta_1_5_0
 from janis_bioinformatics.tools.vcftools import VcfToolsvcftoolsLatest
-from janis_bioinformatics.tools.htslib import TabixLatest
 
 
 class IlluminaGermlineVariantCaller(BioinformaticsWorkflow):
@@ -19,7 +20,7 @@ class IlluminaGermlineVariantCaller(BioinformaticsWorkflow):
         return "Variant Callers"
 
     def version(self):
-        return "v0.1.0"
+        return "v0.1.1"
 
     def constructor(self):
 
@@ -49,11 +50,11 @@ class IlluminaGermlineVariantCaller(BioinformaticsWorkflow):
             ),
         )
 
+        # normalise and filter "PASS" variants
+        self.step("uncompressvcf", UncompressArchive(file=self.strelka.variants))
         self.step(
             "splitnormalisevcf",
-            SplitMultiAlleleNormaliseVcf(
-                compressedTabixVcf=self.strelka.variants, reference=self.reference
-            ),
+            SplitMultiAllele(vcf=self.uncompressvcf.out, reference=self.reference),
         )
 
         self.step(
@@ -66,11 +67,9 @@ class IlluminaGermlineVariantCaller(BioinformaticsWorkflow):
             ),
         )
 
-        self.step("tabixvcf", TabixLatest(inp=self.filterpass.out))
-
         self.output("sv", source=self.manta.diploidSV)
         self.output("variants", source=self.strelka.variants)
-        self.output("out", source=self.tabixvcf.out)
+        self.output("out", source=self.filterpass.out)
 
 
 if __name__ == "__main__":
