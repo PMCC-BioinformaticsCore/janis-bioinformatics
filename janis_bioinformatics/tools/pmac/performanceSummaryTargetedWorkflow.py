@@ -37,7 +37,8 @@ class PerformanceSummaryTargeted_0_1_0(BioinformaticsWorkflow):
 
         # Inputs
         self.input("bam", BamBai)
-        self.input("bed", Bed)
+        self.input("genecoverage_bed", Bed)
+        self.input("region_bed", Bed)
         self.input("sample_name", String)
         self.input("genome_file", TextFile)
         # Steps
@@ -55,7 +56,7 @@ class PerformanceSummaryTargeted_0_1_0(BioinformaticsWorkflow):
             "bedtoolsintersectbed",
             BedToolsIntersectBedLatest(
                 inputABam=self.samtoolsview.out,
-                inputBBed=self.bed,
+                inputBBed=self.region_bed,
                 genome=self.genome_file,
                 sorted=True,
             ),
@@ -67,7 +68,7 @@ class PerformanceSummaryTargeted_0_1_0(BioinformaticsWorkflow):
         self.step(
             "bedtoolscoveragebed",
             BedToolsCoverageBedLatest(
-                inputABed=self.bed,
+                inputABed=self.region_bed,
                 inputBBam=self.bedtoolsintersectbed.out,
                 genome=self.genome_file,
                 sorted=True,
@@ -91,7 +92,7 @@ class PerformanceSummaryTargeted_0_1_0(BioinformaticsWorkflow):
         self.step(
             "bedtoolscoverage",
             BedToolsCoverageBedLatest(
-                inputABed=self.bed,
+                inputABed=self.genecoverage_bed,
                 inputBBam=self.samtoolsview.out,
                 genome=self.genome_file,
                 sorted=True,

@@ -138,7 +138,8 @@ class MolpathTumorOnly_1_0_0(BioinformaticsWorkflow):
             "performance_summary",
             PerformanceSummaryTargeted_0_1_0(
                 bam=self.merge_and_mark.out,
-                bed=self.genecoverage_bed,
+                region_bed=self.region_bed,
+                genecoverage_bed=self.genecoverage_bed,
                 sample_name=self.sample_name,
                 genome_file=self.genome_file,
             ),
