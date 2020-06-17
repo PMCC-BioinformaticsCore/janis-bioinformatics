@@ -66,7 +66,7 @@ class IlluminaGermlineVariantCaller(BioinformaticsWorkflow):
             ),
         )
 
-        self.step("tabixvcf", TabixLatest(file=self.filterpass.out))
+        self.step("tabixvcf", TabixLatest(inp=self.filterpass.out))
 
         self.output("sv", source=self.manta.diploidSV)
         self.output("variants", source=self.strelka.variants)

@@ -64,7 +64,7 @@ class IlluminaSomaticVariantCaller(BioinformaticsWorkflow):
             ),
         )
 
-        self.step("tabixvcf", TabixLatest(file=self.concatvcf.out))
+        self.step("tabixvcf", TabixLatest(inp=self.concatvcf.out))
 
         self.step(
             "splitnormalisevcf",
@@ -83,7 +83,7 @@ class IlluminaSomaticVariantCaller(BioinformaticsWorkflow):
             ),
         )
 
-        self.step("tabixnormvcf", TabixLatest(file=self.filterpass.out))
+        self.step("tabixnormvcf", TabixLatest(inp=self.filterpass.out))
 
         self.output("sv", source=self.manta.diploidSV)
         self.output("variants", source=self.tabixvcf.out)

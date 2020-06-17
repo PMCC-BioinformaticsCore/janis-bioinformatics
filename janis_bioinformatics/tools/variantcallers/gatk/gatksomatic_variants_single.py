@@ -52,7 +52,6 @@ class GatkSomaticVariantCallerTumorOnlyTargeted(BioinformaticsWorkflow):
             "to null, then GATK will process the whole genome per each tool's spec",
         )
         self.input("reference", FastaWithDict)
-        self.input("gnomad_opt", VcfTabix(optional=True))
         self.input("gnomad", VcfTabix)
         self.input("panel_of_normals", VcfTabix(optional=True))
 
@@ -64,7 +63,7 @@ class GatkSomaticVariantCallerTumorOnlyTargeted(BioinformaticsWorkflow):
                 intervals=self.intervals,
                 reference=self.reference,
                 panelOfNormals=self.panel_of_normals,
-                germlineResource=self.gnomad_opt,
+                germlineResource=self.gnomad,
             ),
         )
         self.step(

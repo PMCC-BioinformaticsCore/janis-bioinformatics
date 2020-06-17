@@ -81,7 +81,7 @@ class VardictSomaticVariantCaller(BioinformaticsWorkflow):
             "filetervcf", FilterVardictSomaticVcf(compressedVcf=self.annotate.out)
         )
 
-        self.step("tabixvcf", TabixLatest(file=self.filetervcf.out))
+        self.step("tabixvcf", TabixLatest(inp=self.filetervcf.out))
 
         self.output("variants", source=self.vardict.out)
         self.output("out", source=self.tabixvcf.out)

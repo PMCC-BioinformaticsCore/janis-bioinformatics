@@ -87,8 +87,6 @@ class MolpathTumorOnly_1_0_0(BioinformaticsWorkflow):
         self.input("pathos_db", String)
         self.input("maxRecordsInRam", Int)
         # tumor only
-        # to do: fix gnomad
-        self.input("gnomad_opt", VcfTabix(optional=True))
         self.input("gnomad", VcfTabix)
         self.input("panel_of_normals", VcfTabix(optional=True))
 
@@ -179,7 +177,6 @@ class MolpathTumorOnly_1_0_0(BioinformaticsWorkflow):
                 intervals=self.region_bed_extended,
                 reference=self.reference,
                 gnomad=self.gnomad,
-                gnomad_opt=self.gnomad_opt,
                 panel_of_normals=self.panel_of_normals,
             ),
         )
@@ -221,7 +218,7 @@ class MolpathTumorOnly_1_0_0(BioinformaticsWorkflow):
         )
         # Molpath specific processes
         self.step("compressvcf2", BGZip_1_9(file=self.addbamstats.out))
-        self.step("tabixvcf", TabixLatest(file=self.compressvcf2.out))
+        self.step("tabixvcf", TabixLatest(inp=self.compressvcf2.out))
         self.step(
             "calculate_variant_length",
             VcfLength_1_0_1(vcf=self.tabixvcf.out),

@@ -1,32 +1,25 @@
 from abc import ABC, abstractmethod
-from typing import List, Dict, Any
+from typing import Dict, Any, List
 
-from janis_core import CpuSelector
+from janis_bioinformatics.data_types import BamBai, BedTabix, FastaWithDict, VcfTabix
+from janis_bioinformatics.tools.illumina.illuminabase import IlluminaToolBase
 from janis_core import (
-    ToolOutput,
-    ToolInput,
-    ToolArgument,
     Boolean,
-    String,
+    CaptureType,
+    CpuSelector,
     File,
     Filename,
     InputSelector,
     Int,
-    CaptureType,
+    String,
     StringFormatter,
+    ToolArgument,
+    ToolInput,
     ToolMetadata,
+    ToolOutput,
+    get_value_for_hints_and_ordered_resource_tuple,
 )
-from janis_core import get_value_for_hints_and_ordered_resource_tuple
 from janis_unix import Tsv
-
-from janis_bioinformatics.data_types import (
-    FastaWithDict,
-    VcfTabix,
-    BamBai,
-    Bam,
-    BedTabix,
-)
-from janis_bioinformatics.tools.illumina.illuminabase import IlluminaToolBase
 
 CORES_TUPLE = [
     (
@@ -122,6 +115,11 @@ class MantaBase(IlluminaToolBase, ABC):
                 Tsv(),
                 glob=InputSelector("runDir") + "/results/stats/svLocusGraphStats.tsv",
             ),
+            ToolOutput(
+                "somaticSVs",
+                VcfTabix(),
+                glob=InputSelector("runDir") + "/results/variants/somaticSV.vcf.gz",
+            ),
         ]
 
     def arguments(self) -> List[ToolArgument]:
@@ -163,20 +161,20 @@ class MantaBase(IlluminaToolBase, ABC):
             keywords=["illumina", "manta", "variant caller"],
             documentationUrl="https://github.com/Illumina/manta",
             documentation="""
-Manta calls structural variants (SVs) and indels from mapped paired-end sequencing reads. 
-It is optimized for analysis of germline variation in small sets of individuals and somatic 
-variation in tumor/normal sample pairs. Manta discovers, assembles and scores large-scale SVs, 
-medium-sized indels and large insertions within a single efficient workflow. The method is 
-designed for rapid analysis on standard compute hardware: NA12878 at 50x genomic coverage is 
-analyzed in less than 20 minutes on a 20 core server, and most WGS tumor/normal analyses 
-can be completed within 2 hours. Manta combines paired and split-read evidence during SV 
-discovery and scoring to improve accuracy, but does not require split-reads or successful 
-breakpoint assemblies to report a variant in cases where there is strong evidence otherwise. 
+Manta calls structural variants (SVs) and indels from mapped paired-end sequencing reads.
+It is optimized for analysis of germline variation in small sets of individuals and somatic
+variation in tumor/normal sample pairs. Manta discovers, assembles and scores large-scale SVs,
+medium-sized indels and large insertions within a single efficient workflow. The method is
+designed for rapid analysis on standard compute hardware: NA12878 at 50x genomic coverage is
+analyzed in less than 20 minutes on a 20 core server, and most WGS tumor/normal analyses
+can be completed within 2 hours. Manta combines paired and split-read evidence during SV
+discovery and scoring to improve accuracy, but does not require split-reads or successful
+breakpoint assemblies to report a variant in cases where there is strong evidence otherwise.
 
-It provides scoring models for germline variants in small sets of diploid samples and somatic 
-variants in matched tumor/normal sample pairs. There is experimental support for analysis of 
-unmatched tumor samples as well. Manta accepts input read mappings from BAM or CRAM files and 
-reports all SV and indel inferences in VCF 4.1 format. See the user guide for a full description 
+It provides scoring models for germline variants in small sets of diploid samples and somatic
+variants in matched tumor/normal sample pairs. There is experimental support for analysis of
+unmatched tumor samples as well. Manta accepts input read mappings from BAM or CRAM files and
+reports all SV and indel inferences in VCF 4.1 format. See the user guide for a full description
 of capabilities and limitations.""".strip(),
         )
 
@@ -234,7 +232,7 @@ of capabilities and limitations.""".strip(),
         ),
         ToolInput(
             "rna",
-            Bam(optional=True),
+            Boolean(optional=True),
             prefix="--rna",
             position=1,
             shell_quote=False,
@@ -242,7 +240,7 @@ of capabilities and limitations.""".strip(),
         ),
         ToolInput(
             "unstrandedRNA",
-            File(optional=True),
+            Boolean(optional=True),
             prefix="--unstrandedRNA",
             position=1,
             shell_quote=False,
@@ -250,7 +248,7 @@ of capabilities and limitations.""".strip(),
         ),
         ToolInput(
             "outputContig",
-            File(optional=True),
+            Boolean(optional=True),
             prefix="--outputContig",
             position=1,
             shell_quote=False,

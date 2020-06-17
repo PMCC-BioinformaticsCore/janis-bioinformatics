@@ -11,6 +11,7 @@ from janis_bioinformatics.tools import (
     common,
     cellranger,
     cutadapt,
+    dawson,
     ensembl,
     facets,
     freebayes,
