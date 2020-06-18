@@ -29,11 +29,9 @@ class GatkGermlineVariantCaller_4_1_3(BioinformaticsWorkflow):
 
         It has the following steps:
 
-        1. BaseRecalibrator
-        2. ApplyBQSR
-        3. HaplotypeCaller
-        4. SplitMultiAllele
-        5. AddBamStatsGermline
+        1. Split Bam based on intervals (bed)
+        2. HaplotypeCaller
+        3. SplitMultiAllele
                 """.strip()
 
     def constructor(self):
@@ -48,15 +46,15 @@ class GatkGermlineVariantCaller_4_1_3(BioinformaticsWorkflow):
         self.input("reference", FastaWithDict)
         self.input("snps_dbsnp", VcfTabix)
 
-        # self.step(
-        #     "split_bam",
-        #     gatk4.Gatk4SplitReads_4_1_3(bam=self.bam, intervals=self.intervals),
-        # )
+        self.step(
+            "split_bam",
+            gatk4.Gatk4SplitReads_4_1_3(bam=self.bam, intervals=self.intervals),
+        )
 
         self.step(
             "haplotype_caller",
             gatk4.Gatk4HaplotypeCaller_4_1_3(
-                inputRead=self.bam,
+                inputRead=self.split_bam.out,
                 intervals=self.intervals,
                 reference=self.reference,
                 dbsnp=self.snps_dbsnp,
