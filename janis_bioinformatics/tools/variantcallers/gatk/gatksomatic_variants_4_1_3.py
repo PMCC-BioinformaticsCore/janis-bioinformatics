@@ -37,11 +37,11 @@ class GatkSomaticVariantCaller_4_1_3(BioinformaticsWorkflow):
 
         # split normal and tumor bam
         self.step(
-            "normal",
+            "normal_split_bam",
             self.process_subpipeline(bam=self.normal_bam, intervals=self.intervals),
         )
         self.step(
-            "tumor",
+            "tumor_split_bam",
             self.process_subpipeline(bam=self.tumor_bam, intervals=self.intervals),
         )
 
@@ -49,8 +49,8 @@ class GatkSomaticVariantCaller_4_1_3(BioinformaticsWorkflow):
         self.step(
             "mutect2",
             gatk4.GatkMutect2_4_1_3(
-                normalBams=self.normal.out,
-                tumorBams=self.tumor.out,
+                normalBams=[self.normal_split_bam.out],
+                tumorBams=[self.tumor_split_bam.out],
                 normalSample=self.normal_name,
                 intervals=self.intervals,
                 reference=self.reference,
@@ -69,7 +69,9 @@ class GatkSomaticVariantCaller_4_1_3(BioinformaticsWorkflow):
         self.step(
             "getpileupsummaries",
             gatk4.Gatk4GetPileUpSummariesLatest(
-                bam=self.tumor.out, sites=self.gnomad, intervals=self.intervals
+                bam=self.tumor_split_bam.out,
+                sites=self.gnomad,
+                intervals=self.intervals,
             ),
         )
         self.step(
