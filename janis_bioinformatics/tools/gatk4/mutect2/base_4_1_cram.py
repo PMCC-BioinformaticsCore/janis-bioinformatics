@@ -5,6 +5,9 @@ from .base_4_1 import Gatk4Mutect2Base_4_1
 
 
 class Gatk4Mutect2CramBase_4_1(Gatk4Mutect2Base_4_1):
+    def id(self):
+        return super().id() + "_cram"
+
     def inputs(self):
         # we want every input which is a bam in the original to be a cram now
         ins = cast_input_bams_to_crams(super().inputs())
