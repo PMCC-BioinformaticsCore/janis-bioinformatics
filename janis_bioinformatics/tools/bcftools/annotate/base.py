@@ -90,7 +90,7 @@ class BcfToolsAnnotateBase(BcfToolsToolBase, ABC):
             ToolInput("vcf", Vcf(), position=10),
             ToolInput(
                 "outputFilename",
-                Filename(extension=".vcf.gz"),
+                Filename(extension=".vcf"),
                 prefix="--output",
                 doc="[-o] see Common Options",
             ),
@@ -196,7 +196,6 @@ class BcfToolsAnnotateBase(BcfToolsToolBase, ABC):
             "outputType",
             String(optional=True),
             prefix="--output-type",
-            default="z",
             doc="[-O] (b|u|z|v) see Common Options",
         ),
         ToolInput(
