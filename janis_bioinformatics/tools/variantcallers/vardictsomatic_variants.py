@@ -59,7 +59,7 @@ class VardictSomaticVariantCaller(BioinformaticsWorkflow):
             "annotate",
             BcfToolsAnnotate_1_5(vcf=self.vardict.out, headerLines=self.header_lines),
         )
-        self.step("compressvcf", BGZipLatest(file=self.annotate.out))
+        self.step("compressvcf", BGZipLatest(file=self.annotate.out, stdout=True))
         self.step("tabixvcf", TabixLatest(inp=self.compressvcf.out))
 
         self.step(
