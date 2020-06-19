@@ -64,7 +64,7 @@ class AddBamStatsSomatic_0_1_0(BioinformaticsWorkflow):
 
     @staticmethod
     def process_subpipeline(**connections):
-        w = WorkflowBuilder("somatic_subpipeline")
+        w = WorkflowBuilder("samtools_mpileup_subpipeline")
         w.input("vcf", Vcf)
         w.input("bam", BamBai)
         w.step(
