@@ -29,7 +29,7 @@ setup(
         "janis.tools": ["bioinformatics=janis_bioinformatics.tools"],
         "janis.types": ["bioinformatics=janis_bioinformatics.data_types"],
     },
-    install_requires=["janis-pipelines.core >= 0.9.17"],
+    install_requires=["janis-pipelines.core >= 0.9.19"],
     zip_safe=False,
     long_description=long_description,
     long_description_content_type="text/markdown",
