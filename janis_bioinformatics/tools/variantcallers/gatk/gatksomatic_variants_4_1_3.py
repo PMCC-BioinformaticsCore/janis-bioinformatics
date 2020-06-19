@@ -114,7 +114,7 @@ class GatkSomaticVariantCaller_4_1_3(BioinformaticsWorkflow):
 
     @staticmethod
     def process_subpipeline(**connections):
-        w = WorkflowBuilder("somatic_subpipeline")
+        w = WorkflowBuilder("split_bam_subpipeline")
 
         w.input("bam", BamBai)
         w.input("intervals", Bed(optional=True))
