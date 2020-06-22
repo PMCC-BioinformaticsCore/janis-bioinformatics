@@ -71,6 +71,7 @@ class Gatk4MergeSamFilesBase(Gatk4ToolBase, ABC):
 
     def inputs(self):
         return [
+            *super().inputs(),
             ToolInput(
                 "bams",
                 Array(BamBai()),
