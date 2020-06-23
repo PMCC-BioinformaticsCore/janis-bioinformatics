@@ -36,12 +36,12 @@ class GATK3ToolBase(BioinformaticsTool, ABC):
     def arguments(self):
         return [
             ToolArgument(
-                "-jar /usr/GenomeAnalysisTK.jar", position=-3, shell_quote=False
+                StringFormatter("-Xmx{memory}G", memory=MemorySelector() * 3 / 4,),
+                position=-3,
+                shell_quote=False,
             ),
             ToolArgument(
-                StringFormatter("-Xmx{memory}G", memory=MemorySelector() * 3 / 4,),
-                position=-2,
-                shell_quote=False,
+                "-jar /usr/GenomeAnalysisTK.jar", position=-2, shell_quote=False
             ),
             ToolArgument(f"-T {self.gatk_command()}", position=-1, shell_quote=False),
         ]
