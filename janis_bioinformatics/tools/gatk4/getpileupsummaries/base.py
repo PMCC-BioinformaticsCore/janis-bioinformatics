@@ -73,7 +73,7 @@ class Gatk4GetPileUpSummariesBase(Gatk4ToolBase, ABC):
             ),
             ToolInput(
                 "intervals",
-                VcfTabix(optional=True),
+                Bed(optional=True),
                 prefix="--intervals",
                 doc="-L (BASE) One or more genomic intervals over which to operate",
             ),
@@ -123,8 +123,3 @@ Summarizes counts of reads that support reference, alternate and other alleles f
 The tool requires a common germline variant sites VCF, e.g. the gnomAD resource, with population allele frequencies (AF) in the INFO field. This resource must contain only biallelic SNPs and can be an eight-column sites-only VCF. The tool ignores the filter status of the sites. See the GATK Resource Bundle for an example human file.
 """.strip(),
         )
-
-    def arguments(self):
-        return [
-            # ToolArgument(MemorySelector(prefix="-Xmx", suffix="G", default=8), prefix="--java-options", position=0)
-        ]

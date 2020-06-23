@@ -1,36 +1,26 @@
 from abc import ABC
 from typing import Dict, Any
 
+from janis_bioinformatics.data_types import BamBai, Bed, FastaWithDict, VcfTabix
 from janis_core import (
-    ToolInput,
+    Array,
+    Boolean,
+    CaptureType,
+    CpuSelector,
+    Double,
+    File,
     Filename,
-    ToolOutput,
-    String,
     Float,
     InputSelector,
-    CaptureType,
-    ToolArgument,
-    MemorySelector,
-    Array,
     Int,
-    Boolean,
-    File,
-    Double,
-    CpuSelector,
-    get_value_for_hints_and_ordered_resource_tuple,
+    String,
+    ToolInput,
     ToolMetadata,
+    ToolOutput,
+    get_value_for_hints_and_ordered_resource_tuple,
 )
 from janis_unix import TarFileGz, TextFile
 
-from janis_bioinformatics.data_types import (
-    BamBai,
-    Bed,
-    FastaWithDict,
-    VcfIdx,
-    Vcf,
-    VcfTabix,
-    CompressedVcf,
-)
 from ..gatk4toolbase import Gatk4ToolBase
 
 CORES_TUPLE = [
@@ -71,6 +61,7 @@ class Gatk4Mutect2Base_4_1(Gatk4ToolBase, ABC):
 
     def inputs(self):
         return [
+            *super().inputs(),
             ToolInput(
                 tag="tumorBams",
                 input_type=Array(BamBai),
@@ -80,14 +71,14 @@ class Gatk4Mutect2Base_4_1(Gatk4ToolBase, ABC):
             ),
             ToolInput(
                 tag="normalBams",
-                input_type=Array(BamBai),
+                input_type=Array(BamBai, optional=True),
                 prefix="-I",
                 prefix_applies_to_all_elements=True,
                 doc="(--input) Extra BAM/SAM/CRAM file containing reads This argument must be specified at least once. Required. ",
             ),
             ToolInput(
                 tag="normalSample",
-                input_type=String,
+                input_type=String(optional=True),
                 prefix="--normal-sample",
                 doc="(--normal-sample, if) May be URL-encoded as output by GetSampleName with",
             ),
@@ -102,6 +93,12 @@ class Gatk4Mutect2Base_4_1(Gatk4ToolBase, ABC):
                 input_type=FastaWithDict(),
                 prefix="--reference",
                 doc="(-R) Reference sequence file Required.",
+            ),
+            ToolInput(
+                tag="outputBamName",
+                input_type=Filename(extension=".bam"),
+                prefix="-bamout",
+                doc="File to which assembled haplotypes should be written",
             ),
             ToolInput(
                 tag="activityProfileOut",
@@ -549,12 +546,6 @@ class Gatk4Mutect2Base_4_1(Gatk4ToolBase, ABC):
                 doc=" Number of additional bases of context to include around each assembly region  Default value: 100. ",
             ),
             ToolInput(
-                tag="bamout",
-                input_type=String(optional=True),
-                prefix="-bamout",
-                doc="(--bam-output) File to which assembled haplotypes should be written Default value: null.",
-            ),
-            ToolInput(
                 tag="bamWriterType",
                 input_type=String(optional=True),
                 prefix="--bam-writer-type",
@@ -887,6 +878,13 @@ class Gatk4Mutect2Base_4_1(Gatk4ToolBase, ABC):
                 TarFileGz,
                 glob=InputSelector("f1r2TarGz_outputFilename"),
                 doc="To determine type",
+            ),
+            ToolOutput(
+                "bam",
+                BamBai,
+                glob=InputSelector("outputBamName"),
+                doc="File to which assembled haplotypes should be written",
+                secondaries_present_as={".bai": "^.bai"},
             ),
         ]
 

@@ -10,7 +10,7 @@ from ..samtoolstoolbase import SamToolsToolBase
 
 class SamToolsFaidxBase(SamToolsToolBase, ABC):
     def tool(self):
-        return "SamToolsIndex"
+        return "SamToolsFaidx"
 
     @classmethod
     def samtools_command(cls):

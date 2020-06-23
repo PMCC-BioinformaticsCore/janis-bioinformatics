@@ -38,13 +38,13 @@ class GeneCoveragePerSampleBase(BioinformaticsTool, ABC):
             ),
             ToolInput(
                 "outputGeneFile",
-                Filename(extension=".txt"),
+                Filename(extension=".txt", suffix=".gene"),
                 prefix="--gene",
                 doc="Output gene file",
             ),
             ToolInput(
                 "outputRegionFile",
-                Filename(extension=".txt"),
+                Filename(extension=".txt", suffix=".region"),
                 prefix="--region",
                 doc="Output region file",
             ),
