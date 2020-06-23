@@ -1,5 +1,7 @@
 from abc import ABC, abstractmethod
 
+from janis_core import ToolArgument, StringFormatter, MemorySelector
+
 from .. import BioinformaticsTool
 
 
@@ -9,14 +11,9 @@ class GATK3ToolBase(BioinformaticsTool, ABC):
 
     @classmethod
     def base_command(cls):
-        # Check to emplement the gatk3 java options
+        # Just java, rest is in arguments
         return [
             "java",
-            "-Xmx8g",
-            "-jar",
-            "/usr/GenomeAnalysisTK.jar",
-            "-T",
-            cls.gatk_command(),
         ]
 
     @classmethod
@@ -37,4 +34,14 @@ class GATK3ToolBase(BioinformaticsTool, ABC):
         )
 
     def arguments(self):
-        return []
+        return [
+            ToolArgument(
+                "-jar /usr/GenomeAnalysisTK.jar", position=-3, shell_quote=False
+            ),
+            ToolArgument(
+                StringFormatter("-Xmx{memory}G", memory=MemorySelector() * 3 / 4,),
+                position=-2,
+                shell_quote=False,
+            ),
+            ToolArgument(f"-T {self.gatk_command()}", position=-1, shell_quote=False),
+        ]

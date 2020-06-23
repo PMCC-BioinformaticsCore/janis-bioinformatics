@@ -117,8 +117,3 @@ class Gatk4LearnReadOrientationModelBase(Gatk4ToolBase, ABC):
 TBD
 """.strip(),
         )
-
-    def arguments(self):
-        return [
-            # ToolArgument(MemorySelector(prefix="-Xmx", suffix="G", default=8), prefix="--java-options", position=0)
-        ]

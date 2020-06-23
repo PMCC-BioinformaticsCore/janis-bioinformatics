@@ -61,6 +61,7 @@ class Gatk4Mutect2Base_4_1(Gatk4ToolBase, ABC):
 
     def inputs(self):
         return [
+            *super().inputs(),
             ToolInput(
                 tag="tumorBams",
                 input_type=Array(BamBai),

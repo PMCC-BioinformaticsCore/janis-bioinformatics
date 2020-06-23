@@ -97,7 +97,7 @@ class Gatk4MarkDuplicatesBase(Gatk4ToolBase, ABC):
                 prefix="-M",
                 doc="The output file to write marked records to.",
             ),
-            *super(Gatk4MarkDuplicatesBase, self).inputs(),
+            *super().inputs(),
             *self.additional_args,
         ]
 

@@ -52,6 +52,7 @@ class Gatk4Mutect2Base_4_0(Gatk4ToolBase, ABC):
     def friendly_name(self):
         return "GATK4: MuTect2"
 
+    @staticmethod
     def tumor_normal_inputs():
         return [
             ToolInput(
@@ -86,7 +87,7 @@ class Gatk4Mutect2Base_4_0(Gatk4ToolBase, ABC):
 
     def inputs(self):
         return [
-            *super(Gatk4Mutect2Base_4_0, self).inputs(),
+            *super().inputs(),
             *Gatk4Mutect2Base_4_0.additional_args,
             *Gatk4Mutect2Base_4_0.tumor_normal_inputs(),
             ToolInput(
@@ -181,8 +182,3 @@ Although we present the tool for somatic calling, it may apply to other contexts
 such as mitochondrial variant calling.
 """.strip(),
         )
-
-    def arguments(self):
-        return [
-            # ToolArgument(MemorySelector(prefix="-Xmx", suffix="G", default=8), prefix="--java-options", position=0)
-        ]
