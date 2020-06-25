@@ -14,7 +14,7 @@ from janis_core import (
     InputSelector,
 )
 
-from janis_bioinformatics.data_types import Bam, FastaWithDict, Bed, Vcf
+from janis_bioinformatics.data_types import Bam, BamBai, FastaWithDict, Bed, Vcf
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 
 
@@ -161,7 +161,7 @@ class GridssBase_2_2(BioinformaticsTool):
     def outputs(self) -> List[ToolOutput]:
         return [
             ToolOutput("vcf", Vcf(), glob=InputSelector("outputFilename")),
-            ToolOutput("assembly", Bam(), glob=InputSelector("assemblyFilename")),
+            ToolOutput("assembly", BamBai(), glob=InputSelector("assemblyFilename")),
         ]
 
     def bind_metadata(self):
