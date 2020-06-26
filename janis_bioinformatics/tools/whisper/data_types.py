@@ -1,6 +1,7 @@
 from typing import Any, List
 from janis_core import File
 
+
 class WhisperIdx(File):
     def __init__(self, optional=False):
         super().__init__(optional)
@@ -20,6 +21,5 @@ class WhisperIdx(File):
             ".whisper_idx.ref_seq_dir_pck",
             ".whisper_idx.ref_seq_rc_pck",
             ".whisper_idx.sa_dir",
-            ".whisper_idx.sa_rc"
+            ".whisper_idx.sa_rc",
         ]
-

@@ -13,6 +13,7 @@ from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 
 from ..data_types import WhisperIdx
 
+
 class WhisperAlignBase(BioinformaticsTool, ABC):
     def tool(self):
         return "whisperAlign"
@@ -29,17 +30,9 @@ class WhisperAlignBase(BioinformaticsTool, ABC):
     def inputs(self):
         return [
             ToolInput(
-                "index",
-                WhisperIdx,
-                position=2,
-                doc="base name for whisper index",
+                "index", WhisperIdx, position=2, doc="base name for whisper index",
             ),
-            ToolInput(
-                "fastq",
-                FastqGzPair,
-                position=3,
-                doc="Paired end fastq reads",
-            ),
+            ToolInput("fastq", FastqGzPair, position=3, doc="Paired end fastq reads",),
         ]
 
     def outputs(self):

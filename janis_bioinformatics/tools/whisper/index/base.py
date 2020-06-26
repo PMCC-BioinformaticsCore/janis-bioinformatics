@@ -33,22 +33,16 @@ class WhisperIndexBase(BioinformaticsTool, ABC):
 
     def inputs(self):
         return [
-            ToolInput(
-                "index_name",
-                String,
-                position=2,
-                doc="name of the index",
-            ),
-            ToolInput(
-                "fasta",
-                Array(Fasta),
-                position=3,
-                doc="FASTA files to index",
-            )
+            ToolInput("index_name", String, position=2, doc="name of the index",),
+            ToolInput("fasta", Array(Fasta), position=3, doc="FASTA files to index",),
         ]
 
     def outputs(self):
-        return [ToolOutput("out", WhisperIdx, glob="whisper-index/"+InputSelector("index_name"))]
+        return [
+            ToolOutput(
+                "out", WhisperIdx, glob="whisper-index/" + InputSelector("index_name")
+            )
+        ]
 
     def memory(self, hints: Dict[str, Any]):
         return 8
