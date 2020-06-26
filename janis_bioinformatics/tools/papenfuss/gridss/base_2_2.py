@@ -161,7 +161,12 @@ class GridssBase_2_2(BioinformaticsTool):
     def outputs(self) -> List[ToolOutput]:
         return [
             ToolOutput("vcf", Vcf(), glob=InputSelector("outputFilename")),
-            ToolOutput("assembly", BamBai(), glob=InputSelector("assemblyFilename")),
+            ToolOutput(
+                "assembly",
+                BamBai(),
+                glob=InputSelector("assemblyFilename"),
+                secondaries_present_as={".bai": "^.bai"},
+            ),
         ]
 
     def bind_metadata(self):

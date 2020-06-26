@@ -94,7 +94,12 @@ class GridssBase_2_4(BioinformaticsTool):
     def outputs(self):
         return [
             ToolOutput("out", Vcf(), glob=InputSelector("outputFilename")),
-            ToolOutput("assembly", BamBai(), glob=InputSelector("assemblyFilename")),
+            ToolOutput(
+                "assembly",
+                BamBai(),
+                glob=InputSelector("assemblyFilename"),
+                secondaries_present_as={".bai": "^.bai"},
+            ),
         ]
 
     def cpus(self, hints: Dict[str, Any]):
