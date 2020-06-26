@@ -50,16 +50,19 @@ class FastqGzPairedEnd(Array):
         return "Paired end FastqGz files"
 
     def validate_value(self, meta: Any, allow_null_if_not_optional: bool):
-        return (
-            super().validate_value(meta, allow_null_if_not_optional) and len(meta) == 2
-        )
+        super_is_valid = super().validate_value(meta, allow_null_if_not_optional)
+        if not super_is_valid or meta is None:
+            return super_is_valid
+
+        return len(meta) == 2
 
     def invalid_value_hint(self, meta):
         prev = super().invalid_value_hint(meta)
         hints = []
         if prev:
             hints.append(prev)
-        if len(meta) != 2:
+
+        if meta is not None and len(meta) != 2:
             hints.append(f"There must be exactly 2 (found {len(meta)}) fastq files")
         return ", ".join(hints)
 
