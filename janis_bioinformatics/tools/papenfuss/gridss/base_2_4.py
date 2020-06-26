@@ -66,7 +66,7 @@ class GridssBase_2_4(BioinformaticsTool):
 
     def inputs(self):
         return [
-            ToolInput("bams", Array(BamBai()), position=10),
+            ToolInput("bams", Array(Bam()), position=10),
             ToolInput("reference", FastaWithDict(), position=1, prefix="--reference"),
             ToolInput(
                 "outputFilename",
