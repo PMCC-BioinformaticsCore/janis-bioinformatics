@@ -14,7 +14,7 @@ from janis_core import (
     InputSelector,
 )
 
-from janis_bioinformatics.data_types import Bam, FastaWithDict, Bed, Vcf
+from janis_bioinformatics.data_types import Bam, BamBai, FastaWithDict, Bed, Vcf
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 
 
@@ -114,7 +114,7 @@ class GridssBase_2_2(BioinformaticsTool):
             ),
             ToolInput(
                 "blacklist",
-                Bed(),
+                Bed(optional=True),
                 prefix="BLACKLIST=",
                 separate_value_from_prefix=False,
                 doc="(BL=File) BED blacklist of regions to ignore. Assembly of regions such as high-coverage "
@@ -161,7 +161,12 @@ class GridssBase_2_2(BioinformaticsTool):
     def outputs(self) -> List[ToolOutput]:
         return [
             ToolOutput("vcf", Vcf(), glob=InputSelector("outputFilename")),
-            ToolOutput("assembly", Bam(), glob=InputSelector("assemblyFilename")),
+            ToolOutput(
+                "assembly",
+                BamBai(),
+                glob=InputSelector("assemblyFilename"),
+                secondaries_present_as={".bai": "^.bai"},
+            ),
         ]
 
     def bind_metadata(self):
