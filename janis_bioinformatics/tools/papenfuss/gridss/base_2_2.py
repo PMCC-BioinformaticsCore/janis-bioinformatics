@@ -114,7 +114,7 @@ class GridssBase_2_2(BioinformaticsTool):
             ),
             ToolInput(
                 "blacklist",
-                Bed(),
+                Bed(optional=True),
                 prefix="BLACKLIST=",
                 separate_value_from_prefix=False,
                 doc="(BL=File) BED blacklist of regions to ignore. Assembly of regions such as high-coverage "
