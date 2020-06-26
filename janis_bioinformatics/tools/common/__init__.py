@@ -1,5 +1,6 @@
 from .bwaaligner import BwaAligner
 from .mergeandmark.mergeandmark_4_0 import MergeAndMarkBams_4_0
+from .mergeandmark.mergeandmark_4_1_2 import MergeAndMarkBams_4_1_2
 from .mergeandmark.mergeandmark_4_1_3 import MergeAndMarkBams_4_1_3
 from .splitmultiallele import SplitMultiAllele
 from .bwamem_samtoolsview import BwaMem_SamToolsView
@@ -8,3 +9,4 @@ from .concat_strelkasomaticvcf import ConcatStrelkaSomaticVcf
 from .splitmultiallele_normalistvcf import SplitMultiAlleleNormaliseVcf
 from .filtervardictsomaticvcf import FilterVardictSomaticVcf
 from .gatkbasecalbam import GATKBaseRecalBQSRWorkflow_4_1_3
+from .gatkbasecalbam_4_1_2 import GATKBaseRecalBQSRWorkflow_4_1_2

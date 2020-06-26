@@ -20,17 +20,17 @@ class GatkSomaticVariantCallerTumorOnlyTargeted(BioinformaticsWorkflow):
         return "Variant Callers"
 
     def version(self):
-        return "v0.1.0"
+        return "v0.1.1"
 
     def bind_metadata(self):
-        self.metadata.version = "4.1.3.0"
+        self.metadata.version = "4.1.2.0"
         self.metadata.dateCreated = date(2020, 6, 4)
         self.metadata.dateUpdated = date(2020, 6, 4)
 
         self.metadata.contributors = ["Michael Franklin", "Jiaan Yu"]
         self.metadata.keywords = ["variants", "gatk", "gatk4", "variant caller"]
         self.metadata.documentation = """
-        This is a VariantCaller based on the GATK Best Practice pipelines. It uses the GATK4 toolkit, specifically 4.1.3.
+        This is a VariantCaller based on the GATK Best Practice pipelines. It uses the GATK4 toolkit, specifically 4.1.2.
 
         It has the following steps:
 
@@ -58,7 +58,7 @@ class GatkSomaticVariantCallerTumorOnlyTargeted(BioinformaticsWorkflow):
         # variant calling + learn read orientation model
         self.step(
             "mutect2",
-            gatk4.GatkMutect2_4_1_3(
+            gatk4.GatkMutect2_4_1_2(
                 tumorBams=self.bam,
                 intervals=self.intervals,
                 reference=self.reference,
@@ -68,7 +68,7 @@ class GatkSomaticVariantCallerTumorOnlyTargeted(BioinformaticsWorkflow):
         )
         self.step(
             "learnorientationmodel",
-            gatk4.Gatk4LearnReadOrientationModelLatest(
+            gatk4.Gatk4LearnReadOrientationModel_4_1_2(
                 f1r2CountsFiles=self.mutect2.f1f2r_out,
             ),
         )
@@ -76,20 +76,20 @@ class GatkSomaticVariantCallerTumorOnlyTargeted(BioinformaticsWorkflow):
         # calculate contamination and segmentation
         self.step(
             "getpileupsummaries",
-            gatk4.Gatk4GetPileUpSummariesLatest(
+            gatk4.Gatk4GetPileUpSummaries_4_1_2(
                 bam=self.bam, sites=self.gnomad, intervals=self.intervals
             ),
         )
         self.step(
             "calculatecontamination",
-            gatk4.Gatk4CalculateContaminationLatest(
+            gatk4.Gatk4CalculateContamination_4_1_2(
                 pileupTable=self.getpileupsummaries.out,
             ),
         )
 
         self.step(
             "filtermutect2calls",
-            gatk4.Gatk4FilterMutectCallsLatest(
+            gatk4.Gatk4FilterMutectCalls_4_1_2(
                 vcf=self.mutect2.out,
                 reference=self.reference,
                 segmentationFile=self.calculatecontamination.segOut,

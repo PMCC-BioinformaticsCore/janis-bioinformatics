@@ -17,7 +17,7 @@ from janis_core import (
     get_value_for_hints_and_ordered_resource_tuple,
 )
 
-from janis_bioinformatics.data_types import Bam, FastaWithDict, Bed, Vcf
+from janis_bioinformatics.data_types import Bam, BamBai, FastaWithDict, Bed, Vcf
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 
 
@@ -94,7 +94,12 @@ class GridssBase_2_4(BioinformaticsTool):
     def outputs(self):
         return [
             ToolOutput("out", Vcf(), glob=InputSelector("outputFilename")),
-            ToolOutput("assembly", Bam(), glob=InputSelector("assemblyFilename")),
+            ToolOutput(
+                "assembly",
+                BamBai(),
+                glob=InputSelector("assemblyFilename"),
+                secondaries_present_as={".bai": "^.bai"},
+            ),
         ]
 
     def cpus(self, hints: Dict[str, Any]):
