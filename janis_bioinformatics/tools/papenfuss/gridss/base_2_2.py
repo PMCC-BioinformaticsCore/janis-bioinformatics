@@ -1,5 +1,5 @@
 from datetime import date
-from typing import List
+from typing import List, Dict, Any
 
 from janis_core import (
     ToolOutput,
@@ -12,10 +12,42 @@ from janis_core import (
     Boolean,
     Array,
     InputSelector,
+    CaptureType,
+    get_value_for_hints_and_ordered_resource_tuple,
 )
 
 from janis_bioinformatics.data_types import Bam, FastaWithDict, Bed, Vcf
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
+
+
+CORES_TUPLE = [
+    (
+        CaptureType.key(),
+        {
+            CaptureType.TARGETED: 8,
+            CaptureType.CHROMOSOME: 8,
+            CaptureType.EXOME: 8,
+            CaptureType.THIRTYX: 16,
+            CaptureType.NINETYX: 16,
+            CaptureType.THREEHUNDREDX: 16,
+        },
+    )
+]
+
+MEM_TUPLE = [
+    (
+        CaptureType.key(),
+        {
+            # https://github.com/PapenfussLab/gridss#how-much-memory-should-i-give-gridss
+            CaptureType.TARGETED: 31,
+            CaptureType.CHROMOSOME: 31,
+            CaptureType.EXOME: 31,
+            CaptureType.THIRTYX: 31,
+            CaptureType.NINETYX: 31,
+            CaptureType.THREEHUNDREDX: 31,
+        },
+    )
+]
 
 
 class GridssBase_2_2(BioinformaticsTool):
@@ -163,6 +195,18 @@ class GridssBase_2_2(BioinformaticsTool):
             ToolOutput("vcf", Vcf(), glob=InputSelector("outputFilename")),
             ToolOutput("assembly", Bam(), glob=InputSelector("assemblyFilename")),
         ]
+
+    def cpus(self, hints: Dict[str, Any]):
+        val = get_value_for_hints_and_ordered_resource_tuple(hints, CORES_TUPLE)
+        if val:
+            return val
+        return 8
+
+    def memory(self, hints: Dict[str, Any]):
+        val = get_value_for_hints_and_ordered_resource_tuple(hints, MEM_TUPLE)
+        if val:
+            return val
+        return 31
 
     def bind_metadata(self):
 
