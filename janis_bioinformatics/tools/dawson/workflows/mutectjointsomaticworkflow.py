@@ -1,6 +1,6 @@
 from datetime import date
 
-from janis import Array, String
+from janis_core import Array, String
 from janis_bioinformatics.data_types import CramCrai, FastaWithDict, VcfTabix
 from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.bcftools import (
