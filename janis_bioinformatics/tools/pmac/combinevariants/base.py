@@ -93,7 +93,7 @@ class CombineVariantsBase(BioinformaticsTool, ABC):
                 "columns",
                 Array(String(), optional=True),
                 prefix="--columns",
-                prefix_applies_to_all_elements=True,
+                separator=",",
                 doc="Columns to keep, seperated by space output vcf (unsorted)",
             ),
             ToolInput(
