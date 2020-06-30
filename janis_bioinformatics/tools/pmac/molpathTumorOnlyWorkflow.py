@@ -38,7 +38,7 @@ from janis_bioinformatics.tools.pmac import (
     ParseFastqcAdaptors,
     AnnotateDepthOfCoverage_0_1_0,
     PerformanceSummaryTargeted_0_1_0,
-    CombineVariants_0_0_5,
+    CombineVariants_0_0_8,
     AddBamStatsGermline_0_1_0,
 )
 from janis_bioinformatics.tools.variantcallers import (
@@ -200,7 +200,7 @@ class MolpathTumorOnly_1_0_0(BioinformaticsWorkflow):
         # combine variants
         self.step(
             "combinevariants",
-            CombineVariants_0_0_5(
+            CombineVariants_0_0_8(
                 vcfs=[self.splitnormalisevcf.out, self.mutect2.out],
                 type="germline",
                 columns=["AD", "DP", "AF", "GT"],
