@@ -56,7 +56,7 @@ class PerformanceSummaryGenome_0_1_0(BioinformaticsWorkflow):
         self.step(
             "bedtoolsgenomecoveragebed",
             BedToolsGenomeCoverageBedLatest(
-                inputBam=self.samtoolsview.out, genome=self.genome_file, sorted=True,
+                inputBam=self.samtoolsview.out, genome=self.genome_file,
             ),
         )
         # Give all the output files to performance summary script
@@ -88,8 +88,6 @@ class PerformanceSummaryGenome_0_1_0(BioinformaticsWorkflow):
             GeneCoveragePerSampleLatest(
                 sampleName=self.sample_name,
                 bedtoolsOutputPath=self.bedtoolscoverage.out,
-                genome=self.genome_file,
-                sorted=True,
             ),
         )
 
