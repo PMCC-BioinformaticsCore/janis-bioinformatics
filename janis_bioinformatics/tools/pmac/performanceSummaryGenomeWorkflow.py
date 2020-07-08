@@ -37,7 +37,6 @@ class PerformanceSummaryGenome_0_1_0(BioinformaticsWorkflow):
 
         # Inputs
         self.input("bam", BamBai)
-        self.input("bed", Bed)
         # Pending to multiple outputs with same prefix
         self.input("sample_name", String)
         self.input("genome_file", TextFile)
@@ -72,25 +71,4 @@ class PerformanceSummaryGenome_0_1_0(BioinformaticsWorkflow):
             ),
         )
 
-        # Steps - Gene Coverage
-        self.step(
-            "bedtoolscoverage",
-            BedToolsCoverageBedLatest(
-                inputABed=self.bed,
-                inputBBam=self.samtoolsview.out,
-                histogram=True,
-                genome=self.genome_file,
-                sorted=True,
-            ),
-        )
-        self.step(
-            "genecoverage",
-            GeneCoveragePerSampleLatest(
-                sampleName=self.sample_name,
-                bedtoolsOutputPath=self.bedtoolscoverage.out,
-            ),
-        )
-
         self.output("performanceSummaryOut", source=self.performancesummary.out)
-        self.output("geneFileOut", source=self.genecoverage.geneFileOut)
-        self.output("regionFileOut", source=self.genecoverage.regionFileOut)
