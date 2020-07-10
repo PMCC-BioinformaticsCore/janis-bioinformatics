@@ -15,6 +15,7 @@ from janis_core import (
     ToolMetadata,
     Array,
     Int,
+    Boolean,
 )
 from janis_unix import Tsv
 
@@ -170,5 +171,35 @@ This tool processes a set of bam files to determine coverage at different levels
             prefix="-ct",
             doc="Coverage threshold (in percent) for summarizing statistics",
             prefix_applies_to_all_elements=True,
+        ),
+        ToolInput(
+            "omitDepthOutputAtEachBase",
+            Boolean(optional=True),
+            prefix="--omit-depth-output-at-each-base",
+            doc="Do not output depth of coverage at each base",
+        ),
+        ToolInput(
+            "omitGenesNotEntirelyCoveredByTraversal",
+            Boolean(optional=True),
+            prefix="--omit-genes-not-entirely-covered-by-traversal",
+            doc="Do not output gene summary if it was not completely covered by traversal intervals",
+        ),
+        ToolInput(
+            "omitIntervalStatistics",
+            Boolean(optional=True),
+            prefix="--omit-interval-statistics",
+            doc="Do not calculate per-interval statistics",
+        ),
+        ToolInput(
+            "omitLocusTable",
+            Boolean(optional=True),
+            prefix="--omit-locus-table",
+            doc="Do not calculate per-sample per-depth counts of loci",
+        ),
+        ToolInput(
+            "omitPerSampleStatistics",
+            Boolean(optional=True),
+            prefix="--omit-per-sample-statistics",
+            doc="Do not output the summary files per-sample",
         ),
     ]
