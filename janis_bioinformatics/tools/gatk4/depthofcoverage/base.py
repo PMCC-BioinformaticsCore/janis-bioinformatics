@@ -77,7 +77,6 @@ class Gatk4DepthOfCoverageBase(Gatk4ToolBase, ABC):
                 prefix="-I",
                 doc="The SAM/BAM/CRAM file containing reads.",
                 secondaries_present_as={".bai": "^.bai"},
-                position=10,
             ),
             ToolInput(
                 "reference", FastaWithDict(), prefix="-R", doc="Reference sequence"
@@ -90,9 +89,10 @@ class Gatk4DepthOfCoverageBase(Gatk4ToolBase, ABC):
             ),
             ToolInput(
                 "intervals",
-                Bed(optional=True),
+                Array(Bed),
                 prefix="--intervals",
                 doc="-L (BASE) One or more genomic intervals over which to operate",
+                prefix_applies_to_all_elements=True,
             ),
             *self.additional_args,
         ]
