@@ -101,45 +101,48 @@ class Gatk4DepthOfCoverageBase(Gatk4ToolBase, ABC):
     def outputs(self):
         return [
             ToolOutput(
-                "sample", TextFile(), glob=InputSelector("outputPrefix"), doc=""
+                "out_sample",
+                TextFile(optional=True),
+                glob=InputSelector("outputPrefix"),
+                doc="per locus coverage",
             ),
             ToolOutput(
-                "sampleCumulativeCoverageCounts",
+                "out_sampleCumulativeCoverageCounts",
                 TextFile(),
                 glob=InputSelector("outputPrefix")
                 + ".sample_cumulative_coverage_counts",
-                doc="",
+                doc="coverage histograms (# locus with >= X coverage), aggregated over all bases",
             ),
             ToolOutput(
-                "sampleCumulativeCoverageProportions",
+                "out_sampleCumulativeCoverageProportions",
                 TextFile(),
                 glob=InputSelector("outputPrefix")
                 + ".sample_cumulative_coverage_proportions",
-                doc="",
+                doc="proprotions of loci with >= X coverage, aggregated over all bases",
             ),
             ToolOutput(
-                "sampleIntervalStatistics",
+                "out_sampleIntervalStatistics",
                 TextFile(),
                 glob=InputSelector("outputPrefix") + ".sample_interval_statistics",
-                doc="",
+                doc="total, mean, median, quartiles, and threshold proportions, aggregated per interval",
             ),
             ToolOutput(
-                "sampleIntervalSummary",
+                "out_sampleIntervalSummary",
                 TextFile(),
                 glob=InputSelector("outputPrefix") + ".sample_interval_summary",
-                doc="",
+                doc="2x2 table of # of intervals covered to >= X depth in >=Y samples",
             ),
             ToolOutput(
-                "sampleStatistics",
+                "out_sampleStatistics",
                 TextFile(),
                 glob=InputSelector("outputPrefix") + ".sample_statistics",
-                doc="",
+                doc="coverage histograms (# locus with X coverage), aggregated over all bases",
             ),
             ToolOutput(
-                "sampleSummary",
+                "out_sampleSummary",
                 TextFile(),
                 glob=InputSelector("outputPrefix") + ".sample_summary",
-                doc="",
+                doc="total, mean, median, quartiles, and threshold proportions, aggregated over all bases",
             ),
         ]
 
@@ -166,9 +169,15 @@ This tool processes a set of bam files to determine coverage at different levels
 
     additional_args = [
         ToolInput(
+            "countType",
+            String(optional=True),
+            prefix="--count-type",
+            doc="overlapping reads from the same  fragment be handled? (COUNT_READS|COUNT_FRAGMENTS|COUNT_FRAGMENTS_REQUIRE_SAME_BASE)",
+        ),
+        ToolInput(
             "summaryCoverageThreshold",
             Array(Int(), optional=True),
-            prefix="-ct",
+            prefix="--summary-coverage-threshold",
             doc="Coverage threshold (in percent) for summarizing statistics",
             prefix_applies_to_all_elements=True,
         ),
