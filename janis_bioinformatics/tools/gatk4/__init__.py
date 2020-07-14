@@ -146,3 +146,8 @@ from .gatherbamfiles.versions import (
     Gatk4GatherBamFiles_4_1_4,
     Gatk4GatherBamFilesLatest,
 )
+
+from .depthofcoverage.versions import (
+    Gatk4DepthOfCoverage_4_1_6,
+    Gatk4DepthOfCoverageLatest,
+)
