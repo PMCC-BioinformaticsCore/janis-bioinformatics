@@ -16,6 +16,7 @@ from janis_core import (
     ToolMetadata,
 )
 from janis_core.operators.logical import If
+from janis_core.operators.standard import JoinOperator
 from janis_unix import Tsv
 
 from janis_bioinformatics.data_types import BamBai, Bam
@@ -84,15 +85,7 @@ class Gatk4MarkDuplicatesBase(Gatk4ToolBase, ABC):
             ),
             ToolInput(
                 "outputFilename",
-                Filename(
-                    prefix=If(
-                        InputSelector("bam").length().equals(1),
-                        InputSelector("bam")[0],
-                        "generated",
-                    ),
-                    suffix=".markduped",
-                    extension=".bam",
-                ),
+                Filename(prefix="generated", suffix=".markduped", extension=".bam",),
                 position=10,
                 prefix="-O",
                 doc="File to write duplication metrics to",
@@ -112,9 +105,9 @@ class Gatk4MarkDuplicatesBase(Gatk4ToolBase, ABC):
         return [
             ToolOutput(
                 "out",
-                BamBai,
+                Bam,
                 glob=InputSelector("outputFilename"),
-                secondaries_present_as={".bai": "^.bai"},
+                # secondaries_present_as={".bai": "^.bai"},
             ),
             ToolOutput("metrics", Tsv(), glob=InputSelector("metricsFilename")),
         ]
@@ -216,6 +209,7 @@ If desired, duplicates can be removed using the REMOVE_DUPLICATE and REMOVE_SEQU
             "createIndex",
             Boolean(optional=True),
             prefix="--CREATE_INDEX",
+            default=True,
             position=11,
             doc="Whether to create a BAM index when writing a coordinate-sorted BAM file.",
         ),
