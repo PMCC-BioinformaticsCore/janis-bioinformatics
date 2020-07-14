@@ -1,10 +1,10 @@
 from datetime import date
 
+from janis_unix.tools import UncompressArchive
 from janis_bioinformatics.tools import gatk4
 from janis_bioinformatics.data_types import FastaWithDict, BamBai, VcfTabix, Bed
 from janis_bioinformatics.tools import BioinformaticsWorkflow
-from janis_bioinformatics.tools.common import SplitMultiAlleleNormaliseVcf
-from janis_bioinformatics.tools.pmac import AddBamStatsGermline_0_1_0
+from janis_bioinformatics.tools.common import SplitMultiAllele
 
 
 class GatkGermlineVariantCaller_4_1_3(BioinformaticsWorkflow):
@@ -29,11 +29,9 @@ class GatkGermlineVariantCaller_4_1_3(BioinformaticsWorkflow):
 
         It has the following steps:
 
-        1. BaseRecalibrator
-        2. ApplyBQSR
-        3. HaplotypeCaller
-        4. SplitMultiAllele
-        5. AddBamStatsGermline
+        1. Split Bam based on intervals (bed)
+        2. HaplotypeCaller
+        3. SplitMultiAllele
                 """.strip()
 
     def constructor(self):
@@ -47,62 +45,31 @@ class GatkGermlineVariantCaller_4_1_3(BioinformaticsWorkflow):
         )
         self.input("reference", FastaWithDict)
         self.input("snps_dbsnp", VcfTabix)
-        self.input("snps_1000gp", VcfTabix)
-        self.input("known_indels", VcfTabix)
-        self.input("mills_indels", VcfTabix)
-
-        # self.step(
-        #     "split_bam",
-        #     gatk4.Gatk4SplitReads_4_1_3(bam=self.bam, intervals=self.intervals),
-        # )
 
         self.step(
-            "base_recalibrator",
-            gatk4.Gatk4BaseRecalibrator_4_1_3(
-                bam=self.bam,
-                intervals=self.intervals,
-                reference=self.reference,
-                knownSites=[
-                    self.snps_dbsnp,
-                    self.snps_1000gp,
-                    self.known_indels,
-                    self.mills_indels,
-                ],
-            ),
+            "split_bam",
+            gatk4.Gatk4SplitReads_4_1_3(bam=self.bam, intervals=self.intervals),
         )
-        self.step(
-            "apply_bqsr",
-            gatk4.Gatk4ApplyBqsr_4_1_3(
-                bam=self.bam,
-                intervals=self.intervals,
-                recalFile=self.base_recalibrator.out,
-                reference=self.reference,
-            ),
-        )
+
         self.step(
             "haplotype_caller",
             gatk4.Gatk4HaplotypeCaller_4_1_3(
-                inputRead=self.apply_bqsr,
+                inputRead=self.split_bam.out,
                 intervals=self.intervals,
                 reference=self.reference,
                 dbsnp=self.snps_dbsnp,
                 pairHmmImplementation="LOGLESS_CACHING",
             ),
         )
+        self.step("uncompressvcf", UncompressArchive(file=self.haplotype_caller.out))
         self.step(
             "splitnormalisevcf",
-            SplitMultiAlleleNormaliseVcf(
-                compressedVcf=self.haplotype_caller.out, reference=self.reference
-            ),
-        )
-        self.step(
-            "addbamstats",
-            AddBamStatsGermline_0_1_0(bam=self.bam, vcf=self.splitnormalisevcf.out),
+            SplitMultiAllele(vcf=self.uncompressvcf.out, reference=self.reference),
         )
 
         self.output("variants", source=self.haplotype_caller.out)
         self.output("out_bam", source=self.haplotype_caller.bam)
-        self.output("out", source=self.addbamstats.out)
+        self.output("out", source=self.splitnormalisevcf.out)
 
 
 if __name__ == "__main__":
