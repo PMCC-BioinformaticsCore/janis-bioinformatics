@@ -4,7 +4,7 @@ from .strelkagermline.strelkagermline import (
     StrelkaGermlineLatest,
 )
 from .strelkasomatic.strelkasomatic import (
-    # StrelkaSomatic_2_9_9,
+    StrelkaSomatic_2_9_9,
     StrelkaSomatic_2_9_10,
     StrelkaSomaticLatest,
 )
