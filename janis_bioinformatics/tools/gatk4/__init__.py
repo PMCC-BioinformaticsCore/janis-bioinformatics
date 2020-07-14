@@ -126,3 +126,8 @@ from .collectinsertsizemetrics.versions import (
     Gatk4CollectInsertSizeMetrics_4_1_4,
     Gatk4CollectInsertSizeMetricsLatest,
 )
+
+from .depthofcoverage.versions import (
+    Gatk4DepthOfCoverage_4_1_6,
+    Gatk4DepthOfCoverageLatest,
+)

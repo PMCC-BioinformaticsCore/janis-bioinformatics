@@ -95,7 +95,7 @@ class GridssBase_2_2(BioinformaticsTool):
             ),
             ToolInput(
                 "bams",
-                Array(Bam()),
+                Array(BamBai()),
                 prefix="INPUT=",
                 separate_value_from_prefix=False,
                 prefix_applies_to_all_elements=True,
