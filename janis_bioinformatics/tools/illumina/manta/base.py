@@ -115,11 +115,6 @@ class MantaBase(IlluminaToolBase, ABC):
                 Tsv(),
                 glob=InputSelector("runDir") + "/results/stats/svLocusGraphStats.tsv",
             ),
-            ToolOutput(
-                "somaticSVs",
-                VcfTabix(),
-                glob=InputSelector("runDir") + "/results/variants/somaticSV.vcf.gz",
-            ),
         ]
 
     def arguments(self) -> List[ToolArgument]:

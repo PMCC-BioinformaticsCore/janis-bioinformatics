@@ -103,7 +103,7 @@ class Gatk4HaplotypeCallerBase(Gatk4ToolBase, ABC):
             ),
             ToolInput(
                 "dbsnp",
-                VcfTabix(),
+                VcfTabix(optional=True),
                 position=7,
                 prefix="--dbsnp",
                 doc="(Also: -D) A dbSNP VCF file.",
@@ -113,6 +113,13 @@ class Gatk4HaplotypeCallerBase(Gatk4ToolBase, ABC):
                 Bed(optional=True),
                 prefix="--intervals",
                 doc="-L (BASE) One or more genomic intervals over which to operate",
+            ),
+            ToolInput(
+                "outputBamName",
+                Filename(prefix=InputSelector("inputRead"), extension=".bam"),
+                position=8,
+                prefix="-bamout",
+                doc="File to which assembled haplotypes should be written",
             ),
         ]
 
@@ -124,7 +131,14 @@ class Gatk4HaplotypeCallerBase(Gatk4ToolBase, ABC):
                 glob=InputSelector("outputFilename"),
                 doc="A raw, unfiltered, highly sensitive callset in VCF format. "
                 "File to which variants should be written",
-            )
+            ),
+            ToolOutput(
+                "bam",
+                BamBai,
+                glob=InputSelector("outputBamName"),
+                doc="File to which assembled haplotypes should be written",
+                secondaries_present_as={".bai": "^.bai"},
+            ),
         ]
 
     def bind_metadata(self):
@@ -165,6 +179,12 @@ to our recommendations as documented (https://software.broadinstitute.org/gatk/d
         )
 
     optional_args = [
+        ToolInput(
+            "pairHmmImplementation",
+            String(optional=True),
+            prefix="--pair-hmm-implementation",
+            doc="The PairHMM implementation to use for genotype likelihood calculations. The various implementations balance a tradeoff of accuracy and runtime. The --pair-hmm-implementation argument is an enumerated type (Implementation), which can have one of the following values: EXACT;ORIGINAL;LOGLESS_CACHING;AVX_LOGLESS_CACHING;AVX_LOGLESS_CACHING_OMP;EXPERIMENTAL_FPGA_LOGLESS_CACHING;FASTEST_AVAILABLE. Implementation:  FASTEST_AVAILABLE",
+        ),
         ToolInput(
             "activityProfileOut",
             String(optional=True),

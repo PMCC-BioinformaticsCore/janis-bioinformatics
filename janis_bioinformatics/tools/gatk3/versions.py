@@ -1,6 +1,14 @@
 from abc import ABC
 
 
+class GATK3_3_8_0(ABC):
+    def container(self):
+        return "broadinstitute/gatk3:3.8-0"
+
+    def version(self):
+        return "3.8-0"
+
+
 class GATK3_3_8_1(ABC):
     def container(self):
         return "broadinstitute/gatk3:3.8-1"

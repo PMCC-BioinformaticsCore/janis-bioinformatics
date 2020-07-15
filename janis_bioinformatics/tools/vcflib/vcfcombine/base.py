@@ -4,10 +4,10 @@ from janis_core import ToolInput, ToolOutput, Stdout, ToolMetadata, Array, Strin
 
 from janis_bioinformatics.data_types import CompressedVcf
 from janis_bioinformatics.data_types import Vcf
-from janis_bioinformatics.tools.vcflib.vcflibtoolbase import VcfToolsToolBase
+from janis_bioinformatics.tools.vcflib.vcflibtoolbase import VcfLibToolBase
 
 
-class VcfCombineBase(VcfToolsToolBase, ABC):
+class VcfCombineBase(VcfLibToolBase, ABC):
     @staticmethod
     def tool():
         return "vcfcombine"

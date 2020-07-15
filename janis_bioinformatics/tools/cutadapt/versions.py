@@ -11,6 +11,14 @@ class CutAdapt_1_18(CutAdaptBase_1):
         return "1.18"
 
 
+class CutAdapt_2_1(CutAdaptBase_2):
+    def container(self):
+        return "quay.io/biocontainers/cutadapt:2.1--py37h14c3975_0"
+
+    def version(self):
+        return "2.1"
+
+
 class CutAdapt_2_4(CutAdaptBase_2):
     def container(self):
         return "quay.io/biocontainers/cutadapt:2.4--py37h14c3975_0"

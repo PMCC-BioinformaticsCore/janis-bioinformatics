@@ -3,6 +3,7 @@ from janis_core import WorkflowMetadata
 
 # data types
 from janis_bioinformatics.data_types import BamBai, Bed
+from janis_unix.data_types import TextFile
 from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.bedtools import (
     BedToolsCoverageBedLatest,
@@ -36,17 +37,14 @@ class PerformanceSummaryTargeted_0_1_0(BioinformaticsWorkflow):
 
         # Inputs
         self.input("bam", BamBai)
-        self.input("bed", Bed)
+        self.input("genecoverage_bed", Bed)
+        self.input("region_bed", Bed)
         self.input("sample_name", String)
-
+        self.input("genome_file", TextFile)
         # Steps
         self.step(
             "gatk4collectinsertsizemetrics",
-            Gatk4CollectInsertSizeMetricsLatest(
-                bam=self.bam,
-                outputFilename="insertsizemetrics.txt",
-                outputHistogram="insertsizemetrics.pdf",
-            ),
+            Gatk4CollectInsertSizeMetricsLatest(bam=self.bam,),
         )
         self.step("bamflagstat", SamToolsFlagstatLatest(bam=self.bam))
         self.step(
@@ -57,7 +55,10 @@ class PerformanceSummaryTargeted_0_1_0(BioinformaticsWorkflow):
         self.step(
             "bedtoolsintersectbed",
             BedToolsIntersectBedLatest(
-                inputABam=self.samtoolsview.out, inputBBed=self.bed
+                inputABam=self.samtoolsview.out,
+                inputBBed=self.region_bed,
+                genome=self.genome_file,
+                sorted=True,
             ),
         )
         self.step(
@@ -67,8 +68,10 @@ class PerformanceSummaryTargeted_0_1_0(BioinformaticsWorkflow):
         self.step(
             "bedtoolscoveragebed",
             BedToolsCoverageBedLatest(
-                inputABed=self.bed,
+                inputABed=self.region_bed,
                 inputBBam=self.bedtoolsintersectbed.out,
+                genome=self.genome_file,
+                sorted=True,
                 histogram=True,
             ),
         )
@@ -89,7 +92,11 @@ class PerformanceSummaryTargeted_0_1_0(BioinformaticsWorkflow):
         self.step(
             "bedtoolscoverage",
             BedToolsCoverageBedLatest(
-                inputABed=self.bed, inputBBam=self.samtoolsview.out, histogram=True
+                inputABed=self.genecoverage_bed,
+                inputBBam=self.samtoolsview.out,
+                genome=self.genome_file,
+                sorted=True,
+                histogram=True,
             ),
         )
         self.step(
@@ -97,8 +104,6 @@ class PerformanceSummaryTargeted_0_1_0(BioinformaticsWorkflow):
             GeneCoveragePerSampleLatest(
                 sampleName=self.sample_name,
                 bedtoolsOutputPath=self.bedtoolscoverage.out,
-                outputGeneFile="gene.txt",
-                outputRegionFile="region.txt",
             ),
         )
 

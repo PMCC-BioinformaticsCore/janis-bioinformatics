@@ -3,6 +3,7 @@ from janis_core import WorkflowMetadata
 
 # data types
 from janis_bioinformatics.data_types import BamBai, Bed
+from janis_unix.data_types import TextFile
 from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.bedtools import (
     BedToolsGenomeCoverageBedLatest,
@@ -36,18 +37,14 @@ class PerformanceSummaryGenome_0_1_0(BioinformaticsWorkflow):
 
         # Inputs
         self.input("bam", BamBai)
-        self.input("bed", Bed)
         # Pending to multiple outputs with same prefix
         self.input("sample_name", String)
+        self.input("genome_file", TextFile)
 
         # Steps - Performance Summary
         self.step(
             "gatk4collectinsertsizemetrics",
-            Gatk4CollectInsertSizeMetricsLatest(
-                bam=self.bam,
-                outputFilename="insertsizemetrics.txt",
-                outputHistogram="insertsizemetrics.pdf",
-            ),
+            Gatk4CollectInsertSizeMetricsLatest(bam=self.bam,),
         )
         self.step("bamflagstat", SamToolsFlagstatLatest(bam=self.bam))
         self.step(
@@ -57,7 +54,9 @@ class PerformanceSummaryGenome_0_1_0(BioinformaticsWorkflow):
         self.step("rmdupbamflagstat", SamToolsFlagstatLatest(bam=self.samtoolsview.out))
         self.step(
             "bedtoolsgenomecoveragebed",
-            BedToolsGenomeCoverageBedLatest(inputBam=self.samtoolsview.out),
+            BedToolsGenomeCoverageBedLatest(
+                inputBam=self.samtoolsview.out, genome=self.genome_file,
+            ),
         )
         # Give all the output files to performance summary script
         self.step(
@@ -72,23 +71,4 @@ class PerformanceSummaryGenome_0_1_0(BioinformaticsWorkflow):
             ),
         )
 
-        # Steps - Gene Coverage
-        self.step(
-            "bedtoolscoverage",
-            BedToolsCoverageBedLatest(
-                inputABed=self.bed, inputBBam=self.samtoolsview.out, histogram=True
-            ),
-        )
-        self.step(
-            "genecoverage",
-            GeneCoveragePerSampleLatest(
-                sampleName=self.sample_name,
-                bedtoolsOutputPath=self.bedtoolscoverage.out,
-                outputGeneFile="gene.txt",
-                outputRegionFile="region.txt",
-            ),
-        )
-
         self.output("performanceSummaryOut", source=self.performancesummary.out)
-        self.output("geneFileOut", source=self.genecoverage.geneFileOut)
-        self.output("regionFileOut", source=self.genecoverage.regionFileOut)

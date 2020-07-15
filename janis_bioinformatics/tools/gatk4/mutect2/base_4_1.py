@@ -61,6 +61,7 @@ class Gatk4Mutect2Base_4_1(Gatk4ToolBase, ABC):
 
     def inputs(self):
         return [
+            *super().inputs(),
             ToolInput(
                 tag="tumorBams",
                 input_type=Array(BamBai),
@@ -92,6 +93,12 @@ class Gatk4Mutect2Base_4_1(Gatk4ToolBase, ABC):
                 input_type=FastaWithDict(),
                 prefix="--reference",
                 doc="(-R) Reference sequence file Required.",
+            ),
+            ToolInput(
+                tag="outputBamName",
+                input_type=Filename(extension=".bam"),
+                prefix="-bamout",
+                doc="File to which assembled haplotypes should be written",
             ),
             ToolInput(
                 tag="activityProfileOut",
@@ -539,12 +546,6 @@ class Gatk4Mutect2Base_4_1(Gatk4ToolBase, ABC):
                 doc=" Number of additional bases of context to include around each assembly region  Default value: 100. ",
             ),
             ToolInput(
-                tag="bamout",
-                input_type=String(optional=True),
-                prefix="-bamout",
-                doc="(--bam-output) File to which assembled haplotypes should be written Default value: null.",
-            ),
-            ToolInput(
                 tag="bamWriterType",
                 input_type=String(optional=True),
                 prefix="--bam-writer-type",
@@ -877,6 +878,13 @@ class Gatk4Mutect2Base_4_1(Gatk4ToolBase, ABC):
                 TarFileGz,
                 glob=InputSelector("f1r2TarGz_outputFilename"),
                 doc="To determine type",
+            ),
+            ToolOutput(
+                "bam",
+                BamBai,
+                glob=InputSelector("outputBamName"),
+                doc="File to which assembled haplotypes should be written",
+                secondaries_present_as={".bai": "^.bai"},
             ),
         ]
 
