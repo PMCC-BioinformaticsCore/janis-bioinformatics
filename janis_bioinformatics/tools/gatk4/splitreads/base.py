@@ -67,6 +67,7 @@ class Gatk4SplitReadsBase(Gatk4ToolBase):
                 prefix="--intervals",
                 doc="(-L:String) One or more genomic intervals over which to operate This argument may be specified 0 or more times. Default value: null. ",
             ),
+            *super().inputs(),
             *Gatk4SplitReadsBase.additional_args,
         ]
 

@@ -99,6 +99,13 @@ from .printreads.versions import (
     Gatk4PrintReads_4_1_4,
     Gatk4PrintReadsLatest,
 )
+from .selectvariants.versions import (
+    Gatk4SelectVariants_4_0,
+    Gatk4SelectVariants_4_1_2,
+    Gatk4SelectVariants_4_1_3,
+    Gatk4SelectVariants_4_1_4,
+    Gatk4SelectVariantsLatest,
+)
 from .sortsam.versions import (
     Gatk4SortSam_4_0,
     Gatk4SortSam_4_1_2,
@@ -118,6 +125,11 @@ from .collectinsertsizemetrics.versions import (
     Gatk4CollectInsertSizeMetrics_4_1_3,
     Gatk4CollectInsertSizeMetrics_4_1_4,
     Gatk4CollectInsertSizeMetricsLatest,
+)
+
+from .depthofcoverage.versions import (
+    Gatk4DepthOfCoverage_4_1_6,
+    Gatk4DepthOfCoverageLatest,
 )
 
 from .splitncigarreads.versions import *

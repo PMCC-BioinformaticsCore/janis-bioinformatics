@@ -2,14 +2,14 @@ from abc import ABC
 from typing import Dict, Any
 
 from janis_core import (
-    ToolInput,
-    Filename,
-    ToolOutput,
-    InputSelector,
-    CaptureType,
     Array,
+    CaptureType,
+    Filename,
+    InputSelector,
     Int,
+    ToolInput,
     ToolMetadata,
+    ToolOutput,
     get_value_for_hints_and_ordered_resource_tuple,
 )
 from janis_unix import TarFileGz
@@ -117,8 +117,3 @@ class Gatk4LearnReadOrientationModelBase(Gatk4ToolBase, ABC):
 TBD
 """.strip(),
         )
-
-    def arguments(self):
-        return [
-            # ToolArgument(MemorySelector(prefix="-Xmx", suffix="G", default=8), prefix="--java-options", position=0)
-        ]

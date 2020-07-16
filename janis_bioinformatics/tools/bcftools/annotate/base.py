@@ -4,7 +4,7 @@ from datetime import date
 
 from ..bcftoolstoolbase import BcfToolsToolBase
 from janis_core import get_value_for_hints_and_ordered_resource_tuple
-from janis_bioinformatics.data_types import Vcf, CompressedVcf
+from janis_bioinformatics.data_types import Vcf, CompressedVcf, VcfTabix
 
 from janis_core import (
     ToolInput,
@@ -87,10 +87,10 @@ class BcfToolsAnnotateBase(BcfToolsToolBase, ABC):
 
     def inputs(self):
         return [
-            ToolInput("file", CompressedVcf, position=100),
+            ToolInput("vcf", Vcf(), position=10),
             ToolInput(
                 "outputFilename",
-                Filename(extension=".vcf.gz"),
+                Filename(extension=".vcf"),
                 prefix="--output",
                 doc="[-o] see Common Options",
             ),
@@ -98,7 +98,7 @@ class BcfToolsAnnotateBase(BcfToolsToolBase, ABC):
         ]
 
     def outputs(self):
-        return [ToolOutput("out", CompressedVcf, glob=InputSelector("outputFilename"))]
+        return [ToolOutput("out", Vcf, glob=InputSelector("outputFilename"))]
 
     def docurl():
         return "https://samtools.github.io/bcftools/bcftools.html#annotate"

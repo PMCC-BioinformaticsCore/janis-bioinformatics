@@ -52,7 +52,7 @@ class Gatk4CalculateContaminationBase(Gatk4ToolBase, ABC):
 
     def inputs(self):
         return [
-            *super(Gatk4CalculateContaminationBase, self).inputs(),
+            *super().inputs(),
             *Gatk4CalculateContaminationBase.additional_args,
             ToolInput(
                 "pileupTable",
@@ -62,11 +62,21 @@ class Gatk4CalculateContaminationBase(Gatk4ToolBase, ABC):
             ),
             ToolInput(
                 "segmentationFileOut",
-                Filename(),
+                Filename(
+                    prefix=InputSelector("pileupTable"), extension=".mutect2_segments"
+                ),
                 prefix="--tumor-segmentation",
                 doc="Reference sequence file",
             ),
-            ToolInput("contaminationFileOut", Filename(), position=2, prefix="-O"),
+            ToolInput(
+                "contaminationFileOut",
+                Filename(
+                    prefix=InputSelector("pileupTable"),
+                    extension=".mutect2_contamination",
+                ),
+                position=2,
+                prefix="-O",
+            ),
         ]
 
     def outputs(self):
@@ -105,12 +115,6 @@ class Gatk4CalculateContaminationBase(Gatk4ToolBase, ABC):
             doc="Tables containing contamination information.",
         ),
         ToolInput(
-            "segmentationFile",
-            File(optional=True),
-            prefix="--tumor-segmentation",
-            doc="Tables containing tumor segments' minor allele fractions for germline hets emitted by CalculateContamination",
-        ),
-        ToolInput(
             "statsFile",
             File(optional=True),
             prefix="--stats",
@@ -144,8 +148,3 @@ This tool is featured in the Somatic Short Mutation calling Best Practice Workfl
 This tool borrows from ContEst by Cibulskis et al the idea of estimating contamination from ref reads at hom alt sites. However, ContEst uses a probabilistic model that assumes a diploid genotype with no copy number variation and independent contaminating reads. That is, ContEst assumes that each contaminating read is drawn randomly and independently from a different human. This tool uses a simpler estimate of contamination that relaxes these assumptions. In particular, it works in the presence of copy number variations and with an arbitrary number of contaminating samples. In addition, this tool is designed to work well with no matched normal data. However, one can run GetPileupSummaries on a matched normal bam file and input the result to this tool.
 """.strip(),
         )
-
-    def arguments(self):
-        return [
-            # ToolArgument(MemorySelector(prefix="-Xmx", suffix="G", default=8), prefix="--java-options", position=0)
-        ]

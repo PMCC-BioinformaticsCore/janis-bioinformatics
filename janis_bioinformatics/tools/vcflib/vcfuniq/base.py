@@ -5,10 +5,10 @@ from janis_core import ToolMetadata
 
 from janis_bioinformatics.data_types import CompressedVcf
 from janis_bioinformatics.data_types import Vcf
-from janis_bioinformatics.tools.vcflib.vcflibtoolbase import VcfToolsToolBase
+from janis_bioinformatics.tools.vcflib.vcflibtoolbase import VcfLibToolBase
 
 
-class VcfUniqBase(VcfToolsToolBase, ABC):
+class VcfUniqBase(VcfLibToolBase, ABC):
     def tool(self):
         return "vcfuniq"
 

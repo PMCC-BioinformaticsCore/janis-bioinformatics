@@ -1,10 +1,12 @@
 from janis_core import Boolean
+from janis_unix.tools import UncompressArchive
 
 from janis_bioinformatics.data_types import FastaWithDict, BamBai, BedTabix
 from janis_bioinformatics.tools import BioinformaticsWorkflow
-from janis_bioinformatics.tools.bcftools import BcfToolsView_1_5
 from janis_bioinformatics.tools.common import SplitMultiAllele
+from janis_bioinformatics.tools.htslib import BGZipLatest, TabixLatest
 from janis_bioinformatics.tools.illumina import StrelkaGermline_2_9_10, Manta_1_5_0
+from janis_bioinformatics.tools.vcftools import VcfToolsvcftoolsLatest
 
 
 class IlluminaGermlineVariantCaller(BioinformaticsWorkflow):
@@ -18,7 +20,7 @@ class IlluminaGermlineVariantCaller(BioinformaticsWorkflow):
         return "Variant Callers"
 
     def version(self):
-        return "v0.1.0"
+        return "v0.1.1"
 
     def constructor(self):
 
@@ -48,19 +50,26 @@ class IlluminaGermlineVariantCaller(BioinformaticsWorkflow):
             ),
         )
 
+        # normalise and filter "PASS" variants
+        self.step("uncompressvcf", UncompressArchive(file=self.strelka.variants))
         self.step(
-            "bcfview",
-            BcfToolsView_1_5(file=self.strelka.variants, applyFilters=["PASS"]),
+            "splitnormalisevcf",
+            SplitMultiAllele(vcf=self.uncompressvcf.out, reference=self.reference),
         )
 
         self.step(
-            "split_multi_allele",
-            SplitMultiAllele(vcf=self.bcfview.out, reference=self.reference),
+            "filterpass",
+            VcfToolsvcftoolsLatest(
+                vcf=self.splitnormalisevcf.out,
+                removeFileteredAll=True,
+                recode=True,
+                recodeINFOAll=True,
+            ),
         )
 
-        self.output("diploid", source=self.manta.diploidSV)
+        self.output("sv", source=self.manta.diploidSV)
         self.output("variants", source=self.strelka.variants)
-        self.output("out", source=self.split_multi_allele.out)
+        self.output("out", source=self.filterpass.out)
 
 
 if __name__ == "__main__":

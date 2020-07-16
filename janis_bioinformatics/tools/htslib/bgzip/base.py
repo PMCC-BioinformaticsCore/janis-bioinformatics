@@ -3,7 +3,16 @@ from typing import List
 
 from janis_core import Stdout
 from janis_core import ToolMetadata
-from janis_core import ToolOutput, ToolInput, Boolean, Int, File
+from janis_core import (
+    ToolOutput,
+    ToolInput,
+    Boolean,
+    Int,
+    File,
+    InputSelector,
+    Filename,
+    ToolArgument,
+)
 
 from janis_bioinformatics.data_types import Vcf, CompressedVcf
 from janis_bioinformatics.tools.htslib.htslibbase import HtsLibBase
@@ -22,15 +31,21 @@ class BGZipBase(HtsLibBase, ABC):
     def inputs(self) -> List[ToolInput]:
         return [
             ToolInput("file", Vcf(), position=100, doc="File to bgzip compress"),
+            ToolInput(
+                "outputFilename",
+                Filename(extension=".vcf.gz"),
+                position=102,
+                shell_quote=False,
+            ),
             *self.additional_args,
         ]
 
+    def arguments(self):
+        return [ToolArgument(">", position=101, shell_quote=False)]
+
     def outputs(self) -> List[ToolOutput]:
         return [
-            ToolOutput(
-                "out",
-                Stdout(CompressedVcf(), stdoutname="$(inputs.file.basename + '.gz')"),
-            )
+            ToolOutput("out", CompressedVcf(), glob=InputSelector("outputFilename"),)
         ]
 
     def friendly_name(self):
