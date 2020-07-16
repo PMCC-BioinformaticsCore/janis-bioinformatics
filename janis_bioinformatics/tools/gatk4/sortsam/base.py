@@ -144,6 +144,7 @@ class Gatk4SortSamBase(Gatk4ToolBase, ABC):
             "createIndex",
             Boolean(optional=True),
             prefix="--CREATE_INDEX",
+            default=True,
             position=11,
             doc="Whether to create a BAM index when writing a coordinate-sorted BAM file.",
         ),

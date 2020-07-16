@@ -46,32 +46,17 @@ MEM_TUPLE = [
 
 
 class CallSomaticFreeBayesBase(BioinformaticsTool, ABC):
-    @staticmethod
-    def tool() -> str:
+    def tool(self) -> str:
         return "callSomaticFreeBayes"
 
     def friendly_name(self) -> str:
         return "Call Somatic Variants from freebayes"
 
-    @staticmethod
-    def tool_provider():
+    def tool_provider(self):
         return "Dawson Labs"
 
-    @staticmethod
-    def base_command():
+    def base_command(self):
         return "callSomaticFreeBayes.R"
-
-    def cpus(self, hints: Dict[str, Any]):
-        val = get_value_for_hints_and_ordered_resource_tuple(hints, CORES_TUPLE)
-        if val:
-            return val
-        return 4
-
-    def memory(self, hints: Dict[str, Any]):
-        val = get_value_for_hints_and_ordered_resource_tuple(hints, MEM_TUPLE)
-        if val:
-            return val
-        return 12
 
     def inputs(self):
         return [

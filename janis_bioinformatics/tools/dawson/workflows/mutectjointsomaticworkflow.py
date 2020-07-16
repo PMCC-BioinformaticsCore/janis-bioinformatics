@@ -31,12 +31,10 @@ class Mutect2JointSomaticWorkflow(BioinformaticsWorkflow):
     def friendly_name(self):
         return "Mutect2 joint somatic variant calling workflow"
 
-    @staticmethod
-    def tool_provider():
+    def tool_provider(self):
         return "Dawson Labs"
 
-    @staticmethod
-    def version():
+    def version(self):
         return "0.1"
 
     def bind_metadata(self):

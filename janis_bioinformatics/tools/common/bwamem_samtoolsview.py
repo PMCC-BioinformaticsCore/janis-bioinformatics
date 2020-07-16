@@ -189,6 +189,26 @@ class BwaMem_SamToolsView(BioinformaticsTool):
             "insensitive to this value unless it significantly deviates 20. (Default: 19)",
         ),
         ToolInput(
+            "batchSize",
+            Int(optional=True),
+            prefix="-K",
+            position=2,
+            shell_quote=False,
+            doc="Process INT input bases in each batch regardless of the number of threads in use [10000000*nThreads]. "
+            "By default, the batch size is proportional to the number of threads in use. Because the inferred "
+            "insert size distribution slightly depends on the batch size, using different number of threads "
+            "may produce different output. Specifying this option helps reproducibility.",
+        ),
+        ToolInput(
+            "useSoftClippingForSupplementaryAlignments",
+            Boolean(optional=True),
+            prefix="-Y",
+            position=2,
+            shell_quote=False,
+            doc="Use soft clipping CIGAR operation for supplementary alignments. By default, BWA-MEM uses soft "
+            "clipping for the primary alignment and hard clipping for supplementary alignments.",
+        ),
+        ToolInput(
             "bandwidth",
             Int(optional=True),
             prefix="-w",
