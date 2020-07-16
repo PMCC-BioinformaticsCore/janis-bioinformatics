@@ -93,6 +93,8 @@ class OncopipeStarAligner(BioinformaticsWorkflow):
             ),
         )
 
+        self.output("out_bam", source=None)  # self.star_ma_2pass_PE.bam)
+
 
 if __name__ == "__main__":
     OncopipeStarAligner().translate("cwl")
