@@ -28,6 +28,7 @@ from janis_bioinformatics.tools import (
     samtools,
     sequenza,
     star,
+    subread,
     ucsf,
     validation,
     variantcallers,
