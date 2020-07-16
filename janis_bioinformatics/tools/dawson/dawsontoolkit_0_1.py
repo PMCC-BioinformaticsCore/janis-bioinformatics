@@ -3,14 +3,11 @@ from janis_core import CommandTool
 
 
 class DawsonToolkit_0_1(CommandTool, ABC):
-    @staticmethod
-    def tool_provider():
+    def tool_provider(self):
         return "Dawson Labs"
 
-    @staticmethod
-    def container():
+    def container(self):
         return "shollizeck/dawsontoolkit:0.1.6.1"
 
-    @staticmethod
-    def version():
+    def version(self):
         return "0.1.6"

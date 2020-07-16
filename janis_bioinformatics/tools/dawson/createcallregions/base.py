@@ -1,16 +1,19 @@
-from janis_core import PythonTool, TOutput, File
-from typing import Dict, Optional, List, Any
+from typing import Dict, List, Any
 
-from janis_core import Array
+from janis_core import TOutput, Array
+
 from janis_bioinformatics.data_types import FastaFai
+from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsPythonTool
 
 
-class CreateCallRegions(PythonTool):
+class CreateCallRegions(BioinformaticsPythonTool):
+    def tool_provider(self):
+        return "Dawson Labs"
+
     @staticmethod
     def code_block(
         reference: FastaFai, regionSize: int, equalize: bool = True
     ) -> Dict[str, Any]:
-        from shutil import copyfile
         import csv
         import math
 
