@@ -105,9 +105,9 @@ class Gatk4MarkDuplicatesBase(Gatk4ToolBase, ABC):
         return [
             ToolOutput(
                 "out",
-                BamBai,
+                Bam,
                 glob=InputSelector("outputFilename"),
-                secondaries_present_as={".bai": "^.bai"},
+                # secondaries_present_as={".bai": "^.bai"},
             ),
             ToolOutput("metrics", Tsv(), glob=InputSelector("metricsFilename")),
         ]
