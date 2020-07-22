@@ -3,6 +3,7 @@ from typing import List, Dict, Any
 
 from janis_core import CpuSelector
 from janis_core import get_value_for_hints_and_ordered_resource_tuple
+from janis_core.operators.standard import JoinOperator
 
 from janis_bioinformatics.tools import BioinformaticsTool
 from janis_bioinformatics.data_types import BamBai, Bed, FastaFai, Vcf
@@ -130,7 +131,9 @@ class VarDictSomaticBase(BioinformaticsTool, ABC):
             ToolArgument("| testsomatic.R |", position=3, shell_quote=False),
             ToolArgument("var2vcf_paired.pl", position=4, shell_quote=False),
             ToolArgument(
-                InputSelector("tumorBam") + "|" + InputSelector("normalBam"),
+                JoinOperator(
+                    [InputSelector("tumorBam"), InputSelector("normalBam")], "|"
+                ),
                 prefix="-b",
                 position=1,
                 shell_quote=True,
@@ -139,7 +142,9 @@ class VarDictSomaticBase(BioinformaticsTool, ABC):
                 InputSelector("tumorName"), prefix="-N", position=1, shell_quote=True
             ),
             ToolArgument(
-                InputSelector("tumorName") + "|" + InputSelector("normalName"),
+                JoinOperator(
+                    [InputSelector("tumorName"), InputSelector("normalName")], "|"
+                ),
                 prefix="-N",
                 position=5,
                 shell_quote=True,
