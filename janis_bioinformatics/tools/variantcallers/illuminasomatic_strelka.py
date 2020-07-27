@@ -9,6 +9,7 @@ from janis_bioinformatics.tools.common import (
 )
 from janis_bioinformatics.tools.htslib import BGZipLatest, TabixLatest
 from janis_bioinformatics.tools.illumina import Manta_1_5_0, StrelkaSomatic_2_9_10
+from janis_bioinformatics.tools.pmac import ExtractStrelkaSomaticADDP_0_0_9
 from janis_bioinformatics.tools.vcftools import VcfToolsvcftoolsLatest
 
 
@@ -71,9 +72,14 @@ class IlluminaSomaticVariantCaller(BioinformaticsWorkflow):
             SplitMultiAllele(vcf=self.uncompressvcf.out, reference=self.reference),
         )
         self.step(
+            "extractaddp",
+            ExtractStrelkaSomaticADDP_0_0_9(vcf=self.splitnormalisevcf.out),
+        )
+
+        self.step(
             "filterpass",
             VcfToolsvcftoolsLatest(
-                vcf=self.splitnormalisevcf.out,
+                vcf=self.extractaddp.out,
                 removeFileteredAll=True,
                 recode=True,
                 recodeINFOAll=True,
