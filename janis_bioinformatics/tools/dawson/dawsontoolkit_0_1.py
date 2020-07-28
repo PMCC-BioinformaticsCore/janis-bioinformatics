@@ -3,8 +3,7 @@ from janis_core import CommandTool
 
 
 class DawsonToolkit_0_1(CommandTool, ABC):
-    @staticmethod
-    def tool_provider():
+    def tool_provider(self):
         return "Dawson Labs"
 
     @staticmethod

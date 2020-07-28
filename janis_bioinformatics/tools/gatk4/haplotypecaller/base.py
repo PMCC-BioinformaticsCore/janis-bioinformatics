@@ -127,7 +127,7 @@ class Gatk4HaplotypeCallerBase(Gatk4ToolBase, ABC):
         return [
             ToolOutput(
                 "out",
-                CompressedVcf,
+                VcfTabix,
                 glob=InputSelector("outputFilename"),
                 doc="A raw, unfiltered, highly sensitive callset in VCF format. "
                 "File to which variants should be written",
@@ -445,5 +445,19 @@ to our recommendations as documented (https://software.broadinstitute.org/gatk/d
             Boolean(optional=True),
             prefix="--use-new-qual-calculator",
             doc="-new-qual If provided, we will use the new AF model instead of the so-called exact model",
+        ),
+        ToolInput(
+            "gvcfGqBands",
+            Array(Int, optional=True),
+            prefix="-GQB",
+            prefix_applies_to_all_elements=True,
+            doc="(--gvcf-gq-bands) Exclusive upper bounds for reference confidence GQ"
+            " bands (must be in [1, 100] and specified in increasing order)",
+        ),
+        ToolInput(
+            "emitRefConfidence",
+            String(optional=True),
+            prefix="--emit-ref-confidence",
+            doc="(-ERC) Mode for emitting reference confidence scores (For Mutect2, this is a BETA feature)",
         ),
     ]
