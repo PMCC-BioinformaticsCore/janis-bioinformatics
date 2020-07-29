@@ -112,8 +112,9 @@ class Strelka2PassWorkflow(BioinformaticsWorkflow):
 
         self.output("snvs", Array(VcfTabix), source=self.indexSNVs, output_folder=self.sampleNames)
         self.output("indels", Array(VcfTabix), source=self.indexINDELs, output_folder=self.sampleNames)
-        # we enable this, because we also have a different wrapper than the default
-        self.output("svs", Array(VcfTabix), source=self.step1.somaticSVs, output_folder=self.sampleNames)
+
+        #optional output from manta, but we know it will be created
+        self.output("svs", source=self.step1.somaticSVs, output_folder=self.sampleNames)
 
 
 if __name__ == "__main__":
