@@ -110,10 +110,10 @@ class Strelka2PassWorkflow(BioinformaticsWorkflow):
         self.step("compressINDELs", BGZip(file=self.refilterINDELs.out), scatter="file")
         self.step("indexINDELs", Tabix(inp=self.compressINDELs.out), scatter="inp")
 
-        self.output("snvs", VcfTabix, source=self.indexSNVs, output_folder=self.sampleNames)
-        self.output("indels", VcfTabix, source=self.indexINDELs, output_folder=self.sampleNames)
+        self.output("snvs", Array(VcfTabix), source=self.indexSNVs, output_folder=self.sampleNames)
+        self.output("indels", Array(VcfTabix), source=self.indexINDELs, output_folder=self.sampleNames)
         # we enable this, because we also have a different wrapper than the default
-        self.output("svs", VcfTabix, source=self.step1.somaticSVs, output_folder=self.sampleNames)
+        self.output("svs", Array(VcfTabix), source=self.step1.somaticSVs, output_folder=self.sampleNames)
 
 
 if __name__ == "__main__":
