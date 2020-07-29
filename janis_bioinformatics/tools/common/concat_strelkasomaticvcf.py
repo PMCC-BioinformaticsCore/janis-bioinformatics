@@ -53,9 +53,9 @@ class ConcatStrelkaSomaticVcf(BioinformaticsTool):
 
     def arguments(self):
         return [
-            ToolArgument("vcf-concat", position=0, shell_quote=False),
+            ToolArgument("vcf-merge", position=0, shell_quote=False),
             ToolArgument("| grep '^##' > header.vcf;", position=2, shell_quote=False),
-            ToolArgument("vcf-merge", position=3, shell_quote=False),
+            ToolArgument("vcf-concat", position=3, shell_quote=False),
             ToolArgument(
                 "| grep -v '^##' > content.vcf; cat header.vcf content.vcf | bgzip -c ",
                 position=5,
