@@ -3,11 +3,11 @@ from janis_unix.tools import UncompressArchive
 
 from janis_bioinformatics.data_types import FastaWithDict, BamBai, BedTabix
 from janis_bioinformatics.tools import BioinformaticsWorkflow
+from janis_bioinformatics.tools.bcftools import BcfToolsSort_1_9
 from janis_bioinformatics.tools.common import (
     SplitMultiAllele,
     ConcatStrelkaSomaticVcf,
 )
-from janis_bioinformatics.tools.htslib import BGZipLatest, TabixLatest
 from janis_bioinformatics.tools.illumina import Manta_1_5_0, StrelkaSomatic_2_9_10
 from janis_bioinformatics.tools.pmac import ExtractStrelkaSomaticADDP_0_1_0
 from janis_bioinformatics.tools.vcftools import VcfToolsvcftoolsLatest
@@ -64,12 +64,10 @@ class IlluminaSomaticVariantCaller(BioinformaticsWorkflow):
                 contentVcfs=[self.strelka.snvs, self.strelka.indels],
             ),
         )
-        self.step("tabixvcf", TabixLatest(inp=self.concatvcf.out))
-
-        self.step("uncompressvcf", UncompressArchive(file=self.concatvcf.out))
+        self.step("sortvcf", BcfToolsSort_1_9(vcf=self.concatvcf.out))
         self.step(
             "splitnormalisevcf",
-            SplitMultiAllele(vcf=self.uncompressvcf.out, reference=self.reference),
+            SplitMultiAllele(vcf=self.sortvcf.out, reference=self.reference),
         )
         self.step(
             "extractaddp",
@@ -87,5 +85,5 @@ class IlluminaSomaticVariantCaller(BioinformaticsWorkflow):
         )
 
         self.output("sv", source=self.manta.diploidSV)
-        self.output("variants", source=self.tabixvcf.out)
+        self.output("variants", source=self.sortvcf.out)
         self.output("out", source=self.filterpass.out)
