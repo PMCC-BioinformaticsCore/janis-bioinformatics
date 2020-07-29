@@ -6,8 +6,10 @@ class DawsonToolkit_0_1(CommandTool, ABC):
     def tool_provider(self):
         return "Dawson Labs"
 
-    def container(self):
-        return "shollizeck/dawsontoolkit:0.1.6.1"
+    @staticmethod
+    def container():
+        return "shollizeck/dawsontoolkit:0.1.7"
 
-    def version(self):
-        return "0.1.6"
+    @staticmethod
+    def version():
+        return "0.1.7"

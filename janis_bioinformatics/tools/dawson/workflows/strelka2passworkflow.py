@@ -13,6 +13,7 @@ from janis_bioinformatics.tools.dawson.workflows.strelka2passanalysisstep2 impor
 )
 from janis_bioinformatics.tools.htslib import BGZipLatest as BGZip, TabixLatest as Tabix
 from janis_core import Array, Boolean, String
+from janis_bioinformatics.data_types import VcfTabix
 
 
 class Strelka2PassWorkflow(BioinformaticsWorkflow):
@@ -109,10 +110,10 @@ class Strelka2PassWorkflow(BioinformaticsWorkflow):
         self.step("compressINDELs", BGZip(file=self.refilterINDELs.out), scatter="file")
         self.step("indexINDELs", Tabix(inp=self.compressINDELs.out), scatter="inp")
 
-        self.output("snvs", source=self.indexSNVs, output_folder=self.sampleNames)
-        self.output("indels", source=self.indexINDELs, output_folder=self.sampleNames)
+        self.output("snvs", VcfTabix, source=self.indexSNVs, output_folder=self.sampleNames)
+        self.output("indels", VcfTabix, source=self.indexINDELs, output_folder=self.sampleNames)
         # we enable this, because we also have a different wrapper than the default
-        self.output("svs", source=self.step1.somaticSVs, output_folder=self.sampleNames)
+        self.output("svs", VcfTabix, source=self.step1.somaticSVs, output_folder=self.sampleNames)
 
 
 if __name__ == "__main__":
