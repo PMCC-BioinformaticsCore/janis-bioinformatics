@@ -18,7 +18,7 @@ from janis_core import (
     InputSelector,
 )
 from janis_core import get_value_for_hints_and_ordered_resource_tuple
-from janis_unix import ZipFile
+from janis_unix.data_types import ZipFile, HtmlFile
 
 from janis_bioinformatics.data_types import FastqGzPair, FastqGz
 from janis_bioinformatics.tools import BioinformaticsTool
@@ -108,6 +108,7 @@ class FastQCSingleBase(BioinformaticsTool, ABC):
                 File,
                 glob=WildcardSelector(wildcard="*/fastqc_data.txt"),
             ),
+            ToolOutput("out_html", HtmlFile, glob=WildcardSelector(wildcard="*.html"),),
             ToolOutput(
                 "out_directory",
                 Directory,
