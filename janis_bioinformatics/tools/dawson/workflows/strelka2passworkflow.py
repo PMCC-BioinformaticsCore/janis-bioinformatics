@@ -12,7 +12,7 @@ from janis_bioinformatics.tools.dawson.workflows.strelka2passanalysisstep2 impor
     Strelka2PassWorkflowStep2,
 )
 from janis_bioinformatics.tools.htslib import BGZipLatest as BGZip, TabixLatest as Tabix
-from janis_core import Array, Boolean, String
+from janis_core import Array, Boolean, String, File
 from janis_bioinformatics.data_types import VcfTabix
 
 
@@ -32,7 +32,7 @@ class Strelka2PassWorkflow(BioinformaticsWorkflow):
     def bind_metadata(self):
         self.metadata.version = "0.1"
         self.metadata.dateCreated = date(2019, 10, 11)
-        self.metadata.dateUpdated = date(2019, 10, 15)
+        self.metadata.dateUpdated = date(2020, 8, 4)
 
         self.metadata.contributors = ["Sebastian Hollizeck"]
         self.metadata.keywords = [
@@ -59,6 +59,8 @@ class Strelka2PassWorkflow(BioinformaticsWorkflow):
         self.input("tumorBams", Array(CramCrai))
 
         self.input("reference", FastaWithDict)
+
+        self.input("configStrelka", File(optional=True))
         self.input("callRegions", BedTabix(optional=True))
         self.input("exome", Boolean(optional=True), default=False)
 
@@ -72,6 +74,7 @@ class Strelka2PassWorkflow(BioinformaticsWorkflow):
                 reference=self.reference,
                 callRegions=self.callRegions,
                 exome=self.exome,
+                configStrelka=self.configStrelka,
             ),
             scatter="tumorBam",
         )
@@ -88,6 +91,7 @@ class Strelka2PassWorkflow(BioinformaticsWorkflow):
                 # as soon as janis allows flattening of arguments, we need this
                 # indelCandidates=self.step1.indels,
                 exome=self.exome,
+                configStrelka=self.configStrelka,
             ),
             scatter="tumorBam",
         )
