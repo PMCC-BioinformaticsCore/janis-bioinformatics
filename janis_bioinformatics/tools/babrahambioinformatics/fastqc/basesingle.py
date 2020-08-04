@@ -15,9 +15,10 @@ from janis_core import (
     Int,
     CaptureType,
     CpuSelector,
+    InputSelector,
 )
 from janis_core import get_value_for_hints_and_ordered_resource_tuple
-from janis_unix import ZipFile
+from janis_unix.data_types import ZipFile, HtmlFile
 
 from janis_bioinformatics.data_types import FastqGzPair, FastqGz
 from janis_bioinformatics.tools import BioinformaticsTool
@@ -52,12 +53,12 @@ MEM_TUPLE = [
 ]
 
 
-class FastQCBase(BioinformaticsTool, ABC):
+class FastQCSingleBase(BioinformaticsTool, ABC):
     def friendly_name(self) -> str:
-        return "FastQC"
+        return "FastQC (single read)"
 
     def tool(self):
-        return "fastqc"
+        return "fastqc_single"
 
     def base_command(self):
         return "fastqc"
@@ -97,17 +98,21 @@ class FastQCBase(BioinformaticsTool, ABC):
         return 8
 
     def inputs(self) -> List[ToolInput]:
-        return [ToolInput("reads", Array(FastqGz), position=5), *self.additional_inputs]
+        return [ToolInput("read", FastqGz, position=5), *self.additional_inputs]
 
     def outputs(self) -> List[ToolOutput]:
         return [
+            ToolOutput("out", ZipFile(), glob=WildcardSelector(wildcard="*.zip")),
             ToolOutput(
-                "out", Array(ZipFile()), glob=WildcardSelector(wildcard="*.zip")
-            ),
-            ToolOutput(
-                "datafile",
-                Array(File),
+                "out_datafile",
+                File,
                 glob=WildcardSelector(wildcard="*/fastqc_data.txt"),
+            ),
+            ToolOutput("out_html", HtmlFile, glob=WildcardSelector(wildcard="*.html"),),
+            ToolOutput(
+                "out_directory",
+                Directory,
+                selector=InputSelector("read", use_basename=True) + "_fastqc",
             ),
         ]
 
