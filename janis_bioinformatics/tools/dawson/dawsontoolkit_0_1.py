@@ -8,7 +8,7 @@ class DawsonToolkit_0_1(CommandTool, ABC):
 
     @staticmethod
     def container():
-        return "shollizeck/dawsontoolkit:0.1.7"
+        return "shollizeck/dawsontoolkit:0.1.7.1"
 
     @staticmethod
     def version():

@@ -9,7 +9,7 @@ from janis_bioinformatics.tools.bcftools import (
 from janis_bioinformatics.tools.illumina.strelkasomatic.strelkasomatic import (
     StrelkaSomaticCram_2_9_10 as Strelka,
 )
-from janis_core import Array, Boolean
+from janis_core import Array, Boolean, File
 
 
 class Strelka2PassWorkflowStep2(BioinformaticsWorkflow):
@@ -28,7 +28,7 @@ class Strelka2PassWorkflowStep2(BioinformaticsWorkflow):
     def bind_metadata(self):
         self.metadata.version = "0.1"
         self.metadata.dateCreated = date(2019, 10, 11)
-        self.metadata.dateUpdated = date(2019, 10, 11)
+        self.metadata.dateUpdated = date(2020, 8, 4)
 
         self.metadata.contributors = ["Sebastian Hollizeck"]
         self.metadata.keywords = [
@@ -54,6 +54,7 @@ class Strelka2PassWorkflowStep2(BioinformaticsWorkflow):
         self.input("reference", FastaWithDict)
         self.input("callRegions", BedTabix(optional=True))
         self.input("exome", Boolean(optional=True), default=False)
+        self.input("configStrelka", File(optional=True))
 
         self.input("indelCandidates", Array(VcfTabix))
         self.input("strelkaSNVs", Array(VcfTabix))
@@ -70,6 +71,7 @@ class Strelka2PassWorkflowStep2(BioinformaticsWorkflow):
                 reference=self.reference,
                 callRegions=self.callRegions,
                 exome=self.exome,
+                config=self.configStrelka,
             ),
         )
         self.step(
