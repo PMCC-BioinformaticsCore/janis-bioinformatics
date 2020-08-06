@@ -31,6 +31,7 @@ class Gatk4GenotypeConcordanceBase(Gatk4ToolBase, ABC):
 
     def inputs(self):
         return [
+            *super().inputs(),
             ToolInput(
                 "callVCF",
                 VcfTabix(),
@@ -61,17 +62,23 @@ class Gatk4GenotypeConcordanceBase(Gatk4ToolBase, ABC):
             ToolOutput(
                 "summaryMetrics",
                 File(),
-                glob=WildcardSelector("*.genotype_concordance_summary_metrics"),
+                glob=WildcardSelector(
+                    "*.genotype_concordance_summary_metrics", select_first=True
+                ),
             ),
             ToolOutput(
                 "detailMetrics",
                 File(),
-                glob=WildcardSelector("*.genotype_concordance_detail_metrics"),
+                glob=WildcardSelector(
+                    "*.genotype_concordance_detail_metrics", select_first=True
+                ),
             ),
             ToolOutput(
                 "contingencyMetrics",
                 File(),
-                glob=WildcardSelector("*.genotype_concordance_contingency_metrics"),
+                glob=WildcardSelector(
+                    "*.genotype_concordance_contingency_metrics", select_first=True
+                ),
             ),
             # ToolOutput("vcf", VcfIdx(optional=True), glob=WildcardSelector("*.vcf"))
         ]

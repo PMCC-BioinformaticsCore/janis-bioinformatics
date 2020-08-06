@@ -96,7 +96,11 @@ class BamSorMaDupBase(BioinformaticsTool, ABC):
     def outputs(self):
         return [
             ToolOutput("out", Stdout(Bam())),
-            ToolOutput("metrics", File(), glob=WildcardSelector("metrics.txt")),
+            ToolOutput(
+                "metrics",
+                File(),
+                glob=WildcardSelector("metrics.txt", select_first=True),
+            ),
         ]
 
     def memory(self, hints: Dict[str, Any]):

@@ -100,6 +100,9 @@ class FastqcSingleScattered(BioinformaticsWorkflow):
     def friendly_name(self):
         return "FastQC (Single, Scattered)"
 
+    def tool_provider(self):
+        return "FastQC"
+
     def id(self) -> str:
         return "fastqc_single_scattered"
 

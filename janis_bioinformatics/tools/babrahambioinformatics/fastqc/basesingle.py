@@ -102,13 +102,21 @@ class FastQCSingleBase(BioinformaticsTool, ABC):
 
     def outputs(self) -> List[ToolOutput]:
         return [
-            ToolOutput("out", ZipFile(), glob=WildcardSelector(wildcard="*.zip")),
+            ToolOutput(
+                "out",
+                ZipFile(),
+                glob=WildcardSelector(wildcard="*.zip", select_first=True),
+            ),
             ToolOutput(
                 "out_datafile",
                 File,
-                glob=WildcardSelector(wildcard="*/fastqc_data.txt"),
+                glob=WildcardSelector(wildcard="*/fastqc_data.txt", select_first=True),
             ),
-            ToolOutput("out_html", HtmlFile, glob=WildcardSelector(wildcard="*.html"),),
+            ToolOutput(
+                "out_html",
+                HtmlFile,
+                glob=WildcardSelector(wildcard="*.html", select_first=True),
+            ),
             ToolOutput(
                 "out_directory",
                 Directory,

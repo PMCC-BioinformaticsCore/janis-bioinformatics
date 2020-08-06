@@ -31,6 +31,7 @@ class Gatk4SelectVariantsBase(Gatk4ToolBase, ABC):
 
     def inputs(self):
         return [
+            *super().inputs(),
             ToolInput(
                 tag="outputFilename",
                 input_type=Filename(optional=True),

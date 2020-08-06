@@ -71,6 +71,7 @@ class Gatk4MergeBamAlignmentBase(Gatk4ToolBase, ABC):
 
     def inputs(self):
         return [
+            *super().inputs(),
             ToolInput(
                 "ubam",
                 Bam(),
