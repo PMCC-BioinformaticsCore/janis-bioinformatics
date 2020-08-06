@@ -114,10 +114,20 @@ class Strelka2PassWorkflow(BioinformaticsWorkflow):
         self.step("compressINDELs", BGZip(file=self.refilterINDELs.out), scatter="file")
         self.step("indexINDELs", Tabix(inp=self.compressINDELs.out), scatter="inp")
 
-        self.output("snvs", Array(VcfTabix), source=self.indexSNVs, output_folder=self.sampleNames)
-        self.output("indels", Array(VcfTabix), source=self.indexINDELs, output_folder=self.sampleNames)
+        self.output(
+            "snvs",
+            Array(VcfTabix),
+            source=self.indexSNVs,
+            output_folder=self.sampleNames,
+        )
+        self.output(
+            "indels",
+            Array(VcfTabix),
+            source=self.indexINDELs,
+            output_folder=self.sampleNames,
+        )
 
-        #optional output from manta, but we know it will be created
+        # optional output from manta, but we know it will be created
         self.output("svs", source=self.step1.somaticSVs, output_folder=self.sampleNames)
 
 
