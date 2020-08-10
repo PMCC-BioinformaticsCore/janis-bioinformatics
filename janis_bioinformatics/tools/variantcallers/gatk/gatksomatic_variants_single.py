@@ -1,10 +1,7 @@
 from datetime import date
 
-from janis_core import String, WorkflowBuilder, Array
 from janis_bioinformatics.tools import gatk4
 from janis_bioinformatics.tools.common import SplitMultiAlleleNormaliseVcf
-from janis_bioinformatics.tools.vcftools import VcfToolsvcftoolsLatest
-from janis_bioinformatics.tools.pmac import AddBamStatsSomatic_0_1_0
 from janis_bioinformatics.data_types import FastaWithDict, BamBai, VcfTabix, Bed
 from janis_bioinformatics.tools import BioinformaticsWorkflow
 
