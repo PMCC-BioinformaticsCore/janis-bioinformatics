@@ -1,6 +1,6 @@
 from datetime import date
 
-from janis_bioinformatics.data_types import BedTabix, CramCrai, FastaWithDict
+from janis_bioinformatics.data_types import BedTabix, CramCrai, FastaFai
 from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.dawson import (
     RefilterStrelka2Calls_0_1 as RefilterStrelka2Calls,
@@ -58,7 +58,7 @@ class Strelka2PassWorkflow(BioinformaticsWorkflow):
         self.input("normalBam", CramCrai)
         self.input("tumorBams", Array(CramCrai))
 
-        self.input("reference", FastaWithDict)
+        self.input("reference", FastaFai)
 
         self.input("configStrelka", File(optional=True))
         self.input("callRegions", BedTabix(optional=True))

@@ -1,6 +1,6 @@
 from datetime import date
 
-from janis_bioinformatics.data_types import BedTabix, CramCrai, FastaWithDict, VcfTabix
+from janis_bioinformatics.data_types import BedTabix, CramCrai, FastaFai, VcfTabix
 from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.bcftools import (
     BcfToolsIndex_1_9 as BcfToolsIndex,
@@ -51,7 +51,7 @@ class Strelka2PassWorkflowStep2(BioinformaticsWorkflow):
         self.input("normalBam", CramCrai)
         self.input("tumorBam", CramCrai)
 
-        self.input("reference", FastaWithDict)
+        self.input("reference", FastaFai)
         self.input("callRegions", BedTabix(optional=True))
         self.input("exome", Boolean(optional=True), default=False)
         self.input("configStrelka", File(optional=True))
