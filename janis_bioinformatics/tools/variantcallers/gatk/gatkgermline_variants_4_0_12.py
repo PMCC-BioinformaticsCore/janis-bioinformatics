@@ -94,7 +94,9 @@ class GatkGermlineVariantCaller_4_0_12(BioinformaticsWorkflow):
         )
         self.step(
             "addbamstats",
-            AddBamStatsGermline_0_1_0(bam=self.bam, vcf=self.splitnormalisevcf.out),
+            AddBamStatsGermline_0_1_0(
+                bam=self.bam, vcf=self.splitnormalisevcf.out, reference=self.reference
+            ),
         )
 
         self.output("variants", source=self.haplotype_caller.out)
