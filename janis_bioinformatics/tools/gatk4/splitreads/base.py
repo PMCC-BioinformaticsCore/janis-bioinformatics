@@ -81,7 +81,7 @@ class Gatk4SplitReadsBase(Gatk4ToolBase):
             ToolOutput(
                 "out",
                 BamBai,
-                glob=InputSelector("bam", use_basename=True),
+                glob=InputSelector("bam"),
                 doc="Bam",
                 secondaries_present_as={".bai": "^.bai"},
             )
