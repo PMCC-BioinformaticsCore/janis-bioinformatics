@@ -1,7 +1,7 @@
 from datetime import date
 
 from janis_core import Array, String
-from janis_bioinformatics.data_types import CramCrai, FastaWithDict, VcfTabix
+from janis_bioinformatics.data_types import CramCrai, FastaFai, VcfTabix
 from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.bcftools import (
     BcfToolsConcat_1_9 as BcfToolsConcat,
@@ -67,7 +67,7 @@ class Mutect2JointSomaticWorkflow(BioinformaticsWorkflow):
 
         self.input("biallelicSites", VcfTabix)
 
-        self.input("reference", FastaWithDict)
+        self.input("reference", FastaFai)
 
         self.input("regionSize", int, default=10000000)
 
