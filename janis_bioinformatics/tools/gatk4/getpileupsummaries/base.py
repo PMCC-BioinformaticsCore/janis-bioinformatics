@@ -14,7 +14,7 @@ from janis_core import (
 )
 from janis_unix import TextFile
 
-from janis_bioinformatics.data_types import BamBai, VcfIdx, Bed, VcfTabix
+from janis_bioinformatics.data_types import BamBai, VcfIdx, Bed, VcfTabix, FastaFai
 from ..gatk4toolbase import Gatk4ToolBase
 
 CORES_TUPLE = [
@@ -79,6 +79,12 @@ class Gatk4GetPileUpSummariesBase(Gatk4ToolBase, ABC):
             ),
             ToolInput(
                 "pileupTableOut", Filename(extension=".txt"), position=1, prefix="-O"
+            ),
+            ToolInput(
+                reference,
+                FastaFai(optional=True),
+                prefix="-R",
+                doc="reference to use when decoding CRAMS",
             ),
         ]
 
