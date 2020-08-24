@@ -17,7 +17,7 @@ from janis_core import (
 )
 from janis_unix import TextFile
 
-from janis_bioinformatics.data_types import BamBai, Bed, FastaWithDict, Vcf
+from janis_bioinformatics.data_types import BamBai, Bed, FastaFai, Vcf
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 
 CORES_TUPLE = [
@@ -79,7 +79,7 @@ class FreeBayesBase_1_2(BioinformaticsTool):
             ),
             ToolInput(
                 tag="reference",
-                input_type=FastaWithDict(),
+                input_type=FastaFai(),
                 prefix="-f",
                 doc=" Use FILE as the reference sequence for analysis. An index file (FILE.fai) will be created if none exists. If neither --targets nor --region are specified, FreeBayes will analyze every position in this reference.",
             ),
