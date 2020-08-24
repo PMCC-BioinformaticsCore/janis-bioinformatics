@@ -7,12 +7,10 @@ from janis_bioinformatics.tools.star.inputalignmentsfrombam import (
 
 
 class Star_2_7_1:
-    @staticmethod
-    def container():
+    def container(self):
         return "quay.io/biocontainers/star:2.7.3a--0"
 
-    @staticmethod
-    def version():
+    def version(self):
         return "v2.7.1a"
 
 

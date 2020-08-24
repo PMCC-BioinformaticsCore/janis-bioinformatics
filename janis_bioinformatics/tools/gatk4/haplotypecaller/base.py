@@ -447,6 +447,20 @@ to our recommendations as documented (https://software.broadinstitute.org/gatk/d
             doc="-new-qual If provided, we will use the new AF model instead of the so-called exact model",
         ),
         ToolInput(
+            "gvcfGqBands",
+            Array(Int, optional=True),
+            prefix="-GQB",
+            prefix_applies_to_all_elements=True,
+            doc="(--gvcf-gq-bands) Exclusive upper bounds for reference confidence GQ"
+            " bands (must be in [1, 100] and specified in increasing order)",
+        ),
+        ToolInput(
+            "emitRefConfidence",
+            String(optional=True),
+            prefix="--emit-ref-confidence",
+            doc="(-ERC) Mode for emitting reference confidence scores (For Mutect2, this is a BETA feature)",
+        ),
+        ToolInput(
             "dontUseSoftClippedBases",
             Boolean(optional=True),
             prefix="--dont-use-soft-clipped-bases",

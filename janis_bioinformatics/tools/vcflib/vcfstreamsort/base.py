@@ -9,15 +9,13 @@ from janis_bioinformatics.tools.vcflib.vcflibtoolbase import VcfLibToolBase
 
 
 class VcfStreamSortBase(VcfLibToolBase, ABC):
-    @staticmethod
-    def tool():
+    def tool(self):
         return "vcfstreamsort"
 
     def friendly_name(self):
         return "VcfLib: VcfStreamSort"
 
-    @staticmethod
-    def base_command():
+    def base_command(self):
         return "vcfstreamsort"
 
     def inputs(self):

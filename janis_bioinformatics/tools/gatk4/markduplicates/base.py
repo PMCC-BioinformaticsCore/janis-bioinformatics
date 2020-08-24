@@ -15,9 +15,11 @@ from janis_core import (
     get_value_for_hints_and_ordered_resource_tuple,
     ToolMetadata,
 )
+from janis_core.operators.logical import If
+from janis_core.operators.standard import JoinOperator
 from janis_unix import Tsv
 
-from janis_bioinformatics.data_types import BamBai
+from janis_bioinformatics.data_types import BamBai, Bam
 from ..gatk4toolbase import Gatk4ToolBase
 
 CORES_TUPLE = [
@@ -75,17 +77,15 @@ class Gatk4MarkDuplicatesBase(Gatk4ToolBase, ABC):
         return [
             ToolInput(
                 "bam",
-                BamBai(),
+                Array(Bam),
                 prefix="-I",
                 position=10,
-                secondaries_present_as={".bai": "^.bai"},
+                # secondaries_present_as={".bai": "^.bai"},
                 doc="One or more input SAM or BAM files to analyze. Must be coordinate sorted.",
             ),
             ToolInput(
                 "outputFilename",
-                Filename(
-                    prefix=InputSelector("bam"), suffix=".markduped", extension=".bam"
-                ),
+                Filename(prefix="generated", suffix=".markduped", extension=".bam",),
                 position=10,
                 prefix="-O",
                 doc="File to write duplication metrics to",
@@ -198,17 +198,18 @@ If desired, duplicates can be removed using the REMOVE_DUPLICATE and REMOVE_SEQU
             prefix="-CO",
             doc="Comment(s) to include in the output file's header.",
         ),
-        ToolInput(
-            "compressionLevel",
-            Int(optional=True),
-            prefix="--COMPRESSION_LEVEL",
-            position=11,
-            doc="Compression level for all compressed files created (e.g. BAM and GELI).",
-        ),
+        # ToolInput(
+        #     "compressionLevel",
+        #     Int(optional=True),
+        #     prefix="--COMPRESSION_LEVEL",
+        #     position=11,
+        #     doc="Compression level for all compressed files created (e.g. BAM and GELI).",
+        # ),
         ToolInput(
             "createIndex",
             Boolean(optional=True),
             prefix="--CREATE_INDEX",
+            default=True,
             position=11,
             doc="Whether to create a BAM index when writing a coordinate-sorted BAM file.",
         ),
@@ -275,5 +276,14 @@ If desired, duplicates can be removed using the REMOVE_DUPLICATE and REMOVE_SEQU
             position=11,
             doc="The --verbosity argument is an enumerated type (LogLevel), which can have "
             "one of the following values: [ERROR, WARNING, INFO, DEBUG]",
+        ),
+        ToolInput(
+            "opticalDuplicatePixelDistance",
+            Int(optional=True),
+            prefix="--OPTICAL_DUPLICATE_PIXEL_DISTANCE",
+            doc="The maximum offset between two duplicate clusters in order to consider them optical duplicates. "
+            "The default is appropriate for unpatterned versions of the Illumina platform. For the patterned "
+            "flowcell models, 2500 is more appropriate. For other platforms and models, users should experiment "
+            "to find what works best.",
         ),
     ]

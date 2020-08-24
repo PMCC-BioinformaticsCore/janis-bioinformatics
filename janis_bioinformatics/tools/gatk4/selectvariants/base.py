@@ -22,8 +22,7 @@ class Gatk4SelectVariantsBase(Gatk4ToolBase, ABC):
     def friendly_name(self) -> str:
         return "GATK4: SelectVariants"
 
-    @staticmethod
-    def tool() -> str:
+    def tool(self) -> str:
         return "Gatk4SelectVariants"
 
     @classmethod
@@ -32,6 +31,7 @@ class Gatk4SelectVariantsBase(Gatk4ToolBase, ABC):
 
     def inputs(self):
         return [
+            *super().inputs(),
             ToolInput(
                 tag="outputFilename",
                 input_type=Filename(optional=True),

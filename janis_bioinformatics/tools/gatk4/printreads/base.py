@@ -19,7 +19,11 @@ class Gatk4PrintReadsBase(Gatk4ToolBase, ABC):
         return "GATK4: Print Reads"
 
     def inputs(self):
-        return [ToolInput("bam", Bam()), ToolInput("outputFilename", Filename())]
+        return [
+            *super().inputs(),
+            ToolInput("bam", Bam()),
+            ToolInput("outputFilename", Filename()),
+        ]
 
     def outputs(self) -> List[ToolOutput]:
         return [

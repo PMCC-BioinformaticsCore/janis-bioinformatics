@@ -1,6 +1,6 @@
 from datetime import date
 
-from janis_bioinformatics.data_types import BedTabix, CramCrai, FastaWithDict
+from janis_bioinformatics.data_types import BedTabix, CramCrai, FastaFai
 from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.dawson import (
     RefilterStrelka2Calls_0_1 as RefilterStrelka2Calls,
@@ -12,7 +12,8 @@ from janis_bioinformatics.tools.dawson.workflows.strelka2passanalysisstep2 impor
     Strelka2PassWorkflowStep2,
 )
 from janis_bioinformatics.tools.htslib import BGZipLatest as BGZip, TabixLatest as Tabix
-from janis_core import Array, Boolean, String
+from janis_core import Array, Boolean, String, File
+from janis_bioinformatics.data_types import VcfTabix
 
 
 class Strelka2PassWorkflow(BioinformaticsWorkflow):
@@ -22,18 +23,16 @@ class Strelka2PassWorkflow(BioinformaticsWorkflow):
     def friendly_name(self):
         return "Strelka 2Pass analysis"
 
-    @staticmethod
-    def tool_provider():
+    def tool_provider(self):
         return "Dawson Labs"
 
-    @staticmethod
-    def version():
+    def version(self):
         return "0.1"
 
     def bind_metadata(self):
         self.metadata.version = "0.1"
         self.metadata.dateCreated = date(2019, 10, 11)
-        self.metadata.dateUpdated = date(2019, 10, 15)
+        self.metadata.dateUpdated = date(2020, 8, 4)
 
         self.metadata.contributors = ["Sebastian Hollizeck"]
         self.metadata.keywords = [
@@ -59,7 +58,9 @@ class Strelka2PassWorkflow(BioinformaticsWorkflow):
         self.input("normalBam", CramCrai)
         self.input("tumorBams", Array(CramCrai))
 
-        self.input("reference", FastaWithDict)
+        self.input("reference", FastaFai)
+
+        self.input("configStrelka", File(optional=True))
         self.input("callRegions", BedTabix(optional=True))
         self.input("exome", Boolean(optional=True), default=False)
 
@@ -73,6 +74,7 @@ class Strelka2PassWorkflow(BioinformaticsWorkflow):
                 reference=self.reference,
                 callRegions=self.callRegions,
                 exome=self.exome,
+                configStrelka=self.configStrelka,
             ),
             scatter="tumorBam",
         )
@@ -89,6 +91,7 @@ class Strelka2PassWorkflow(BioinformaticsWorkflow):
                 # as soon as janis allows flattening of arguments, we need this
                 # indelCandidates=self.step1.indels,
                 exome=self.exome,
+                configStrelka=self.configStrelka,
             ),
             scatter="tumorBam",
         )
@@ -111,9 +114,20 @@ class Strelka2PassWorkflow(BioinformaticsWorkflow):
         self.step("compressINDELs", BGZip(file=self.refilterINDELs.out), scatter="file")
         self.step("indexINDELs", Tabix(inp=self.compressINDELs.out), scatter="inp")
 
-        self.output("snvs", source=self.indexSNVs, output_folder=self.sampleNames)
-        self.output("indels", source=self.indexINDELs, output_folder=self.sampleNames)
-        # we enable this, because we also have a different wrapper than the default
+        self.output(
+            "snvs",
+            Array(VcfTabix),
+            source=self.indexSNVs,
+            output_folder=self.sampleNames,
+        )
+        self.output(
+            "indels",
+            Array(VcfTabix),
+            source=self.indexINDELs,
+            output_folder=self.sampleNames,
+        )
+
+        # optional output from manta, but we know it will be created
         self.output("svs", source=self.step1.somaticSVs, output_folder=self.sampleNames)
 
 

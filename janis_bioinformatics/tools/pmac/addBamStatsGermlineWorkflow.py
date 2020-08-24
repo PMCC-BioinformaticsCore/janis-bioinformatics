@@ -2,6 +2,7 @@ from janis_core import WorkflowBuilder, WorkflowMetadata
 
 # data types
 from janis_bioinformatics.data_types import Vcf, BamBai
+from janis_bioinformatics.data_types import FastaWithDict
 
 from janis_core import String
 
@@ -32,12 +33,14 @@ class AddBamStatsGermline_0_1_0(BioinformaticsWorkflow):
         # self.input("sample_name", String)
         self.input("bam", BamBai)
         self.input("vcf", Vcf)
+        self.input("reference", FastaWithDict)
 
         self.step(
             "samtoolsmpileup",
             SamToolsMpileupLatest(
                 bam=self.bam,
                 positions=self.vcf,
+                reference=self.reference,
                 countOrphans=True,
                 noBAQ=True,
                 minBQ=0,

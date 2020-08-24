@@ -1,6 +1,6 @@
 from datetime import date
 
-from janis_bioinformatics.data_types import BedTabix, CramCrai, FastaWithDict
+from janis_bioinformatics.data_types import BedTabix, CramCrai, FastaFai
 from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.bcftools import (
     BcfToolsIndex_1_9 as BcfToolsIndex,
@@ -10,7 +10,7 @@ from janis_bioinformatics.tools.illumina.manta.manta import MantaCram_1_5_0 as M
 from janis_bioinformatics.tools.illumina.strelkasomatic.strelkasomatic import (
     StrelkaSomaticCram_2_9_10 as Strelka,
 )
-from janis_core import Boolean
+from janis_core import Boolean, File
 
 
 class Strelka2PassWorkflowStep1(BioinformaticsWorkflow):
@@ -20,18 +20,16 @@ class Strelka2PassWorkflowStep1(BioinformaticsWorkflow):
     def friendly_name(self):
         return "Strelka 2Pass analysis step1"
 
-    @staticmethod
-    def tool_provider():
+    def tool_provider(self):
         return "Dawson Labs"
 
-    @staticmethod
-    def version():
+    def version(self):
         return "0.1"
 
     def bind_metadata(self):
         self.metadata.version = "0.1"
         self.metadata.dateCreated = date(2019, 10, 11)
-        self.metadata.dateUpdated = date(2019, 10, 11)
+        self.metadata.dateUpdated = date(2020, 8, 4)
 
         self.metadata.contributors = ["Sebastian Hollizeck"]
         self.metadata.keywords = [
@@ -55,9 +53,10 @@ class Strelka2PassWorkflowStep1(BioinformaticsWorkflow):
         self.input("normalBam", CramCrai)
         self.input("tumorBam", CramCrai)
 
-        self.input("reference", FastaWithDict)
+        self.input("reference", FastaFai)
         self.input("callRegions", BedTabix(optional=True))
         self.input("exome", Boolean(optional=True), default=False)
+        self.input("configStrelka", File(optional=True))
 
         self.step(
             "manta",
@@ -78,6 +77,7 @@ class Strelka2PassWorkflowStep1(BioinformaticsWorkflow):
                 reference=self.reference,
                 callRegions=self.callRegions,
                 exome=self.exome,
+                config=self.configStrelka,
             ),
         )
         self.step(

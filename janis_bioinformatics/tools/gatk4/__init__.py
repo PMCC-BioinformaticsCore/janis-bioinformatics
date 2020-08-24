@@ -127,6 +127,26 @@ from .collectinsertsizemetrics.versions import (
     Gatk4CollectInsertSizeMetricsLatest,
 )
 
+from .setnmmdanduqtags.versions import (
+    Gatk4SetNmMdAndUqTags_4_1_3,
+    Gatk4SetNmMdAndUqTags_4_1_4,
+    Gatk4SetNmMdAndUqTagsLatest,
+)
+
+from .gatherbqsrreports.versions import (
+    Gatk4GatherBQSRReports_4_1_2,
+    Gatk4GatherBQSRReports_4_1_3,
+    Gatk4GatherBQSRReports_4_1_4,
+    Gatk4GatherBQSRReportsLatest,
+)
+
+from .gatherbamfiles.versions import (
+    Gatk4GatherBamFiles_4_1_2,
+    Gatk4GatherBamFiles_4_1_3,
+    Gatk4GatherBamFiles_4_1_4,
+    Gatk4GatherBamFilesLatest,
+)
+
 from .depthofcoverage.versions import (
     Gatk4DepthOfCoverage_4_1_6,
     Gatk4DepthOfCoverageLatest,

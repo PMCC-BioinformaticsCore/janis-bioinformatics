@@ -8,15 +8,13 @@ from janis_bioinformatics.tools.vcflib.vcflibtoolbase import VcfLibToolBase
 
 
 class VcfCombineBase(VcfLibToolBase, ABC):
-    @staticmethod
-    def tool():
+    def tool(self):
         return "vcfcombine"
 
     def friendly_name(self):
         return "VcfLib: VcfCombine"
 
-    @staticmethod
-    def base_command():
+    def base_command(self):
         return "vcfcombine"
 
     def inputs(self):
