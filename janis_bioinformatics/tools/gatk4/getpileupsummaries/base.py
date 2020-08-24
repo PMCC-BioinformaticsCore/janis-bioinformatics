@@ -81,7 +81,7 @@ class Gatk4GetPileUpSummariesBase(Gatk4ToolBase, ABC):
                 "pileupTableOut", Filename(extension=".txt"), position=1, prefix="-O"
             ),
             ToolInput(
-                reference,
+                "reference",
                 FastaFai(optional=True),
                 prefix="-R",
                 doc="reference to use when decoding CRAMS",
