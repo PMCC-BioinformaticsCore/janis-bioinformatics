@@ -7,4 +7,3 @@ class featureCounts_2_0_1(Subread_2_0_1, featureCountsBase):
 
 
 featureCountsLatest = featureCounts_2_0_1
-

@@ -33,6 +33,7 @@ class Gatk4ReorderSamBase(Gatk4ToolBase, ABC):
 
     def inputs(self):
         return [
+            super().inputs(),
             ToolInput(
                 tag="inp",
                 input_type=Bam(),

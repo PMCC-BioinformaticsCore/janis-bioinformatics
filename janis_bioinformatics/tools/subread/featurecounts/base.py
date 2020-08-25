@@ -316,4 +316,3 @@ This function assigns mapped sequencing reads to genomic features""".strip(),
             doc="Maximum number of 'M' operations allowed in a CIGAR string. 10 by default. Both 'X' and '=' are treated as 'M' and adjacent 'M' operations are merged in the CIGAR string.",
         ),
     ]
-
