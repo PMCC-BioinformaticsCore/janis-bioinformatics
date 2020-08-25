@@ -51,13 +51,7 @@ from .getpileupsummaries.versions import (
     Gatk4GetPileUpSummaries_4_1_4,
     Gatk4GetPileUpSummariesLatest,
 )
-from .haplotypecaller.versions import (
-    Gatk4HaplotypeCaller_4_0,
-    Gatk4HaplotypeCaller_4_1_2,
-    Gatk4HaplotypeCaller_4_1_3,
-    Gatk4HaplotypeCaller_4_1_4,
-    Gatk4HaplotypeCallerLatest,
-)
+from .haplotypecaller.versions import *
 from .learnreadorientationmodel.versions import (
     Gatk4LearnReadOrientationModel_4_1_2,
     Gatk4LearnReadOrientationModel_4_1_3,
@@ -85,13 +79,7 @@ from .mergesamfiles.versions import (
     Gatk4MergeSamFiles_4_1_4,
     Gatk4MergeSamFilesLatest,
 )
-from .mutect2.versions import (
-    GatkMutect2_4_0,
-    GatkMutect2_4_1_2,
-    GatkMutect2_4_1_3,
-    GatkMutect2_4_1_4,
-    GatkMutect2Latest,
-)
+from .mutect2.versions import *
 from .printreads.versions import (
     Gatk4PrintReads_4_0,
     Gatk4PrintReads_4_1_2,

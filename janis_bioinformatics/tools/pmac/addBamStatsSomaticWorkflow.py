@@ -2,6 +2,7 @@ from janis_core import WorkflowBuilder, WorkflowMetadata
 
 # data types
 from janis_bioinformatics.data_types import Vcf, BamBai
+from janis_bioinformatics.data_types import FastaWithDict
 
 from janis_core import String
 
@@ -33,14 +34,21 @@ class AddBamStatsSomatic_0_1_0(BioinformaticsWorkflow):
         self.input("tumor_id", String)
         self.input("normal_bam", BamBai)
         self.input("tumor_bam", BamBai)
+        self.input("reference", FastaWithDict)
         self.input("vcf", Vcf)
 
         self.step(
-            "tumor", self.process_subpipeline(vcf=self.vcf, bam=self.tumor_bam,),
+            "tumor",
+            self.process_subpipeline(
+                vcf=self.vcf, bam=self.tumor_bam, reference=self.reference,
+            ),
         )
 
         self.step(
-            "normal", self.process_subpipeline(vcf=self.vcf, bam=self.normal_bam,),
+            "normal",
+            self.process_subpipeline(
+                vcf=self.vcf, bam=self.normal_bam, reference=self.reference,
+            ),
         )
 
         self.step(
@@ -67,11 +75,13 @@ class AddBamStatsSomatic_0_1_0(BioinformaticsWorkflow):
         w = WorkflowBuilder("samtools_mpileup_subpipeline")
         w.input("vcf", Vcf)
         w.input("bam", BamBai)
+        w.input("reference", FastaWithDict)
         w.step(
             "samtools_mpileup",
             SamToolsMpileupLatest(
                 bam=w.bam,
                 positions=w.vcf,
+                reference=w.reference,
                 countOrphans=True,
                 noBAQ=True,
                 minBQ=0,

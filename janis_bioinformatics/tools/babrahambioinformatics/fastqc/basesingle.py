@@ -120,7 +120,7 @@ class FastQCSingleBase(BioinformaticsTool, ABC):
             ToolOutput(
                 "out_directory",
                 Directory,
-                selector=InputSelector("read", use_basename=True) + "_fastqc",
+                selector=InputSelector("read", remove_file_extension=True) + "_fastqc",
             ),
         ]
 

@@ -165,7 +165,9 @@ class MolpathGermline_1_0_0(BioinformaticsWorkflow):
         self.step(
             "addbamstats",
             AddBamStatsGermline_0_1_0(
-                bam=self.merge_and_mark.out, vcf=self.splitnormalisevcf.out
+                bam=self.merge_and_mark.out,
+                vcf=self.splitnormalisevcf.out,
+                reference=self.reference,
             ),
         )
         # output
