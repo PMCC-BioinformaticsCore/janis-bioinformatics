@@ -16,11 +16,11 @@ from janis_bioinformatics.tools.gatk4 import (
     Gatk4MergeMutectStatsLatest as MergeMutectStats,
 )
 from janis_bioinformatics.tools.gatk4.mutect2.versions import (
-    GatkMutect2CramLatest as Mutect2,
+    GatkMutect2Cram_4_1_6 as Mutect2,
 )
 
 from janis_bioinformatics.tools.gatk4.getpileupsummaries.versions import (
-    Gatk4GetPileUpSummariesCramLatest as GetPileUpSummaries,
+    Gatk4GetPileUpSummariesCram_4_1_6 as GetPileUpSummaries,
 )
 
 

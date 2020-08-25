@@ -33,6 +33,10 @@ class GatkMutect2Cram_4_1_4(Gatk_4_1_4_0, Gatk4Mutect2CramBase_4_1):
     pass
 
 
+class GatkMutect2Cram_4_1_6(Gatk_4_1_6_0, Gatk4Mutect2CramBase_4_1):
+    pass
+
+
 GatkMutect2Latest = GatkMutect2_4_1_4
 
 if __name__ == "__main__":
