@@ -111,6 +111,7 @@ class Mutect2JointSomaticWorkflow(BioinformaticsWorkflow):
                 bam=self.tumorBams,
                 sites=self.biallelicSites,
                 intervals=self.biallelicSites,
+                reference=self.reference,
             ),
         )
 
