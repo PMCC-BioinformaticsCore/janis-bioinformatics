@@ -82,8 +82,8 @@ Specifying a trimlog file creates a log of all read trimmings, indicating the fo
     def bind_metadata(self):
         return ToolMetadata(
             contributors=["illusional"],
-            dateCreated=datetime.fromisoformat("2020-05-25T15:56:24.590154"),
-            dateUpdated=datetime.fromisoformat("2020-05-25T15:56:24.590155"),
+            # dateCreated=datetime.fromisoformat("2020-05-25T15:56:24.590154"),
+            # dateUpdated=datetime.fromisoformat("2020-05-25T15:56:24.590155"),
             citation="Bolger, A. M., Lohse, M., & Usadel, B. (2014). Trimmomatic: A flexible trimmer for Illumina Sequence Data. Bioinformatics, btu170.",
             doi="10.1093/bioinformatics/btu170",
             documentationUrl="http://www.usadellab.org/cms/uploads/supplementary/Trimmomatic/TrimmomaticManual_V0.32.pdf",
