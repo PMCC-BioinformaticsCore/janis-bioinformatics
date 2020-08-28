@@ -33,19 +33,19 @@ class TrimmomaticPairedEndBase(TrimmomaticBase):
                 position=6,
             ),
             ToolInput(
-                "outputFilename_R2",
+                "outputFilenameUnpaired_R1",
                 Filename(
                     prefix=InputSelector("sampleName"),
-                    suffix="_R2.trimmed",
+                    suffix="_R1.unpaired",
                     extension=".fastq.gz",
                 ),
                 position=7,
             ),
             ToolInput(
-                "outputFilenameUnpaired_R1",
+                "outputFilename_R2",
                 Filename(
                     prefix=InputSelector("sampleName"),
-                    suffix="_R1.unpaired",
+                    suffix="_R2.trimmed",
                     extension=".fastq.gz",
                 ),
                 position=8,
