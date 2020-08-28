@@ -46,7 +46,7 @@ TOPHRED64: Convert quality scores to Phred-64
 """,
             ),
             ToolInput("sampleName", String, doc="Used to name the output"),
-            ToolInput("threads", Int(optional=True), prefix="--threads", position=2),
+            ToolInput("threads", Int(optional=True), prefix="-threads", position=2),
             ToolInput(
                 "phred33",
                 Boolean(optional=True),
@@ -66,7 +66,7 @@ TOPHRED64: Convert quality scores to Phred-64
             ToolInput(
                 "trimLogFilename",
                 Filename(prefix="trimlog", extension=".log"),
-                prefix="-trimLog",
+                prefix="-trimlog",
                 position=4,
                 doc="""\
 Specifying a trimlog file creates a log of all read trimmings, indicating the following details:
