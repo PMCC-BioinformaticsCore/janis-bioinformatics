@@ -27,7 +27,7 @@ class TrimmomaticPairedEndBase(TrimmomaticBase):
                 "outputFilename_R1",
                 Filename(
                     prefix=InputSelector("sampleName"),
-                    suffix=".trimmed",
+                    suffix="_R1.trimmed",
                     extension=".fastq.gz",
                 ),
                 position=6,
@@ -36,7 +36,7 @@ class TrimmomaticPairedEndBase(TrimmomaticBase):
                 "outputFilename_R2",
                 Filename(
                     prefix=InputSelector("sampleName"),
-                    suffix=".trimmed",
+                    suffix="_R2.trimmed",
                     extension=".fastq.gz",
                 ),
                 position=7,
@@ -45,7 +45,7 @@ class TrimmomaticPairedEndBase(TrimmomaticBase):
                 "outputFilenameUnpaired_R1",
                 Filename(
                     prefix=InputSelector("sampleName"),
-                    suffix=".unpaired",
+                    suffix="_R1.unpaired",
                     extension=".fastq.gz",
                 ),
                 position=8,
@@ -54,7 +54,7 @@ class TrimmomaticPairedEndBase(TrimmomaticBase):
                 "outputFilenameUnpaired_R2",
                 Filename(
                     prefix=InputSelector("sampleName"),
-                    suffix=".unpaired",
+                    suffix="_R2.unpaired",
                     extension=".fastq.gz",
                 ),
                 position=9,
