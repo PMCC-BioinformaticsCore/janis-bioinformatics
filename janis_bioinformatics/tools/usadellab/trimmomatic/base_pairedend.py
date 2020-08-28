@@ -24,7 +24,7 @@ class TrimmomaticPairedEndBase(TrimmomaticBase):
             *super().inputs(),
             ToolInput("inp", FastqPair, position=5, separator=" "),
             ToolInput(
-                "outputFilename",
+                "outputFilename_R1",
                 Filename(
                     prefix=InputSelector("sampleName"),
                     suffix=".trimmed",
@@ -32,12 +32,41 @@ class TrimmomaticPairedEndBase(TrimmomaticBase):
                 ),
                 position=6,
             ),
+            ToolInput(
+                "outputFilename_R2",
+                Filename(
+                    prefix=InputSelector("sampleName"),
+                    suffix=".trimmed",
+                    extension=".fastq.gz",
+                ),
+                position=7,
+            ),
+            ToolInput(
+                "outputFilenameUnpaired_R1",
+                Filename(
+                    prefix=InputSelector("sampleName"),
+                    suffix=".unpaired",
+                    extension=".fastq.gz",
+                ),
+                position=8,
+            ),
+            ToolInput(
+                "outputFilenameUnpaired_R2",
+                Filename(
+                    prefix=InputSelector("sampleName"),
+                    suffix=".unpaired",
+                    extension=".fastq.gz",
+                ),
+                position=9,
+            ),
         ]
 
     def outputs(self) -> List[ToolOutput]:
         return [
-            ToolOutput("pairedOut", FastqGzPair, glob=WildcardSelector("*P.fastq.gz")),
             ToolOutput(
-                "unpairedOut", FastqGzPair, glob=WildcardSelector("*U.fastq.gz")
+                "pairedOut", FastqGzPair, glob=WildcardSelector("*trimmed.fastq.gz")
+            ),
+            ToolOutput(
+                "unpairedOut", FastqGzPair, glob=WildcardSelector("*unpaired.fastq.gz")
             ),
         ]
