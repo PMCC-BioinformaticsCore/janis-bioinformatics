@@ -1,4 +1,5 @@
 from datetime import datetime
+from datetime import datetime
 from typing import List, Optional, Union
 from janis_core import (
     ToolInput,
@@ -27,11 +28,11 @@ class TrimmomaticBase(BioinformaticsTool):
             ToolInput(
                 "steps",
                 Array(String),
-                position=6,
+                position=100,
                 doc="""\
 ILLUMINACLIP: Cut adapter and other illumina-specific sequences from the read.
 SLIDINGWINDOW: Performs a sliding window trimming approach. It starts
-scanning at the 5‟ end and clips the read once the average quality within the window
+scanning at the 5" end and clips the read once the average quality within the window
 falls below a threshold.
 MAXINFO: An adaptive quality trimmer which balances read length and error rate to
 maximise the value of each read
@@ -98,6 +99,6 @@ information contained in paired reads to better find adapter or PCR primer fragm
 introduced by the library preparation process.
 
 Trimmomatic works with FASTQ files (using phred + 33 or phred + 64 quality scores,
-depending on the Illumina pipeline used). Files compressed using either „gzip‟ or „bzip2‟ are
-supported, and are identified by use of „.gz‟ or „.bz2‟ file extensions. """,
+depending on the Illumina pipeline used). Files compressed using either "gzip" or "bzip2" are
+supported, and are identified by use of ".gz" or ".bz2" file extensions. """,
         )
