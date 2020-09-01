@@ -12,9 +12,15 @@ from janis_core import (
     CpuSelector,
     ToolMetadata,
     Float,
+    Directory,
 )
 
-from janis_bioinformatics.data_types import FastaWithIndexes, Fasta, Vcf, Bam
+from janis_bioinformatics.data_types import (
+    FastaFai,
+    Vcf,
+    Bam,
+    FastaGz,
+)
 from janis_bioinformatics.tools import BioinformaticsTool
 
 
@@ -108,7 +114,7 @@ class StarBase(BioinformaticsTool, ABC):
             ),
             ToolInput(
                 "genomeDir",
-                String(optional=True),
+                Directory(optional=True),
                 prefix="--genomeDir",
                 doc="(default: GenomeDir/) path to the directory where genome files are stored \n"
                 "(for --runMode alignReads) or will be generated (for --runMode generateGenome)",
@@ -126,7 +132,7 @@ class StarBase(BioinformaticsTool, ABC):
             ),
             ToolInput(
                 "genomeFastaFiles",
-                Array(Fasta, optional=True),
+                Array(FastaFai, optional=True),
                 prefix="--genomeFastaFiles",
                 doc="(default: -) path(s) to the fasta files with the genome sequences, separated by spaces. "
                 "These files should be plain text FASTA files, they *cannot* be zipped. Required for the genome "
@@ -181,14 +187,14 @@ class StarBase(BioinformaticsTool, ABC):
             ),
             ToolInput(
                 "sjdbFileChrStartEnd",
-                String(optional=True),
+                File(optional=True),
                 prefix="--sjdbFileChrStartEnd",
                 doc="(default: -) path to the files with genomic coordinates (chr <tab> start <tab> end <tab> strand) "
                 "for the splice junction introns. Multiple files can be supplied wand will be concatenated.",
             ),
             ToolInput(
                 "sjdbGTFfile",
-                String(optional=True),
+                File(optional=True),
                 prefix="--sjdbGTFfile",
                 doc="(default: -) path to the GTF file with annotations",
             ),
@@ -274,7 +280,8 @@ class StarBase(BioinformaticsTool, ABC):
             ),
             ToolInput(
                 "readFilesIn",
-                String(optional=True),
+                Array(FastaGz(optional=True)),
+                separator=",",
                 prefix="--readFilesIn",
                 doc="(default: Read1 Read2) paths to files that contain input read1 (and, if needed,  read2)",
             ),
@@ -438,6 +445,7 @@ class StarBase(BioinformaticsTool, ABC):
                 "outSAMtype",
                 Array(String(), optional=True),
                 prefix="--outSAMtype",
+                separator=" ",
                 doc="(default: SAM) ... quasi-random order used before 2.5.0 Random ... random order of alignments for each multi-mapper. Read mates (pairs) are always adjacent, all alignment for each read stay together. This option will become default in the future releases. ... standard unsorted SortedByCoordinate ... sorted by coordinate. This option will allocate extra memory for sorting which can be specified by --limitBAMsortRAM.",
             ),
             ToolInput(
