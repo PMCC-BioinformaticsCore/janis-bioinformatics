@@ -16,7 +16,7 @@ from janis_core import (
 )
 
 from janis_bioinformatics.data_types import (
-    FastaFai,
+    Fasta,
     Vcf,
     Bam,
     FastaGz,
@@ -116,8 +116,13 @@ class StarBase(BioinformaticsTool, ABC):
                 "genomeDir",
                 Directory(optional=True),
                 prefix="--genomeDir",
-                doc="(default: GenomeDir/) path to the directory where genome files are stored \n"
-                "(for --runMode alignReads) or will be generated (for --runMode generateGenome)",
+                doc="(default: GenomeDir/) path to the directory where genome files are stored",
+            ),
+            ToolInput(
+                "outputGenomeDir",
+                String(optional=True),
+                prefix="--genomeDir",
+                doc="generated for --runMode generateGenome",
             ),
             ToolInput(
                 "genomeLoad",
@@ -132,7 +137,7 @@ class StarBase(BioinformaticsTool, ABC):
             ),
             ToolInput(
                 "genomeFastaFiles",
-                Array(FastaFai, optional=True),
+                Array(Fasta, optional=True),
                 prefix="--genomeFastaFiles",
                 doc="(default: -) path(s) to the fasta files with the genome sequences, separated by spaces. "
                 "These files should be plain text FASTA files, they *cannot* be zipped. Required for the genome "
