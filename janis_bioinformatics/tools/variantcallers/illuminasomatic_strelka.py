@@ -9,7 +9,7 @@ from janis_bioinformatics.tools.common import (
     ConcatStrelkaSomaticVcf,
 )
 from janis_bioinformatics.tools.illumina import Manta_1_5_0, StrelkaSomatic_2_9_10
-from janis_bioinformatics.tools.pmac import ExtractStrelkaSomaticADDP_0_1_0
+from janis_bioinformatics.tools.pmac import ExtractStrelkaSomaticADDP_0_1_1
 from janis_bioinformatics.tools.vcftools import VcfToolsvcftoolsLatest
 
 
@@ -71,7 +71,7 @@ class IlluminaSomaticVariantCaller(BioinformaticsWorkflow):
         )
         self.step(
             "extractaddp",
-            ExtractStrelkaSomaticADDP_0_1_0(vcf=self.splitnormalisevcf.out),
+            ExtractStrelkaSomaticADDP_0_1_1(vcf=self.splitnormalisevcf.out),
         )
 
         self.step(
