@@ -23,6 +23,7 @@ from janis_bioinformatics.tools import (
     io_lib,
     kallisto,
     multiqc,
+    oshlack,
     papenfuss,
     pmac,
     samtools,
