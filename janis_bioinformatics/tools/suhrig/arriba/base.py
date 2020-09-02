@@ -18,6 +18,7 @@ from janis_core import (
     Filename,
     ToolMetadata,
     InputDocumentation,
+    Array,
 )
 
 
