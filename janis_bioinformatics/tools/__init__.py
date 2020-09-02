@@ -29,6 +29,7 @@ from janis_bioinformatics.tools import (
     sequenza,
     star,
     subread,
+    suhrig,
     ucsf,
     usadellab,
     validation,
