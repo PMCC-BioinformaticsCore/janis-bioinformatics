@@ -12,9 +12,10 @@ from janis_core import (
     CpuSelector,
     ToolMetadata,
     Float,
+    Directory,
 )
 
-from janis_bioinformatics.data_types import FastaWithIndexes, Fasta, Vcf, Bam
+from janis_bioinformatics.data_types import FastaWithIndexes, Fasta, Vcf, Bam, FastqGz
 from janis_bioinformatics.tools import BioinformaticsTool
 
 
@@ -108,7 +109,7 @@ class StarBase(BioinformaticsTool, ABC):
             ),
             ToolInput(
                 "genomeDir",
-                String(optional=True),
+                Directory(optional=True),
                 prefix="--genomeDir",
                 doc="(default: GenomeDir/) path to the directory where genome files are stored \n"
                 "(for --runMode alignReads) or will be generated (for --runMode generateGenome)",
@@ -274,8 +275,9 @@ class StarBase(BioinformaticsTool, ABC):
             ),
             ToolInput(
                 "readFilesIn",
-                String(optional=True),
+                Array(FastqGz(optional=True)),
                 prefix="--readFilesIn",
+                separator=" ",
                 doc="(default: Read1 Read2) paths to files that contain input read1 (and, if needed,  read2)",
             ),
             ToolInput(
