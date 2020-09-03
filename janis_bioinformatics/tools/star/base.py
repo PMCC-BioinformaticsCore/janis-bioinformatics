@@ -158,7 +158,7 @@ class StarBase(BioinformaticsTool, ABC):
             ),
             ToolInput(
                 "genomeConsensusFile",
-                String(optional=True),
+                Vcf(optional=True),
                 prefix="--genomeConsensusFile",
                 doc="(default: -) VCF file with consensus SNPs (i.e. alternative allele is the major (AF>0.5) allele)",
             ),

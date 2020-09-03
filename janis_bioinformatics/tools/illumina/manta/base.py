@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Dict, Any, List
 
-from janis_bioinformatics.data_types import BamBai, BedTabix, FastaWithDict, VcfTabix
+from janis_bioinformatics.data_types import BamBai, BedTabix, FastaFai, VcfTabix
 from janis_bioinformatics.tools.illumina.illuminabase import IlluminaToolBase
 from janis_core import (
     Boolean,
@@ -208,7 +208,7 @@ of capabilities and limitations.""".strip(),
         ),
         ToolInput(
             "reference",
-            FastaWithDict(),
+            FastaFai(),
             prefix="--referenceFasta",
             position=1,
             shell_quote=False,
