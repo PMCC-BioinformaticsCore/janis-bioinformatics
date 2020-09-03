@@ -1,6 +1,6 @@
 from datetime import date
 
-from janis_bioinformatics.data_types import CramCrai, FastaWithDict
+from janis_bioinformatics.data_types import CramCrai, FastaFai
 from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.bcftools import BcfToolsNormLatest as BcfToolsNorm
 from janis_bioinformatics.tools.dawson import (
@@ -56,7 +56,7 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
 
         self.input("bams", Array(CramCrai))
 
-        self.input("reference", FastaWithDict)
+        self.input("reference", FastaFai)
         self.input("regionSize", int, default=10000000)
 
         self.input("normalSample", String)
