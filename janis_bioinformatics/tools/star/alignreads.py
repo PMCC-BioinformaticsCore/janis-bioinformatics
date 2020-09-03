@@ -3,6 +3,8 @@ from typing import List
 
 from janis_core import File, ToolOutput, InputSelector
 
+from janis_bioinformatics.data_types import Bam
+
 from janis_bioinformatics.tools.star.base import StarBase
 
 
@@ -12,6 +14,12 @@ class StarAlignReadsBase(StarBase, ABC):
 
     def outputs(self) -> List[ToolOutput]:
         return [
+            ToolOutput(
+                "bam",
+                Bam(optional=True),
+                glob=InputSelector("outFileNamePrefix")
+                + "Aligned.sortedByCoord.out.bam",
+            ),
             ToolOutput(
                 "out",
                 File,
