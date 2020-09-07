@@ -15,7 +15,7 @@ class StarAlignReadsBase(StarBase, ABC):
     def outputs(self) -> List[ToolOutput]:
         return [
             ToolOutput(
-                "out",
+                "out_bam",
                 Bam(optional=True),
                 glob=InputSelector("outFileNamePrefix")
                 + "Aligned.sortedByCoord.out.bam",

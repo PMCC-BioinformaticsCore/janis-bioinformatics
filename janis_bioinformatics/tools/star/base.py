@@ -1,4 +1,6 @@
 from typing import List
+
+from typing import List
 from abc import ABC, abstractmethod
 
 from janis_core import (
@@ -19,7 +21,7 @@ from janis_bioinformatics.data_types import (
     Fasta,
     Vcf,
     Bam,
-    FastaGz,
+    FastqGzPair,
 )
 from janis_bioinformatics.tools import BioinformaticsTool
 
@@ -285,7 +287,9 @@ class StarBase(BioinformaticsTool, ABC):
             ),
             ToolInput(
                 "readFilesIn",
-                Array(FastaGz(), optional=True),
+                # when mapping multiple pair-ended fqs
+                # S1_R1.fq,S2_R1.fq S1_R2.fq,S2_R2.fq
+                Array(FastqGzPair(), optional=True),
                 separator=" ",
                 prefix="--readFilesIn",
                 doc="(default: Read1 Read2) paths to files that contain input read1 (and, if needed,  read2)",

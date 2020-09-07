@@ -22,7 +22,7 @@ class TrimmomaticPairedEndBase(TrimmomaticBase):
     def inputs(self) -> List[ToolInput]:
         return [
             *super().inputs(),
-            ToolInput("inp", FastqPair, position=5, separator=" "),
+            ToolInput("inp", FastqGzPair, position=5, separator=" "),
             ToolInput(
                 "outputFilename_R1",
                 Filename(
