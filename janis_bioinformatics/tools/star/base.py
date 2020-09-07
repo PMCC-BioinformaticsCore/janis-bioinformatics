@@ -286,7 +286,7 @@ class StarBase(BioinformaticsTool, ABC):
             ToolInput(
                 "readFilesIn",
                 Array(FastaGz(), optional=True),
-                separator=",",
+                separator=" ",
                 prefix="--readFilesIn",
                 doc="(default: Read1 Read2) paths to files that contain input read1 (and, if needed,  read2)",
             ),
