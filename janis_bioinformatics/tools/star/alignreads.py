@@ -1,7 +1,7 @@
 from abc import ABC
 from typing import List
 
-from janis_core import File, ToolOutput, InputSelector
+from janis_core import File, ToolOutput, InputSelector, WildcardSelector
 
 from janis_bioinformatics.data_types import Bam
 
@@ -14,12 +14,7 @@ class StarAlignReadsBase(StarBase, ABC):
 
     def outputs(self) -> List[ToolOutput]:
         return [
-            ToolOutput(
-                "out_bam",
-                Bam(optional=True),
-                glob=InputSelector("outFileNamePrefix")
-                + "Aligned.sortedByCoord.out.bam",
-            ),
+            ToolOutput("out_bam", Bam(optional=True), glob=WildcardSelector("*.bam"),),
             ToolOutput(
                 "SJ_out_tab",
                 File,

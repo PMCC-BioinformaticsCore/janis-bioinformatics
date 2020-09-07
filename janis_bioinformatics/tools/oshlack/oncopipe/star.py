@@ -1,4 +1,4 @@
-from janis_core import StringFormatter, Directory, File
+from janis_core import StringFormatter, Directory, File, WorkflowMetadata
 
 from janis_bioinformatics.data_types import FastqGzPair, Fasta
 from janis_bioinformatics.tools import BioinformaticsWorkflow
@@ -15,6 +15,11 @@ class OncopipeStarAligner(BioinformaticsWorkflow):
 
     def friendly_name(self):
         return "Oncopipe: StarAligner"
+
+    def bind_metadata(self):
+        return WorkflowMetadata(
+            version="v0.1.0", contributors=["Michael Franklin", "Jiaan Yu"]
+        )
 
     def constructor(self):
 
@@ -54,7 +59,6 @@ class OncopipeStarAligner(BioinformaticsWorkflow):
                 limitOutSJcollapsed=3000000,  # lots of splice junctions may need more than default 1M buffer
                 readFilesCommand="zcat",
                 outSAMtype=["None"],
-                outFileNamePrefix="star_map_1pass_PE_",
             ),
             doc="Map reads using the STAR aligner: 1st pass",
         )
@@ -86,11 +90,10 @@ class OncopipeStarAligner(BioinformaticsWorkflow):
                     platform=self.platform,
                 ),
                 outSAMtype=["BAM", "SortedByCoordinate"],
-                outFileNamePrefix="star_map_2pass_PE",
             ),
         )
 
-        self.output("out_bam", source=self.star_map_2pass_PE.out_bam)
+        self.output("out_bam", source=self.star_map_2pass_PE.out_bam.assert_not_null())
 
 
 if __name__ == "__main__":

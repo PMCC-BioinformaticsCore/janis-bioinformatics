@@ -289,7 +289,7 @@ class StarBase(BioinformaticsTool, ABC):
                 "readFilesIn",
                 # when mapping multiple pair-ended fqs
                 # S1_R1.fq,S2_R1.fq S1_R2.fq,S2_R2.fq
-                Array(FastqGzPair(), optional=True),
+                FastqGzPair(optional=True),
                 separator=" ",
                 prefix="--readFilesIn",
                 doc="(default: Read1 Read2) paths to files that contain input read1 (and, if needed,  read2)",
