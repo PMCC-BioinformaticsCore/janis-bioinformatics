@@ -11,4 +11,4 @@ class StarGenerateIndexesBase(StarBase, ABC):
         return "genomeGenerate"
 
     def outputs(self) -> List[ToolOutput]:
-        return [ToolOutput("out", Directory, glob=InputSelector("outputGenomeDir"))]
+        return [ToolOutput("out", Directory, selector=".")]
