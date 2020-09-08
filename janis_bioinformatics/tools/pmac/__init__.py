@@ -15,3 +15,4 @@ from .molpathGermlineWorkflow import MolpathGermline_1_0_0
 from .molpathTumorOnlyWorkflow import MolpathTumorOnly_1_0_0
 from .generatevardictheaderlines import GenerateVardictHeaderLines
 from .generatebedtoolscoveragegenomefile import GenerateGenomeFileForBedtoolsCoverage
+from .starArribaWorkflow import StarArriba_0_1_0
