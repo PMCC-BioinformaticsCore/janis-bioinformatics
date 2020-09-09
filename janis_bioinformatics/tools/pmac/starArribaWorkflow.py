@@ -60,7 +60,7 @@ class StarArriba_0_1_0(BioinformaticsWorkflow):
                 outFilterMultimapNmax=1,
                 outFilterMismatchNmax=3,
                 chimSegmentMin=10,
-                chimOutType="WithinBAM SoftClip",
+                chimOutType=["WithinBAM", "SoftClip"],
                 chimJunctionOverhangMin=10,
                 chimScoreMin=1,
                 chimScoreDropMax=30,

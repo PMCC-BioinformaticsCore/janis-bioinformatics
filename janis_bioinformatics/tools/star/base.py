@@ -975,7 +975,7 @@ class StarBase(BioinformaticsTool, ABC):
             ),
             ToolInput(
                 "chimOutType",
-                String(optional=True),
+                Array(String(), optional=True),
                 prefix="--chimOutType",
                 doc="(default: Junctions) type of chimeric output     Junctions       ... Chimeric.out.junction     SeparateSAMold  ... output old SAM into separate Chimeric.out.sam file     WithinBAM       ... output into main aligned BAM files (Aligned.*.bam)     WithinBAM HardClip  ... (default) hard-clipping in the CIGAR for supplemental chimeric alignments (defaultif no 2nd word is present)     WithinBAM SoftClip  ... soft-clipping in the CIGAR for supplemental chimeric alignments",
             ),
