@@ -410,7 +410,8 @@ class StarBase(BioinformaticsTool, ABC):
             ),
             ToolInput(
                 "outFileNamePrefix",
-                String(optional=True),
+                String(),
+                default="./",
                 prefix="--outFileNamePrefix",
                 doc="(default: ./) output files name prefix (including full or relative path). Can only be defined on the command line.",
             ),
