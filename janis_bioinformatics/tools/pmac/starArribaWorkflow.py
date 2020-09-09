@@ -1,4 +1,4 @@
-from janis_core import WorkflowMetadata, Directory, String, File
+from janis_core import Array, Directory, File, String, WorkflowMetadata
 
 from janis_bioinformatics.data_types import Fasta, FastqGzPair
 
@@ -28,7 +28,7 @@ class StarArriba_0_1_0(BioinformaticsWorkflow):
         self.input("reference", Fasta)
         self.input("gtf", File)
         self.input("blacklist", File)
-        self.input("contigs", String(optional=True))
+        self.input("contigs", Array(String(), optional=True))
 
         self.step(
             "trim",

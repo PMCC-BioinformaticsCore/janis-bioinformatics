@@ -111,7 +111,7 @@ class ArribaBase(CommandTool, ABC):
             ),
             ToolInput(
                 tag="output_filename",
-                input_type=Filename(),
+                input_type=Filename(extension=".tsv"),
                 prefix="-o",
                 default="fusions.tsv",
                 separate_value_from_prefix=True,
@@ -121,7 +121,7 @@ class ArribaBase(CommandTool, ABC):
             ),
             ToolInput(
                 tag="discarded_output_filename",
-                input_type=Filename(),
+                input_type=Filename(suffix=".discarded", extension=".tsv"),
                 prefix="-O",
                 separate_value_from_prefix=True,
                 default="fusions.discarded.tsv",
@@ -167,7 +167,7 @@ class ArribaBase(CommandTool, ABC):
             ),
             ToolInput(
                 tag="contigs",
-                input_type=String(optional=True),
+                input_type=Array(String(), optional=True),
                 prefix="-i",
                 doc=InputDocumentation(
                     doc="Comma-/space-separated list of interesting contigs. Fusions between genes on other contigs "
