@@ -214,8 +214,8 @@ class CellRangerMkfastqBase(BioinformaticsTool):
     def bind_metadata(self):
         return ToolMetadata(
             contributors=["Michael Franklin"],
-            dateCreated=datetime.fromisoformat("2019-10-24T12:29:47.687842"),
-            dateUpdated=datetime.fromisoformat("2019-10-24T12:29:47.687856"),
+            dateCreated=datetime(2019, 10, 24),
+            dateUpdated=datetime(2019, 10, 24),
             documentation="""\
 /opt/cellranger-3.0.2/cellranger-cs/3.0.2/bin
 cellranger mkfastq (3.0.2)

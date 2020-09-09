@@ -741,7 +741,7 @@ class Gatk4VariantFiltrationBase(Gatk4ToolBase):
     def bind_metadata(self):
         return ToolMetadata(
             contributors=[],
-            dateCreated=datetime.fromisoformat("2020-05-18T08:00:02.265505"),
-            dateUpdated=datetime.fromisoformat("2020-05-18T08:00:02.265505"),
+            dateCreated=datetime(2020, 5, 18),
+            dateUpdated=datetime(2020, 5, 18),
             documentation="USAGE: VariantFiltration [arguments]\nFilter variant calls based on INFO and/or FORMAT annotations.\nVersion:4.1.3.0\n",
         )

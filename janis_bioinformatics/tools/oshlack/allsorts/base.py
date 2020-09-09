@@ -162,7 +162,7 @@ class AllSortsBase(CommandTool, ABC):
     def metadata(self):
         return ToolMetadata(
             contributors=[],
-            dateCreated=datetime.fromisoformat("2020-09-02T11:37:11.438437"),
-            dateUpdated=datetime.fromisoformat("2020-09-02T11:37:11.438511"),
+            dateCreated=datetime(2020, 9, 2),
+            dateUpdated=datetime(2020, 9, 2),
             documentation="usage: ALLSorts [-h] -samples SAMPLES [-labels LABELS]\n                [-destination DESTINATION] [-test] [-train]\n                [-model_dir MODEL_DIR] [-njobs NJOBS] [-cv CV] [-verbose]\n                [-comparison] [-force] [-parents]\nALLSorts CLI\n",
         )

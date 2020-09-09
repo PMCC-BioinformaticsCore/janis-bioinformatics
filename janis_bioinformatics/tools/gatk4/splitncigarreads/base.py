@@ -667,7 +667,7 @@ class Gatk4SplitNCigarReadsBase(Gatk4ToolBase, ABC):
     def bind_metadata(self):
         return ToolMetadata(
             contributors=[],
-            dateCreated=datetime.fromisoformat("2020-05-15T15:42:57.592654"),
-            dateUpdated=datetime.fromisoformat("2020-05-15T15:42:57.592655"),
+            dateCreated=datetime(2020, 5, 15),
+            dateUpdated=datetime(2020, 5, 15),
             documentation="USAGE: SplitNCigarReads [arguments]\nSplits reads that contain Ns in their cigar string (e.g. spanning splicing events).\nVersion:4.1.3.0\n",
         )

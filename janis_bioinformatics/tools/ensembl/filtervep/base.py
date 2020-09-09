@@ -150,7 +150,7 @@ class FilterVepBase(CommandTool, ABC):
     def metadata(self):
         return ToolMetadata(
             contributors=[],
-            dateCreated=datetime.fromisoformat("2020-05-26T21:20:46.079086"),
-            dateUpdated=datetime.fromisoformat("2020-05-26T21:20:46.079096"),
+            dateCreated=datetime(2020, 5, 26),
+            dateUpdated=datetime(2020, 5, 26),
             documentation="#------------#\n# filter_vep #\n#------------#\nhttp://www.ensembl.org/info/docs/tools/vep/script/vep_filter.html\n",
         )

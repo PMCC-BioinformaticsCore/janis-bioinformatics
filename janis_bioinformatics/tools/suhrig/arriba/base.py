@@ -398,8 +398,8 @@ class ArribaBase(CommandTool, ABC):
     def metadata(self):
         return ToolMetadata(
             contributors=["Michael Franklin"],
-            # dateCreated=datetime.fromisoformat("2020-09-02T09:45:31.925016"),
-            # dateUpdated=datetime.fromisoformat("2020-09-02T09:45:31.925029"),
+            dateCreated=datetime(2020, 9, 2),
+            dateUpdated=datetime(2020, 9, 2),
             documentation="""
 Arriba gene fusion detector
 --------------------------- 

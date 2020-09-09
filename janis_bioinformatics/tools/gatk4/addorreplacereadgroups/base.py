@@ -342,8 +342,8 @@ class Gatk4AddOrReplaceReadGroupsBase(Gatk4ToolBase, ABC):
     def bind_metadata(self):
         return ToolMetadata(
             contributors=["illusional"],
-            dateCreated=datetime.fromisoformat("2020-05-15T15:56:24.590154"),
-            dateUpdated=datetime.fromisoformat("2020-05-15T15:56:24.590155"),
+            dateCreated=datetime(2020, 5, 15),
+            dateUpdated=datetime(2020, 5, 15),
             documentation="""\
 USAGE: AddOrReplaceReadGroups [arguments]"
 Assigns all the reads in a file to a single new read-group.
