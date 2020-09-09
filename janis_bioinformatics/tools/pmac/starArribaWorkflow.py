@@ -10,7 +10,7 @@ from janis_bioinformatics.tools.usadellab import TrimmomaticPairedEnd_0_35
 
 class StarArriba_0_1_0(BioinformaticsWorkflow):
     def id(self) -> str:
-        return "StarArriba"
+        return "starArriba"
 
     def friendly_name(self):
         return "Star Arriba Workflow"
