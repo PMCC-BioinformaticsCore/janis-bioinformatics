@@ -653,8 +653,8 @@ class GatkFilterVariantTranchesBase(Gatk4ToolBase, ABC):
     def metadata(self):
         return ToolMetadata(
             contributors=["Michael Franklin"],
-            dateCreated=datetime.fromisoformat("2020-05-18T15:06:29.736834"),
-            dateUpdated=datetime.fromisoformat("2020-05-18T15:06:29.736835"),
+            dateCreated=datetime(2020, 5, 18),
+            dateUpdated=datetime(2020, 5, 18),
             documentation="""USAGE: FilterVariantTranches [arguments]
             
 Apply tranche filtering based on a truth VCF of known common sites of variation and a score from VCF INFO field

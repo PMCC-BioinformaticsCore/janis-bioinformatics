@@ -212,7 +212,7 @@ class Gatk4GatherBamFilesBase(Gatk4ToolBase, ABC):
     def metadata(self):
         return ToolMetadata(
             contributors=[],
-            dateCreated=datetime.fromisoformat("2020-05-18T14:57:21.106258"),
-            dateUpdated=datetime.fromisoformat("2020-05-18T14:57:21.106259"),
+            dateCreated=datetime(2020, 5, 18),
+            dateUpdated=datetime(2020, 5, 18),
             documentation="b'USAGE: GatherBamFiles [arguments]\n<p>Concatenate efficiently BAM files that resulted from a scattered parallel analysis.</p><p>This tool performs a rapid\n'gather' or concatenation on BAM files. This is often needed in operations that have been run in parallel across\ngenomics regions by scattering their execution across computing nodes and cores thus resulting in smaller BAM\nfiles.</p><p>This tool does not support SAM files</p><h3>Inputs</h3><p>A list of BAM files to combine using the INPUT\nargument. These files must be provided in the order that they should be concatenated.</p><h3>Output</h3><p>A single BAM\nfile. The header is copied from the first input file.</p><h3>Usage example:</h3><pre>java -jar picard.jar GatherBamFiles\n\\\nI=input1.bam \\\nI=input2.bam \\\nO=gathered_files.bam</pre><h3>Notes</h3><p>Operates via copying of the gzip blocks directly for speed but also supports\ngeneration of an MD5 on the output and indexing of the output BAM file.</p><hr/>\nVersion:4.1.3.0\n",
         )
