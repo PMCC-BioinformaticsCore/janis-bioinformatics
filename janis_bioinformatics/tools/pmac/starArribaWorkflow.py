@@ -1,8 +1,9 @@
-from janis_core import Array, Directory, File, String, WorkflowMetadata
+from janis_core import Array, Directory, File, String, WorkflowMetadata, StringFormatter
 
 from janis_bioinformatics.data_types import Fasta, FastqGzPair
 
 from janis_bioinformatics.tools import BioinformaticsWorkflow
+from janis_bioinformatics.tools.gatk4 import Gatk4SortSamLatest
 from janis_bioinformatics.tools.star import StarAlignReads_2_7_1
 from janis_bioinformatics.tools.suhrig import Arriba_1_2_0
 from janis_bioinformatics.tools.usadellab import TrimmomaticPairedEnd_0_35
@@ -84,8 +85,30 @@ class StarArriba_0_1_0(BioinformaticsWorkflow):
             ),
         )
 
-        self.output("out_fusion", source=self.arriba.out)
-        self.output("out_fusion_discarded", source=self.arriba.out_discarded)
+        self.step(
+            "sortsam",
+            Gatk4SortSamLatest(
+                bam=self.star.out_bam.assert_not_null(),
+                sortOrder="coordinate",
+                createIndex=True,
+            ),
+        )
+
+        self.output("bam", source=self.sortsam.out, output_name=self.sampleName)
+        self.output(
+            "out_fusion",
+            source=self.arriba.out,
+            output_name=StringFormatter(
+                "{sample_name}_fusion", sample_name=self.sampleName
+            ),
+        )
+        self.output(
+            "out_fusion_discarded",
+            source=self.arriba.out_discarded,
+            output_name=StringFormatter(
+                "{sample_name}_fusion_discarded", sample_name=self.sampleName
+            ),
+        )
 
 
 if __name__ == "__main__":
