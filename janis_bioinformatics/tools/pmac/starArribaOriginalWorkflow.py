@@ -1,11 +1,11 @@
-from janis_core import Array, Directory, File, String, WorkflowMetadata
+from janis_core import Array, Directory, File, String, WorkflowMetadata, StringFormatter
 
 from janis_bioinformatics.data_types import Fasta, FastqGzPair
 
 from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.gatk4 import Gatk4SortSamLatest
 from janis_bioinformatics.tools.star import StarAlignReads_2_5_3
-from janis_bioinformatics.tools.suhrig import Arriba_1_1_0
+from janis_bioinformatics.tools.suhrig import Arriba_1_2_0
 
 
 class StarArribaOriginal_0_1_0(BioinformaticsWorkflow):
@@ -22,7 +22,7 @@ class StarArribaOriginal_0_1_0(BioinformaticsWorkflow):
         return WorkflowMetadata(version="v0.1.0", contributors=["Jiaan Yu"])
 
     def constructor(self):
-        self.input("sampleName", String)
+        self.input("sample_name", String)
         self.input("reads", FastqGzPair)
         self.input("genomeDir", Directory)
         self.input("reference", Fasta)
@@ -56,7 +56,7 @@ class StarArribaOriginal_0_1_0(BioinformaticsWorkflow):
 
         self.step(
             "arriba",
-            Arriba_1_1_0(
+            Arriba_1_2_0(
                 aligned_inp=self.star.out_bam.assert_not_null(),
                 blacklist=self.blacklist,
                 fusion_transcript=True,
@@ -76,9 +76,21 @@ class StarArribaOriginal_0_1_0(BioinformaticsWorkflow):
             ),
         )
 
-        self.output("out_fusion", source=self.arriba.out)
-        self.output("out_fusion_discarded", source=self.arriba.out_discarded)
-        self.output("bam", source=self.sortsam.out)
+        self.output("bam", source=self.sortsam.out, output_name=self.sample_name)
+        self.output(
+            "out_fusion",
+            source=self.arriba.out,
+            output_name=StringFormatter(
+                "{sample_name}_fusion", sample_name=self.sample_name
+            ),
+        )
+        self.output(
+            "out_fusion_discarded",
+            source=self.arriba.out_discarded,
+            output_name=StringFormatter(
+                "{sample_name}_fusion_discarded", sample_name=self.sample_name
+            ),
+        )
 
 
 if __name__ == "__main__":
