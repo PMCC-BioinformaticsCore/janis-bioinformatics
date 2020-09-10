@@ -12,7 +12,7 @@ from janis_bioinformatics.tools.dawson.workflows.strelka2passanalysisstep2 impor
     Strelka2PassWorkflowStep2,
 )
 from janis_bioinformatics.tools.htslib import BGZipLatest as BGZip, TabixLatest as Tabix
-from janis_core import Array, Boolean, String, File
+from janis_core import Array, Boolean, String, File, Int
 from janis_bioinformatics.data_types import VcfTabix
 
 
@@ -65,6 +65,7 @@ class Strelka2PassWorkflow(BioinformaticsWorkflow):
         self.input("exome", Boolean(optional=True), default=False)
 
         self.input("sampleNames", Array(String, optional=True))
+        self.input("minAD", Int(optional=True), default=2)
 
         self.step(
             "step1",
@@ -99,7 +100,9 @@ class Strelka2PassWorkflow(BioinformaticsWorkflow):
         self.step(
             "refilterSNVs",
             RefilterStrelka2Calls(
-                inputFiles=self.step2.snvs, sampleNames=self.sampleNames
+                inputFiles=self.step2.snvs,
+                sampleNames=self.sampleNames,
+                minAD=self.minAD,
             ),
         )
         self.step("compressSNVs", BGZip(file=self.refilterSNVs.out), scatter="file")
