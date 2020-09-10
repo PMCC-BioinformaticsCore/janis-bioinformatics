@@ -33,7 +33,7 @@ class Gatk4ReorderSamBase(Gatk4ToolBase, ABC):
 
     def inputs(self):
         return [
-            super().inputs(),
+            *super().inputs(),
             ToolInput(
                 tag="inp",
                 input_type=Bam(),
@@ -88,15 +88,15 @@ class Gatk4ReorderSamBase(Gatk4ToolBase, ABC):
                     doc="read one or more arguments files and add them to the command line This argument may be specified 0 or more times. Default value: null. "
                 ),
             ),
-            ToolInput(
-                tag="compression_level",
-                input_type=Int(optional=True),
-                prefix="--COMPRESSION_LEVEL",
-                separate_value_from_prefix=True,
-                doc=InputDocumentation(
-                    doc="Compression level for all compressed files created (e.g. BAM and VCF). Default value: 2."
-                ),
-            ),
+            # ToolInput(
+            #     tag="compression_level",
+            #     input_type=Int(optional=True),
+            #     prefix="--COMPRESSION_LEVEL",
+            #     separate_value_from_prefix=True,
+            #     doc=InputDocumentation(
+            #         doc="Compression level for all compressed files created (e.g. BAM and VCF). Default value: 2."
+            #     ),
+            # ),
             ToolInput(
                 tag="create_index",
                 input_type=Boolean(optional=True),
