@@ -4,7 +4,7 @@ from janis_bioinformatics.data_types import Fasta, FastqGzPair
 
 from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.gatk4 import Gatk4SortSamLatest
-from janis_bioinformatics.tools.star import StarAlignReads_2_7_1
+from janis_bioinformatics.tools.star import StarAlignReads_2_5_3
 from janis_bioinformatics.tools.suhrig import Arriba_1_2_0
 from janis_bioinformatics.tools.usadellab import TrimmomaticPairedEnd_0_35
 
@@ -23,7 +23,7 @@ class StarArriba_0_1_0(BioinformaticsWorkflow):
         return WorkflowMetadata(version="v0.1.0", contributors=["Jiaan Yu"])
 
     def constructor(self):
-        self.input("sampleName", String)
+        self.input("sample_name", String)
         self.input("reads", FastqGzPair)
         self.input("genomeDir", Directory)
         self.input("reference", Fasta)
@@ -34,7 +34,7 @@ class StarArriba_0_1_0(BioinformaticsWorkflow):
         self.step(
             "trim",
             TrimmomaticPairedEnd_0_35(
-                sampleName=self.sampleName,
+                sample_name=self.sample_name,
                 inp=self.reads,
                 phred33=True,
                 steps=[
@@ -50,7 +50,7 @@ class StarArriba_0_1_0(BioinformaticsWorkflow):
 
         self.step(
             "star",
-            StarAlignReads_2_7_1(
+            StarAlignReads_2_5_3(
                 readFilesIn=self.trim.pairedOut,
                 genomeDir=self.genomeDir,
                 limitOutSJcollapsed=3000000,  # lots of splice junctions may need more than default 1M buffer
@@ -94,19 +94,19 @@ class StarArriba_0_1_0(BioinformaticsWorkflow):
             ),
         )
 
-        self.output("bam", source=self.sortsam.out, output_name=self.sampleName)
+        self.output("bam", source=self.sortsam.out, output_name=self.sample_name)
         self.output(
             "out_fusion",
             source=self.arriba.out,
             output_name=StringFormatter(
-                "{sample_name}_fusion", sample_name=self.sampleName
+                "{sample_name}_fusion", sample_name=self.sample_name
             ),
         )
         self.output(
             "out_fusion_discarded",
             source=self.arriba.out_discarded,
             output_name=StringFormatter(
-                "{sample_name}_fusion_discarded", sample_name=self.sampleName
+                "{sample_name}_fusion_discarded", sample_name=self.sample_name
             ),
         )
 
