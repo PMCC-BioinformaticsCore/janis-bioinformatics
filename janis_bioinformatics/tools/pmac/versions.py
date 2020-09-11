@@ -68,6 +68,17 @@ class PeterMacUtils_0_1_0(CommandTool, ABC):
         return "0.1.0"
 
 
+class PeterMacUtils_0_1_1(CommandTool, ABC):
+    def tool_provider(self):
+        return "Peter MacCallum Cancer Centre"
+
+    def container(self):
+        return "michaelfranklin/pmacutil:0.1.1"
+
+    def version(self):
+        return "0.1.1"
+
+
 class PeterMacUtils_dev(CommandTool, ABC):
     def tool_provider(self):
         return "Peter MacCallum Cancer Centre"
