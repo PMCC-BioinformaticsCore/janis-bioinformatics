@@ -22,7 +22,7 @@ class StarArribaOriginal_0_1_0(BioinformaticsWorkflow):
         return WorkflowMetadata(version="v0.1.0", contributors=["Jiaan Yu"])
 
     def constructor(self):
-        self.input("sample_name", String)
+        self.input("sampleName", String)
         self.input("reads", FastqGzPair)
         self.input("genomeDir", Directory)
         self.input("reference", Fasta)
@@ -76,19 +76,19 @@ class StarArribaOriginal_0_1_0(BioinformaticsWorkflow):
             ),
         )
 
-        self.output("bam", source=self.sortsam.out, output_name=self.sample_name)
+        self.output("bam", source=self.sortsam.out, output_name=self.sampleName)
         self.output(
             "out_fusion",
             source=self.arriba.out,
             output_name=StringFormatter(
-                "{sample_name}_fusion", sample_name=self.sample_name
+                "{sample_name}_fusion", sample_name=self.sampleName
             ),
         )
         self.output(
             "out_fusion_discarded",
             source=self.arriba.out_discarded,
             output_name=StringFormatter(
-                "{sample_name}_fusion_discarded", sample_name=self.sample_name
+                "{sample_name}_fusion_discarded", sample_name=self.sampleName
             ),
         )
 
