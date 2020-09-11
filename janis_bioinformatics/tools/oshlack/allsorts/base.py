@@ -51,7 +51,7 @@ class AllSortsBase(CommandTool, ABC):
             ),
             ToolInput(
                 tag="labels",
-                input_type=Csv(),
+                input_type=Csv(optional=True),
                 prefix="-labels",
                 separate_value_from_prefix=True,
                 doc=InputDocumentation(
@@ -161,8 +161,8 @@ class AllSortsBase(CommandTool, ABC):
 
     def metadata(self):
         return ToolMetadata(
-            contributors=[],
+            contributors=["Michael Franklin", "Jiaan Yu"],
             dateCreated=datetime(2020, 9, 2),
-            dateUpdated=datetime(2020, 9, 2),
+            dateUpdated=datetime(2020, 9, 11),
             documentation="usage: ALLSorts [-h] -samples SAMPLES [-labels LABELS]\n                [-destination DESTINATION] [-test] [-train]\n                [-model_dir MODEL_DIR] [-njobs NJOBS] [-cv CV] [-verbose]\n                [-comparison] [-force] [-parents]\nALLSorts CLI\n",
         )
