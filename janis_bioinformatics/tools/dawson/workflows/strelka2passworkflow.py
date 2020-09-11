@@ -111,7 +111,9 @@ class Strelka2PassWorkflow(BioinformaticsWorkflow):
         self.step(
             "refilterINDELs",
             RefilterStrelka2Calls(
-                inputFiles=self.step2.indels, sampleNames=self.sampleNames
+                inputFiles=self.step2.indels,
+                sampleNames=self.sampleNames,
+                minAD=self.minAD,
             ),
         )
         self.step("compressINDELs", BGZip(file=self.refilterINDELs.out), scatter="file")
