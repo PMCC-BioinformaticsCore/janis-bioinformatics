@@ -232,8 +232,8 @@ class Gatk4SetNmMdAndUqTagsBase(Gatk4ToolBase, ABC):
     def metadata(self):
         return ToolMetadata(
             contributors=["Michael Franklin"],
-            dateCreated=datetime.fromisoformat("2020-05-18T14:59:30.755792"),
-            dateUpdated=datetime.fromisoformat("2020-05-18T14:59:30.755793"),
+            dateCreated=datetime(2020, 5, 18),
+            dateUpdated=datetime(2020, 5, 18),
             documentation="USAGE: SetNmMdAndUqTags [arguments] This tool takes in a coordinate-sorted SAM or BAM "
             "and calculatesthe NM, MD, and UQ tags by comparing with the reference.<br />This may be "
             "needed when MergeBamAlignment was run with SORT_ORDER other than 'coordinate' and thus could not fix "
