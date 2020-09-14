@@ -4,7 +4,7 @@ from janis_bioinformatics.data_types import Fasta, FastqGzPair
 
 from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.gatk4 import Gatk4SortSamLatest
-from janis_bioinformatics.tools.star import StarAlignReads_2_5_3
+from janis_bioinformatics.tools.star import StarAlignReads_2_7_1
 from janis_bioinformatics.tools.suhrig import Arriba_1_2_0
 from janis_bioinformatics.tools.usadellab import TrimmomaticPairedEnd_0_35
 
@@ -34,7 +34,7 @@ class StarArriba_0_1_0(BioinformaticsWorkflow):
         self.step(
             "trim",
             TrimmomaticPairedEnd_0_35(
-                sample_name=self.sampleName,
+                sampleName=self.sampleName,
                 inp=self.reads,
                 phred33=True,
                 steps=[
@@ -50,7 +50,7 @@ class StarArriba_0_1_0(BioinformaticsWorkflow):
 
         self.step(
             "star",
-            StarAlignReads_2_5_3(
+            StarAlignReads_2_7_1(
                 readFilesIn=self.trim.pairedOut,
                 genomeDir=self.genomeDir,
                 limitOutSJcollapsed=3000000,  # lots of splice junctions may need more than default 1M buffer
