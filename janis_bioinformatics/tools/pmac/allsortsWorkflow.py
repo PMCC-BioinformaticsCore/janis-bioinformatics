@@ -1,9 +1,8 @@
-from janis_core import Array, Directory, File, String, WorkflowMetadata, StringFormatter
+from janis_core import Directory, File, String, WorkflowMetadata, StringFormatter
 
-from janis_bioinformatics.data_types import Fasta, FastqGzPair
+from janis_bioinformatics.data_types import FastqGzPair
 
 from janis_bioinformatics.tools import BioinformaticsWorkflow
-from janis_bioinformatics.tools.gatk4 import Gatk4SortSamLatest
 from janis_bioinformatics.tools.pmac import GenerateCountsForALLSorts_0_1_2
 from janis_bioinformatics.tools.star import StarAlignReads_2_5_3
 from janis_bioinformatics.tools.subread import featureCounts_2_0_1
@@ -46,7 +45,7 @@ class ALLSortsWorkflow_0_1_0(BioinformaticsWorkflow):
         self.step(
             "featureCounts",
             featureCounts_2_0_1(
-                bam=self.star.out_bam.assert_not_null(),
+                bam=[self.star.out_bam.assert_not_null()],
                 annotationFile=self.gtf,
                 attributeType="gene_name",
             ),
@@ -64,7 +63,51 @@ class ALLSortsWorkflow_0_1_0(BioinformaticsWorkflow):
 
         self.step(
             "allsorts",
-            AllSorts_0_1_0(samples=self.transformation.out, destination="./"),
+            AllSorts_0_1_0(samples=self.transformation.out, destination="."),
+        )
+
+        self.output(
+            "out_gene_counts",
+            source=self.featureCounts.out,
+            output_name=StringFormatter(
+                "{sample_name}_feature_counts", sample_name=self.sample_name
+            ),
+        )
+
+        self.output(
+            "out_predictions",
+            source=self.allsorts.out_predictions,
+            output_folder="allsorts",
+            output_name=StringFormatter(
+                "{sample_name}_predictions", sample_name=self.sample_name
+            ),
+        )
+
+        self.output(
+            "out_probabilities",
+            source=self.allsorts.out_probabilities,
+            output_folder="allsorts",
+            output_name=StringFormatter(
+                "{sample_name}_probabilities", sample_name=self.sample_name
+            ),
+        )
+
+        self.output(
+            "out_distributions",
+            source=self.allsorts.out_distributions,
+            output_folder="allsorts",
+            output_name=StringFormatter(
+                "{sample_name}_distributions", sample_name=self.sample_name
+            ),
+        )
+
+        self.output(
+            "out_waterfalls",
+            source=self.allsorts.out_waterfalls,
+            output_folder="allsorts",
+            output_name=StringFormatter(
+                "{sample_name}_waterfalls", sample_name=self.sample_name
+            ),
         )
 
 
