@@ -93,7 +93,9 @@ class OncopipeStarAligner(BioinformaticsWorkflow):
             ),
         )
 
-        self.output("out_bam", source=self.star_map_2pass_PE.out_bam.assert_not_null())
+        self.output(
+            "out_bam", source=self.star_map_2pass_PE.out_sorted_bam.assert_not_null()
+        )
 
 
 if __name__ == "__main__":
