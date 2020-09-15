@@ -75,7 +75,7 @@ class StarArriba_0_1_0(BioinformaticsWorkflow):
         self.step(
             "arriba",
             Arriba_1_2_0(
-                aligned_inp=self.star.out_bam.assert_not_null(),
+                aligned_inp=self.star.out_unsorted_bam.assert_not_null(),
                 blacklist=self.blacklist,
                 fusion_transcript=True,
                 peptide_sequence=True,
@@ -88,7 +88,7 @@ class StarArriba_0_1_0(BioinformaticsWorkflow):
         self.step(
             "sortsam",
             Gatk4SortSamLatest(
-                bam=self.star.out_bam.assert_not_null(),
+                bam=self.star.out_unsorted_bam.assert_not_null(),
                 sortOrder="coordinate",
                 createIndex=True,
             ),
