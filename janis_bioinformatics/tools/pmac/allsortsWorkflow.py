@@ -45,7 +45,7 @@ class ALLSortsWorkflow_0_1_0(BioinformaticsWorkflow):
         self.step(
             "featureCounts",
             featureCounts_2_0_1(
-                bam=[self.star.out_bam.assert_not_null()],
+                bam=[self.star.out_unsorted_bam.assert_not_null()],
                 annotationFile=self.gtf,
                 attributeType="gene_name",
             ),
