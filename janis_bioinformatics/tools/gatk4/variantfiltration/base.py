@@ -194,9 +194,10 @@ class Gatk4VariantFiltrationBase(Gatk4ToolBase):
             ),
             ToolInput(
                 tag="filterExpression",
-                input_type=String(optional=True),
+                input_type=Array(String, optional=True),
                 prefix="--filter-expression",
                 separate_value_from_prefix=True,
+                prefix_applies_to_all_elements=True,
                 doc=InputDocumentation(
                     doc="(-filter)  One or more expressions used with INFO fields to filter  This argument may be specified 0 or more times. Default value: null. "
                 ),
