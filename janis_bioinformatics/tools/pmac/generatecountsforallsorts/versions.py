@@ -8,10 +8,10 @@ from janis_bioinformatics.tools.pmac.versions import (
 )
 
 
-class GenerateCountsForALLSorts_0_1_2(
+class GenerateCountsForALLSorts_0_1_0(
     GenerateCountsForALLSortsBase, PeterMacUtils_0_1_2
 ):
     pass
 
 
-GenerateCountsForALLSortsLatest = GenerateCountsForALLSorts_0_1_2
+GenerateCountsForALLSortsLatest = GenerateCountsForALLSorts_0_1_0

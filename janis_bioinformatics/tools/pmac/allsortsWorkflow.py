@@ -3,8 +3,8 @@ from janis_core import Directory, File, String, WorkflowMetadata, StringFormatte
 from janis_bioinformatics.data_types import FastqGzPair
 
 from janis_bioinformatics.tools import BioinformaticsWorkflow
-from janis_bioinformatics.tools.pmac import GenerateCountsForALLSorts_0_1_2
-from janis_bioinformatics.tools.star import StarAlignReads_2_5_3
+from janis_bioinformatics.tools.pmac import GenerateCountsForALLSorts_0_1_0
+from janis_bioinformatics.tools.star import StarAlignReads_2_7_1
 from janis_bioinformatics.tools.subread import featureCounts_2_0_1
 from janis_bioinformatics.tools.oshlack import AllSorts_0_1_0
 
@@ -31,7 +31,7 @@ class ALLSortsWorkflow_0_1_0(BioinformaticsWorkflow):
 
         self.step(
             "star",
-            StarAlignReads_2_5_3(
+            StarAlignReads_2_7_1(
                 readFilesIn=self.reads,
                 genomeDir=self.genomeDir,
                 limitOutSJcollapsed=3000000,  # lots of splice junctions may need more than default 1M buffer
@@ -54,7 +54,7 @@ class ALLSortsWorkflow_0_1_0(BioinformaticsWorkflow):
         # A script that transforms featurecounts output to allsorts input
         self.step(
             "transformation",
-            GenerateCountsForALLSorts_0_1_2(
+            GenerateCountsForALLSorts_0_1_0(
                 inp=[self.featureCounts.out],
                 type="featureCounts",
                 samples=[self.sample_name],
