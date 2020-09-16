@@ -47,7 +47,7 @@ class Gatk4SplitNCigarReadsBase(Gatk4ToolBase, ABC):
             ),
             ToolInput(
                 tag="outputFilename",
-                input_type=Filename(prefix=InputSelector("inp"), extension=".bam"),
+                input_type=Filename(extension=".bam"),
                 prefix="--output",
                 separate_value_from_prefix=True,
                 doc=InputDocumentation(
