@@ -127,7 +127,7 @@ class Gatk4HaplotypeCallerBase(Gatk4ToolBase, ABC):
         return [
             ToolOutput(
                 "out",
-                VcfTabix,
+                CompressedVcf,
                 glob=InputSelector("outputFilename"),
                 doc="A raw, unfiltered, highly sensitive callset in VCF format. "
                 "File to which variants should be written",
@@ -459,5 +459,11 @@ to our recommendations as documented (https://software.broadinstitute.org/gatk/d
             String(optional=True),
             prefix="--emit-ref-confidence",
             doc="(-ERC) Mode for emitting reference confidence scores (For Mutect2, this is a BETA feature)",
+        ),
+        ToolInput(
+            "dontUseSoftClippedBases",
+            Boolean(optional=True),
+            prefix="--dont-use-soft-clipped-bases",
+            doc="Do not analyze soft clipped bases in the reads",
         ),
     ]

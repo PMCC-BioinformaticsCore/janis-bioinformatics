@@ -283,7 +283,7 @@ class MultiqcBase(BioinformaticsTool):
     def outputs(self):
         return []
 
-    def metadata(self):
+    def bind_metadata(self):
         return ToolMetadata(
             contributors=["Michael Franklin"],
             dateCreated=datetime(2019, 10, 24),
