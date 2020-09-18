@@ -389,9 +389,10 @@ class Gatk4SplitNCigarReadsBase(Gatk4ToolBase, ABC):
             ),
             ToolInput(
                 tag="tmpDir",
-                input_type=Boolean(optional=True),
+                input_type=String(optional=True),
                 prefix="--tmp-dir",
                 separate_value_from_prefix=True,
+                default="tmp/",
                 doc=InputDocumentation(
                     doc="Temp directory to use. Default value: null."
                 ),
