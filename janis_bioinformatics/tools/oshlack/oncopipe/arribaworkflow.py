@@ -9,9 +9,9 @@ from janis_bioinformatics.tools.suhrig import Arriba_1_2_0
 from janis_bioinformatics.tools.usadellab import TrimmomaticPairedEnd_0_35
 
 
-class StarArriba_0_1_0(BioinformaticsWorkflow):
+class ArribaWorkflow_0_1_0(BioinformaticsWorkflow):
     def id(self) -> str:
-        return "starArriba"
+        return "arribaWorkflow"
 
     def friendly_name(self):
         return "Star Arriba Workflow"
@@ -113,4 +113,4 @@ class StarArriba_0_1_0(BioinformaticsWorkflow):
 
 
 if __name__ == "__main__":
-    StarArriba_0_1_0.translate("cwl")
+    ArribaWorkflow_0_1_0.translate("cwl")
