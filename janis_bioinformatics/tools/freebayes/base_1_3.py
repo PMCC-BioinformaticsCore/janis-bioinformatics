@@ -23,12 +23,12 @@ CORES_TUPLE = [
     (
         CaptureType.key(),
         {
-            CaptureType.TARGETED: 2,
-            CaptureType.CHROMOSOME: 2,
-            CaptureType.EXOME: 2,
-            CaptureType.THIRTYX: 2,
-            CaptureType.NINETYX: 2,
-            CaptureType.THREEHUNDREDX: 2,
+            CaptureType.TARGETED: 1,
+            CaptureType.CHROMOSOME: 1,
+            CaptureType.EXOME: 1,
+            CaptureType.THIRTYX: 1,
+            CaptureType.NINETYX: 1,
+            CaptureType.THREEHUNDREDX: 1,
         },
     )
 ]
@@ -41,8 +41,8 @@ MEM_TUPLE = [
             CaptureType.CHROMOSOME: 4,
             CaptureType.EXOME: 8,
             CaptureType.THIRTYX: 8,
-            CaptureType.NINETYX: 16,
-            CaptureType.THREEHUNDREDX: 32,
+            CaptureType.NINETYX: 8,
+            CaptureType.THREEHUNDREDX: 8,
         },
     )
 ]
