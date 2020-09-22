@@ -9,7 +9,7 @@ from janis_bioinformatics.tools.bedtools import (
     BedToolsCoverageBedLatest,
     BedToolsIntersectBedLatest,
 )
-from janis_bioinformatics.tools.gatk4 import Gatk4CollectInsertSizeMetricsLatest
+from janis_bioinformatics.tools.gatk4 import Gatk4CollectInsertSizeMetrics_4_1_2
 from janis_bioinformatics.tools.pmac import (
     PerformanceSummaryLatest,
     GeneCoveragePerSampleLatest,
@@ -44,7 +44,7 @@ class PerformanceSummaryTargeted_0_1_0(BioinformaticsWorkflow):
         # Steps
         self.step(
             "gatk4collectinsertsizemetrics",
-            Gatk4CollectInsertSizeMetricsLatest(bam=self.bam,),
+            Gatk4CollectInsertSizeMetrics_4_1_2(bam=self.bam,),
         )
         self.step("bamflagstat", SamToolsFlagstatLatest(bam=self.bam))
         self.step(
