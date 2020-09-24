@@ -114,6 +114,13 @@ class RefilterStrelka2CallsBase(BioinformaticsTool, ABC):
                 doc="minimum phred scaled evidence for a variant to be accepted (default: 20)",
             ),
             ToolInput(
+                tag="minAD",
+                input_type=Int(),
+                default=2,
+                prefix="--minAD",
+                doc="minimum allelic depth for a variant to be accepted (default: 2)",
+            ),
+            ToolInput(
                 tag="threads",
                 input_type=Int(),
                 default=CpuSelector(),

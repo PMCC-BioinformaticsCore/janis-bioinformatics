@@ -96,7 +96,8 @@ class Gatk4Mutect2Base_4_1(Gatk4ToolBase, ABC):
             ),
             ToolInput(
                 tag="outputBamName",
-                input_type=Filename(extension=".bam"),
+                # This is not a FileName because otherwise we cant make this optional
+                input_type=String(optional=True),
                 prefix="-bamout",
                 doc="File to which assembled haplotypes should be written",
             ),
@@ -881,7 +882,7 @@ class Gatk4Mutect2Base_4_1(Gatk4ToolBase, ABC):
             ),
             ToolOutput(
                 "bam",
-                BamBai,
+                BamBai(optional=True),
                 glob=InputSelector("outputBamName"),
                 doc="File to which assembled haplotypes should be written",
                 secondaries_present_as={".bai": "^.bai"},
