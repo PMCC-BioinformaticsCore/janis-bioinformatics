@@ -13,10 +13,10 @@ from janis_core import (
 from janis_bioinformatics.data_types import FastqGzPairedEnd, FastaWithIndexes, Fasta
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsWorkflow
 from janis_bioinformatics.tools.gatk4 import Gatk4SortSamLatest
-from janis_bioinformatics.tools.oshlack import (
+from janis_bioinformatics.tools.oshlack.prepareallsortsinput import (
     PrepareALLSortsInput_0_1_0,
-    AllSorts_0_1_0,
 )
+from janis_bioinformatics.tools.oshlack.allsorts.versions import AllSorts_0_1_0
 from janis_bioinformatics.tools.star import StarAlignReads_2_7_1
 from janis_bioinformatics.tools.subread import FeatureCounts_2_0_1
 from janis_bioinformatics.tools.suhrig import Arriba_1_2_0
@@ -29,6 +29,9 @@ class OncopipeWorkflow(BioinformaticsWorkflow):
 
     def id(self) -> str:
         return "oncopipe"
+
+    def version(self):
+        return "v0.1.0"
 
     def bind_metadata(self):
         return WorkflowMetadata(
@@ -110,6 +113,9 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
 
     def id(self) -> str:
         return "OncopipeSamplePreparation"
+
+    def version(self):
+        return "v0.1.0"
 
     def constructor(self):
 
@@ -278,4 +284,4 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
 __JANIS_ENTRYPOINT = OncopipeSamplePreparation
 
 if __name__ == "__main__":
-    OncopipeWorkflow().translate("wdl")
+    __JANIS_ENTRYPOINT().get_dot_plot(show=True)
