@@ -1,4 +1,5 @@
 from abc import ABC
+from typing import Dict, Any
 from datetime import datetime
 from janis_core import (
     CommandTool,
@@ -14,10 +15,38 @@ from janis_core import (
     Filename,
     ToolMetadata,
     InputDocumentation,
+    CaptureType,
+    get_value_for_hints_and_ordered_resource_tuple,
 )
 
 from janis_bioinformatics.data_types import Bam, BamBai
 from janis_bioinformatics.tools.gatk4.gatk4toolbase import Gatk4ToolBase
+
+CORES_TUPLE = [
+    (
+        CaptureType.key(),
+        {
+            CaptureType.CHROMOSOME: 1,
+            CaptureType.EXOME: 1,
+            CaptureType.THIRTYX: 1,
+            CaptureType.NINETYX: 1,
+            CaptureType.THREEHUNDREDX: 1,
+        },
+    )
+]
+
+MEM_TUPLE = [
+    (
+        CaptureType.key(),
+        {
+            CaptureType.CHROMOSOME: 16,
+            CaptureType.EXOME: 16,
+            CaptureType.THIRTYX: 16,
+            CaptureType.NINETYX: 64,
+            CaptureType.THREEHUNDREDX: 64,
+        },
+    )
+]
 
 
 class Gatk4AddOrReplaceReadGroupsBase(Gatk4ToolBase, ABC):
@@ -31,9 +60,21 @@ class Gatk4AddOrReplaceReadGroupsBase(Gatk4ToolBase, ABC):
     def tool(self) -> str:
         return "GatkAddOrReplaceReadGroups"
 
+    def cpus(self, hints: Dict[str, Any]):
+        val = get_value_for_hints_and_ordered_resource_tuple(hints, CORES_TUPLE)
+        if val:
+            return val
+        return 1
+
+    def memory(self, hints: Dict[str, Any]):
+        val = get_value_for_hints_and_ordered_resource_tuple(hints, MEM_TUPLE)
+        if val:
+            return val
+        return 8
+
     def inputs(self):
         return [
-            super().inputs(),
+            *super().inputs(),
             ToolInput(
                 tag="inp",
                 input_type=Bam(),
@@ -92,15 +133,15 @@ class Gatk4AddOrReplaceReadGroupsBase(Gatk4ToolBase, ABC):
                     "specified 0 or more times. Default value: null. "
                 ),
             ),
-            ToolInput(
-                tag="compression_level",
-                input_type=Int(optional=True),
-                prefix="--COMPRESSION_LEVEL",
-                separate_value_from_prefix=True,
-                doc=InputDocumentation(
-                    doc="Compression level for all compressed files created (e.g. BAM and VCF). Default value: 2."
-                ),
-            ),
+            # ToolInput(
+            #     tag="compression_level",
+            #     input_type=Int(optional=True),
+            #     prefix="--COMPRESSION_LEVEL",
+            #     separate_value_from_prefix=True,
+            #     doc=InputDocumentation(
+            #         doc="Compression level for all compressed files created (e.g. BAM and VCF). Default value: 2."
+            #     ),
+            # ),
             ToolInput(
                 tag="create_index",
                 input_type=Boolean(optional=True),
@@ -342,8 +383,8 @@ class Gatk4AddOrReplaceReadGroupsBase(Gatk4ToolBase, ABC):
     def bind_metadata(self):
         return ToolMetadata(
             contributors=["illusional"],
-            dateCreated=datetime.fromisoformat("2020-05-15T15:56:24.590154"),
-            dateUpdated=datetime.fromisoformat("2020-05-15T15:56:24.590155"),
+            dateCreated=datetime(2020, 5, 15),
+            dateUpdated=datetime(2020, 5, 15),
             documentation="""\
 USAGE: AddOrReplaceReadGroups [arguments]"
 Assigns all the reads in a file to a single new read-group.

@@ -22,22 +22,51 @@ class TrimmomaticPairedEndBase(TrimmomaticBase):
     def inputs(self) -> List[ToolInput]:
         return [
             *super().inputs(),
-            ToolInput("inp", FastqPair, position=5, separator=" "),
+            ToolInput("inp", FastqGzPair, position=5, separator=" "),
             ToolInput(
-                "outputFilename",
+                "outputFilename_R1",
                 Filename(
                     prefix=InputSelector("sampleName"),
-                    suffix=".trimmed",
+                    suffix="_R1.trimmed",
                     extension=".fastq.gz",
                 ),
                 position=6,
+            ),
+            ToolInput(
+                "outputFilenameUnpaired_R1",
+                Filename(
+                    prefix=InputSelector("sampleName"),
+                    suffix="_R1.unpaired",
+                    extension=".fastq.gz",
+                ),
+                position=7,
+            ),
+            ToolInput(
+                "outputFilename_R2",
+                Filename(
+                    prefix=InputSelector("sampleName"),
+                    suffix="_R2.trimmed",
+                    extension=".fastq.gz",
+                ),
+                position=8,
+            ),
+            ToolInput(
+                "outputFilenameUnpaired_R2",
+                Filename(
+                    prefix=InputSelector("sampleName"),
+                    suffix="_R2.unpaired",
+                    extension=".fastq.gz",
+                ),
+                position=9,
             ),
         ]
 
     def outputs(self) -> List[ToolOutput]:
         return [
-            ToolOutput("pairedOut", FastqGzPair, glob=WildcardSelector("*P.fastq.gz")),
             ToolOutput(
-                "unpairedOut", FastqGzPair, glob=WildcardSelector("*U.fastq.gz")
+                "pairedOut", FastqGzPair, glob=WildcardSelector("*trimmed.fastq.gz")
+            ),
+            ToolOutput(
+                "unpairedOut", FastqGzPair, glob=WildcardSelector("*unpaired.fastq.gz")
             ),
         ]

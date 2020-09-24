@@ -1,4 +1,6 @@
 from typing import List
+
+from typing import List
 from abc import ABC, abstractmethod
 
 from janis_core import (
@@ -15,7 +17,12 @@ from janis_core import (
     Directory,
 )
 
-from janis_bioinformatics.data_types import FastaWithIndexes, Fasta, Vcf, Bam, FastqGz
+from janis_bioinformatics.data_types import (
+    Fasta,
+    Vcf,
+    Bam,
+    FastqGzPair,
+)
 from janis_bioinformatics.tools import BioinformaticsTool
 
 
@@ -111,8 +118,13 @@ class StarBase(BioinformaticsTool, ABC):
                 "genomeDir",
                 Directory(optional=True),
                 prefix="--genomeDir",
-                doc="(default: GenomeDir/) path to the directory where genome files are stored \n"
-                "(for --runMode alignReads) or will be generated (for --runMode generateGenome)",
+                doc="(default: GenomeDir/) path to the directory where genome files are stored",
+            ),
+            ToolInput(
+                "outputGenomeDir",
+                String(optional=True),
+                prefix="--genomeDir",
+                doc="generated for --runMode generateGenome",
             ),
             ToolInput(
                 "genomeLoad",
@@ -182,14 +194,14 @@ class StarBase(BioinformaticsTool, ABC):
             ),
             ToolInput(
                 "sjdbFileChrStartEnd",
-                String(optional=True),
+                File(optional=True),
                 prefix="--sjdbFileChrStartEnd",
                 doc="(default: -) path to the files with genomic coordinates (chr <tab> start <tab> end <tab> strand) "
                 "for the splice junction introns. Multiple files can be supplied wand will be concatenated.",
             ),
             ToolInput(
                 "sjdbGTFfile",
-                String(optional=True),
+                File(optional=True),
                 prefix="--sjdbGTFfile",
                 doc="(default: -) path to the GTF file with annotations",
             ),
@@ -275,9 +287,11 @@ class StarBase(BioinformaticsTool, ABC):
             ),
             ToolInput(
                 "readFilesIn",
-                Array(FastqGz(optional=True)),
-                prefix="--readFilesIn",
+                # when mapping multiple pair-ended fqs
+                # S1_R1.fq,S2_R1.fq S1_R2.fq,S2_R2.fq
+                FastqGzPair(optional=True),
                 separator=" ",
+                prefix="--readFilesIn",
                 doc="(default: Read1 Read2) paths to files that contain input read1 (and, if needed,  read2)",
             ),
             ToolInput(
@@ -396,7 +410,8 @@ class StarBase(BioinformaticsTool, ABC):
             ),
             ToolInput(
                 "outFileNamePrefix",
-                String(optional=True),
+                String(),
+                default="./",
                 prefix="--outFileNamePrefix",
                 doc="(default: ./) output files name prefix (including full or relative path). Can only be defined on the command line.",
             ),
@@ -440,6 +455,7 @@ class StarBase(BioinformaticsTool, ABC):
                 "outSAMtype",
                 Array(String(), optional=True),
                 prefix="--outSAMtype",
+                separator=" ",
                 doc="(default: SAM) ... quasi-random order used before 2.5.0 Random ... random order of alignments for each multi-mapper. Read mates (pairs) are always adjacent, all alignment for each read stay together. This option will become default in the future releases. ... standard unsorted SortedByCoordinate ... sorted by coordinate. This option will allocate extra memory for sorting which can be specified by --limitBAMsortRAM.",
             ),
             ToolInput(
@@ -960,7 +976,7 @@ class StarBase(BioinformaticsTool, ABC):
             ),
             ToolInput(
                 "chimOutType",
-                String(optional=True),
+                Array(String(), optional=True),
                 prefix="--chimOutType",
                 doc="(default: Junctions) type of chimeric output     Junctions       ... Chimeric.out.junction     SeparateSAMold  ... output old SAM into separate Chimeric.out.sam file     WithinBAM       ... output into main aligned BAM files (Aligned.*.bam)     WithinBAM HardClip  ... (default) hard-clipping in the CIGAR for supplemental chimeric alignments (defaultif no 2nd word is present)     WithinBAM SoftClip  ... soft-clipping in the CIGAR for supplemental chimeric alignments",
             ),

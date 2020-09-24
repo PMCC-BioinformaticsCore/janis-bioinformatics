@@ -1,4 +1,4 @@
-from janis_core import Double
+from janis_core import Double, WorkflowMetadata, StringFormatter
 
 from janis_bioinformatics.data_types import Bam, FastaWithIndexes
 from janis_bioinformatics.tools import BioinformaticsWorkflow
@@ -21,6 +21,11 @@ class OncopipeVariantCaller(BioinformaticsWorkflow):
     def friendly_name(self):
         return "Oncopipe: VariantCaller"
 
+    def bind_metadata(self):
+        return WorkflowMetadata(
+            version="v0.1.0", contributors=["Michael Franklin", "Jiaan Yu"]
+        )
+
     def constructor(self):
         # variant_pipeline = segment {
         #     add_rg +
@@ -28,14 +33,14 @@ class OncopipeVariantCaller(BioinformaticsWorkflow):
         #     reorder_bam +
         #     splitncigar +
         #     rnaseq_call_variants +
-        #     filter_variants +
-        #     + [annotate variants]
+        #     filter_variants
         # }
 
         self.input("bam", Bam)
         self.input("reference", FastaWithIndexes)
         self.input("sample_name", str)
         self.input("platform", str)
+        self.input("call_conf", Double, default=20.0)
 
         self.step(
             "add_rg",
@@ -48,6 +53,7 @@ class OncopipeVariantCaller(BioinformaticsWorkflow):
                 rgpu="1",
                 rgsm=self.sample_name,
                 validation_stringency="LENIENT",
+                create_index=True,
             ),
             doc="Add read group",
         )
@@ -55,30 +61,34 @@ class OncopipeVariantCaller(BioinformaticsWorkflow):
         self.step(
             "mark_duplicates",
             Gatk4MarkDuplicates_4_1_4(
-                bam=self.add_rg.out, validationStringency="SILENT"
+                bam=[self.add_rg.out], validationStringency="SILENT", createIndex=True
             ),
             doc="Mark duplicates and create index",
         )
 
-        self.step(
-            "reorder_bam",
-            Gatk4ReorderSam_4_1_4(
-                reference=self.reference, inp=self.mark_duplicates.out,
-            ),
-        )
+        # self.step(
+        #     "reorder_bam",
+        #     Gatk4ReorderSam_4_1_4(
+        #         reference=self.reference,
+        #         inp=self.mark_duplicates.out,
+        #         create_index=True,
+        #     ),
+        # )
 
-        # https://gatkforums.broadinstitute.org/gatk/discussion/10800/gatk4-how-to-reassign-star-mapping-quality-from-255-to-60-with-splitncigarreads
+        # https://github.com/bcbio/bcbio-nextgen/issues/2163
         # missing params from migration:
         #   -rf ReassignOneMappingQuality -> readFilter
         #   -RMQF 255
         #   -RMQT 60
         #   -U ALLOW_N_CIGAR_READS
+        # https://gatk.broadinstitute.org/hc/en-us/articles/360036432252-SplitNCigarReads
+        # --skip-mapping-quality-transform -skip-mq-transform set to False by default (skip the 255 -> 60 MQ read transform)
         self.step(
             "splitncigar",
             Gatk4SplitNCigarReads_4_1_4(
-                inp=self.reorder_bam.out,
+                inp=[self.mark_duplicates.out],
                 reference=self.reference,
-                readFilter="ReassignOneMappingQuality",
+                # readFilter="ReassignOneMappingQuality",
             ),
             doc="split'n'trim and reassign mapping qualities",
         )
@@ -89,9 +99,7 @@ class OncopipeVariantCaller(BioinformaticsWorkflow):
                 inputRead=self.splitncigar.out,
                 reference=self.reference,
                 dontUseSoftClippedBases=True,
-                standardMinConfidenceThresholdForCalling=self.input(
-                    "call_conf", Double
-                ),
+                standardMinConfidenceThresholdForCalling=self.call_conf,
             ),
         )
 
@@ -102,7 +110,23 @@ class OncopipeVariantCaller(BioinformaticsWorkflow):
                 variant=self.rnaseq_call_variants.out,
                 clusterWindowSize=35,
                 clusterSize=3,
-                filterName=['FS -filter "FS > 30.0"', 'QD -filter "QD < 2.0"'],
+                filterName=["FS", "QD"],
+                filterExpression=["FS > 30.0", "QD < 2.0"],
+            ),
+        )
+
+        self.output(
+            "out_HAP_vcf",
+            source=self.rnaseq_call_variants.out,
+            output_name=StringFormatter(
+                "{sample_name}_HAP", sample_name=self.sample_name
+            ),
+        )
+        self.output(
+            "out_HAP_filter_vcf",
+            source=self.filter_variants.out,
+            output_name=StringFormatter(
+                "{sample_name}_HAP.filtered", sample_name=self.sample_name
             ),
         )
 

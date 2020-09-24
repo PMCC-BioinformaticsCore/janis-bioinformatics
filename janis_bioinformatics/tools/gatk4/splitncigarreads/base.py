@@ -33,7 +33,7 @@ class Gatk4SplitNCigarReadsBase(Gatk4ToolBase, ABC):
 
     def inputs(self):
         return [
-            super().inputs(),
+            *super().inputs(),
             ToolInput(
                 tag="inp",
                 input_type=Array(Bam, optional=True),
@@ -47,7 +47,7 @@ class Gatk4SplitNCigarReadsBase(Gatk4ToolBase, ABC):
             ),
             ToolInput(
                 tag="outputFilename",
-                input_type=Filename(prefix=InputSelector("inp"), extension=".bam"),
+                input_type=Filename(extension=".bam"),
                 prefix="--output",
                 separate_value_from_prefix=True,
                 doc=InputDocumentation(
@@ -389,9 +389,10 @@ class Gatk4SplitNCigarReadsBase(Gatk4ToolBase, ABC):
             ),
             ToolInput(
                 tag="tmpDir",
-                input_type=Boolean(optional=True),
+                input_type=String(optional=True),
                 prefix="--tmp-dir",
                 separate_value_from_prefix=True,
+                default="tmp/",
                 doc=InputDocumentation(
                     doc="Temp directory to use. Default value: null."
                 ),
@@ -667,7 +668,7 @@ class Gatk4SplitNCigarReadsBase(Gatk4ToolBase, ABC):
     def bind_metadata(self):
         return ToolMetadata(
             contributors=[],
-            dateCreated=datetime.fromisoformat("2020-05-15T15:42:57.592654"),
-            dateUpdated=datetime.fromisoformat("2020-05-15T15:42:57.592655"),
+            dateCreated=datetime(2020, 5, 15),
+            dateUpdated=datetime(2020, 5, 15),
             documentation="USAGE: SplitNCigarReads [arguments]\nSplits reads that contain Ns in their cigar string (e.g. spanning splicing events).\nVersion:4.1.3.0\n",
         )

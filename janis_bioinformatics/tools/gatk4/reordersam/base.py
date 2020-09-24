@@ -33,7 +33,7 @@ class Gatk4ReorderSamBase(Gatk4ToolBase, ABC):
 
     def inputs(self):
         return [
-            super().inputs(),
+            *super().inputs(),
             ToolInput(
                 tag="inp",
                 input_type=Bam(),
@@ -52,14 +52,20 @@ class Gatk4ReorderSamBase(Gatk4ToolBase, ABC):
                     doc="(-O) Output file (SAM or BAM) to write extracted reads to. Required."
                 ),
             ),
+            # since gatk 4.1.4.0 the reference option replace with reference dictionary
             ToolInput(
-                tag="reference",
-                input_type=FastaWithIndexes(),
-                prefix="--REFERENCE",
+                tag="sequence_dictionary",
+                # tag="reference",
+                input_type=File(),
+                # prefix="--REFERENCE",
+                prefix="--SEQUENCE_DICTIONARY",
                 separate_value_from_prefix=True,
                 doc=InputDocumentation(
-                    doc="(-R) Reference sequence to reorder reads to match. A sequence dictionary corresponding to the reference fasta is required.  Create one with CreateSequenceDictionary.  Required. "
+                    "A Sequence Dictionary for the OUTPUT file (can be read from one of the following file types (SAM, BAM, VCF, BCF, Interval List, Fasta, or Dict)"
                 ),
+                # doc=InputDocumentation(
+                #     doc="(-R) Reference sequence to reorder reads to match. A sequence dictionary corresponding to the reference fasta is required.  Create one with CreateSequenceDictionary.  Required. "
+                # ),
             ),
             ToolInput(
                 tag="allow_contig_length_discordance",
@@ -88,15 +94,15 @@ class Gatk4ReorderSamBase(Gatk4ToolBase, ABC):
                     doc="read one or more arguments files and add them to the command line This argument may be specified 0 or more times. Default value: null. "
                 ),
             ),
-            ToolInput(
-                tag="compression_level",
-                input_type=Int(optional=True),
-                prefix="--COMPRESSION_LEVEL",
-                separate_value_from_prefix=True,
-                doc=InputDocumentation(
-                    doc="Compression level for all compressed files created (e.g. BAM and VCF). Default value: 2."
-                ),
-            ),
+            # ToolInput(
+            #     tag="compression_level",
+            #     input_type=Int(optional=True),
+            #     prefix="--COMPRESSION_LEVEL",
+            #     separate_value_from_prefix=True,
+            #     doc=InputDocumentation(
+            #         doc="Compression level for all compressed files created (e.g. BAM and VCF). Default value: 2."
+            #     ),
+            # ),
             ToolInput(
                 tag="create_index",
                 input_type=Boolean(optional=True),
@@ -229,8 +235,8 @@ class Gatk4ReorderSamBase(Gatk4ToolBase, ABC):
     def bind_metadata(self):
         return ToolMetadata(
             contributors=["illusional"],
-            dateCreated=datetime.fromisoformat("2020-05-15T16:11:13.566578"),
-            dateUpdated=datetime.fromisoformat("2020-05-15T16:11:13.566579"),
+            dateCreated=datetime(2020, 5, 15),
+            dateUpdated=datetime(2020, 5, 15),
             documentation="""
 USAGE: ReorderSam [arguments]
 

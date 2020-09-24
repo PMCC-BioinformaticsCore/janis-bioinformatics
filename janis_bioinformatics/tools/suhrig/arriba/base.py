@@ -39,7 +39,7 @@ class ArribaBase(CommandTool, ABC):
         return [
             ToolInput(
                 tag="aligned_inp",
-                input_type=Bam(optional=True),
+                input_type=Bam(),
                 prefix="-x",
                 separate_value_from_prefix=True,
                 doc=InputDocumentation(
@@ -111,7 +111,7 @@ class ArribaBase(CommandTool, ABC):
             ),
             ToolInput(
                 tag="output_filename",
-                input_type=String(),
+                input_type=Filename(extension=".tsv"),
                 prefix="-o",
                 default="fusions.tsv",
                 separate_value_from_prefix=True,
@@ -121,7 +121,7 @@ class ArribaBase(CommandTool, ABC):
             ),
             ToolInput(
                 tag="discarded_output_filename",
-                input_type=String(),
+                input_type=Filename(suffix=".discarded", extension=".tsv"),
                 prefix="-O",
                 separate_value_from_prefix=True,
                 default="fusions.discarded.tsv",
@@ -167,9 +167,8 @@ class ArribaBase(CommandTool, ABC):
             ),
             ToolInput(
                 tag="contigs",
-                input_type=Array(String, optional=True),
+                input_type=Array(String(), optional=True),
                 prefix="-i",
-                separator=" ",
                 doc=InputDocumentation(
                     doc="Comma-/space-separated list of interesting contigs. Fusions between genes on other contigs "
                     "are ignored. Contigs can be specified with or without the prefix 'chr'. "
@@ -399,8 +398,8 @@ class ArribaBase(CommandTool, ABC):
     def metadata(self):
         return ToolMetadata(
             contributors=["Michael Franklin"],
-            dateCreated=datetime.fromisoformat("2020-09-02T09:45:31.925016"),
-            dateUpdated=datetime.fromisoformat("2020-09-02T09:45:31.925029"),
+            dateCreated=datetime(2020, 9, 2),
+            dateUpdated=datetime(2020, 9, 2),
             documentation="""
 Arriba gene fusion detector
 --------------------------- 

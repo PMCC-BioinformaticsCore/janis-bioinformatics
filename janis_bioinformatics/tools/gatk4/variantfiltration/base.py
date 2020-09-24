@@ -17,7 +17,7 @@ from janis_core import (
     Array,
 )
 
-from janis_bioinformatics.data_types import Vcf
+from janis_bioinformatics.data_types import FastaWithIndexes, VcfTabix
 from janis_bioinformatics.tools.gatk4.gatk4toolbase import Gatk4ToolBase
 
 
@@ -34,6 +34,7 @@ class Gatk4VariantFiltrationBase(Gatk4ToolBase):
 
     def inputs(self):
         return [
+            *super().inputs(),
             ToolInput(
                 tag="outputFilename",
                 input_type=Filename(
@@ -49,7 +50,7 @@ class Gatk4VariantFiltrationBase(Gatk4ToolBase):
             ),
             ToolInput(
                 tag="variant",
-                input_type=Vcf(),
+                input_type=VcfTabix(),
                 prefix="--variant",
                 separate_value_from_prefix=True,
                 doc=InputDocumentation(
@@ -193,9 +194,10 @@ class Gatk4VariantFiltrationBase(Gatk4ToolBase):
             ),
             ToolInput(
                 tag="filterExpression",
-                input_type=String(optional=True),
+                input_type=Array(String, optional=True),
                 prefix="--filter-expression",
                 separate_value_from_prefix=True,
+                prefix_applies_to_all_elements=True,
                 doc=InputDocumentation(
                     doc="(-filter)  One or more expressions used with INFO fields to filter  This argument may be specified 0 or more times. Default value: null. "
                 ),
@@ -433,7 +435,7 @@ class Gatk4VariantFiltrationBase(Gatk4ToolBase):
             ),
             ToolInput(
                 tag="reference",
-                input_type=String(optional=True),
+                input_type=FastaWithIndexes(optional=True),
                 prefix="--reference",
                 separate_value_from_prefix=True,
                 doc=InputDocumentation(
@@ -736,12 +738,12 @@ class Gatk4VariantFiltrationBase(Gatk4ToolBase):
         ]
 
     def outputs(self):
-        return [ToolOutput("out", Vcf(), glob=InputSelector("outputFilename"),)]
+        return [ToolOutput("out", VcfTabix(), glob=InputSelector("outputFilename"),)]
 
     def bind_metadata(self):
         return ToolMetadata(
             contributors=[],
-            dateCreated=datetime.fromisoformat("2020-05-18T08:00:02.265505"),
-            dateUpdated=datetime.fromisoformat("2020-05-18T08:00:02.265505"),
+            dateCreated=datetime(2020, 5, 18),
+            dateUpdated=datetime(2020, 5, 18),
             documentation="USAGE: VariantFiltration [arguments]\nFilter variant calls based on INFO and/or FORMAT annotations.\nVersion:4.1.3.0\n",
         )
