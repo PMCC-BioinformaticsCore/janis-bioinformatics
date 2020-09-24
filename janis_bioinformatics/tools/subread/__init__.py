@@ -1,1 +1,1 @@
-from .featurecounts.versions import featureCounts_2_0_1, featureCountsLatest
+from .featurecounts.versions import FeatureCounts_2_0_1, FeatureCountsLatest
