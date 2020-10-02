@@ -19,13 +19,13 @@ class EvaluateToolDefinitions(unittest.TestCase):
 
         errors = []
         for field in evaluation:
-            if not evaluation[field]:
-                errors.append(field)
+            if evaluation[field] is not True:
+                errors.append(evaluation[field])
 
         if not errors:
             return True
 
-        return f"Missing certain fields: {', '.join(errors)}"
+        return "; ".join(errors)
 
     def evaluate_workflow(self, wf):
         return True
