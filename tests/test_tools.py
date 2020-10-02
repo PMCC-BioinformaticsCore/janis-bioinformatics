@@ -15,12 +15,17 @@ class EvaluateToolDefinitions(unittest.TestCase):
         raise Exception("Unrecognised tool type: " + str(tool.type()))
 
     def evaluate_command_tool(self, tool: jc.CommandTool):
-
         evaluation = tool.evaluate()
 
         errors = []
+        for field in evaluation:
+            if not evaluation[field]:
+                errors.append(field)
 
-        return "Missing certain fields: 'bla'"
+        if not errors:
+            return True
+
+        return f"Missing certain fields: {', '.join(errors)}"
 
     def evaluate_workflow(self, wf):
         return True
@@ -36,12 +41,12 @@ class EvaluateToolDefinitions(unittest.TestCase):
 
         for tool_versions in all_tools[:4]:
             for versioned_tool in tool_versions:
-                evalution = self.evaluate(versioned_tool)
+                evaluation = self.evaluate(versioned_tool)
 
-                if evalution is True:
+                if evaluation is True:
                     succeeded.add(versioned_tool.versioned_id())
                 else:
-                    failed[versioned_tool.versioned_id()] = evalution
+                    failed[versioned_tool.versioned_id()] = evaluation
 
         headers = ["Tool", "Status", "Description"]
         formatted_failed = [(tid, "FAILED", terror) for tid, terror in failed.items()]

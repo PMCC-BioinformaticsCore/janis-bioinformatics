@@ -15,6 +15,19 @@ class BioinformaticsTool(CommandTool, ABC):
     def tool_module(self):
         return BIOINFORMATICS_MODULE
 
+    def evaluate(self):
+        evaluation = {}
+
+        evaluation['friendly_name'] = self.evaluate_friendly_name()
+
+        return evaluation
+
+    def evaluate_friendly_name(self):
+        if self.friendly_name() is None:
+            return False
+
+        return True
+
 
 class BioinformaticsWorkflow(Workflow, ABC):
     def tool_module(self):
