@@ -10,3 +10,5 @@ janis_pipelines.bioinformatics.egg-info/
 pip-wheel-metadata/
 cromwell-executions/
 cromwell-workflow-logs/
+venv/
+.python-version
