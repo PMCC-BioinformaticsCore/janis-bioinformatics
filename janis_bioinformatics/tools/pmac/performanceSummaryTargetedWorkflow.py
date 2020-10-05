@@ -6,8 +6,8 @@ from janis_bioinformatics.data_types import BamBai, Bed
 from janis_unix.data_types import TextFile
 from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.bedtools import (
-    BedToolsCoverageBedLatest,
-    BedToolsIntersectBedLatest,
+    BedToolsCoverageBed_2_29_2,
+    BedToolsIntersectBed_2_29_2,
 )
 from janis_bioinformatics.tools.gatk4 import Gatk4CollectInsertSizeMetrics_4_1_2
 from janis_bioinformatics.tools.pmac import (
@@ -15,8 +15,9 @@ from janis_bioinformatics.tools.pmac import (
     GeneCoveragePerSampleLatest,
 )
 from janis_bioinformatics.tools.samtools import (
-    SamToolsFlagstatLatest,
-    SamToolsViewLatest,
+    SamToolsFlagstat_1_9,
+    SamToolsView_1_9,
+    SamToolsIndex_1_9,
 )
 
 
@@ -45,27 +46,27 @@ class PerformanceSummaryTargeted_0_1_0(BioinformaticsWorkflow):
         # Add a step to remove secondary alignments
         self.step(
             "rmsecondaryalignments",
-            SamToolsViewLatest(sam=self.bam, doNotOutputAlignmentsWithBitsSet="0x100"),
+            SamToolsView_1_9(sam=self.bam, doNotOutputAlignmentsWithBitsSet="0x100"),
         )
-
+        self.step("indexbam", SamToolsIndex_1_9(bam=self.rmsecondaryalignments.out))
         self.step(
             "gatk4collectinsertsizemetrics",
-            Gatk4CollectInsertSizeMetrics_4_1_2(bam=self.rmsecondaryalignments,),
+            Gatk4CollectInsertSizeMetrics_4_1_2(bam=self.indexbam.out,),
         )
         self.step(
-            "bamflagstat", SamToolsFlagstatLatest(bam=self.rmsecondaryalignments.out)
+            "bamflagstat", SamToolsFlagstat_1_9(bam=self.rmsecondaryalignments.out)
         )
         self.step(
             "samtoolsview",
-            SamToolsViewLatest(
+            SamToolsView_1_9(
                 sam=self.rmsecondaryalignments.out,
                 doNotOutputAlignmentsWithBitsSet="0x400",
             ),
         )
-        self.step("rmdupbamflagstat", SamToolsFlagstatLatest(bam=self.samtoolsview.out))
+        self.step("rmdupbamflagstat", SamToolsFlagstat_1_9(bam=self.samtoolsview.out))
         self.step(
             "bedtoolsintersectbed",
-            BedToolsIntersectBedLatest(
+            BedToolsIntersectBed_2_29_2(
                 inputABam=self.samtoolsview.out,
                 inputBBed=self.region_bed,
                 genome=self.genome_file,
@@ -74,11 +75,11 @@ class PerformanceSummaryTargeted_0_1_0(BioinformaticsWorkflow):
         )
         self.step(
             "targetbamflagstat",
-            SamToolsFlagstatLatest(bam=self.bedtoolsintersectbed.out),
+            SamToolsFlagstat_1_9(bam=self.bedtoolsintersectbed.out),
         )
         self.step(
             "bedtoolscoveragebed",
-            BedToolsCoverageBedLatest(
+            BedToolsCoverageBed_2_29_2(
                 inputABed=self.region_bed,
                 inputBBam=self.bedtoolsintersectbed.out,
                 genome=self.genome_file,
@@ -102,7 +103,7 @@ class PerformanceSummaryTargeted_0_1_0(BioinformaticsWorkflow):
         # Steps - Gene Coverage
         self.step(
             "bedtoolscoverage",
-            BedToolsCoverageBedLatest(
+            BedToolsCoverageBed_2_29_2(
                 inputABed=self.genecoverage_bed,
                 inputBBam=self.samtoolsview.out,
                 genome=self.genome_file,
