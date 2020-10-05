@@ -17,6 +17,7 @@ from janis_bioinformatics.tools.pmac import (
 from janis_bioinformatics.tools.samtools import (
     SamToolsFlagstatLatest,
     SamToolsViewLatest,
+    SamToolsIndex_1_9,
 )
 
 
@@ -47,10 +48,10 @@ class PerformanceSummaryTargeted_0_1_0(BioinformaticsWorkflow):
             "rmsecondaryalignments",
             SamToolsViewLatest(sam=self.bam, doNotOutputAlignmentsWithBitsSet="0x100"),
         )
-
+        self.step("indexbam", SamToolsIndex_1_9(bam=self.rmsecondaryalignments.out))
         self.step(
             "gatk4collectinsertsizemetrics",
-            Gatk4CollectInsertSizeMetrics_4_1_2(bam=self.rmsecondaryalignments,),
+            Gatk4CollectInsertSizeMetrics_4_1_2(bam=self.indexbam.out,),
         )
         self.step(
             "bamflagstat", SamToolsFlagstatLatest(bam=self.rmsecondaryalignments.out)
