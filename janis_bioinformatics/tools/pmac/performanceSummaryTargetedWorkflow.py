@@ -15,8 +15,8 @@ from janis_bioinformatics.tools.pmac import (
     GeneCoveragePerSampleLatest,
 )
 from janis_bioinformatics.tools.samtools import (
-    SamToolsFlagstatLatest,
-    SamToolsViewLatest,
+    SamToolsFlagstat_1_9,
+    SamToolsView_1_9,
     SamToolsIndex_1_9,
 )
 
@@ -46,7 +46,7 @@ class PerformanceSummaryTargeted_0_1_0(BioinformaticsWorkflow):
         # Add a step to remove secondary alignments
         self.step(
             "rmsecondaryalignments",
-            SamToolsViewLatest(sam=self.bam, doNotOutputAlignmentsWithBitsSet="0x100"),
+            SamToolsView_1_9(sam=self.bam, doNotOutputAlignmentsWithBitsSet="0x100"),
         )
         self.step("indexbam", SamToolsIndex_1_9(bam=self.rmsecondaryalignments.out))
         self.step(
@@ -54,16 +54,16 @@ class PerformanceSummaryTargeted_0_1_0(BioinformaticsWorkflow):
             Gatk4CollectInsertSizeMetrics_4_1_2(bam=self.indexbam.out,),
         )
         self.step(
-            "bamflagstat", SamToolsFlagstatLatest(bam=self.rmsecondaryalignments.out)
+            "bamflagstat", SamToolsFlagstat_1_9(bam=self.rmsecondaryalignments.out)
         )
         self.step(
             "samtoolsview",
-            SamToolsViewLatest(
+            SamToolsView_1_9(
                 sam=self.rmsecondaryalignments.out,
                 doNotOutputAlignmentsWithBitsSet="0x400",
             ),
         )
-        self.step("rmdupbamflagstat", SamToolsFlagstatLatest(bam=self.samtoolsview.out))
+        self.step("rmdupbamflagstat", SamToolsFlagstat_1_9(bam=self.samtoolsview.out))
         self.step(
             "bedtoolsintersectbed",
             BedToolsIntersectBedLatest(
@@ -75,7 +75,7 @@ class PerformanceSummaryTargeted_0_1_0(BioinformaticsWorkflow):
         )
         self.step(
             "targetbamflagstat",
-            SamToolsFlagstatLatest(bam=self.bedtoolsintersectbed.out),
+            SamToolsFlagstat_1_9(bam=self.bedtoolsintersectbed.out),
         )
         self.step(
             "bedtoolscoveragebed",
