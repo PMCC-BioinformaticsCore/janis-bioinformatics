@@ -42,14 +42,25 @@ class PerformanceSummaryTargeted_0_1_0(BioinformaticsWorkflow):
         self.input("sample_name", String)
         self.input("genome_file", TextFile)
         # Steps
+        # Add a step to remove secondary alignments
+        self.step(
+            "rmsecondaryalignments",
+            SamToolsViewLatest(sam=self.bam, doNotOutputAlignmentsWithBitsSet="0x100"),
+        )
+
         self.step(
             "gatk4collectinsertsizemetrics",
-            Gatk4CollectInsertSizeMetrics_4_1_2(bam=self.bam,),
+            Gatk4CollectInsertSizeMetrics_4_1_2(bam=self.rmsecondaryalignments,),
         )
-        self.step("bamflagstat", SamToolsFlagstatLatest(bam=self.bam))
+        self.step(
+            "bamflagstat", SamToolsFlagstatLatest(bam=self.rmsecondaryalignments.out)
+        )
         self.step(
             "samtoolsview",
-            SamToolsViewLatest(sam=self.bam, doNotOutputAlignmentsWithBitsSet="0x400"),
+            SamToolsViewLatest(
+                sam=self.rmsecondaryalignments.out,
+                doNotOutputAlignmentsWithBitsSet="0x400",
+            ),
         )
         self.step("rmdupbamflagstat", SamToolsFlagstatLatest(bam=self.samtoolsview.out))
         self.step(
