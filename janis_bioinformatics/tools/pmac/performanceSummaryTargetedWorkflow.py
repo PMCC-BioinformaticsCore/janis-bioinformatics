@@ -6,8 +6,8 @@ from janis_bioinformatics.data_types import BamBai, Bed
 from janis_unix.data_types import TextFile
 from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.bedtools import (
-    BedToolsCoverageBedLatest,
-    BedToolsIntersectBedLatest,
+    BedToolsCoverageBed_2_29_2,
+    BedToolsIntersectBed_2_29_2,
 )
 from janis_bioinformatics.tools.gatk4 import Gatk4CollectInsertSizeMetrics_4_1_2
 from janis_bioinformatics.tools.pmac import (
@@ -66,7 +66,7 @@ class PerformanceSummaryTargeted_0_1_0(BioinformaticsWorkflow):
         self.step("rmdupbamflagstat", SamToolsFlagstat_1_9(bam=self.samtoolsview.out))
         self.step(
             "bedtoolsintersectbed",
-            BedToolsIntersectBedLatest(
+            BedToolsIntersectBed_2_29_2(
                 inputABam=self.samtoolsview.out,
                 inputBBed=self.region_bed,
                 genome=self.genome_file,
@@ -79,7 +79,7 @@ class PerformanceSummaryTargeted_0_1_0(BioinformaticsWorkflow):
         )
         self.step(
             "bedtoolscoveragebed",
-            BedToolsCoverageBedLatest(
+            BedToolsCoverageBed_2_29_2(
                 inputABed=self.region_bed,
                 inputBBam=self.bedtoolsintersectbed.out,
                 genome=self.genome_file,
@@ -103,7 +103,7 @@ class PerformanceSummaryTargeted_0_1_0(BioinformaticsWorkflow):
         # Steps - Gene Coverage
         self.step(
             "bedtoolscoverage",
-            BedToolsCoverageBedLatest(
+            BedToolsCoverageBed_2_29_2(
                 inputABed=self.genecoverage_bed,
                 inputBBam=self.samtoolsview.out,
                 genome=self.genome_file,
