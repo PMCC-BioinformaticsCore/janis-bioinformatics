@@ -6,7 +6,6 @@ from .genecovpersample.versions import *
 from .addsymtodepthofcoverage.versions import *
 from .addbamstats.versions import *
 from .extractstrelkasomaticaddp.versions import *
-from .generatecountsforallsorts.versions import *
 from .annotateDepthOfCoverageWorkflow import AnnotateDepthOfCoverage_0_1_0
 from .performanceSummaryTargetedWorkflow import PerformanceSummaryTargeted_0_1_0
 from .performanceSummaryGenomeWorkflow import PerformanceSummaryGenome_0_1_0
@@ -16,6 +15,3 @@ from .molpathGermlineWorkflow import MolpathGermline_1_0_0
 from .molpathTumorOnlyWorkflow import MolpathTumorOnly_1_0_0
 from .generatevardictheaderlines import GenerateVardictHeaderLines
 from .generatebedtoolscoveragegenomefile import GenerateGenomeFileForBedtoolsCoverage
-from .starArribaWorkflow import StarArriba_0_1_0
-from .starArribaOriginalWorkflow import StarArribaOriginal_0_1_0
-from .allsortsWorkflow import ALLSortsWorkflow_0_1_0
