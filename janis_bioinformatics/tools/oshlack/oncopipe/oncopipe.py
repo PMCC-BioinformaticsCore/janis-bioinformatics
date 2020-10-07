@@ -24,6 +24,9 @@ from janis_bioinformatics.tools.usadellab import TrimmomaticPairedEnd_0_35
 
 
 class OncopipeWorkflow(BioinformaticsWorkflow):
+    def tool_provider(self):
+        return "Oncopipe"
+
     def friendly_name(self):
         return "Oncopipe"
 
@@ -108,6 +111,9 @@ Original code example:
 
 
 class OncopipeSamplePreparation(BioinformaticsWorkflow):
+    def tool_provider(self):
+        return "Oncopipe"
+
     def friendly_name(self):
         return "Oncopipe: sample preparation"
 

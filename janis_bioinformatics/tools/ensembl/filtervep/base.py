@@ -1,6 +1,7 @@
 from abc import ABC
 from datetime import datetime
 
+from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 from janis_core import (
     CommandTool,
     ToolInput,
@@ -17,7 +18,7 @@ from janis_core import (
 from janis_unix import TextFile
 
 
-class FilterVepBase(CommandTool, ABC):
+class FilterVepBase(BioinformaticsTool, ABC):
     def friendly_name(self) -> str:
         return "FilterVep"
 

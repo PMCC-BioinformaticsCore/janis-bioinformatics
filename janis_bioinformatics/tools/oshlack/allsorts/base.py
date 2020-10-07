@@ -1,5 +1,7 @@
 from abc import ABC
 from datetime import datetime
+
+from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 from janis_core import (
     CommandTool,
     ToolInput,
@@ -14,11 +16,12 @@ from janis_core import (
     Filename,
     ToolMetadata,
     InputDocumentation,
+    WildcardSelector,
 )
 from janis_unix import Csv
 
 
-class AllSortsBase(CommandTool, ABC):
+class AllSortsBase(BioinformaticsTool, ABC):
     def friendly_name(self) -> str:
         return "Allsorts"
 
@@ -153,10 +156,26 @@ class AllSortsBase(CommandTool, ABC):
 
     def outputs(self):
         return [
-            ToolOutput("out_predictions", Csv, selector="predictions.csv"),
-            ToolOutput("out_probabilities", Csv, selector="probabilities.csv"),
-            ToolOutput("out_distributions", File, selector="distributions.png"),
-            ToolOutput("out_waterfalls", File, selector="waterfalls.png"),
+            ToolOutput(
+                "out_predictions",
+                Csv,
+                selector=WildcardSelector("predictions.csv", select_first=True),
+            ),
+            ToolOutput(
+                "out_probabilities",
+                Csv,
+                selector=WildcardSelector("probabilities.csv", select_first=True),
+            ),
+            ToolOutput(
+                "out_distributions",
+                File,
+                selector=WildcardSelector("distributions.png", select_first=True),
+            ),
+            ToolOutput(
+                "out_waterfalls",
+                File,
+                selector=WildcardSelector("waterfalls.png", select_first=True),
+            ),
         ]
 
     def metadata(self):

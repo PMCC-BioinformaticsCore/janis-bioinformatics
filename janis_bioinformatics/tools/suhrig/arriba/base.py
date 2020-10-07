@@ -1,6 +1,7 @@
 from abc import ABC
 from datetime import datetime
 
+from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 from janis_unix import Csv, Tsv
 
 from janis_bioinformatics.data_types import Bam, Fasta
@@ -22,12 +23,12 @@ from janis_core import (
 )
 
 
-class ArribaBase(CommandTool, ABC):
+class ArribaBase(BioinformaticsTool, ABC):
     def friendly_name(self) -> str:
         return "Arriba"
 
     def tool_provider(self):
-        return "TOOLPROVIDER"
+        return "Arriba"
 
     def tool(self) -> str:
         return "Arriba"
