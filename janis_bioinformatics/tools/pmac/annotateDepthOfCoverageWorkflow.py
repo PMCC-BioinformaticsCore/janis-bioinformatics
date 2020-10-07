@@ -59,5 +59,7 @@ class AnnotateDepthOfCoverage_0_1_0(BioinformaticsWorkflow):
         )
 
         self.output(
-            "out_sample_summary", source=self.gatk3depthofcoverage.sampleSummary, output_name=self.sample_name
+            "out_sample_summary",
+            source=self.gatk3depthofcoverage.sampleSummary,
+            output_name=self.sample_name,
         )
