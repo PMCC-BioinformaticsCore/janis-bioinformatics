@@ -30,7 +30,7 @@ setup(
         "janis.types": ["bioinformatics=janis_bioinformatics.data_types"],
     },
     install_requires=["janis-pipelines.core >= 0.10.4", "docker"],
-    extras_require={"tests": ['nose', "janis-pipelines.unix >= 0.10.1"]},
+    extras_require={"tests": ['nose', "janis-pipelines.unix >= 0.10.1", "janis-pipelines"]},
     zip_safe=False,
     long_description=long_description,
     long_description_content_type="text/markdown",

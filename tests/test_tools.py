@@ -1,7 +1,9 @@
 import unittest
 import janis_bioinformatics
 import janis_core as jc
+from typing import Dict, Optional, List
 from tabulate import tabulate
+from .evaluation_helpers import evaluate
 
 print(janis_bioinformatics.tools)
 
@@ -12,11 +14,23 @@ class EvaluateToolDefinitions(unittest.TestCase):
             return self.evaluate_workflow(tool)
         elif tool.type() == jc.ToolType.CommandTool:
             return self.evaluate_command_tool(tool)
+        elif tool.type() == jc.ToolType.CodeTool:
+            return self.evaluate_code_tool(tool)
         raise Exception("Unrecognised tool type: " + str(tool.type()))
 
     def evaluate_command_tool(self, tool: jc.CommandTool):
-        evaluation = tool.evaluate()
+        evaluation = evaluate(tool)
+        return self._read_evaluation(evaluation)
 
+    def evaluate_code_tool(self, tool: jc.CodeTool):
+        evaluation = evaluate(tool)
+        return self._read_evaluation(evaluation)
+
+    def evaluate_workflow(self, wf):
+        return True
+
+    @staticmethod
+    def _read_evaluation(evaluation: Dict[str, str]):
         errors = []
         for field in evaluation:
             if evaluation[field] is not True:
@@ -27,11 +41,7 @@ class EvaluateToolDefinitions(unittest.TestCase):
 
         return "; ".join(errors)
 
-    def evaluate_workflow(self, wf):
-        return True
-
     def test_tools(self):
-
         shed = jc.JanisShed
         shed.hydrate(force=True, modules=[janis_bioinformatics.tools])
         all_tools = shed.get_all_tools()
@@ -39,7 +49,9 @@ class EvaluateToolDefinitions(unittest.TestCase):
         failed = {}
         succeeded = set()
 
-        for tool_versions in all_tools[:4]:
+        # TODO: revert to full list
+        # for tool_versions in all_tools:
+        for tool_versions in all_tools[132:134]:
             for versioned_tool in tool_versions:
                 evaluation = self.evaluate(versioned_tool)
 
