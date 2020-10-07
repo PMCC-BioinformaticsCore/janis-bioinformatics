@@ -23,7 +23,7 @@ class FilterVepBase(BioinformaticsTool, ABC):
         return "FilterVep"
 
     def tool_provider(self):
-        return "Ensemble"
+        return "ensembl"
 
     def tool(self) -> str:
         return "FilterVep"
