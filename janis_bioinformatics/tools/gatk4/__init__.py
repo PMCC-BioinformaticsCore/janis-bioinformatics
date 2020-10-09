@@ -102,7 +102,7 @@ from .sortsam.versions import (
     Gatk4SortSamLatest,
 )
 from .splitreads.versions import (
-    Gatk4SortSamLatest,
+    Gatk4SplitReadsLatest,
     Gatk4SplitReads_4_1_2,
     Gatk4SplitReads_4_1_3,
     Gatk4SplitReads_4_1_4,
@@ -139,3 +139,7 @@ from .depthofcoverage.versions import (
     Gatk4DepthOfCoverage_4_1_6,
     Gatk4DepthOfCoverageLatest,
 )
+
+from .splitncigarreads.versions import *
+from .addorreplacereadgroups.versions import *
+from .reordersam.versions import *

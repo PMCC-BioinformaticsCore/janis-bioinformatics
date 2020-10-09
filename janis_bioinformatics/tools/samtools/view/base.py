@@ -14,12 +14,13 @@ from janis_core import (
     Stdout,
     InputSelector,
     Array,
+    ToolMetadata,
 )
-from janis_bioinformatics.data_types.bam import Bam
-from janis_bioinformatics.data_types import FastaWithDict
-from janis_bioinformatics.data_types import Sam
+from janis_core.types import UnionType
+
+from janis_bioinformatics.data_types import FastaWithDict, Sam, Bam, Cram
+
 from ..samtoolstoolbase import SamToolsToolBase
-from janis_core import ToolMetadata
 
 
 class SamToolsViewBase(SamToolsToolBase, ABC):
@@ -34,7 +35,7 @@ class SamToolsViewBase(SamToolsToolBase, ABC):
         return [
             *super(SamToolsViewBase, self).inputs(),
             *SamToolsViewBase.additional_inputs,
-            ToolInput("sam", Sam(), position=10),
+            ToolInput("sam", UnionType(Sam(), Bam(), Cram()), position=10),
             ToolInput(
                 "reference",
                 FastaWithDict(optional=True),

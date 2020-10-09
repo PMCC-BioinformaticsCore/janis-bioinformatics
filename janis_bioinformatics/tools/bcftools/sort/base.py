@@ -12,6 +12,7 @@ from janis_core import (
     CaptureType,
 )
 from janis_core import get_value_for_hints_and_ordered_resource_tuple
+from janis_core.types import UnionType
 
 from janis_bioinformatics.data_types import Vcf, CompressedVcf
 from janis_bioinformatics.tools.bcftools.bcftoolstoolbase import BcfToolsToolBase
@@ -67,7 +68,12 @@ class BcfToolsSortBase(BcfToolsToolBase, ABC):
 
     def inputs(self):
         return [
-            ToolInput("vcf", CompressedVcf, position=1, doc="The VCF file to sort"),
+            ToolInput(
+                "vcf",
+                UnionType(Vcf, CompressedVcf),
+                position=1,
+                doc="The VCF file to sort",
+            ),
             ToolInput(
                 "outputFilename",
                 Filename(suffix=".sorted", extension=".vcf.gz"),

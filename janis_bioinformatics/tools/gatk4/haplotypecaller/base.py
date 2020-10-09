@@ -18,9 +18,7 @@ from janis_bioinformatics.data_types import (
     BamBai,
     Bed,
     FastaWithDict,
-    VcfIdx,
     VcfTabix,
-    CompressedVcf,
 )
 from ..gatk4toolbase import Gatk4ToolBase
 from janis_core import ToolMetadata
@@ -459,5 +457,11 @@ to our recommendations as documented (https://software.broadinstitute.org/gatk/d
             String(optional=True),
             prefix="--emit-ref-confidence",
             doc="(-ERC) Mode for emitting reference confidence scores (For Mutect2, this is a BETA feature)",
+        ),
+        ToolInput(
+            "dontUseSoftClippedBases",
+            Boolean(optional=True),
+            prefix="--dont-use-soft-clipped-bases",
+            doc="Do not analyze soft clipped bases in the reads",
         ),
     ]

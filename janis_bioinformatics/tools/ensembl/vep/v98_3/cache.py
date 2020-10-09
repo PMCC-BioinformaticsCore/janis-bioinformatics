@@ -6,6 +6,9 @@ from .base import VepBase_98_3
 
 
 class VepCacheBase_98_3(VepBase_98_3, ABC):
+    def tool(self) -> str:
+        return "vep_cache"
+
     def friendly_name(self):
         return "Vep (Cache)"
 
@@ -15,6 +18,7 @@ class VepCacheBase_98_3(VepBase_98_3, ABC):
             ToolInput(
                 "cache",
                 Boolean(optional=True),
+                default=True,
                 prefix="--cache",
                 doc="Enables use of the cache. Add --refseq or --merged to use the refseq or merged cache.",
             ),
@@ -39,6 +43,7 @@ class VepCacheBase_98_3(VepBase_98_3, ABC):
             ToolInput(
                 "offline",
                 Boolean(optional=True),
+                default=True,
                 prefix="--offline",
                 doc="Enable offline mode. No database connections will be made, and a cache file or GFF/GTF file is "
                 "required for annotation. Add --refseq to use the refseq cache (if installed). Not used by default",

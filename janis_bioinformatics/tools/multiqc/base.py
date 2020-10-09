@@ -283,11 +283,11 @@ class MultiqcBase(BioinformaticsTool):
     def outputs(self):
         return []
 
-    def metadata(self):
+    def bind_metadata(self):
         return ToolMetadata(
             contributors=["Michael Franklin"],
-            dateCreated=datetime.fromisoformat("2019-10-24T12:59:09.125482"),
-            dateUpdated=datetime.fromisoformat("2019-10-24T12:59:09.125491"),
+            dateCreated=datetime(2019, 10, 24),
+            dateUpdated=datetime(2019, 10, 24),
             documentationUrl="http://multiqc.info",
             documentation="""Usage: multiqc [OPTIONS] <analysis directory>
 MultiQC aggregates results from bioinformatics analyses across many samples into a single report.
