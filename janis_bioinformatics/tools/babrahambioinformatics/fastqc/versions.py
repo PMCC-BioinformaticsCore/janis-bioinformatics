@@ -15,7 +15,7 @@ class FastQCVersion_0_11_5:
         return "v0.11.5"
 
     def container(self):
-        return "quay.io/biocontainers/fastqc:0.11.5--pl5.22.0_3"
+        return "quay.io/biocontainers/fastqc:0.11.5--4"
 
 
 class FastQCVersion_0_11_8:
@@ -23,7 +23,7 @@ class FastQCVersion_0_11_8:
         return "v0.11.8"
 
     def container(self):
-        return "quay.io/biocontainers/fastqc:0.11.8--1"
+        return "quay.io/biocontainers/fastqc:0.11.8--2"
 
 
 # v0.11.5
