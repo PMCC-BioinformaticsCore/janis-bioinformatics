@@ -13,8 +13,8 @@ class OncopipeStarAligner(BioinformaticsWorkflow):
     def id(self) -> str:
         return "oncopipe_STAR"
 
-    def friendly_name(self):
-        return "Oncopipe: StarAligner"
+    # def friendly_name(self):
+    #     return "Oncopipe: StarAligner"
 
     def bind_metadata(self):
         return WorkflowMetadata(

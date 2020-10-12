@@ -1,9 +1,9 @@
-from .base import featureCountsBase
+from .base import FeatureCountsBase
 from ..versions import Subread_2_0_1
 
 
-class featureCounts_2_0_1(Subread_2_0_1, featureCountsBase):
+class FeatureCounts_2_0_1(Subread_2_0_1, FeatureCountsBase):
     pass
 
 
-featureCountsLatest = featureCounts_2_0_1
+FeatureCountsLatest = FeatureCounts_2_0_1

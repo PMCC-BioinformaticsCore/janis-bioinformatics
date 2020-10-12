@@ -60,14 +60,9 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
         self.input("regionSize", int, default=10000000)
 
         self.input("normalSample", String)
-        self.input("sampleNames", Array(String, optional=True))
 
-        # for the moment this is a bit wonky, because you need to specify something which is
-        # affected by the amount of bams that you specify (bam coverage just gets summed up at this
-        # location)
-        # so the formula at the moment would be nBams * coverage = skipCov
-        # which means for 8 bams with an average coverage of 160 you would probably want
-        # 8 * 400 = 1600 to be on the save side
+        # this is the coverage per sample that is the max we will analyse. It will automatically
+        # multiplied by the amount of input bams we get
         self.input("skipCov", Int(optional=True), default=500)
 
         # the same is true for min cov
@@ -96,7 +91,8 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
                 maxNumOfAlleles=4,
                 noPartObsFlag=True,
                 region=self.createCallRegions.regions,
-                skipCov=self.skipCov,
+                # here we multiply the skipCov input by the amount of input that we have
+                skipCov=(self.skipCov * self.bams.length()),
                 # things that are actually default, but janis does not recognize yet
                 useDupFlag=False,
                 minBaseQual=1,

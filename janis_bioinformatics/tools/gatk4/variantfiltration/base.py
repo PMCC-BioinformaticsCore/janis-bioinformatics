@@ -17,7 +17,7 @@ from janis_core import (
     Array,
 )
 
-from janis_bioinformatics.data_types import FastaWithIndexes, CompressedVcf
+from janis_bioinformatics.data_types import FastaWithIndexes, VcfTabix
 from janis_bioinformatics.tools.gatk4.gatk4toolbase import Gatk4ToolBase
 
 
@@ -50,7 +50,7 @@ class Gatk4VariantFiltrationBase(Gatk4ToolBase):
             ),
             ToolInput(
                 tag="variant",
-                input_type=CompressedVcf(),
+                input_type=VcfTabix(),
                 prefix="--variant",
                 separate_value_from_prefix=True,
                 doc=InputDocumentation(
@@ -738,9 +738,7 @@ class Gatk4VariantFiltrationBase(Gatk4ToolBase):
         ]
 
     def outputs(self):
-        return [
-            ToolOutput("out", CompressedVcf(), glob=InputSelector("outputFilename"),)
-        ]
+        return [ToolOutput("out", VcfTabix(), glob=InputSelector("outputFilename"),)]
 
     def bind_metadata(self):
         return ToolMetadata(

@@ -18,9 +18,7 @@ from janis_bioinformatics.data_types import (
     BamBai,
     Bed,
     FastaWithDict,
-    VcfIdx,
     VcfTabix,
-    CompressedVcf,
 )
 from ..gatk4toolbase import Gatk4ToolBase
 from janis_core import ToolMetadata
@@ -127,7 +125,7 @@ class Gatk4HaplotypeCallerBase(Gatk4ToolBase, ABC):
         return [
             ToolOutput(
                 "out",
-                CompressedVcf,
+                VcfTabix,
                 glob=InputSelector("outputFilename"),
                 doc="A raw, unfiltered, highly sensitive callset in VCF format. "
                 "File to which variants should be written",

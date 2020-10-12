@@ -32,7 +32,7 @@ setup(
             "bioinformatics=janis_bioinformatics.transformations:transformations"
         ],
     },
-    install_requires=["janis-pipelines.core >= 0.10.4"],
+    install_requires=["janis-pipelines.core >= 0.10.7"],
     zip_safe=False,
     long_description=long_description,
     long_description_content_type="text/markdown",

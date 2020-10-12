@@ -4,7 +4,7 @@ from .database import VepDatabaseBase_98_3
 
 class Vep_98_3:
     def container(self):
-        return "ensemblorg/ensembl-vep:release_98.3"
+        return "quay.io/biocontainers/ensembl-vep:98.3--pl526hecc5488_0"
 
     def version(self):
         return "98.3"

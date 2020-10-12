@@ -19,7 +19,7 @@ from janis_bioinformatics.data_types import Bam
 from janis_bioinformatics.tools.subread.subreadtoolbase import SubreadToolBase
 
 
-class featureCountsBase(SubreadToolBase, ABC):
+class FeatureCountsBase(SubreadToolBase, ABC):
     def tool(self):
         return "featureCounts"
 
