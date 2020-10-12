@@ -113,4 +113,3 @@ class ALLSortsWorkflow_0_1_0(BioinformaticsWorkflow):
 
 if __name__ == "__main__":
     ALLSortsWorkflow_0_1_0.translate("cwl")
-

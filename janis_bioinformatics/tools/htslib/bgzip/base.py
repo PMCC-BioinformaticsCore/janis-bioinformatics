@@ -33,7 +33,10 @@ class BGZipBase(HtsLibBase, ABC):
             ToolInput("file", Vcf(), position=100, doc="File to bgzip compress"),
             ToolInput(
                 "outputFilename",
-                Filename(extension=".vcf.gz"),
+                Filename(
+                    prefix=InputSelector("file", remove_file_extension=True),
+                    extension=".vcf.gz",
+                ),
                 position=102,
                 shell_quote=False,
             ),
