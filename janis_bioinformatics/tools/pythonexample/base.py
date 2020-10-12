@@ -1,3 +1,4 @@
+import os
 import operator
 from pathlib import Path
 from typing import Dict, Optional, List, Any
@@ -8,7 +9,6 @@ from janis_bioinformatics.tools.bioinformaticstoolbase import (
 )
 from janis_core import ToolMetadata, Logger, PythonTool
 from janis_core.tool.tool import TTestCompared, TTestExpectedOutput, TTestCase
-from janis_assistant.test_tools_framework.unit_test_base_class import JanisToolUnitTestClass
 
 
 class InsertLineBase(BioinformaticsPythonTool):
@@ -19,7 +19,7 @@ class InsertLineBase(BioinformaticsPythonTool):
         from shutil import copyfile
 
         # dst = copyfile(in_file, "./out.file")
-        dst = "./out.file"
+        dst = "./output.txt"
 
         with open(in_file, "r") as fin, open(dst, "w") as fout:
             count = 0
@@ -58,9 +58,9 @@ class InsertLineBase(BioinformaticsPythonTool):
             TTestCase(
                 name="InsertLineBasic",
                 input={
-                    "in-file": "/Users/jkesumadewi/projects/janis-bioinformatics/myworkdir/input.txt",
+                    "in-file": os.path.join(self.test_data_path(), "input.txt"),
                     "line-to-insert": "abc",
-                    "insert-after-line": 1
+                    "insert-after-line": "1"
                 },
                 output=[
                     TTestExpectedOutput(
@@ -70,15 +70,26 @@ class InsertLineBase(BioinformaticsPythonTool):
                         expected_value=2
                     ),
                     TTestExpectedOutput(
-                        tag="line_count",
-                        compared=TTestCompared.Value,
-                        operator=operator.gt,
-                        expected_value=0
+                        tag="out_file",
+                        compared=TTestCompared.FileMd5,
+                        operator=operator.eq,
+                        expected_value="85d7c20f3e0c7af4510ca5d1f4997b9f"
+                    ),
+                    TTestExpectedOutput(
+                        tag="out_file",
+                        compared=TTestCompared.FileDiff,
+                        operator=operator.eq,
+                        expected_source=os.path.join(self.test_data_path(), "expected_output.txt"),
+                        expected_value=[]
                     )
                 ]
             )
-
         ]
+
+    # TODO: delete
+    @classmethod
+    def tool_full_path(cls):
+        return Path(__file__).absolute()
 
 
 if __name__ == "__main__":

@@ -29,14 +29,3 @@ class TestToolsDefinitions(unittest.TestCase):
                 f"There were {len(failed)} tool(s) that did not contain sufficient metadata to include in the "
                 f"janis_* repository. Please check to ensure your tool is in the list below"
             )
-
-
-# from janis_assistant.test_tools_framework.test_definitions import EvaluateToolDefinitions
-#
-#
-# class TestTools(unittest.TestCase):
-#     def test_tools(self):
-#         try:
-#             EvaluateToolDefinitions().run_test([janis_bioinformatics.tools])
-#         except Exception as e:
-#             self.fail(e)

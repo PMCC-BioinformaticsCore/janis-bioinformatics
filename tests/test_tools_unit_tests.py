@@ -9,7 +9,7 @@ all_tools = test_helper.get_all_tools([janis_bioinformatics.tools])
 all_versioned_tools = []
 # TODO: revert to full list
 # for tool_versions in all_tools:
-for tool_versions in all_tools[132:134]:
+for tool_versions in all_tools[148:152]:
     for versioned_tool in tool_versions:
         all_versioned_tools.append(versioned_tool)
 
@@ -23,8 +23,9 @@ class RunAllToolsTestSuite(unittest.TestCase):
     ])
     def test_one_tool(self, name, tool):
         if not tool.tests():
-            self.failed_tools[name] = "No test cases provided"
-            self.fail("No test cases provided")
+            error_message = "No test suite provided"
+            self.failed_tools[name] = error_message
+            self.fail(error_message)
         else:
             for tc in tool.tests():
                 with self.subTest(name=str(tc.name)):

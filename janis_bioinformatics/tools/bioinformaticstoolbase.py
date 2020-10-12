@@ -1,3 +1,5 @@
+import os
+import sys
 from abc import ABC
 
 from janis_core import (
@@ -22,8 +24,14 @@ class BioinformaticsWorkflow(Workflow, ABC):
 
 
 class BioinformaticsPythonTool(PythonTool, ABC):
+    TEST_DATA_FOLDER = "test_data"
+
     def tool_module(self):
         return BIOINFORMATICS_MODULE
+
+    def test_data_path(self):
+        module_path = os.path.dirname(sys.modules[self.__module__].__file__)
+        return os.path.join(module_path, self.TEST_DATA_FOLDER)
 
 
 class BioinformaticsToolBuilder(CommandToolBuilder):
