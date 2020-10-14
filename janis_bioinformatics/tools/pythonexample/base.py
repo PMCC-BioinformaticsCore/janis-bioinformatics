@@ -11,6 +11,25 @@ from janis_core import ToolMetadata, Logger, PythonTool
 from janis_core.tool.tool import TTestCompared, TTestExpectedOutput, TTestCase
 
 
+class FileDiffOperator:
+
+    @classmethod
+    def new_lines(cls, output_diff, expected_new_lines):
+        new_lines = []
+        for diff_line in output_diff:
+            prefix = diff_line[0:3]
+            if prefix in ["+++", "---", "@@ "]:
+                continue
+
+            if diff_line.startswith("+"):
+                diff_line = diff_line.strip()
+                diff_line = diff_line[1:]
+
+                new_lines.append(diff_line)
+
+        return new_lines == expected_new_lines
+
+
 class InsertLineBase(BioinformaticsPythonTool):
     @staticmethod
     def code_block(
@@ -56,19 +75,13 @@ class InsertLineBase(BioinformaticsPythonTool):
     def tests(self):
         return [
             TTestCase(
-                name="InsertLineBasic",
+                name="insert-one-line",
                 input={
                     "in-file": os.path.join(self.test_data_path(), "input.txt"),
                     "line-to-insert": "abc",
                     "insert-after-line": "1"
                 },
                 output=[
-                    TTestExpectedOutput(
-                        tag="line_count",
-                        compared=TTestCompared.Value,
-                        operator=operator.eq,
-                        expected_value=2
-                    ),
                     TTestExpectedOutput(
                         tag="out_file",
                         compared=TTestCompared.FileMd5,
@@ -78,9 +91,32 @@ class InsertLineBase(BioinformaticsPythonTool):
                     TTestExpectedOutput(
                         tag="out_file",
                         compared=TTestCompared.FileDiff,
+                        expected_source=os.path.join(self.test_data_path(), "expected_output_1.txt"),
                         operator=operator.eq,
-                        expected_source=os.path.join(self.test_data_path(), "expected_output.txt"),
                         expected_value=[]
+                    )
+                ]
+            ),
+            TTestCase(
+                name="append-one-line",
+                input={
+                    "in-file": os.path.join(self.test_data_path(), "input.txt"),
+                    "line-to-insert": "my new line",
+                    "insert-after-line": ""
+                },
+                output=[
+                    TTestExpectedOutput(
+                        tag="line_count",
+                        compared=TTestCompared.Value,
+                        operator=operator.eq,
+                        expected_value=5
+                    ),
+                    TTestExpectedOutput(
+                        tag="out_file",
+                        compared=TTestCompared.FileDiff,
+                        expected_source=os.path.join(self.test_data_path(), "input.txt"),
+                        operator=FileDiffOperator.new_lines,
+                        expected_value=["my new line"]
                     )
                 ]
             )

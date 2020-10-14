@@ -1,0 +1,6 @@
+test
+abc
+same
+same
+last line
+def

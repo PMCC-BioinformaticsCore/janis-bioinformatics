@@ -27,9 +27,10 @@ class RunAllToolsTestSuite(unittest.TestCase):
             self.failed_tools[name] = error_message
             self.fail(error_message)
         else:
+            runner = ToolTestSuiteRunner(tool)
+
             for tc in tool.tests():
                 with self.subTest(name=str(tc.name)):
-                    runner = ToolTestSuiteRunner(tool)
                     failed, succeeded = runner.run_one_test_case(tc)
 
                 if len(failed) > 0:
