@@ -25,7 +25,6 @@ class GenerateIntervalsByChromosome(j.PythonTool):
         :param allowed_contigs: Limits allowed_contigs to a list, this defaults of Human CHRs, 1-23,X,Y,Z
         :param max_size: Max size of interval, maybe 5000 for VarDict.
         :param overlap: Consider indels spanning regions, so choose
-        :return:
         """
         from re import sub
 
@@ -138,7 +137,7 @@ class GenerateIntervalsByChromosome(j.PythonTool):
         return "v0.1.0"
 
     def bind_metadata(self):
-        meta: ToolMetadata = self.metadata
+        meta: j.ToolMetadata = self.metadata
 
         meta.contributors = ["Michael Franklin"]
         meta.dateCreated = datetime(2020, 10, 19)
@@ -146,19 +145,3 @@ class GenerateIntervalsByChromosome(j.PythonTool):
 
     def tool_provider(self):
         return "Peter MacCallum Cancer Centre"
-
-
-if __name__ == "__main__":
-    from janis_assistant.main import run_with_outputs
-
-    GenerateIntervalsByChromosome().translate("cwl")
-
-    ref = "/Users/franklinmichael/reference/hg38/assembly/Homo_sapiens_assembly38.fasta"
-    from janis_core import Logger, ToolMetadata
-
-    Logger.set_console_level(5)
-    run_with_outputs(
-        GenerateIntervalsByChromosome(),
-        {"reference": ref, "max_size": 5000, "overlap": 150},
-        output_dir="~/janis/intervalgeneratoreftest2/",
-    )
