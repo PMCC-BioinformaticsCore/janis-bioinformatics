@@ -827,7 +827,9 @@ Not used by default""",
                 If(
                     IsDefined(InputSelector("caddReference")),
                     "--plugin CADD,"
-                    + JoinOperator(InputSelector("caddReference"), ","),
+                    + JoinOperator(
+                        InputSelector("caddReference").assert_not_null(), ","
+                    ),
                     "",
                 ),
                 shell_quote=False,
@@ -839,7 +841,7 @@ Not used by default""",
                     "--plugin "
                     + StringFormatter(
                         "Condel,{condelconfig},b",
-                        condelconfig=InputSelector("condelConfig"),
+                        condelconfig=InputSelector("condelConfig").assert_not_null(),
                     ),
                     "",
                 ),
@@ -855,8 +857,10 @@ Not used by default""",
                     "--plugin "
                     + StringFormatter(
                         "dbNSFP,{ref},{cols}",
-                        ref=InputSelector("dbnspReference"),
-                        cols=JoinOperator(InputSelector("dbsnpColumns"), ","),
+                        ref=InputSelector("dbnspReference").assert_not_null(),
+                        cols=JoinOperator(
+                            InputSelector("dbsnpColumns").assert_not_null(), ","
+                        ),
                     ),
                     "",
                 ),
@@ -868,7 +872,8 @@ Not used by default""",
                     IsDefined(InputSelector("revelReference")),
                     "--plugin "
                     + StringFormatter(
-                        "REVEL,{ref}", ref=InputSelector("revelReference")
+                        "REVEL,{ref}",
+                        ref=InputSelector("revelReference").assert_not_null(),
                     ),
                     "",
                 ),
@@ -884,8 +889,10 @@ Not used by default""",
                     "--custom "
                     + StringFormatter(
                         "{ref},{cols}",
-                        ref=InputSelector("custom1Reference"),
-                        cols=JoinOperator(InputSelector("custom1Columns"), ","),
+                        ref=InputSelector("custom1Reference").assert_not_null(),
+                        cols=JoinOperator(
+                            InputSelector("custom1Columns").assert_not_null(), ","
+                        ),
                     ),
                     "",
                 ),
@@ -901,8 +908,10 @@ Not used by default""",
                     "--custom "
                     + StringFormatter(
                         "{ref},{cols}",
-                        ref=InputSelector("custom2Reference"),
-                        cols=JoinOperator(InputSelector("custom2Columns"), ","),
+                        ref=InputSelector("custom2Reference").assert_not_null(),
+                        cols=JoinOperator(
+                            InputSelector("custom2Columns").assert_not_null(), ","
+                        ),
                     ),
                     "",
                 ),
