@@ -77,9 +77,9 @@ class InsertLineBase(BioinformaticsPythonTool):
             TTestCase(
                 name="insert-one-line",
                 input={
-                    "in-file": os.path.join(self.test_data_path(), "input.txt"),
-                    "line-to-insert": "abc",
-                    "insert-after-line": "1"
+                    "in_file": os.path.join(self.test_data_path(), "input.txt"),
+                    "line_to_insert": "abc",
+                    "insert_after_line": 1
                 },
                 output=[
                     TTestExpectedOutput(
@@ -100,16 +100,16 @@ class InsertLineBase(BioinformaticsPythonTool):
             TTestCase(
                 name="append-one-line",
                 input={
-                    "in-file": os.path.join(self.test_data_path(), "input.txt"),
-                    "line-to-insert": "my new line",
-                    "insert-after-line": ""
+                    "in_file": os.path.join(self.test_data_path(), "input.txt"),
+                    "line_to_insert": "my new line",
+                    "insert_after_line": 4
                 },
                 output=[
                     TTestExpectedOutput(
                         tag="line_count",
                         compared=TTestCompared.Value,
                         operator=operator.eq,
-                        expected_value=5
+                        expected_value="5"
                     ),
                     TTestExpectedOutput(
                         tag="out_file",
