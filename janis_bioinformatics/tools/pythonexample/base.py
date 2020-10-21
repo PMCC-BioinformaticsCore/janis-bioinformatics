@@ -3,7 +3,7 @@ import operator
 from pathlib import Path
 from typing import Dict, Optional, List, Any
 
-from janis_core import TOutput, File
+from janis_core import TOutput, File, Array, Int
 from janis_bioinformatics.tools.bioinformaticstoolbase import (
     BioinformaticsPythonTool,
 )
@@ -50,14 +50,19 @@ class InsertLineBase(BioinformaticsPythonTool):
                     fout.write(line_to_insert + "\n")
 
         line_count = count + 1
+        misc_files = [dst, dst]
 
-        return {"out_file": dst, "line_count": line_count}
+        return {"out_file": dst, "line_count": line_count, "misc_files": misc_files}
 
     def friendly_name(self) -> Optional[str]:
         return "Insert line to a text file"
 
     def outputs(self) -> List[TOutput]:
-        return [TOutput("out_file", File), TOutput("line_count", int)]
+        return [
+            TOutput("out_file", File),
+            TOutput("line_count", int),
+            TOutput("misc_files", Array(File))
+        ]
 
     def id(self) -> str:
         return "InsertLine"
@@ -94,6 +99,12 @@ class InsertLineBase(BioinformaticsPythonTool):
                         expected_source=os.path.join(self.test_data_path(), "expected_output_1.txt"),
                         operator=operator.eq,
                         expected_value=[]
+                    ),
+                    TTestExpectedOutput(
+                        tag="out_file",
+                        compared=TTestCompared.FileContent,
+                        operator=operator.eq,
+                        expected_value="test\nabc\nsame\nsame\nlast line\n"
                     )
                 ]
             ),
@@ -117,6 +128,13 @@ class InsertLineBase(BioinformaticsPythonTool):
                         expected_source=os.path.join(self.test_data_path(), "input.txt"),
                         operator=FileDiffOperator.new_lines,
                         expected_value=["my new line"]
+                    ),
+                    TTestExpectedOutput(
+                        tag="misc_files",
+                        array_index=1,
+                        compared=TTestCompared.FileContent,
+                        operator=operator.eq,
+                        expected_value="test\nsame\nsame\nlast line\nmy new line\n"
                     )
                 ]
             )
