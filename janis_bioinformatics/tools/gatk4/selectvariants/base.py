@@ -22,8 +22,7 @@ class Gatk4SelectVariantsBase(Gatk4ToolBase, ABC):
     def friendly_name(self) -> str:
         return "GATK4: SelectVariants"
 
-    @staticmethod
-    def tool() -> str:
+    def tool(self) -> str:
         return "Gatk4SelectVariants"
 
     @classmethod
@@ -32,6 +31,7 @@ class Gatk4SelectVariantsBase(Gatk4ToolBase, ABC):
 
     def inputs(self):
         return [
+            *super().inputs(),
             ToolInput(
                 tag="outputFilename",
                 input_type=Filename(optional=True),
@@ -723,7 +723,7 @@ class Gatk4SelectVariantsBase(Gatk4ToolBase, ABC):
     def metadata(self):
         return ToolMetadata(
             contributors=[],
-            dateCreated=datetime.fromisoformat("2019-12-02T15:30:28.092132"),
-            dateUpdated=datetime.fromisoformat("2019-12-02T15:30:28.092133"),
+            dateCreated=datetime(2019, 12, 2),
+            dateUpdated=datetime(2019, 12, 2),
             documentation="USAGE: Selectvariants [arguments]\nThis tool makes it possible to select a subset of variants based on various criteria in order to facilitate certain\nanalyses. Examples include comparing and contrasting cases vs. controls, extracting variant or non-variant loci that\nmeet certain requirements, or troubleshooting some unexpected results, to name a few.\nVersion:4.1.3.0\n",
         )

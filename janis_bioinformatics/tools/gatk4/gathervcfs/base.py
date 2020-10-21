@@ -71,6 +71,7 @@ class Gatk4GatherVcfsBase(Gatk4ToolBase, ABC):
 
     def inputs(self):
         return [
+            *super().inputs(),
             ToolInput(
                 "vcfs",
                 Array(Vcf),

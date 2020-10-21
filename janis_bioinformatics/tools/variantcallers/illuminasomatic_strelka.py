@@ -1,10 +1,16 @@
 from janis_core import Boolean
+from janis_unix.tools import UncompressArchive
 
 from janis_bioinformatics.data_types import FastaWithDict, BamBai, BedTabix
 from janis_bioinformatics.tools import BioinformaticsWorkflow
-from janis_bioinformatics.tools.bcftools import BcfToolsView_1_5
-from janis_bioinformatics.tools.common import SplitMultiAllele
+from janis_bioinformatics.tools.bcftools import BcfToolsSort_1_9
+from janis_bioinformatics.tools.common import (
+    SplitMultiAllele,
+    ConcatStrelkaSomaticVcf,
+)
 from janis_bioinformatics.tools.illumina import Manta_1_5_0, StrelkaSomatic_2_9_10
+from janis_bioinformatics.tools.pmac import ExtractStrelkaSomaticADDP_0_1_1
+from janis_bioinformatics.tools.vcftools import VcfToolsvcftoolsLatest
 
 
 class IlluminaSomaticVariantCaller(BioinformaticsWorkflow):
@@ -18,7 +24,7 @@ class IlluminaSomaticVariantCaller(BioinformaticsWorkflow):
         return "Variant Callers"
 
     def version(self):
-        return "v0.1.0"
+        return "v0.1.1"
 
     def constructor(self):
 
@@ -52,19 +58,32 @@ class IlluminaSomaticVariantCaller(BioinformaticsWorkflow):
             ),
         )
         self.step(
-            "bcf_view", BcfToolsView_1_5(file=self.strelka.snvs, applyFilters=["PASS"])
+            "concatvcf",
+            ConcatStrelkaSomaticVcf(
+                headerVcfs=[self.strelka.snvs, self.strelka.indels],
+                contentVcfs=[self.strelka.snvs, self.strelka.indels],
+            ),
+        )
+        self.step("sortvcf", BcfToolsSort_1_9(vcf=self.concatvcf.out))
+        self.step(
+            "splitnormalisevcf",
+            SplitMultiAllele(vcf=self.sortvcf.out, reference=self.reference),
         )
         self.step(
-            "split_multi_allele",
-            SplitMultiAllele(vcf=self.bcf_view.out, reference=self.reference),
+            "extractaddp",
+            ExtractStrelkaSomaticADDP_0_1_1(vcf=self.splitnormalisevcf.out),
         )
 
-        self.output("diploid", source=self.manta.diploidSV)
-        self.output("variants", source=self.strelka.snvs)
-        self.output("out", source=self.split_multi_allele.out)
+        self.step(
+            "filterpass",
+            VcfToolsvcftoolsLatest(
+                vcf=self.extractaddp.out,
+                removeFileteredAll=True,
+                recode=True,
+                recodeINFOAll=True,
+            ),
+        )
 
-
-if __name__ == "__main__":
-
-    wf = IlluminaSomaticVariantCaller()
-    wdl = wf.translate("wdl", to_console=True, to_disk=False, write_inputs_file=False)
+        self.output("sv", source=self.manta.diploidSV)
+        self.output("variants", source=self.sortvcf.out)
+        self.output("out", source=self.filterpass.out)

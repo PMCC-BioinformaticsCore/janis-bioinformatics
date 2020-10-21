@@ -4,10 +4,10 @@ from janis_core import ToolInput, ToolOutput, Stdout, ToolMetadata
 
 from janis_bioinformatics.data_types import CompressedVcf
 from janis_bioinformatics.data_types import Vcf
-from janis_bioinformatics.tools.vcflib.vcflibtoolbase import VcfToolsToolBase
+from janis_bioinformatics.tools.vcflib.vcflibtoolbase import VcfLibToolBase
 
 
-class VcfFixUpBase(VcfToolsToolBase, ABC):
+class VcfFixUpBase(VcfLibToolBase, ABC):
     def tool(self):
         return "vcffixup"
 

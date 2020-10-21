@@ -5,8 +5,10 @@ from janis_core import Array
 # function that takes the inputs of a tool and changes every bam type into the respecitve cram type
 # while also keeping anything else the same
 def cast_input_bams_to_crams(inputs):
+    from copy import deepcopy
 
-    for inp in inputs:
+    retval = deepcopy(inputs)
+    for inp in retval:
 
         # we need to store it the input was optional originally
         is_optional = inp.input_type.optional
@@ -32,4 +34,4 @@ def cast_input_bams_to_crams(inputs):
         # and now that we changed things, we set the optional state again
         inp.input_type.optional = is_optional
 
-    return inputs
+    return retval

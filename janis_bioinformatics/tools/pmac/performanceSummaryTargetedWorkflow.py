@@ -3,19 +3,21 @@ from janis_core import WorkflowMetadata
 
 # data types
 from janis_bioinformatics.data_types import BamBai, Bed
+from janis_unix.data_types import TextFile
 from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.bedtools import (
-    BedToolsCoverageBedLatest,
-    BedToolsIntersectBedLatest,
+    BedToolsCoverageBed_2_29_2,
+    BedToolsIntersectBed_2_29_2,
 )
-from janis_bioinformatics.tools.gatk4 import Gatk4CollectInsertSizeMetricsLatest
+from janis_bioinformatics.tools.gatk4 import Gatk4CollectInsertSizeMetrics_4_1_2
 from janis_bioinformatics.tools.pmac import (
     PerformanceSummaryLatest,
     GeneCoveragePerSampleLatest,
 )
 from janis_bioinformatics.tools.samtools import (
-    SamToolsFlagstatLatest,
-    SamToolsViewLatest,
+    SamToolsFlagstat_1_9,
+    SamToolsView_1_9,
+    SamToolsIndex_1_9,
 )
 
 
@@ -36,39 +38,52 @@ class PerformanceSummaryTargeted_0_1_0(BioinformaticsWorkflow):
 
         # Inputs
         self.input("bam", BamBai)
-        self.input("bed", Bed)
+        self.input("genecoverage_bed", Bed)
+        self.input("region_bed", Bed)
         self.input("sample_name", String)
-
+        self.input("genome_file", TextFile)
         # Steps
+        # Add a step to remove secondary alignments
+        self.step(
+            "rmsecondaryalignments",
+            SamToolsView_1_9(sam=self.bam, doNotOutputAlignmentsWithBitsSet="0x100"),
+        )
+        self.step("indexbam", SamToolsIndex_1_9(bam=self.rmsecondaryalignments.out))
         self.step(
             "gatk4collectinsertsizemetrics",
-            Gatk4CollectInsertSizeMetricsLatest(
-                bam=self.bam,
-                outputFilename="insertsizemetrics.txt",
-                outputHistogram="insertsizemetrics.pdf",
-            ),
+            Gatk4CollectInsertSizeMetrics_4_1_2(bam=self.indexbam.out,),
         )
-        self.step("bamflagstat", SamToolsFlagstatLatest(bam=self.bam))
+        self.step(
+            "bamflagstat", SamToolsFlagstat_1_9(bam=self.rmsecondaryalignments.out)
+        )
         self.step(
             "samtoolsview",
-            SamToolsViewLatest(sam=self.bam, doNotOutputAlignmentsWithBitsSet="0x400"),
+            SamToolsView_1_9(
+                sam=self.rmsecondaryalignments.out,
+                doNotOutputAlignmentsWithBitsSet="0x400",
+            ),
         )
-        self.step("rmdupbamflagstat", SamToolsFlagstatLatest(bam=self.samtoolsview.out))
+        self.step("rmdupbamflagstat", SamToolsFlagstat_1_9(bam=self.samtoolsview.out))
         self.step(
             "bedtoolsintersectbed",
-            BedToolsIntersectBedLatest(
-                inputABam=self.samtoolsview.out, inputBBed=self.bed
+            BedToolsIntersectBed_2_29_2(
+                inputABam=self.samtoolsview.out,
+                inputBBed=self.region_bed,
+                genome=self.genome_file,
+                sorted=True,
             ),
         )
         self.step(
             "targetbamflagstat",
-            SamToolsFlagstatLatest(bam=self.bedtoolsintersectbed.out),
+            SamToolsFlagstat_1_9(bam=self.bedtoolsintersectbed.out),
         )
         self.step(
             "bedtoolscoveragebed",
-            BedToolsCoverageBedLatest(
-                inputABed=self.bed,
+            BedToolsCoverageBed_2_29_2(
+                inputABed=self.region_bed,
                 inputBBam=self.bedtoolsintersectbed.out,
+                genome=self.genome_file,
+                sorted=True,
                 histogram=True,
             ),
         )
@@ -88,8 +103,12 @@ class PerformanceSummaryTargeted_0_1_0(BioinformaticsWorkflow):
         # Steps - Gene Coverage
         self.step(
             "bedtoolscoverage",
-            BedToolsCoverageBedLatest(
-                inputABed=self.bed, inputBBam=self.samtoolsview.out, histogram=True
+            BedToolsCoverageBed_2_29_2(
+                inputABed=self.genecoverage_bed,
+                inputBBam=self.samtoolsview.out,
+                genome=self.genome_file,
+                sorted=True,
+                histogram=True,
             ),
         )
         self.step(
@@ -97,8 +116,6 @@ class PerformanceSummaryTargeted_0_1_0(BioinformaticsWorkflow):
             GeneCoveragePerSampleLatest(
                 sampleName=self.sample_name,
                 bedtoolsOutputPath=self.bedtoolscoverage.out,
-                outputGeneFile="gene.txt",
-                outputRegionFile="region.txt",
             ),
         )
 

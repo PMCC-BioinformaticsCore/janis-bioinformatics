@@ -71,6 +71,7 @@ class Gatk4FastqToSamBase(Gatk4ToolBase, ABC):
 
     def inputs(self):
         return [
+            *super().inputs(),
             ToolInput(
                 "fastqR1",
                 FastqGz(),

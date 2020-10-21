@@ -11,7 +11,7 @@ from janis_core import (
     ToolOutput,
     InputSelector,
 )
-from janis_bioinformatics.data_types import FastaWithDict, CompressedVcf
+from janis_bioinformatics.data_types import FastaFai, CompressedVcf
 from janis_bioinformatics.data_types import Vcf
 from janis_bioinformatics.tools.bcftools.bcftoolstoolbase import BcfToolsToolBase
 from janis_core import ToolMetadata
@@ -57,9 +57,9 @@ class BcfToolsNormBase(BcfToolsToolBase, ABC):
             "https://samtools.github.io/bcftools/bcftools.html#norm"
         )
         self.metadata.documentation = """\
-Left-align and normalize indels, check if REF alleles match the reference, 
-split multiallelic sites into multiple rows; recover multiallelics from 
-multiple rows. Left-alignment and normalization will only be applied if 
+Left-align and normalize indels, check if REF alleles match the reference,
+split multiallelic sites into multiple rows; recover multiallelics from
+multiple rows. Left-alignment and normalization will only be applied if
 the --fasta-ref option is supplied.
 """
 
@@ -92,7 +92,7 @@ the --fasta-ref option is supplied.
         ),
         ToolInput(
             "reference",
-            FastaWithDict(optional=True),
+            FastaFai(optional=True),
             prefix="-f",
             doc="--fasta-ref: reference sequence. Supplying this option will turn on left-alignment and "
             "normalization, however, see also the --do-not-normalize option below.",

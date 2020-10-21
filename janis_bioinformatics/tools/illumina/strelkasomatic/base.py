@@ -2,7 +2,7 @@ from abc import ABC
 from datetime import datetime
 from typing import Dict, Any
 
-from janis_bioinformatics.data_types import BamBai, BedTabix, FastaWithDict, VcfTabix
+from janis_bioinformatics.data_types import BamBai, BedTabix, FastaFai, VcfTabix
 from janis_bioinformatics.tools.illumina.illuminabase import IlluminaToolBase
 from janis_core import (
     Array,
@@ -118,7 +118,7 @@ class StrelkaSomaticBase(IlluminaToolBase, ABC):
             ),
             ToolInput(
                 tag="reference",
-                input_type=FastaWithDict(),
+                input_type=FastaFai(),
                 prefix="--referenceFasta=",
                 position=1,
                 separate_value_from_prefix=False,
@@ -364,8 +364,8 @@ class StrelkaSomaticBase(IlluminaToolBase, ABC):
 
     def bind_metadata(self):
         return ToolMetadata(
-            dateCreated=datetime(2019, 5, 27, 15, 7, 45),
-            dateUpdated=datetime(2019, 10, 10, 14),
+            dateCreated=datetime(2019, 5, 27),
+            dateUpdated=datetime(2019, 10, 14),
             documentation="""Usage: configureStrelkaSomaticWorkflow.py [options]
 Version: 2.9.10
 This script configures Strelka somatic small variant calling.

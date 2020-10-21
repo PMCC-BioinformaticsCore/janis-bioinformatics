@@ -32,7 +32,7 @@ MEM_TUPLE = [
     )
 ]
 
-CPU_TUPLE = [
+CORES_TUPLE = [
     (
         CaptureType.key(),
         {
@@ -101,7 +101,7 @@ class CutAdaptBase_1(BioinformaticsTool):
         return 4
 
     def cpus(self, hints):
-        val = get_value_for_hints_and_ordered_resource_tuple(hints, CPU_TUPLE)
+        val = get_value_for_hints_and_ordered_resource_tuple(hints, CORES_TUPLE)
         if val:
             return val
         return 5

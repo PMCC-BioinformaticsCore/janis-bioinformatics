@@ -52,19 +52,16 @@ MEM_TUPLE = [
 
 
 class RefilterStrelka2CallsBase(BioinformaticsTool, ABC):
-    @staticmethod
-    def tool() -> str:
+    def tool(self) -> str:
         return "refilterStrelka2Calls"
 
     def friendly_name(self) -> str:
         return "Refilter Strelka2 Variant Calls"
 
-    @staticmethod
-    def tool_provider():
+    def tool_provider(self):
         return "Dawson Labs"
 
-    @staticmethod
-    def base_command():
+    def base_command(self):
         return "filterStrelkaCalls.R"
 
     def cpus(self, hints: Dict[str, Any]):
@@ -115,6 +112,13 @@ class RefilterStrelka2CallsBase(BioinformaticsTool, ABC):
                 default=-10,
                 prefix="--rprs",
                 doc="minimum phred scaled evidence for a variant to be accepted (default: 20)",
+            ),
+            ToolInput(
+                tag="minAD",
+                input_type=Int(),
+                default=2,
+                prefix="--minAD",
+                doc="minimum allelic depth for a variant to be accepted (default: 2)",
             ),
             ToolInput(
                 tag="threads",

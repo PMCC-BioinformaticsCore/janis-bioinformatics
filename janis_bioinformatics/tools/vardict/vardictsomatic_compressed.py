@@ -15,6 +15,7 @@ from janis_core import (
     CaptureType,
 )
 from janis_core import get_value_for_hints_and_ordered_resource_tuple
+from janis_core.operators.standard import JoinOperator
 
 from janis_bioinformatics.data_types import BamBai, Bed, FastaFai, Vcf, CompressedVcf
 from janis_bioinformatics.tools import BioinformaticsTool
@@ -122,7 +123,9 @@ class VarDictSomaticCompressedBase(BioinformaticsTool, ABC):
             ToolArgument("| testsomatic.R |", position=3, shell_quote=False),
             ToolArgument("var2vcf_paired.pl", position=4, shell_quote=False),
             ToolArgument(
-                InputSelector("tumorBam") + "|" + InputSelector("normalBam"),
+                JoinOperator(
+                    [InputSelector("tumorBam"), InputSelector("normalBam")], "|"
+                ),
                 prefix="-b",
                 position=1,
                 shell_quote=True,
@@ -131,7 +134,9 @@ class VarDictSomaticCompressedBase(BioinformaticsTool, ABC):
                 InputSelector("tumorName"), prefix="-N", position=1, shell_quote=True
             ),
             ToolArgument(
-                InputSelector("tumorName") + "|" + InputSelector("normalName"),
+                JoinOperator(
+                    [InputSelector("tumorName"), InputSelector("normalName")], "|"
+                ),
                 prefix="-N",
                 position=5,
                 shell_quote=True,
@@ -532,5 +537,5 @@ class VarDictSomaticCompressedBase(BioinformaticsTool, ABC):
     """
 
 
-class VarDictSomatic_1_6_0(VarDictSomaticCompressedBase, VarDict_1_6_0):
+class VarDictSomaticCompressed_1_6_0(VarDictSomaticCompressedBase, VarDict_1_6_0):
     pass

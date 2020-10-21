@@ -52,7 +52,7 @@ class TabixBase(HtsLibBase, ABC):
     def outputs(self) -> List[ToolOutput]:
         return [
             ToolOutput(
-                "out", VcfTabix(), glob=InputSelector("inp", use_basename=True)
+                "out", VcfTabix(), glob=InputSelector("inp")
             )  # "$(inputs.file.basename)"
         ]
 

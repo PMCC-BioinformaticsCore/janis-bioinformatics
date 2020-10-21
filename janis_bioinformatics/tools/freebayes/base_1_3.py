@@ -1,6 +1,6 @@
 from typing import Dict, Any
 
-from janis_bioinformatics.data_types import BamBai, Bed, FastaWithDict, Vcf
+from janis_bioinformatics.data_types import BamBai, Bed, FastaFai, Vcf
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 from janis_core import (
     Array,
@@ -23,12 +23,12 @@ CORES_TUPLE = [
     (
         CaptureType.key(),
         {
-            CaptureType.TARGETED: 2,
-            CaptureType.CHROMOSOME: 2,
-            CaptureType.EXOME: 2,
-            CaptureType.THIRTYX: 2,
-            CaptureType.NINETYX: 2,
-            CaptureType.THREEHUNDREDX: 2,
+            CaptureType.TARGETED: 1,
+            CaptureType.CHROMOSOME: 1,
+            CaptureType.EXOME: 1,
+            CaptureType.THIRTYX: 1,
+            CaptureType.NINETYX: 1,
+            CaptureType.THREEHUNDREDX: 1,
         },
     )
 ]
@@ -41,8 +41,8 @@ MEM_TUPLE = [
             CaptureType.CHROMOSOME: 4,
             CaptureType.EXOME: 8,
             CaptureType.THIRTYX: 8,
-            CaptureType.NINETYX: 16,
-            CaptureType.THREEHUNDREDX: 32,
+            CaptureType.NINETYX: 8,
+            CaptureType.THREEHUNDREDX: 8,
         },
     )
 ]
@@ -78,7 +78,7 @@ class FreeBayesBase_1_3(BioinformaticsTool):
             ),
             ToolInput(
                 tag="reference",
-                input_type=FastaWithDict(),
+                input_type=FastaFai(),
                 prefix="-f",
                 doc=" Use FILE as the reference sequence for analysis. An index file (FILE.fai) will be created if none exists. If neither --targets nor --region are specified, FreeBayes will analyze every position in this reference.",
             ),

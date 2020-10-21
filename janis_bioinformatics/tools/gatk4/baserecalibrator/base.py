@@ -129,6 +129,13 @@ class Gatk4BaseRecalibratorBase(Gatk4ToolBase, ABC):
                 prefix="--intervals",
                 doc="-L (BASE) One or more genomic intervals over which to operate",
             ),
+            ToolInput(
+                "intervalStrings",
+                Array(String, optional=True),
+                prefix="--intervals",
+                prefix_applies_to_all_elements=True,
+                doc="-L (BASE) One or more genomic intervals over which to operate",
+            ),
         ]
 
     def outputs(self):

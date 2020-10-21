@@ -1,6 +1,5 @@
 from abc import ABC
 from typing import Dict, Any
-from janis_core import get_value_for_hints_and_ordered_resource_tuple
 from ..gatk4toolbase import Gatk4ToolBase
 from janis_bioinformatics.data_types import BamBai, FastaWithDict, Bed
 
@@ -12,6 +11,8 @@ from janis_core import (
     InputSelector,
     CaptureType,
     ToolMetadata,
+    Array,
+    get_value_for_hints_and_ordered_resource_tuple,
 )
 from janis_unix import Tsv
 
@@ -99,6 +100,13 @@ class Gatk4ApplyBqsrBase(Gatk4ToolBase, ABC):
                 "intervals",
                 Bed(optional=True),
                 prefix="--intervals",
+                doc="-L (BASE) One or more genomic intervals over which to operate",
+            ),
+            ToolInput(
+                "intervalStrings",
+                Array(String, optional=True),
+                prefix="--intervals",
+                prefix_applies_to_all_elements=True,
                 doc="-L (BASE) One or more genomic intervals over which to operate",
             ),
             *self.additional_args,

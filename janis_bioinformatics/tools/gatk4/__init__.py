@@ -51,13 +51,7 @@ from .getpileupsummaries.versions import (
     Gatk4GetPileUpSummaries_4_1_4,
     Gatk4GetPileUpSummariesLatest,
 )
-from .haplotypecaller.versions import (
-    Gatk4HaplotypeCaller_4_0,
-    Gatk4HaplotypeCaller_4_1_2,
-    Gatk4HaplotypeCaller_4_1_3,
-    Gatk4HaplotypeCaller_4_1_4,
-    Gatk4HaplotypeCallerLatest,
-)
+from .haplotypecaller.versions import *
 from .learnreadorientationmodel.versions import (
     Gatk4LearnReadOrientationModel_4_1_2,
     Gatk4LearnReadOrientationModel_4_1_3,
@@ -85,13 +79,7 @@ from .mergesamfiles.versions import (
     Gatk4MergeSamFiles_4_1_4,
     Gatk4MergeSamFilesLatest,
 )
-from .mutect2.versions import (
-    GatkMutect2_4_0,
-    GatkMutect2_4_1_2,
-    GatkMutect2_4_1_3,
-    GatkMutect2_4_1_4,
-    GatkMutect2Latest,
-)
+from .mutect2.versions import *
 from .printreads.versions import (
     Gatk4PrintReads_4_0,
     Gatk4PrintReads_4_1_2,
@@ -114,7 +102,7 @@ from .sortsam.versions import (
     Gatk4SortSamLatest,
 )
 from .splitreads.versions import (
-    Gatk4SortSamLatest,
+    Gatk4SplitReadsLatest,
     Gatk4SplitReads_4_1_2,
     Gatk4SplitReads_4_1_3,
     Gatk4SplitReads_4_1_4,
@@ -126,3 +114,32 @@ from .collectinsertsizemetrics.versions import (
     Gatk4CollectInsertSizeMetrics_4_1_4,
     Gatk4CollectInsertSizeMetricsLatest,
 )
+
+from .setnmmdanduqtags.versions import (
+    Gatk4SetNmMdAndUqTags_4_1_3,
+    Gatk4SetNmMdAndUqTags_4_1_4,
+    Gatk4SetNmMdAndUqTagsLatest,
+)
+
+from .gatherbqsrreports.versions import (
+    Gatk4GatherBQSRReports_4_1_2,
+    Gatk4GatherBQSRReports_4_1_3,
+    Gatk4GatherBQSRReports_4_1_4,
+    Gatk4GatherBQSRReportsLatest,
+)
+
+from .gatherbamfiles.versions import (
+    Gatk4GatherBamFiles_4_1_2,
+    Gatk4GatherBamFiles_4_1_3,
+    Gatk4GatherBamFiles_4_1_4,
+    Gatk4GatherBamFilesLatest,
+)
+
+from .depthofcoverage.versions import (
+    Gatk4DepthOfCoverage_4_1_6,
+    Gatk4DepthOfCoverageLatest,
+)
+
+from .splitncigarreads.versions import *
+from .addorreplacereadgroups.versions import *
+from .reordersam.versions import *

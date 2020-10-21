@@ -14,7 +14,7 @@ from janis_core import (
 )
 from janis_unix import TextFile
 
-from janis_bioinformatics.data_types import BamBai, VcfIdx, Bed, VcfTabix
+from janis_bioinformatics.data_types import BamBai, VcfIdx, Bed, VcfTabix, FastaWithDict
 from ..gatk4toolbase import Gatk4ToolBase
 
 CORES_TUPLE = [
@@ -73,12 +73,18 @@ class Gatk4GetPileUpSummariesBase(Gatk4ToolBase, ABC):
             ),
             ToolInput(
                 "intervals",
-                VcfTabix(optional=True),
+                Bed(optional=True),
                 prefix="--intervals",
                 doc="-L (BASE) One or more genomic intervals over which to operate",
             ),
             ToolInput(
                 "pileupTableOut", Filename(extension=".txt"), position=1, prefix="-O"
+            ),
+            ToolInput(
+                "reference",
+                FastaWithDict(optional=True),
+                prefix="-R",
+                doc="reference to use when decoding CRAMS",
             ),
         ]
 
@@ -123,8 +129,3 @@ Summarizes counts of reads that support reference, alternate and other alleles f
 The tool requires a common germline variant sites VCF, e.g. the gnomAD resource, with population allele frequencies (AF) in the INFO field. This resource must contain only biallelic SNPs and can be an eight-column sites-only VCF. The tool ignores the filter status of the sites. See the GATK Resource Bundle for an example human file.
 """.strip(),
         )
-
-    def arguments(self):
-        return [
-            # ToolArgument(MemorySelector(prefix="-Xmx", suffix="G", default=8), prefix="--java-options", position=0)
-        ]

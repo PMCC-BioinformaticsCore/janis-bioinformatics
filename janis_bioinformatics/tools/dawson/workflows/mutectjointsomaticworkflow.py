@@ -10,17 +10,17 @@ from janis_bioinformatics.tools.bcftools import (
 )
 from janis_bioinformatics.tools.dawson.createcallregions.base import CreateCallRegions
 from janis_bioinformatics.tools.gatk4 import (
-    Gatk4CalculateContamination_4_1_4 as CalculateContamination,
-    Gatk4FilterMutectCalls_4_1_4 as FilterMutectCalls,
-    Gatk4LearnReadOrientationModel_4_1_4 as LearnReadOrientationModel,
-    Gatk4MergeMutectStats_4_1_2 as MergeMutectStats,
+    Gatk4CalculateContaminationLatest as CalculateContamination,
+    Gatk4FilterMutectCallsLatest as FilterMutectCalls,
+    Gatk4LearnReadOrientationModelLatest as LearnReadOrientationModel,
+    Gatk4MergeMutectStatsLatest as MergeMutectStats,
 )
 from janis_bioinformatics.tools.gatk4.mutect2.versions import (
-    GatkMutect2Cram_4_1_4 as Mutect2,
+    GatkMutect2Cram_4_1_6 as Mutect2,
 )
 
 from janis_bioinformatics.tools.gatk4.getpileupsummaries.versions import (
-    Gatk4GetPileUpSummariesCram_4_1_4 as GetPileUpSummaries,
+    Gatk4GetPileUpSummariesCram_4_1_6 as GetPileUpSummaries,
 )
 
 
@@ -31,12 +31,10 @@ class Mutect2JointSomaticWorkflow(BioinformaticsWorkflow):
     def friendly_name(self):
         return "Mutect2 joint somatic variant calling workflow"
 
-    @staticmethod
-    def tool_provider():
+    def tool_provider(self):
         return "Dawson Labs"
 
-    @staticmethod
-    def version():
+    def version(self):
         return "0.1"
 
     def bind_metadata(self):
@@ -113,6 +111,7 @@ class Mutect2JointSomaticWorkflow(BioinformaticsWorkflow):
                 bam=self.tumorBams,
                 sites=self.biallelicSites,
                 intervals=self.biallelicSites,
+                reference=self.reference,
             ),
         )
 
