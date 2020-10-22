@@ -921,9 +921,8 @@ Not used by default""",
 
     def outputs(self) -> List[ToolOutput]:
         return [
-            ToolOutput("std", Stdout),
-            ToolOutput("out", File, glob=InputSelector("outputFilename")),
-            ToolOutput(
-                "stats", File(extension=".html"), glob=InputSelector("statsFile")
-            ),
+            ToolOutput("out", VcfTabix(optional=True), selector=InputSelector("outputFilename")),
+            ToolOutput("out_stdout", Stdout),
+            ToolOutput("out_stats", File(optional=True, extension=".html"), selector=InputSelector("statsFile")),
+            ToolOutput("out_warnings", File(optional=True, extension=".txt"), selector=InputSelector("warningFile")),
         ]
