@@ -10,28 +10,24 @@ from janis_core import (
     WorkflowBuilder,
 )
 
+from janis_core.tool.tool import ToolWithTestSuite
+
 BIOINFORMATICS_MODULE = "bioinformatics"
 
 
-class BioinformaticsTool(CommandTool, ABC):
+class BioinformaticsTool(CommandTool, ToolWithTestSuite, ABC):
     def tool_module(self):
         return BIOINFORMATICS_MODULE
 
 
-class BioinformaticsWorkflow(Workflow, ABC):
+class BioinformaticsWorkflow(Workflow, ToolWithTestSuite, ABC):
     def tool_module(self):
         return BIOINFORMATICS_MODULE
 
 
-class BioinformaticsPythonTool(PythonTool, ABC):
-    TEST_DATA_FOLDER = "test_data"
-
+class BioinformaticsPythonTool(PythonTool, ToolWithTestSuite, ABC):
     def tool_module(self):
         return BIOINFORMATICS_MODULE
-
-    def test_data_path(self):
-        module_path = os.path.dirname(sys.modules[self.__module__].__file__)
-        return os.path.join(module_path, self.TEST_DATA_FOLDER)
 
 
 class BioinformaticsToolBuilder(CommandToolBuilder):
