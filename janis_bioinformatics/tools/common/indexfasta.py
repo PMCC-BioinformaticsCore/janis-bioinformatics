@@ -84,7 +84,7 @@ class IndexFasta(BioinformaticsWorkflow):
             ),
         )
 
-        self.output("out", source=self.merge.out)
+        self.output("out", source=self.merge.out_reference)
         self.output("out_bwa", source=self.create_bwa, output_name="reference")
         self.output(
             "out_samtools", source=self.create_samtools, output_name="reference"
@@ -93,4 +93,4 @@ class IndexFasta(BioinformaticsWorkflow):
 
 
 if __name__ == "__main__":
-    _JoinIndexedFasta().translate("wdl")
+    IndexFasta().translate("wdl")
