@@ -100,7 +100,6 @@ with mate mapped to a different chr (mapQ>=5)     0x1 bit set and neither 0x4 no
         )
 
     def tests(self):
-        print(SamToolsToolBase.test_data_path())
         return [
             TTestCase(
                 name="basic",

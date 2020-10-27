@@ -1,3 +1,5 @@
+import os
+import operator
 from abc import ABC
 
 from janis_core import (
@@ -17,6 +19,7 @@ from janis_unix import TextFile
 from janis_bioinformatics.data_types.bam import BamBai
 from janis_bioinformatics.tools.samtools.samtoolstoolbase import SamToolsToolBase
 from janis_core import ToolMetadata
+from janis_core.tool.tool import TTestCompared, TTestExpectedOutput, TTestCase
 
 
 class SamToolsMpileupBase(SamToolsToolBase, ABC):
@@ -193,3 +196,33 @@ Note that there are two orthogonal ways to specify locations in the input file; 
             doc="Reference sequence FASTA FILE [null]",
         ),
     ]
+
+    def tests(self):
+        return [
+            TTestCase(
+                name="basic",
+                input={
+                    "bam": os.path.join(SamToolsToolBase.test_data_path(), "small.bam"),
+                },
+                output=[
+                    TTestExpectedOutput(
+                        tag="out",
+                        compared=TTestCompared.FileMd5,
+                        operator=operator.eq,
+                        expected_value="6b6f2401df9965b5250f4752dde03f2a"
+                    ),
+                    TTestExpectedOutput(
+                        tag="out",
+                        compared=TTestCompared.FileContent,
+                        operator=operator.contains,
+                        expected_value="17:43044045-43125733\t5\tN\t15\tCCCCCCCCCCCCCCC\tJDDAJDEDCDJD>gB\n"
+                    ),
+                    TTestExpectedOutput(
+                        tag="out",
+                        compared=TTestCompared.LineCount,
+                        operator=operator.eq,
+                        expected_value=81689
+                    ),
+                ]
+            )
+        ]

@@ -1,3 +1,5 @@
+import os
+import operator
 from abc import ABC
 from datetime import date
 
@@ -6,6 +8,8 @@ from janis_core import ToolMetadata
 
 from janis_bioinformatics.data_types import Fasta, FastaFai
 from ..samtoolstoolbase import SamToolsToolBase
+
+from janis_core.tool.tool import TTestCompared, TTestExpectedOutput, TTestCase
 
 
 class SamToolsFaidxBase(SamToolsToolBase, ABC):
@@ -38,3 +42,21 @@ class SamToolsFaidxBase(SamToolsToolBase, ABC):
             documentation="""""",
         )
         return self.metadata
+
+    def tests(self):
+        return [
+            TTestCase(
+                name="basic",
+                input={
+                    "reference": os.path.join(SamToolsToolBase.test_data_path(), "hg38-brca1.fasta"),
+                },
+                output=[
+                    TTestExpectedOutput(
+                        tag="out",
+                        compared=TTestCompared.FileMd5,
+                        operator=operator.eq,
+                        expected_value="768915f0ceff3bae0bac0ace5f7ccad0"
+                    ),
+                ]
+            )
+        ]
