@@ -1,3 +1,4 @@
+from janis_bioinformatics.tools.common import IndexFasta
 from janis_core import JanisTransformation, JanisTransformationGraph
 
 from janis_bioinformatics.data_types import (
@@ -7,6 +8,8 @@ from janis_bioinformatics.data_types import (
     Bam,
     BamBai,
     VcfIdx,
+    Fasta,
+    FastaWithIndexes,
 )
 
 from janis_bioinformatics.tools.samtools import SamToolsIndex_1_9
@@ -18,6 +21,7 @@ transformations = [
     JanisTransformation(Vcf, VcfIdx, IgvIndexFeature_2_5_3()),
     JanisTransformation(Vcf, CompressedVcf, BGZip_1_9()),
     JanisTransformation(CompressedVcf, VcfTabix, Tabix_1_9()),
+    JanisTransformation(Fasta, FastaWithIndexes, IndexFasta()),
 ]
 
 
