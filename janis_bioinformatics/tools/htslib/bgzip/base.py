@@ -35,8 +35,8 @@ class BGZipBase(HtsLibBase, ABC):
             ToolInput(
                 "outputFilename",
                 Filename(
-                    prefix=InputSelector("file", remove_file_extension=True),
-                    extension=".vcf.gz",
+                    prefix=InputSelector("file"),
+                    extension=".gz",
                 ),
                 position=102,
                 shell_quote=False,
