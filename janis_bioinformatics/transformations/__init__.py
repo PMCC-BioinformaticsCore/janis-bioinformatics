@@ -47,15 +47,15 @@ transformations = [
         relevant_tool_output="out",
     ),
     JanisTransformation(
+        Bed,
         BedGz,
-        BedTabix,
-        UncompressArchive(),
+        BGZip_1_9(),
         relevant_tool_input="file",
         relevant_tool_output="out",
     ),
     JanisTransformation(
-        Bed,
         BedGz,
+        BedTabix,
         Tabix_1_9(),
         relevant_tool_input="inp",
         relevant_tool_output="out",
