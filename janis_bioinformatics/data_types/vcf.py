@@ -1,6 +1,9 @@
 from abc import ABC
 
 from janis_core import File
+from janis_unix import Gunzipped
+
+from janis_bioinformatics.data_types.tabix import FileTabix
 
 
 class Vcf(File):
@@ -32,9 +35,9 @@ class VcfIdx(Vcf):
         return [".idx"]
 
 
-class CompressedVcf(File):
+class CompressedVcf(Gunzipped):
     def __init__(self, optional=False):
-        super().__init__(optional=optional, extension=".vcf.gz")
+        super().__init__(inner_type=Vcf, optional=optional, extension=".vcf.gz")
 
     @staticmethod
     def name():
@@ -44,14 +47,10 @@ class CompressedVcf(File):
         return ".vcf.gz"
 
 
-class VcfTabix(CompressedVcf):
+class VcfTabix(FileTabix):
     @staticmethod
     def name():
         return "CompressedIndexedVCF"
-
-    @staticmethod
-    def secondary_files():
-        return [".tbi"]
 
     def doc(self):
         return ".vcf.gz with .vcf.gz.tbi file"
