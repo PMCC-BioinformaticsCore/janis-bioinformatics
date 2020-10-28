@@ -20,7 +20,7 @@ class TestToolsDefinitions(unittest.TestCase):
     succeeded = set()
 
     @parameterized.expand([
-        [t.id(), t] for t in all_versioned_tools
+        [t.versioned_id(), t] for t in all_versioned_tools
     ])
     def test_all_tools(self, name, tool):
         evaluation = ToolEvaluator.evaluate(tool)

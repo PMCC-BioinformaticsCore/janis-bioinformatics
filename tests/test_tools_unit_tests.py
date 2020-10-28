@@ -11,7 +11,13 @@ all_tools = test_helper.get_all_tools([janis_bioinformatics.tools])
 all_versioned_tools = []
 # TODO: revert to full list
 # for tool_versions in all_tools:
-for tool_versions in all_tools[150:152]:
+# for tool_versions in all_tools[150:152]:
+# for tool_versions in all_tools[47:53]:
+for tool_versions in all_tools[50:51]: # view
+# for tool_versions in all_tools[51:52]: # index
+# for tool_versions in all_tools[52:53]: # faidx
+# for tool_versions in all_tools[47:48]: # flagstat
+# for tool_versions in all_tools[48:49]: # mpileup
     for versioned_tool in tool_versions:
         all_versioned_tools.append(versioned_tool)
 
@@ -21,7 +27,7 @@ class RunAllToolsTestSuite(unittest.TestCase):
     succeeded_tools = set()
 
     @parameterized.expand([
-        [t.id(), t] for t in all_versioned_tools
+        [t.versioned_id(), t] for t in all_versioned_tools
     ])
     def test_one_tool(self, name, tool):
         if not tool.tests():
