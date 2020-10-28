@@ -1,3 +1,5 @@
+from janis_unix import UncompressArchive
+
 from janis_bioinformatics.tools.common import IndexFasta
 from janis_core import JanisTransformation, JanisTransformationGraph
 
@@ -10,6 +12,9 @@ from janis_bioinformatics.data_types import (
     VcfIdx,
     Fasta,
     FastaWithIndexes,
+    BedGz,
+    Bed,
+    BedTabix,
 )
 
 from janis_bioinformatics.tools.samtools import SamToolsIndex_1_9
@@ -19,9 +24,42 @@ from janis_bioinformatics.tools.igvtools import IgvIndexFeature_2_5_3
 transformations = [
     JanisTransformation(Bam, BamBai, SamToolsIndex_1_9(), relevant_tool_input="bam"),
     JanisTransformation(Vcf, VcfIdx, IgvIndexFeature_2_5_3()),
-    JanisTransformation(Vcf, CompressedVcf, BGZip_1_9()),
-    JanisTransformation(CompressedVcf, VcfTabix, Tabix_1_9()),
+    JanisTransformation(
+        Vcf,
+        CompressedVcf,
+        BGZip_1_9(),
+        relevant_tool_input="file",
+        relevant_tool_output="out",
+    ),
+    JanisTransformation(
+        CompressedVcf,
+        VcfTabix,
+        Tabix_1_9(),
+        relevant_tool_input="inp",
+        relevant_tool_output="out",
+    ),
     JanisTransformation(Fasta, FastaWithIndexes, IndexFasta()),
+    JanisTransformation(
+        BedGz,
+        Bed,
+        UncompressArchive(),
+        relevant_tool_input="file",
+        relevant_tool_output="out",
+    ),
+    JanisTransformation(
+        BedGz,
+        BedTabix,
+        UncompressArchive(),
+        relevant_tool_input="file",
+        relevant_tool_output="out",
+    ),
+    JanisTransformation(
+        Bed,
+        BedGz,
+        Tabix_1_9(),
+        relevant_tool_input="inp",
+        relevant_tool_output="out",
+    ),
 ]
 
 
