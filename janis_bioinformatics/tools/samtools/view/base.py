@@ -1,5 +1,10 @@
+import os
+import operator
 from abc import ABC
 from datetime import date
+
+from janis_core.tool.tool import TTestCompared, TTestExpectedOutput, TTestCase
+
 
 from janis_core import (
     ToolInput,
@@ -278,3 +283,21 @@ Use of region specifications requires a coordinate-sorted and indexed input file
             doc="Number of BAM compression threads to use in addition to main thread [0].",
         ),
     ]
+
+    def tests(self):
+        return [
+            TTestCase(
+                name="basic",
+                input={
+                    "sam": os.path.join(SamToolsToolBase.test_data_path(), "small.bam"),
+                },
+                output=[
+                    TTestExpectedOutput(
+                        tag="out",
+                        compared=TTestCompared.FileMd5,
+                        operator=operator.eq,
+                        expected_value="54be668168b91eb1c04929b9305c1ac7"
+                    ),
+                ]
+            )
+        ]
