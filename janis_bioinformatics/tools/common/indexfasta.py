@@ -1,6 +1,7 @@
+from tokenize import String
 from typing import List, Optional, Union
 
-from janis_core import ToolOutput, ToolInput, InputSelector
+from janis_core import ToolOutput, ToolInput, InputSelector, Int
 
 from janis_bioinformatics.data_types import (
     Fasta,
@@ -69,7 +70,18 @@ class IndexFasta(BioinformaticsWorkflow):
 
         self.input("reference", Fasta)
 
-        self.step("create_bwa", BwaIndexLatest(reference=self.reference))
+        # Change the default BWA index algorithm to bwtsw (for human genome), and up blockSize to 50M
+        self.input("bwa_algorithm", String(optional=True), default="bwtsw")
+        self.input("bwa_block_size", Int(optional=True), default=5e7)
+
+        self.step(
+            "create_bwa",
+            BwaIndexLatest(
+                reference=self.reference,
+                algorithm=self.bwa_algorithm,
+                blockSize=self.bwa_block_size,
+            ),
+        )
         self.step("create_samtools", SamToolsFaidxLatest(reference=self.reference))
         self.step(
             "create_dict", Gatk4CreateSequenceDictionaryLatest(reference=self.reference)
