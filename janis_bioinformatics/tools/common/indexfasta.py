@@ -84,7 +84,7 @@ class IndexFasta(BioinformaticsWorkflow):
             ),
         )
 
-        self.output("out", source=self.merge.out_reference)
+        self.output("out_reference", source=self.merge.out_reference)
         self.output("out_bwa", source=self.create_bwa, output_name="reference")
         self.output(
             "out_samtools", source=self.create_samtools, output_name="reference"
@@ -93,4 +93,9 @@ class IndexFasta(BioinformaticsWorkflow):
 
 
 if __name__ == "__main__":
-    IndexFasta().translate("wdl")
+    IndexFasta().translate(
+        "wdl",
+        export_path="~/Desktop/tmp/wdltests/indexfasta",
+        to_disk=True,
+        validate=True,
+    )
