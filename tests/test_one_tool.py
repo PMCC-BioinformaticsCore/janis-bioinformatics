@@ -8,26 +8,45 @@ import janis_bioinformatics
 from janis_core.tool.test_suite_runner import ToolTestSuiteRunner
 from janis_core.tool import test_helpers as test_helper
 
+version = None
 for arg in sys.argv:
     if arg.startswith("tool="):
         parts = arg.split("=")
         tool_id = parts[1]
-        break
 
-print(tool_id)
+    if arg.startswith("engine="):
+        parts = arg.split("=")
+        engine = parts[1]
 
-tool = test_helper.get_one_tool(tool_id, [janis_bioinformatics.tools])
+    if arg.startswith("version="):
+        parts = arg.split("=")
+        version = parts[1]
+
+tool = test_helper.get_one_tool(tool_id, [janis_bioinformatics.tools], version)
 runner = ToolTestSuiteRunner(tool)
 
 
 class TestOneTool(unittest.TestCase):
 
+    failed_cases = {}
+    succeeded_cases = set()
+
     @parameterized.expand([
         [tc.name, tc] for tc in tool.tests()
     ])
     @attr("test_suite")
-    def test_tool(self, name, test_case):
-        failed, succeeded = runner.run_one_test_case(test_case)
+    def test(self, name, test_case):
+        failed, succeeded = runner.run_one_test_case(test_case, engine)
 
         if len(failed) > 0:
-            self.fail("; ".join(failed))
+            error_msg = "\n".join(failed)
+            self.failed_cases[name] = error_msg
+            self.fail(error_msg)
+        else:
+            self.succeeded_cases.add(name)
+
+    @attr("test_suite")
+    def test_report(self):
+        print(f"{tool.versioned_id()} - {engine}")
+        test_helper.print_test_report(failed=self.failed_cases, succeeded=self.succeeded_cases,
+                                      first_column_header="Test Case")
