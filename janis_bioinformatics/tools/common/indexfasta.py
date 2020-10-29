@@ -1,7 +1,6 @@
-from tokenize import String
 from typing import List, Optional, Union
 
-from janis_core import ToolOutput, ToolInput, InputSelector, Int
+from janis_core import ToolOutput, ToolInput, InputSelector, Int, String
 
 from janis_bioinformatics.data_types import (
     Fasta,
