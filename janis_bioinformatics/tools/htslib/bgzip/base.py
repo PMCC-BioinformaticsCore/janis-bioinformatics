@@ -13,6 +13,7 @@ from janis_core import (
     Filename,
     ToolArgument,
 )
+from janis_unix import Gunzipped
 
 from janis_bioinformatics.data_types import Vcf, CompressedVcf
 from janis_bioinformatics.tools.htslib.htslibbase import HtsLibBase
@@ -30,10 +31,13 @@ class BGZipBase(HtsLibBase, ABC):
 
     def inputs(self) -> List[ToolInput]:
         return [
-            ToolInput("file", Vcf(), position=100, doc="File to bgzip compress"),
+            ToolInput("file", File(), position=100, doc="File to bgzip compress"),
             ToolInput(
                 "outputFilename",
-                Filename(extension=".vcf.gz"),
+                Filename(
+                    prefix=InputSelector("file"),
+                    extension=".gz",
+                ),
                 position=102,
                 shell_quote=False,
             ),
@@ -45,7 +49,11 @@ class BGZipBase(HtsLibBase, ABC):
 
     def outputs(self) -> List[ToolOutput]:
         return [
-            ToolOutput("out", CompressedVcf(), glob=InputSelector("outputFilename"),)
+            ToolOutput(
+                "out",
+                Gunzipped(),
+                glob=InputSelector("outputFilename"),
+            )
         ]
 
     def friendly_name(self):

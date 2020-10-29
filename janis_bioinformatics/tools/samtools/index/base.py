@@ -3,6 +3,7 @@ import operator
 from abc import ABC
 from datetime import date
 
+from janis_bioinformatics.data_types import Sam, Cram
 from janis_core import (
     ToolInput,
     ToolOutput,
@@ -12,6 +13,7 @@ from janis_core import (
     CpuSelector,
 )
 from janis_core import ToolMetadata
+from janis_core.types import UnionType
 
 from janis_bioinformatics.data_types.bam import Bam, BamBai
 from ..samtoolstoolbase import SamToolsToolBase
@@ -31,7 +33,9 @@ class SamToolsIndexBase(SamToolsToolBase, ABC):
         return [
             *super(SamToolsIndexBase, self).inputs(),
             *SamToolsIndexBase.additional_inputs,
-            ToolInput("bam", Bam, position=10, localise_file=True),
+            ToolInput(
+                "bam", UnionType(Bam, Sam, Cram), position=10, localise_file=True
+            ),
             ToolInput(
                 "threads",
                 Int(optional=True),
