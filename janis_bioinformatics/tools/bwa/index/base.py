@@ -20,9 +20,6 @@ class BwaIndexBase(BioinformaticsTool, ABC):
     def base_command(self):
         return ["bwa", "index"]
 
-    def memory(self, hints: Dict[str, Any]):
-        return 8
-
     def inputs(self):
         return [
             ToolInput("reference", Fasta, position=1, localise_file=True),
@@ -54,7 +51,7 @@ BWT construction algorithm: bwtsw, is or rb2 [auto]
         return [ToolOutput("out", FastaBwa, glob=InputSelector("reference"))]
 
     def memory(self, hints: Dict[str, Any]):
-        return 2
+        return 8
 
     def cpus(self, hints: Dict[str, Any]):
         return 1
