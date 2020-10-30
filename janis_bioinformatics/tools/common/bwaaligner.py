@@ -1,9 +1,13 @@
+import os
+import operator
 from janis_core import Array
 from janis_bioinformatics.data_types import FastqGzPair, FastaWithDict
 from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.common.bwamem_samtoolsview import BwaMem_SamToolsView
 from janis_bioinformatics.tools.cutadapt import CutAdapt_2_1
 from janis_bioinformatics.tools.gatk4 import Gatk4SortSam_4_1_2
+
+from janis_core.tool.tool import TTestCompared, TTestExpectedOutput, TTestCase
 
 
 class BwaAligner(BioinformaticsWorkflow):
@@ -74,6 +78,42 @@ class BwaAligner(BioinformaticsWorkflow):
         self.metadata.creator = "Michael Franklin"
         self.metadata.dateCreated = "2018-12-24"
         self.metadata.version = "1.1"
+
+    def tests(self):
+        return [
+            TTestCase(
+                name="basic",
+                input={
+                    "sample_name": "NA12878",
+                    "fastq": [
+                        os.path.join(
+                            BioinformaticsWorkflow.test_data_path(), "BRCA1_R1.fastq.gz"
+                        ),
+                        os.path.join(
+                            BioinformaticsWorkflow.test_data_path(), "BRCA1_R2.fastq.gz"
+                        ),
+                    ],
+                    "reference": os.path.join(
+                        BioinformaticsWorkflow.test_data_path(), "hg38-brca1.fasta"
+                    ),
+                },
+                output=[
+                    TTestExpectedOutput(
+                        tag="out",
+                        compared=TTestCompared.FileSize,
+                        operator=operator.gt,
+                        expected_value=2767780,
+                    ),
+                    TTestExpectedOutput(
+                        tag="out",
+                        suffix=".bai",
+                        compared=TTestCompared.FileSize,
+                        operator=operator.gt,
+                        expected_value=290,
+                    ),
+                ],
+            )
+        ]
 
 
 if __name__ == "__main__":
