@@ -10,8 +10,7 @@ all_tools = test_helpers.get_all_tools([janis_bioinformatics.tools])
 
 all_versioned_tools = []
 # TODO: revert to full list
-# for tool_versions in all_tools:
-for tool_versions in all_tools[148:152]:
+for tool_versions in all_tools:
     for versioned_tool in tool_versions:
         all_versioned_tools.append(versioned_tool)
 
