@@ -1,4 +1,5 @@
 import unittest
+from nose.plugins.attrib import attr
 from parameterized import parameterized
 
 import janis_bioinformatics
@@ -22,7 +23,8 @@ class TestToolsDefinitions(unittest.TestCase):
     @parameterized.expand([
         [t.versioned_id(), t] for t in all_versioned_tools
     ])
-    def test_all_tools(self, name, tool):
+    @attr("small")
+    def test(self, name, tool):
         evaluation = ToolEvaluator.evaluate(tool)
 
         if evaluation is True:
