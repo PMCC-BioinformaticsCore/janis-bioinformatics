@@ -3,7 +3,7 @@ python:
 - '3.6'
 install:
 - pip install .
-- pip install -e ".[tests]"
+- pip install -e .[tests]
 script: nosetests -w janis_bioinformatics/tests -a small
 deploy:
   provider: pypi
