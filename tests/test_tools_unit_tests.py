@@ -4,13 +4,12 @@ from parameterized import parameterized
 import janis_bioinformatics
 
 from janis_core.tool.test_suite_runner import ToolTestSuiteRunner
-from janis_core.tool import test_helpers as test_helper
+from janis_core.tool import test_helpers
 
-all_engines = ToolTestSuiteRunner.get_available_engines()
-all_tools = test_helper.get_all_tools([janis_bioinformatics.tools])
+all_engines = test_helpers.get_available_engines()
+all_tools = test_helpers.get_all_tools([janis_bioinformatics.tools])
 
 all_versioned_tools = []
-# TODO: revert to full list
 for tool_versions in all_tools:
     for versioned_tool in tool_versions:
         all_versioned_tools.append(versioned_tool)
@@ -60,7 +59,7 @@ class RunAllToolsTestSuite(unittest.TestCase):
                 self.succeeded_tools.add(name)
 
     def test_report(self):
-        test_helper.print_test_report(failed=self.failed_tools, succeeded=self.succeeded_tools)
+        test_helpers.print_test_report(failed=self.failed_tools, succeeded=self.succeeded_tools)
 
         if (len(self.failed_tools) > 0):
             raise Exception(

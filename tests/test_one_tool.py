@@ -6,7 +6,7 @@ from nose.plugins.attrib import attr
 import janis_bioinformatics
 
 from janis_core.tool.test_suite_runner import ToolTestSuiteRunner
-from janis_core.tool import test_helpers as test_helper
+from janis_core.tool import test_helpers
 
 version = None
 for arg in sys.argv:
@@ -22,7 +22,7 @@ for arg in sys.argv:
         parts = arg.split("=")
         version = parts[1]
 
-tool = test_helper.get_one_tool(tool_id, [janis_bioinformatics.tools], version)
+tool = test_helpers.get_one_tool(tool_id, [janis_bioinformatics.tools], version)
 runner = ToolTestSuiteRunner(tool)
 
 
@@ -48,5 +48,5 @@ class TestOneTool(unittest.TestCase):
     @attr("test_suite")
     def test_report(self):
         print(f"{tool.versioned_id()} - {engine}")
-        test_helper.print_test_report(failed=self.failed_cases, succeeded=self.succeeded_cases,
+        test_helpers.print_test_report(failed=self.failed_cases, succeeded=self.succeeded_cases,
                                       first_column_header="Test Case")
