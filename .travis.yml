@@ -1,8 +1,10 @@
 language: python
 python:
 - '3.6'
-install: true
-script: echo "Deploying Janis-Bioinformatics"
+install:
+- pip install .
+- pip install -e ".[tests]"
+script: nosetests -w janis_bioinformatics/tests -a small
 deploy:
   provider: pypi
   user: illusional
