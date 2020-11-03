@@ -8,6 +8,9 @@ from janis_bioinformatics.tools.cutadapt import CutAdapt_2_1
 from janis_bioinformatics.tools.gatk4 import Gatk4SortSam_4_1_2
 
 from janis_core.tool.test_classes import TTestCompared, TTestExpectedOutput, TTestCase
+from janis_bioinformatics.utils.bioinformatics_test_runner import (
+    TBioinformaticsTestCompared,
+)
 
 
 class BwaAligner(BioinformaticsWorkflow):
@@ -110,6 +113,14 @@ class BwaAligner(BioinformaticsWorkflow):
                         compared=TTestCompared.FileSize,
                         operator=operator.gt,
                         expected_value=290,
+                    ),
+                    TTestExpectedOutput(
+                        tag="out",
+                        compared=TBioinformaticsTestCompared.GenomicsStat,
+                        operator=operator.eq,
+                        expected_file=os.path.join(
+                            self.test_data_path(), "bwaaligner.flagstat.txt"
+                        ),
                     ),
                 ],
             )

@@ -95,7 +95,7 @@ class InsertLineBase(BioinformaticsPythonTool):
                     TTestExpectedOutput(
                         tag="out_file",
                         compared=TTestCompared.FileDiff,
-                        expected_source=os.path.join(
+                        file_diff_source=os.path.join(
                             self.test_data_path(), "expected_output_1.txt"
                         ),
                         operator=operator.eq,
@@ -126,7 +126,7 @@ class InsertLineBase(BioinformaticsPythonTool):
                     TTestExpectedOutput(
                         tag="out_file",
                         compared=TTestCompared.FileDiff,
-                        expected_source=os.path.join(
+                        file_diff_source=os.path.join(
                             self.test_data_path(), "input.txt"
                         ),
                         operator=FileDiffOperator.new_lines,

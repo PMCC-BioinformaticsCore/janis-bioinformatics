@@ -3,8 +3,11 @@ from parameterized import parameterized
 
 import janis_bioinformatics
 
-from janis_core.tool.test_suite_runner import ToolTestSuiteRunner
+# from janis_core.tool.test_suite_runner import ToolTestSuiteRunner
 from janis_core.tool import test_helpers
+from janis_bioinformatics.utils.bioinformatics_test_runner import (
+    BioinformaticsToolTestSuiteRunner,
+)
 
 all_engines = test_helpers.get_available_engines()
 all_tools = test_helpers.get_all_tools([janis_bioinformatics.tools])
@@ -41,7 +44,7 @@ class RunAllToolsTestSuite(unittest.TestCase):
             self.failed_tools[name] = error_message
             self.fail(error_message)
         else:
-            runner = ToolTestSuiteRunner(tool)
+            runner = BioinformaticsToolTestSuiteRunner(tool)
 
             n_test_case_failed = 0
             error_messages = []
