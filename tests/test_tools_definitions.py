@@ -19,9 +19,7 @@ class TestToolsDefinitions(unittest.TestCase):
     failed = {}
     succeeded = set()
 
-    @parameterized.expand([
-        [t.versioned_id(), t] for t in all_versioned_tools
-    ])
+    @parameterized.expand([[t.versioned_id(), t] for t in all_versioned_tools])
     @attr("small")
     def test(self, name, tool):
         evaluation = ToolEvaluator.evaluate(tool)
@@ -35,7 +33,7 @@ class TestToolsDefinitions(unittest.TestCase):
     def test_report(self):
         test_helpers.print_test_report(failed=self.failed, succeeded=self.succeeded)
 
-        if (len(self.failed) > 0):
+        if len(self.failed) > 0:
             raise Exception(
                 f"There were {len(self.failed)} tool(s) that did not contain sufficient metadata to include in the "
                 f"janis_* repository. Please check to ensure your tool is in the list below"

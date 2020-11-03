@@ -31,9 +31,7 @@ class TestOneTool(unittest.TestCase):
     failed_cases = {}
     succeeded_cases = set()
 
-    @parameterized.expand([
-        [tc.name, tc] for tc in tool.tests()
-    ])
+    @parameterized.expand([[tc.name, tc] for tc in tool.tests()])
     @attr("test_suite")
     def test(self, name, test_case):
         failed, succeeded = runner.run_one_test_case(test_case, engine)
@@ -48,5 +46,8 @@ class TestOneTool(unittest.TestCase):
     @attr("test_suite")
     def test_report(self):
         print(f"{tool.versioned_id()} - {engine}")
-        test_helpers.print_test_report(failed=self.failed_cases, succeeded=self.succeeded_cases,
-                                      first_column_header="Test Case")
+        test_helpers.print_test_report(
+            failed=self.failed_cases,
+            succeeded=self.succeeded_cases,
+            first_column_header="Test Case",
+        )

@@ -8,11 +8,10 @@ from janis_bioinformatics.tools.bioinformaticstoolbase import (
     BioinformaticsPythonTool,
 )
 from janis_core import ToolMetadata, Logger, PythonTool
-from janis_core.tool.tool import TTestCompared, TTestExpectedOutput, TTestCase
+from janis_core.tool.test_classes import TTestCompared, TTestExpectedOutput, TTestCase
 
 
 class FileDiffOperator:
-
     @classmethod
     def new_lines(cls, output_diff, expected_new_lines):
         new_lines = []
@@ -61,7 +60,7 @@ class InsertLineBase(BioinformaticsPythonTool):
         return [
             TOutput("out_file", File),
             TOutput("line_count", int),
-            TOutput("misc_files", Array(File))
+            TOutput("misc_files", Array(File)),
         ]
 
     def id(self) -> str:
@@ -84,60 +83,70 @@ class InsertLineBase(BioinformaticsPythonTool):
                 input={
                     "in_file": os.path.join(self.test_data_path(), "input.txt"),
                     "line_to_insert": "abc",
-                    "insert_after_line": 1
+                    "insert_after_line": 1,
                 },
                 output=[
                     TTestExpectedOutput(
                         tag="out_file",
                         compared=TTestCompared.FileMd5,
                         operator=operator.eq,
-                        expected_value="85d7c20f3e0c7af4510ca5d1f4997b9f"
+                        expected_value="85d7c20f3e0c7af4510ca5d1f4997b9f",
                     ),
                     TTestExpectedOutput(
                         tag="out_file",
                         compared=TTestCompared.FileDiff,
-                        expected_source=os.path.join(self.test_data_path(), "expected_output_1.txt"),
+                        expected_source=os.path.join(
+                            self.test_data_path(), "expected_output_1.txt"
+                        ),
                         operator=operator.eq,
-                        expected_value=[]
+                        expected_value=[],
                     ),
                     TTestExpectedOutput(
                         tag="out_file",
                         compared=TTestCompared.FileContent,
                         operator=operator.eq,
-                        expected_value="test\nabc\nsame\nsame\nlast line\n"
-                    )
-                ]
+                        expected_value="test\nabc\nsame\nsame\nlast line\n",
+                    ),
+                ],
             ),
             TTestCase(
                 name="append-one-line",
                 input={
                     "in_file": os.path.join(self.test_data_path(), "input.txt"),
                     "line_to_insert": "my new line",
-                    "insert_after_line": 4
+                    "insert_after_line": 4,
                 },
                 output=[
                     TTestExpectedOutput(
                         tag="line_count",
                         compared=TTestCompared.Value,
                         operator=operator.eq,
-                        expected_value="5"
+                        expected_value="1",
                     ),
                     TTestExpectedOutput(
                         tag="out_file",
                         compared=TTestCompared.FileDiff,
-                        expected_source=os.path.join(self.test_data_path(), "input.txt"),
+                        expected_source=os.path.join(
+                            self.test_data_path(), "input.txt"
+                        ),
                         operator=FileDiffOperator.new_lines,
-                        expected_value=["my new line"]
+                        expected_value=["my new line"],
                     ),
                     TTestExpectedOutput(
                         tag="misc_files",
                         array_index=1,
                         compared=TTestCompared.FileContent,
                         operator=operator.eq,
-                        expected_value="test\nsame\nsame\nlast line\nmy new line\n"
-                    )
-                ]
-            )
+                        expected_value="test\nsame\nsame\nlast line\nmy new line\n",
+                    ),
+                    TTestExpectedOutput(
+                        tag="out_file",
+                        compared=TTestCompared.FileMd5,
+                        operator=operator.eq,
+                        expected_value="85d7c20f3e0c7af4510ca5d1f4997b9fXXX",
+                    ),
+                ],
+            ),
         ]
 
     # TODO: delete

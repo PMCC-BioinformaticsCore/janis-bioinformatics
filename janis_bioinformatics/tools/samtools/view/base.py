@@ -3,7 +3,7 @@ import operator
 from abc import ABC
 from datetime import date
 
-from janis_core.tool.tool import TTestCompared, TTestExpectedOutput, TTestCase
+from janis_core.tool.test_classes import TTestCompared, TTestExpectedOutput, TTestCase
 
 
 from janis_core import (
@@ -296,8 +296,8 @@ Use of region specifications requires a coordinate-sorted and indexed input file
                         tag="out",
                         compared=TTestCompared.FileMd5,
                         operator=operator.eq,
-                        expected_value="54be668168b91eb1c04929b9305c1ac7"
+                        expected_value="54be668168b91eb1c04929b9305c1ac7",
                     ),
-                ]
+                ],
             )
         ]

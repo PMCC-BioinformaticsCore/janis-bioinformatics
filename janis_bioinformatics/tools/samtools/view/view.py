@@ -5,7 +5,7 @@ from ..samtoolstoolbase import SamToolsToolBase
 from ..samtools_1_7 import SamTools_1_7
 from ..samtools_1_9 import SamTools_1_9
 
-from janis_core.tool.tool import TTestCompared, TTestExpectedOutput, TTestCase
+from janis_core.tool.test_classes import TTestCompared, TTestExpectedOutput, TTestCase
 
 
 class SamToolsView_1_7(SamTools_1_7, SamToolsViewBase):
@@ -21,9 +21,9 @@ class SamToolsView_1_7(SamTools_1_7, SamToolsViewBase):
                         tag="out",
                         compared=TTestCompared.FileMd5,
                         operator=operator.eq,
-                        expected_value="4dd0783b97f4dde4745df4557096a095"
+                        expected_value="4dd0783b97f4dde4745df4557096a095",
                     ),
-                ]
+                ],
             )
         ]
 

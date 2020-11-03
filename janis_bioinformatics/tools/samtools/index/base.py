@@ -18,7 +18,7 @@ from janis_core.types import UnionType
 from janis_bioinformatics.data_types.bam import Bam, BamBai
 from ..samtoolstoolbase import SamToolsToolBase
 
-from janis_core.tool.tool import TTestCompared, TTestExpectedOutput, TTestCase
+from janis_core.tool.test_classes import TTestCompared, TTestExpectedOutput, TTestCase
 
 
 class SamToolsIndexBase(SamToolsToolBase, ABC):
@@ -80,9 +80,9 @@ class SamToolsIndexBase(SamToolsToolBase, ABC):
                         tag="out",
                         compared=TTestCompared.FileMd5,
                         operator=operator.eq,
-                        expected_value="c9c318de134643665ff1fed6cfaec49c"
+                        expected_value="c9c318de134643665ff1fed6cfaec49c",
                     ),
-                ]
+                ],
             )
         ]
 

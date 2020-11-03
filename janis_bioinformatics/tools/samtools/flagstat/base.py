@@ -19,7 +19,7 @@ from janis_bioinformatics.data_types.bam import Bam
 from janis_bioinformatics.tools.samtools.samtoolstoolbase import SamToolsToolBase
 from janis_core import ToolMetadata
 
-from janis_core.tool.tool import TTestCompared, TTestExpectedOutput, TTestCase
+from janis_core.tool.test_classes import TTestCompared, TTestExpectedOutput, TTestCase
 
 
 class SamToolsFlagstatBase(SamToolsToolBase, ABC):
@@ -111,20 +111,20 @@ with mate mapped to a different chr (mapQ>=5)     0x1 bit set and neither 0x4 no
                         tag="out",
                         compared=TTestCompared.FileMd5,
                         operator=operator.eq,
-                        expected_value="dc58fe92a9bb0c897c85804758dfadbf"
+                        expected_value="dc58fe92a9bb0c897c85804758dfadbf",
                     ),
                     TTestExpectedOutput(
                         tag="out",
                         compared=TTestCompared.FileContent,
                         operator=operator.contains,
-                        expected_value="19384 + 0 in total (QC-passed reads + QC-failed reads)"
+                        expected_value="19384 + 0 in total (QC-passed reads + QC-failed reads)",
                     ),
                     TTestExpectedOutput(
                         tag="out",
                         compared=TTestCompared.LineCount,
                         operator=operator.eq,
-                        expected_value=13
+                        expected_value=13,
                     ),
-                ]
+                ],
             )
         ]

@@ -9,8 +9,17 @@ from janis_core.tool import test_helpers
 all_engines = test_helpers.get_available_engines()
 all_tools = test_helpers.get_all_tools([janis_bioinformatics.tools])
 
+# TODO: delete this
+selected_indices = [150, 54, 50]
+selected_tools = []
+for i in range(len(all_tools)):
+    if i in selected_indices:
+        selected_tools.append(all_tools[i])
+
 all_versioned_tools = []
-for tool_versions in all_tools:
+# TODO: revert to full list
+# for tool_versions in all_tools:
+for tool_versions in selected_tools:
     for versioned_tool in tool_versions:
         all_versioned_tools.append(versioned_tool)
 
@@ -19,9 +28,13 @@ class RunAllToolsTestSuite(unittest.TestCase):
     failed_tools = {}
     succeeded_tools = set()
 
-    @parameterized.expand([
-        [f"{tool.versioned_id()} - {engine}", engine, tool] for tool in all_versioned_tools for engine in all_engines
-    ])
+    @parameterized.expand(
+        [
+            [f"{tool.versioned_id()} - {engine}", engine, tool]
+            for tool in all_versioned_tools
+            for engine in all_engines
+        ]
+    )
     def test(self, name, engine, tool):
         if not tool.tests():
             error_message = "No test suite provided"
@@ -59,9 +72,11 @@ class RunAllToolsTestSuite(unittest.TestCase):
                 self.succeeded_tools.add(name)
 
     def test_report(self):
-        test_helpers.print_test_report(failed=self.failed_tools, succeeded=self.succeeded_tools)
+        test_helpers.print_test_report(
+            failed=self.failed_tools, succeeded=self.succeeded_tools
+        )
 
-        if (len(self.failed_tools) > 0):
+        if len(self.failed_tools) > 0:
             raise Exception(
                 f"There were {len(self.failed_tools)} tool(s) did not pass their unit tests"
             )

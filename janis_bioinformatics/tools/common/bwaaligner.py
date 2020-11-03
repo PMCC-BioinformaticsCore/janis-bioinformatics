@@ -7,7 +7,7 @@ from janis_bioinformatics.tools.common.bwamem_samtoolsview import BwaMem_SamTool
 from janis_bioinformatics.tools.cutadapt import CutAdapt_2_1
 from janis_bioinformatics.tools.gatk4 import Gatk4SortSam_4_1_2
 
-from janis_core.tool.tool import TTestCompared, TTestExpectedOutput, TTestCase
+from janis_core.tool.test_classes import TTestCompared, TTestExpectedOutput, TTestCase
 
 
 class BwaAligner(BioinformaticsWorkflow):
