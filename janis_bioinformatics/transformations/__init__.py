@@ -38,7 +38,7 @@ transformations = [
         relevant_tool_input="inp",
         relevant_tool_output="out",
     ),
-    JanisTransformation(Fasta, FastaWithIndexes, IndexFasta()),
+    JanisTransformation(Fasta, FastaWithIndexes, IndexFasta(bwa_algorithm="bwtsa")),
     JanisTransformation(
         BedGz,
         Bed,
@@ -62,12 +62,17 @@ transformations = [
     ),
 ]
 
+if __name__ == "__main__":
+    start = Bam
 
-# graph = JanisTransformationGraph()
-# graph.add_edges(transformations)
-#
-# wf = graph.build_workflow_to_translate(Vcf, VcfIdx)
-#
-# wf.translate("wdl")
-#
-# # wf.get_dot_plot(show=True)
+    graph = JanisTransformationGraph()
+    graph.add_edges(transformations)
+
+    wf = graph.build_workflow_to_translate(BamBai, BamBai)
+
+    if wf is None:
+        print("Types are already compatible")
+
+    wf.translate("wdl")
+
+# wf.get_dot_plot(show=True)
