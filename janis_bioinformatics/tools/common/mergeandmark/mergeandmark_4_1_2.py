@@ -46,6 +46,7 @@ class MergeAndMarkBams_4_1_2(BioinformaticsWorkflow):
                 bam=self.mergeSamFiles.out,
                 createIndex=self.createIndex,
                 maxRecordsInRam=self.maxRecordsInRam,
+                outputPrefix=self.sampleName,
             ),
         )
         self.output("out", source=self.markDuplicates.out)
