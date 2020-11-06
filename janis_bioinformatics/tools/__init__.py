@@ -38,5 +38,4 @@ from janis_bioinformatics.tools import (
     vcflib,
     whisper,
     vcftools,
-    pythonexample
 )
