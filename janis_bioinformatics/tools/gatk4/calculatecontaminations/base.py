@@ -63,7 +63,8 @@ class Gatk4CalculateContaminationBase(Gatk4ToolBase, ABC):
             ToolInput(
                 "segmentationFileOut",
                 Filename(
-                    prefix=InputSelector("pileupTable", remove_file_extension=True), extension=".mutect2_segments"
+                    prefix=InputSelector("pileupTable", remove_file_extension=True),
+                    extension=".mutect2_segments",
                 ),
                 prefix="--tumor-segmentation",
                 doc="Reference sequence file",
@@ -71,7 +72,7 @@ class Gatk4CalculateContaminationBase(Gatk4ToolBase, ABC):
             ToolInput(
                 "contaminationFileOut",
                 Filename(
-                    prefix=InputSelector("pileupTable", remove_file_extension=),
+                    prefix=InputSelector("pileupTable", remove_file_extension=True),
                     extension=".mutect2_contamination",
                 ),
                 position=2,
