@@ -83,8 +83,14 @@ class Gatk4Mutect2Base_4_1(Gatk4ToolBase, ABC):
                 doc="(--normal-sample, if) May be URL-encoded as output by GetSampleName with",
             ),
             ToolInput(
+                "outputPrefix",
+                String(optional=True),
+                doc="Used as a prefix for the outputFilename if not specified, with format: {outputPrefix}.vcf.gz",
+                default="generated",
+            ),
+            ToolInput(
                 "outputFilename",
-                Filename(extension=".vcf.gz"),
+                Filename(prefix=InputSelector("outputPrefix"), extension=".vcf.gz"),
                 position=20,
                 prefix="-O",
             ),

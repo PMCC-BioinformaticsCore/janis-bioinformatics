@@ -41,6 +41,7 @@ class BwaAligner(BioinformaticsWorkflow):
                 removeMiddle3Adapter=self.cutadapt_removeMiddle3Adapter,
                 qualityCutoff=15,
                 minimumLength=50,
+                outputPrefix=self.sample_name,
             ),
         )
 
