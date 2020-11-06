@@ -8,7 +8,6 @@ from janis_core import (
     StringFormatter,
     File,
     Filename,
-    TextFile,
     Int,
     CpuSelector,
     Directory,
@@ -20,7 +19,7 @@ from janis_core import (
 )
 from janis_core.operators.logical import If, IsDefined, AndOperator
 from janis_core.operators.standard import JoinOperator
-from janis_unix import Tsv
+from janis_unix import Tsv, TextFile
 
 from janis_bioinformatics.data_types import (
     Fasta,
@@ -922,8 +921,18 @@ Not used by default""",
 
     def outputs(self) -> List[ToolOutput]:
         return [
-            ToolOutput("out", VcfTabix(optional=True), selector=InputSelector("outputFilename")),
-            ToolOutput("out_stdout", Stdout(TextFile),
-            ToolOutput("out_stats", File(optional=True, extension=".html"), selector=InputSelector("statsFile")),
-            ToolOutput("out_warnings", File(optional=True, extension=".txt"), selector=InputSelector("warningFile")),
+            ToolOutput(
+                "out", VcfTabix(optional=True), selector=InputSelector("outputFilename")
+            ),
+            ToolOutput("out_stdout", Stdout(TextFile)),
+            ToolOutput(
+                "out_stats",
+                File(optional=True, extension=".html"),
+                selector=InputSelector("statsFile"),
+            ),
+            ToolOutput(
+                "out_warnings",
+                File(optional=True, extension=".txt"),
+                selector=InputSelector("warningFile"),
+            ),
         ]
