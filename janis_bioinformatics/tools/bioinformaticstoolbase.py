@@ -10,22 +10,20 @@ from janis_core import (
     WorkflowBuilder,
 )
 
-from janis_core.tool.tool import ToolWithTestSuite
-
 BIOINFORMATICS_MODULE = "bioinformatics"
 
 
-class BioinformaticsTool(CommandTool, ToolWithTestSuite, ABC):
+class BioinformaticsTool(CommandTool, ABC):
     def tool_module(self):
         return BIOINFORMATICS_MODULE
 
 
-class BioinformaticsWorkflow(Workflow, ToolWithTestSuite, ABC):
+class BioinformaticsWorkflow(Workflow, ABC):
     def tool_module(self):
         return BIOINFORMATICS_MODULE
 
 
-class BioinformaticsPythonTool(PythonTool, ToolWithTestSuite, ABC):
+class BioinformaticsPythonTool(PythonTool, ABC):
     def tool_module(self):
         return BIOINFORMATICS_MODULE
 
@@ -38,5 +36,3 @@ class BioinformaticsToolBuilder(CommandToolBuilder):
 class BioinformaticsWorkflowBuilder(WorkflowBuilder):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs, tool_module=BIOINFORMATICS_MODULE)
-
-
