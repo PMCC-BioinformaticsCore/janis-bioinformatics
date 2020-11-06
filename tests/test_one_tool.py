@@ -49,5 +49,5 @@ class TestOneTool(unittest.TestCase):
         test_helpers.print_test_report(
             failed=self.failed_cases,
             succeeded=self.succeeded_cases,
-            first_column_header="Test Case",
+            id_column_header="Test Case",
         )

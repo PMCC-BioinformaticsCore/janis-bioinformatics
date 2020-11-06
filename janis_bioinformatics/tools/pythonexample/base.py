@@ -8,7 +8,11 @@ from janis_bioinformatics.tools.bioinformaticstoolbase import (
     BioinformaticsPythonTool,
 )
 from janis_core import ToolMetadata, Logger, PythonTool
-from janis_core.tool.test_classes import TTestCompared, TTestExpectedOutput, TTestCase
+from janis_core.tool.test_classes import (
+    TTestPreprocessor,
+    TTestExpectedOutput,
+    TTestCase,
+)
 
 
 class FileDiffOperator:
@@ -88,13 +92,13 @@ class InsertLineBase(BioinformaticsPythonTool):
                 output=[
                     TTestExpectedOutput(
                         tag="out_file",
-                        compared=TTestCompared.FileMd5,
+                        preprocessor=TTestPreprocessor.FileMd5,
                         operator=operator.eq,
                         expected_value="85d7c20f3e0c7af4510ca5d1f4997b9f",
                     ),
                     TTestExpectedOutput(
                         tag="out_file",
-                        compared=TTestCompared.FileDiff,
+                        preprocessor=TTestPreprocessor.FileDiff,
                         file_diff_source=os.path.join(
                             self.test_data_path(), "expected_output_1.txt"
                         ),
@@ -103,7 +107,7 @@ class InsertLineBase(BioinformaticsPythonTool):
                     ),
                     TTestExpectedOutput(
                         tag="out_file",
-                        compared=TTestCompared.FileContent,
+                        preprocessor=TTestPreprocessor.FileContent,
                         operator=operator.eq,
                         expected_value="test\nabc\nsame\nsame\nlast line\n",
                     ),
@@ -119,13 +123,13 @@ class InsertLineBase(BioinformaticsPythonTool):
                 output=[
                     TTestExpectedOutput(
                         tag="line_count",
-                        compared=TTestCompared.Value,
+                        preprocessor=TTestPreprocessor.Value,
                         operator=operator.eq,
                         expected_value="1",
                     ),
                     TTestExpectedOutput(
                         tag="out_file",
-                        compared=TTestCompared.FileDiff,
+                        preprocessor=TTestPreprocessor.FileDiff,
                         file_diff_source=os.path.join(
                             self.test_data_path(), "input.txt"
                         ),
@@ -135,13 +139,13 @@ class InsertLineBase(BioinformaticsPythonTool):
                     TTestExpectedOutput(
                         tag="misc_files",
                         array_index=1,
-                        compared=TTestCompared.FileContent,
+                        preprocessor=TTestPreprocessor.FileContent,
                         operator=operator.eq,
                         expected_value="test\nsame\nsame\nlast line\nmy new line\n",
                     ),
                     TTestExpectedOutput(
                         tag="out_file",
-                        compared=TTestCompared.FileMd5,
+                        preprocessor=TTestPreprocessor.FileMd5,
                         operator=operator.eq,
                         expected_value="85d7c20f3e0c7af4510ca5d1f4997b9fXXX",
                     ),

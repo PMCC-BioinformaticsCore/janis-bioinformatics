@@ -9,7 +9,11 @@ from janis_core import ToolMetadata
 from janis_bioinformatics.data_types import Fasta, FastaFai
 from ..samtoolstoolbase import SamToolsToolBase
 
-from janis_core.tool.test_classes import TTestCompared, TTestExpectedOutput, TTestCase
+from janis_core.tool.test_classes import (
+    TTestPreprocessor,
+    TTestExpectedOutput,
+    TTestCase,
+)
 
 
 class SamToolsFaidxBase(SamToolsToolBase, ABC):
@@ -55,7 +59,7 @@ class SamToolsFaidxBase(SamToolsToolBase, ABC):
                 output=[
                     TTestExpectedOutput(
                         tag="out",
-                        compared=TTestCompared.FileMd5,
+                        preprocessor=TTestPreprocessor.FileMd5,
                         operator=operator.eq,
                         expected_value="768915f0ceff3bae0bac0ace5f7ccad0",
                     ),
