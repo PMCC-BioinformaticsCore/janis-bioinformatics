@@ -6,14 +6,12 @@ from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.common.bwamem_samtoolsview import BwaMem_SamToolsView
 from janis_bioinformatics.tools.cutadapt import CutAdapt_2_1
 from janis_bioinformatics.tools.gatk4 import Gatk4SortSam_4_1_2
+from janis_bioinformatics.data_types.bam import Bam
 
 from janis_core.tool.test_classes import (
     TTestPreprocessor,
     TTestExpectedOutput,
     TTestCase,
-)
-from janis_bioinformatics.utils.bioinformatics_test_runner import (
-    TBioinformaticsTestCompared,
 )
 
 
@@ -117,6 +115,22 @@ class BwaAligner(BioinformaticsWorkflow):
                         preprocessor=TTestPreprocessor.FileSize,
                         operator=operator.gt,
                         expected_value=290,
+                    ),
+                    TTestExpectedOutput(
+                        tag="out",
+                        preprocessor=Bam.flagstat,
+                        operator=operator.eq,
+                        expected_file=os.path.join(
+                            self.test_data_path(), "bwaaligner.flagstat.txt"
+                        ),
+                    ),
+                    TTestExpectedOutput(
+                        tag="out",
+                        preprocessor=TTestPreprocessor.Value,
+                        operator=Bam.equal,
+                        expected_value=os.path.join(
+                            self.test_data_path(), "bwaaligner.bam"
+                        ),
                     ),
                 ],
             )
