@@ -17,6 +17,7 @@ from janis_core.types import UnionType
 
 from janis_bioinformatics.data_types.bam import Bam, BamBai
 from ..samtoolstoolbase import SamToolsToolBase
+from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 
 from janis_core.tool.test_classes import (
     TTestPreprocessor,
@@ -77,7 +78,9 @@ class SamToolsIndexBase(SamToolsToolBase, ABC):
             TTestCase(
                 name="basic",
                 input={
-                    "bam": os.path.join(SamToolsToolBase.test_data_path(), "small.bam"),
+                    "bam": os.path.join(
+                        BioinformaticsTool.test_data_path(), "small.bam"
+                    ),
                 },
                 output=[
                     TTestExpectedOutput(

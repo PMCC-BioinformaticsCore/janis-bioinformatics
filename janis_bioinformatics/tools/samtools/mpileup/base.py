@@ -18,6 +18,7 @@ from janis_core import (
 from janis_unix import TextFile
 from janis_bioinformatics.data_types.bam import BamBai
 from janis_bioinformatics.tools.samtools.samtoolstoolbase import SamToolsToolBase
+from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 from janis_core import ToolMetadata
 from janis_core.tool.test_classes import (
     TTestPreprocessor,
@@ -206,7 +207,9 @@ Note that there are two orthogonal ways to specify locations in the input file; 
             TTestCase(
                 name="basic",
                 input={
-                    "bam": os.path.join(SamToolsToolBase.test_data_path(), "small.bam"),
+                    "bam": os.path.join(
+                        BioinformaticsTool.test_data_path(), "small.bam"
+                    ),
                 },
                 output=[
                     TTestExpectedOutput(

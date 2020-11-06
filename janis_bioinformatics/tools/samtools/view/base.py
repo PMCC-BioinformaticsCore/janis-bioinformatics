@@ -30,6 +30,7 @@ from janis_core.types import UnionType
 from janis_bioinformatics.data_types import FastaWithDict, Sam, Bam, Cram
 
 from ..samtoolstoolbase import SamToolsToolBase
+from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 
 
 class SamToolsViewBase(SamToolsToolBase, ABC):
@@ -293,7 +294,9 @@ Use of region specifications requires a coordinate-sorted and indexed input file
             TTestCase(
                 name="basic",
                 input={
-                    "sam": os.path.join(SamToolsToolBase.test_data_path(), "small.bam"),
+                    "sam": os.path.join(
+                        BioinformaticsTool.test_data_path(), "small.bam"
+                    ),
                 },
                 output=[
                     TTestExpectedOutput(

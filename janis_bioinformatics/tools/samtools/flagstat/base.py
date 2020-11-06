@@ -17,6 +17,7 @@ from janis_core import (
 from janis_unix import TextFile
 from janis_bioinformatics.data_types.bam import Bam
 from janis_bioinformatics.tools.samtools.samtoolstoolbase import SamToolsToolBase
+from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 from janis_core import ToolMetadata
 
 from janis_core.tool.test_classes import (
@@ -108,7 +109,9 @@ with mate mapped to a different chr (mapQ>=5)     0x1 bit set and neither 0x4 no
             TTestCase(
                 name="flagstat basic test",
                 input={
-                    "bam": os.path.join(SamToolsToolBase.test_data_path(), "small.bam"),
+                    "bam": os.path.join(
+                        BioinformaticsTool.test_data_path(), "small.bam"
+                    ),
                 },
                 output=[
                     TTestExpectedOutput(
@@ -127,7 +130,7 @@ with mate mapped to a different chr (mapQ>=5)     0x1 bit set and neither 0x4 no
                         tag="out",
                         preprocessor=TTestPreprocessor.LineCount,
                         operator=operator.eq,
-                        expected_value=12,
+                        expected_value=13,
                     ),
                 ],
             )

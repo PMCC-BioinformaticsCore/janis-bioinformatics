@@ -8,6 +8,7 @@ from janis_core import ToolMetadata
 
 from janis_bioinformatics.data_types import Fasta, FastaFai
 from ..samtoolstoolbase import SamToolsToolBase
+from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 
 from janis_core.tool.test_classes import (
     TTestPreprocessor,
@@ -53,7 +54,7 @@ class SamToolsFaidxBase(SamToolsToolBase, ABC):
                 name="basic",
                 input={
                     "reference": os.path.join(
-                        SamToolsToolBase.test_data_path(), "hg38-brca1.fasta"
+                        BioinformaticsTool.test_data_path(), "hg38-brca1.fasta"
                     ),
                 },
                 output=[
