@@ -94,7 +94,10 @@ class Gatk4HaplotypeCallerBase(Gatk4ToolBase, ABC):
             ),
             ToolInput(
                 "outputFilename",
-                Filename(prefix=InputSelector("inputRead"), extension=".vcf.gz"),
+                Filename(
+                    prefix=InputSelector("inputRead", remove_file_extension=True),
+                    extension=".vcf.gz",
+                ),
                 position=8,
                 prefix="--output",
                 doc="File to which variants should be written",
