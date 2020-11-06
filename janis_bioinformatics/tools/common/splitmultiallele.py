@@ -79,7 +79,11 @@ class SplitMultiAllele(BioinformaticsTool):
             ),
             ToolInput(
                 "outputFilename",
-                Filename(extension=".vcf", suffix=".norm"),
+                Filename(
+                    prefix=InputSelector("vcf", remove_file_extension=True),
+                    extension=".vcf",
+                    suffix=".norm",
+                ),
                 position=6,
                 prefix="-o",
                 shell_quote=False,

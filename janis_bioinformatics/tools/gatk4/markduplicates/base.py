@@ -74,6 +74,10 @@ class Gatk4MarkDuplicatesBase(Gatk4ToolBase, ABC):
         return 8
 
     def inputs(self):
+        # Would be good to include this in the prefix:
+        #   If(InputSelector("bam").length().equals(1), InputSelector("bam")[0].basename(), None)
+
+        prefix = FirstOperator([InputSelector("outputPrefix"), "generated"])
         return [
             ToolInput(
                 "bam",
@@ -87,17 +91,7 @@ class Gatk4MarkDuplicatesBase(Gatk4ToolBase, ABC):
             ToolInput(
                 "outputFilename",
                 Filename(
-                    prefix=FirstOperator(
-                        [
-                            InputSelector("outputPrefix"),
-                            # If(
-                            #     InputSelector("bam").length().equals(1),
-                            #     InputSelector("bam")[0].basename(),
-                            #     None,
-                            # ),
-                            "generated",
-                        ]
-                    ),
+                    prefix=prefix,
                     suffix=".markduped",
                     extension=".bam",
                 ),
@@ -107,7 +101,7 @@ class Gatk4MarkDuplicatesBase(Gatk4ToolBase, ABC):
             ),
             ToolInput(
                 "metricsFilename",
-                Filename(extension=".metrics.txt"),
+                Filename(prefix=prefix, suffix=".metrics", extension=".txt"),
                 position=10,
                 prefix="-M",
                 doc="The output file to write marked records to.",

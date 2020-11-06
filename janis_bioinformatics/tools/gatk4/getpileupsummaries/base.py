@@ -11,7 +11,9 @@ from janis_core import (
     ToolMetadata,
     String,
     get_value_for_hints_and_ordered_resource_tuple,
+    StringFormatter,
 )
+from janis_core.operators.standard import JoinOperator, FilterNullOperator
 from janis_unix import TextFile
 
 from janis_bioinformatics.data_types import BamBai, VcfIdx, Bed, VcfTabix, FastaWithDict
@@ -66,6 +68,9 @@ class Gatk4GetPileUpSummariesBase(Gatk4ToolBase, ABC):
                 position=0,
             ),
             ToolInput(
+                "sampleName", String(optional=True), doc="Used for naming purposes"
+            ),
+            ToolInput(
                 "sites",
                 VcfTabix(),
                 prefix="-V",
@@ -78,7 +83,21 @@ class Gatk4GetPileUpSummariesBase(Gatk4ToolBase, ABC):
                 doc="-L (BASE) One or more genomic intervals over which to operate",
             ),
             ToolInput(
-                "pileupTableOut", Filename(extension=".txt"), position=1, prefix="-O"
+                "pileupTableOut",
+                Filename(
+                    prefix=JoinOperator(
+                        FilterNullOperator(
+                            [
+                                InputSelector("sampleName"),
+                                InputSelector("intervals", remove_file_extension=True),
+                            ]
+                        ),
+                        ".",
+                    ),
+                    extension=".txt",
+                ),
+                position=1,
+                prefix="-O",
             ),
             ToolInput(
                 "reference",
