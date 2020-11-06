@@ -90,13 +90,13 @@ class Gatk4GetPileUpSummariesBase(Gatk4ToolBase, ABC):
                         FilterNullOperator(
                             [
                                 InputSelector("sampleName"),
-                                If(
-                                    IsDefined(InputSelector("intervals")),
-                                    InputSelector(
-                                        "intervals", remove_file_extension=True
-                                    ),
-                                    "",
-                                ),
+                                # If(
+                                #     IsDefined(InputSelector("intervals")),
+                                #     InputSelector(
+                                #         "intervals", remove_file_extension=True
+                                #     ),
+                                #     "",
+                                # ),
                             ]
                         ),
                         ".",
