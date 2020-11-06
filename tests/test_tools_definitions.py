@@ -31,10 +31,11 @@ class TestToolsDefinitions(unittest.TestCase):
             raise Exception(evaluation)
 
     def test_report(self):
+        # Note: This function has to be run LASt! (these tests are run by alphabetical order
         test_helpers.print_test_report(failed=self.failed, succeeded=self.succeeded)
 
         if len(self.failed) > 0:
             raise Exception(
                 f"There were {len(self.failed)} tool(s) that did not contain sufficient metadata to include in the "
-                f"janis_* repository. Please check to ensure your tool is in the list below"
+                f"janis_bioinformatics repository. Please check to ensure your tool is in the list below"
             )

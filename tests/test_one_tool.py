@@ -45,6 +45,7 @@ class TestOneTool(unittest.TestCase):
 
     @attr("test_suite")
     def test_report(self):
+        # Note: This function has to be run LASt! (these tests are run by alphabetical order
         print(f"{tool.versioned_id()} - {engine}")
         test_helpers.print_test_report(
             failed=self.failed_cases,
