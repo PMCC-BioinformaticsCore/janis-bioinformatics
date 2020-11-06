@@ -14,7 +14,11 @@ from janis_core import (
     StringFormatter,
 )
 from janis_core.operators.logical import If, IsDefined
-from janis_core.operators.standard import JoinOperator, FilterNullOperator
+from janis_core.operators.standard import (
+    JoinOperator,
+    FilterNullOperator,
+    FirstOperator,
+)
 from janis_unix import TextFile
 
 from janis_bioinformatics.data_types import BamBai, VcfIdx, Bed, VcfTabix, FastaWithDict
@@ -89,7 +93,9 @@ class Gatk4GetPileUpSummariesBase(Gatk4ToolBase, ABC):
                     prefix=JoinOperator(
                         FilterNullOperator(
                             [
-                                InputSelector("sampleName"),
+                                FirstOperator(
+                                    [InputSelector("sampleName"), "generated"]
+                                ),
                                 # If(
                                 #     IsDefined(InputSelector("intervals")),
                                 #     InputSelector(
