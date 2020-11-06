@@ -45,7 +45,7 @@ class BGZipBase(HtsLibBase, ABC):
 
     def outputs(self) -> List[ToolOutput]:
         return [
-            ToolOutput("out", CompressedVcf(), glob=InputSelector("outputFilename"),)
+            ToolOutput("out", CompressedVcf(), glob=InputSelector("outputFilename"))
         ]
 
     def friendly_name(self):
