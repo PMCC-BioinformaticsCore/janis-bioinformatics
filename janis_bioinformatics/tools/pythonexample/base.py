@@ -125,7 +125,7 @@ class InsertLineBase(BioinformaticsPythonTool):
                         tag="line_count",
                         preprocessor=TTestPreprocessor.Value,
                         operator=operator.eq,
-                        expected_value="1",
+                        expected_value="5",
                     ),
                     TTestExpectedOutput(
                         tag="out_file",
@@ -147,7 +147,7 @@ class InsertLineBase(BioinformaticsPythonTool):
                         tag="out_file",
                         preprocessor=TTestPreprocessor.FileMd5,
                         operator=operator.eq,
-                        expected_value="85d7c20f3e0c7af4510ca5d1f4997b9fXXX",
+                        expected_value="d680893100be1181c8a7071618ff4524",
                     ),
                 ],
             ),
