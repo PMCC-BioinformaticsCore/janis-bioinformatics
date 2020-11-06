@@ -13,6 +13,7 @@ from janis_core import (
     get_value_for_hints_and_ordered_resource_tuple,
     StringFormatter,
 )
+from janis_core.operators.logical import If, IsDefined
 from janis_core.operators.standard import JoinOperator, FilterNullOperator
 from janis_unix import TextFile
 
@@ -89,7 +90,13 @@ class Gatk4GetPileUpSummariesBase(Gatk4ToolBase, ABC):
                         FilterNullOperator(
                             [
                                 InputSelector("sampleName"),
-                                InputSelector("intervals", remove_file_extension=True),
+                                If(
+                                    IsDefined(InputSelector("intervals")),
+                                    InputSelector(
+                                        "intervals", remove_file_extension=True
+                                    ),
+                                    "",
+                                ),
                             ]
                         ),
                         ".",
