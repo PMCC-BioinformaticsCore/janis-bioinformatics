@@ -117,7 +117,10 @@ class Gatk4HaplotypeCallerBase(Gatk4ToolBase, ABC):
             ),
             ToolInput(
                 "outputBamName",
-                Filename(prefix=InputSelector("inputRead"), extension=".bam"),
+                Filename(
+                    prefix=InputSelector("inputRead", remove_file_extension=True),
+                    extension=".bam",
+                ),
                 position=8,
                 prefix="-bamout",
                 doc="File to which assembled haplotypes should be written",
