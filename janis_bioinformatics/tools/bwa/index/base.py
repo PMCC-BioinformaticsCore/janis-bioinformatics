@@ -39,7 +39,11 @@ class BwaIndexBase(BioinformaticsTool, ABC):
                 "algorithm",
                 String(optional=True),
                 prefix="-a",
-                doc="BWT construction algorithm: bwtsw, is or rb2 [auto]",
+                doc="""\
+BWT construction algorithm: bwtsw, is or rb2 [auto]
+    - is	IS linear-time algorithm for constructing suffix array. It requires 5.37N memory where N is the size of the database. IS is moderately fast, but does not work with database larger than 2GB. IS is the default algorithm due to its simplicity. The current codes for IS algorithm are reimplemented by Yuta Mori.
+    - bwtsw	Algorithm implemented in BWT-SW. This method works with the whole human genome.
+""",
             ),
         ]
 
@@ -47,7 +51,7 @@ class BwaIndexBase(BioinformaticsTool, ABC):
         return [ToolOutput("out", FastaBwa, glob=InputSelector("reference"))]
 
     def memory(self, hints: Dict[str, Any]):
-        return 2
+        return 8
 
     def cpus(self, hints: Dict[str, Any]):
         return 1
