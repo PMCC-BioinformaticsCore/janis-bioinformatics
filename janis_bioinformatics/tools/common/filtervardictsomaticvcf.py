@@ -38,7 +38,11 @@ class FilterVardictSomaticVcf(BioinformaticsTool):
             ToolInput("vcf", Vcf(optional=True), position=1),
             ToolInput(
                 "outputFilename",
-                Filename(extension=".vcf", suffix=".filter"),
+                Filename(
+                    prefix=InputSelector("vcf", remove_file_extension=True),
+                    extension=".vcf",
+                    suffix=".filter",
+                ),
                 prefix="-o",
                 position=3,
                 shell_quote=False,
@@ -46,7 +50,13 @@ class FilterVardictSomaticVcf(BioinformaticsTool):
         ]
 
     def outputs(self) -> List[ToolOutput]:
-        return [ToolOutput("out", Vcf, glob=InputSelector("outputFilename"),)]
+        return [
+            ToolOutput(
+                "out",
+                Vcf,
+                glob=InputSelector("outputFilename"),
+            )
+        ]
 
     def arguments(self):
         return [
