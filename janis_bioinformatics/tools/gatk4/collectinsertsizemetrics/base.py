@@ -99,13 +99,21 @@ class Gatk4CollectInsertSizeMetricsBase(Gatk4ToolBase, ABC):
             ),
             ToolInput(
                 "outputFilename",
-                Filename(extension=".txt", suffix=".metrics"),
+                Filename(
+                    prefix=InputSelector("bam", remove_file_extension=True),
+                    extension=".txt",
+                    suffix=".metrics",
+                ),
                 prefix="-O",
                 doc="File to write the output to.  Required.",
             ),
             ToolInput(
                 "outputHistogram",
-                Filename(extension=".pdf", suffix=".histogram"),
+                Filename(
+                    prefix=InputSelector("bam", remove_file_extension=True),
+                    extension=".pdf",
+                    suffix=".histogram",
+                ),
                 prefix="-H",
                 doc="File to write insert size Histogram chart to.  Required. ",
             ),

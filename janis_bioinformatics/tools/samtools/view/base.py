@@ -56,7 +56,10 @@ class SamToolsViewBase(SamToolsToolBase, ABC):
             ),
             ToolInput(
                 "outputFilename",
-                Filename(extension=".bam"),
+                Filename(
+                    prefix=InputSelector("sam", remove_file_extension=True),
+                    extension=".bam",
+                ),
                 position=5,
                 prefix="-o",
                 doc="Output to FILE [stdout].",

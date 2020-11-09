@@ -71,7 +71,7 @@ class IndexFasta(BioinformaticsWorkflow):
 
         # Change the default BWA index algorithm to bwtsw (for human genome), and up blockSize to 50M
         self.input("bwa_algorithm", String(optional=True), default="bwtsw")
-        self.input("bwa_block_size", Int(optional=True), default=50 * 1000000)
+        self.input("bwa_block_size", Int(optional=True), default=int(5e7))
 
         self.step(
             "create_bwa",

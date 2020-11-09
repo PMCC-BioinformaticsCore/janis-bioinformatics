@@ -38,7 +38,7 @@ class GatkFilterVariantTranchesBase(Gatk4ToolBase, ABC):
             ToolInput(
                 tag="outputFilename",
                 input_type=Filename(
-                    prefix=InputSelector("variant"),
+                    prefix=InputSelector("variant", remove_file_extension=True),
                     suffix=".filtered",
                     extension=".vcf.gz",
                 ),

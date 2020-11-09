@@ -1,7 +1,6 @@
 from datetime import datetime
 from typing import List
 
-from janis_core import CaptureType, Array
 from janis_core import (
     ToolOutput,
     ToolInput,
@@ -13,6 +12,9 @@ from janis_core import (
     ToolMetadata,
     WildcardSelector,
     get_value_for_hints_and_ordered_resource_tuple,
+    InputSelector,
+    CaptureType,
+    Array,
 )
 
 from janis_bioinformatics.data_types import FastqGzPair
@@ -65,6 +67,9 @@ class CutAdaptBase_2(BioinformaticsTool):
 
         fastq_uuid = str(uuid.uuid1())
         return [
+            ToolInput(
+                "outputPrefix", String(optional=True), doc="Used for naming purposes"
+            ),
             ToolInput("fastq", FastqGzPair, position=5),
             ToolInput(
                 "adapter",
@@ -77,7 +82,11 @@ class CutAdaptBase_2(BioinformaticsTool):
             ),
             ToolInput(
                 "outputFilename",
-                Filename(suffix="-R1", extension=".fastq.gz"),
+                Filename(
+                    prefix=InputSelector("outputPrefix"),
+                    suffix="R1",
+                    extension=".fastq.gz",
+                ),
                 prefix="-o",
                 doc="Write trimmed reads to FILE. FASTQ or FASTA format is chosen depending on input. "
                 "The summary report is sent to standard output. Use '{name}' in FILE to demultiplex "
@@ -85,7 +94,11 @@ class CutAdaptBase_2(BioinformaticsTool):
             ),
             ToolInput(
                 "secondReadFile",
-                Filename(suffix="-R2", extension=".fastq.gz"),
+                Filename(
+                    prefix=InputSelector("outputPrefix"),
+                    suffix="R2",
+                    extension=".fastq.gz",
+                ),
                 prefix="-p",
                 doc="Write second read in a pair to FILE.",
             ),

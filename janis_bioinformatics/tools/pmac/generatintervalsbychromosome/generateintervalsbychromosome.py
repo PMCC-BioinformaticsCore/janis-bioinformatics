@@ -14,6 +14,7 @@ class GenerateIntervalsByChromosome(j.PythonTool):
         allowed_contigs: Optional[List[str]] = None,
         max_size: Optional[int] = None,
         overlap: Optional[int] = 0,
+        single_file=False,
     ) -> Dict[str, Any]:
         """
         This tool generates a list of BED intervals based on the reference input.
@@ -25,6 +26,7 @@ class GenerateIntervalsByChromosome(j.PythonTool):
         :param allowed_contigs: Limits allowed_contigs to a list, this defaults of Human CHRs, 1-23,X,Y,Z
         :param max_size: Max size of interval, maybe 5000 for VarDict.
         :param overlap: Consider indels spanning regions, so choose
+        :param single_file: Produce a SINGLE .bed file with all the listed regions
         """
         from re import sub
 
@@ -98,6 +100,7 @@ class GenerateIntervalsByChromosome(j.PythonTool):
         ref_dict = sub("\.fa(sta)?$", ".dict", reference)
 
         regions = []
+        all_prepped_regions = []
 
         with open(ref_dict) as ref:
             for line in ref:
@@ -114,13 +117,20 @@ class GenerateIntervalsByChromosome(j.PythonTool):
                 ):
                     continue
 
-                regions.append(f"{contig_label(contig)}.bed")
-
                 # Get total region list for contig, and considering max_size
                 regions_to_write = prepare_regions(contig, length)
                 prepped = [("\t".join(region) + "\n") for region in regions_to_write]
-                with open(regions[-1], "w") as f:
-                    f.writelines(prepped)
+                all_prepped_regions.extend(prepped)
+
+                if not single_file:
+                    regions.append(f"{contig_label(contig)}.bed")
+                    with open(regions[-1], "w") as f:
+                        f.writelines(prepped)
+
+        if single_file:
+            regions.append("regions.bed")
+            with open("regions.bed", "w") as f:
+                f.writelines(all_prepped_regions)
 
         return {"out_regions": regions}
 

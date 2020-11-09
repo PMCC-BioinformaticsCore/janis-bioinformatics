@@ -61,7 +61,13 @@ class Gatk4FilterMutectCallsBase(Gatk4ToolBase, ABC):
                 "reference", FastaWithDict, prefix="-R", doc="Reference sequence file"
             ),
             ToolInput(
-                "outputFilename", Filename(extension=".vcf.gz"), position=2, prefix="-O"
+                "outputFilename",
+                Filename(
+                    prefix=InputSelector("vcf", remove_file_extension=True),
+                    extension=".vcf.gz",
+                ),
+                position=2,
+                prefix="-O",
             ),
         ]
 

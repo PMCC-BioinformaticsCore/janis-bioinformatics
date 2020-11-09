@@ -83,7 +83,7 @@ class Gatk4ApplyBqsrBase(Gatk4ToolBase, ABC):
             ToolInput(
                 "outputFilename",
                 Filename(
-                    prefix=InputSelector("bam"),
+                    prefix=InputSelector("bam", remove_file_extension=True),
                     suffix=".recalibrated",
                     extension=".bam",
                 ),

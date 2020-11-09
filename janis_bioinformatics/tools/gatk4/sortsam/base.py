@@ -97,7 +97,9 @@ class Gatk4SortSamBase(Gatk4ToolBase, ABC):
             ToolInput(
                 "outputFilename",
                 Filename(
-                    prefix=InputSelector("bam"), suffix=".sorted", extension=".bam"
+                    prefix=InputSelector("bam", remove_file_extension=True),
+                    suffix=".sorted",
+                    extension=".bam",
                 ),
                 position=10,
                 prefix="-O",

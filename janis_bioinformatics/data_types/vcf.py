@@ -47,7 +47,7 @@ class CompressedVcf(Gunzipped):
         return ".vcf.gz"
 
 
-class VcfTabix(FileTabix):
+class VcfTabix(CompressedVcf, FileTabix):
     @staticmethod
     def name():
         return "CompressedIndexedVCF"
