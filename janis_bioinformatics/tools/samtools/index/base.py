@@ -1,3 +1,5 @@
+import os
+import operator
 from abc import ABC
 from datetime import date
 
@@ -15,6 +17,13 @@ from janis_core.types import UnionType
 
 from janis_bioinformatics.data_types.bam import Bam, BamBai
 from ..samtoolstoolbase import SamToolsToolBase
+from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
+
+from janis_core.tool.test_classes import (
+    TTestPreprocessor,
+    TTestExpectedOutput,
+    TTestCase,
+)
 
 
 class SamToolsIndexBase(SamToolsToolBase, ABC):
@@ -63,5 +72,25 @@ class SamToolsIndexBase(SamToolsToolBase, ABC):
 
     def arguments(self):
         return [ToolArgument("-b", position=4, doc="Output in the BAM format.")]
+
+    def tests(self):
+        return [
+            TTestCase(
+                name="basic",
+                input={
+                    "bam": os.path.join(
+                        BioinformaticsTool.test_data_path(), "small.bam"
+                    ),
+                },
+                output=[
+                    TTestExpectedOutput(
+                        tag="out",
+                        preprocessor=TTestPreprocessor.FileMd5,
+                        operator=operator.eq,
+                        expected_value="c9c318de134643665ff1fed6cfaec49c",
+                    ),
+                ],
+            )
+        ]
 
     additional_inputs = []

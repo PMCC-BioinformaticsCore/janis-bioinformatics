@@ -33,6 +33,14 @@ setup(
         ],
     },
     install_requires=["janis-pipelines.core >= 0.10.7"],
+    extras_require={
+        "tests": [
+            "nose",
+            "parameterized",
+            "janis-pipelines.unix >= 0.10.2",
+            "janis-pipelines.runner >= 0.10.8",
+        ]
+    },
     zip_safe=False,
     long_description=long_description,
     long_description_content_type="text/markdown",

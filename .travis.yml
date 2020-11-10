@@ -1,8 +1,13 @@
 language: python
 python:
 - '3.6'
-install: true
-script: echo "Deploying Janis-Bioinformatics"
+before_install:
+- sudo apt-get update -y
+install:
+- sudo apt-get install -y samtools
+- pip install .
+- pip install -e .[tests]
+script: nosetests -w tests -a travis
 deploy:
   provider: pypi
   user: illusional
