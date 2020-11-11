@@ -32,7 +32,7 @@ setup(
             "bioinformatics=janis_bioinformatics.transformations:transformations"
         ],
     },
-    install_requires=["janis-pipelines.core >= 0.10.7"],
+    install_requires=["janis-pipelines.core >= 0.11.0"],
     extras_require={
         "tests": [
             "nose",
