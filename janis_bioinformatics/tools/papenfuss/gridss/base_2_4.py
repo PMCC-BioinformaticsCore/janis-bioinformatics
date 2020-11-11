@@ -62,7 +62,7 @@ class GridssBase_2_4(BioinformaticsTool):
         return "Gridss"
 
     def base_command(self):
-        return "gridss.sh"
+        return "/opt/gridss/gridss.sh"
 
     def inputs(self):
         return [
@@ -94,7 +94,11 @@ class GridssBase_2_4(BioinformaticsTool):
     def outputs(self):
         return [
             ToolOutput("out", Vcf(), glob=InputSelector("outputFilename")),
-            ToolOutput("assembly", Bam(), glob=InputSelector("assemblyFilename"),),
+            ToolOutput(
+                "assembly",
+                Bam(),
+                glob=InputSelector("assemblyFilename"),
+            ),
         ]
 
     def cpus(self, hints: Dict[str, Any]):
