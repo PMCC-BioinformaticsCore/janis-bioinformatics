@@ -4,7 +4,9 @@ from janis_core import File, DataType
 
 class Fasta(File):
     def __init__(self, optional=False):
-        super().__init__(optional, extension=".fasta", alternate_extensions={".fa"})
+        super().__init__(
+            optional, extension=".fasta", alternate_extensions={".fa", ".fna"}
+        )
 
     @staticmethod
     def name():
