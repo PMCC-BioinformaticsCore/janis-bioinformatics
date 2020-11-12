@@ -73,7 +73,7 @@ class FastqGzPairedEnd(Array):
 
 class FastqPairedEnd(Array):
     def __init__(self, optional=False):
-        super().__init__(File(optional=False, extension=".fastq"), optional=optional)
+        super().__init__(Fastq(optional=False), optional=optional)
 
     def id(self):
         if self.optional:
