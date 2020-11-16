@@ -66,14 +66,14 @@ class OncopipeVariantCaller(BioinformaticsWorkflow):
             doc="Mark duplicates and create index",
         )
 
-        # self.step(
-        #     "reorder_bam",
-        #     Gatk4ReorderSam_4_1_4(
-        #         reference=self.reference,
-        #         inp=self.mark_duplicates.out,
-        #         create_index=True,
-        #     ),
-        # )
+        self.step(
+            "reorder_bam",
+            Gatk4ReorderSam_4_1_4(
+                reference=self.reference,
+                inp=self.mark_duplicates.out,
+                create_index=True,
+            ),
+        )
 
         # https://github.com/bcbio/bcbio-nextgen/issues/2163
         # missing params from migration:
@@ -86,9 +86,7 @@ class OncopipeVariantCaller(BioinformaticsWorkflow):
         self.step(
             "splitncigar",
             Gatk4SplitNCigarReads_4_1_4(
-                inp=[self.mark_duplicates.out],
-                reference=self.reference,
-                # readFilter="ReassignOneMappingQuality",
+                inp=[self.reorder_bam.out], reference=self.reference,
             ),
             doc="split'n'trim and reassign mapping qualities",
         )
