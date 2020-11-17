@@ -239,7 +239,8 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
         )
 
         self.step(
-            "allsorts", AllSorts_0_1_0(samples=self.prepareAllsortsInput.out),
+            "allsorts",
+            AllSorts_0_1_0(samples=self.prepareAllsortsInput.out),
         )
 
         self.output(
