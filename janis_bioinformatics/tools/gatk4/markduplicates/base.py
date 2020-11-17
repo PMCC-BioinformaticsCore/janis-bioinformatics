@@ -16,7 +16,7 @@ from janis_core import (
     ToolMetadata,
 )
 from janis_core.operators.logical import If
-from janis_core.operators.standard import JoinOperator
+from janis_core.operators.standard import JoinOperator, FirstOperator
 from janis_unix import Tsv
 
 from janis_bioinformatics.data_types import BamBai, Bam
@@ -74,6 +74,10 @@ class Gatk4MarkDuplicatesBase(Gatk4ToolBase, ABC):
         return 8
 
     def inputs(self):
+        # Would be good to include this in the prefix:
+        #   If(InputSelector("bam").length().equals(1), InputSelector("bam")[0].basename(), None)
+
+        prefix = FirstOperator([InputSelector("outputPrefix"), "generated"])
         return [
             ToolInput(
                 "bam",
@@ -83,16 +87,21 @@ class Gatk4MarkDuplicatesBase(Gatk4ToolBase, ABC):
                 # secondaries_present_as={".bai": "^.bai"},
                 doc="One or more input SAM or BAM files to analyze. Must be coordinate sorted.",
             ),
+            ToolInput("outputPrefix", String(optional=True)),
             ToolInput(
                 "outputFilename",
-                Filename(prefix="generated", suffix=".markduped", extension=".bam",),
+                Filename(
+                    prefix=prefix,
+                    suffix=".markduped",
+                    extension=".bam",
+                ),
                 position=10,
                 prefix="-O",
                 doc="File to write duplication metrics to",
             ),
             ToolInput(
                 "metricsFilename",
-                Filename(extension=".metrics.txt"),
+                Filename(prefix=prefix, suffix=".metrics", extension=".txt"),
                 position=10,
                 prefix="-M",
                 doc="The output file to write marked records to.",

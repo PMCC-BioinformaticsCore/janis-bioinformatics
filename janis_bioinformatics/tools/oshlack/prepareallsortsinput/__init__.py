@@ -1,11 +1,12 @@
 from typing import List, Dict, Any, Optional
 
-from janis_core import PythonTool, TOutput, File
+from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsPythonTool
+from janis_core import TOutput, File
 
 from janis_unix import Csv
 
 
-class PrepareALLSortsInput_0_1_0(PythonTool):
+class PrepareALLSortsInput_0_1_0(BioinformaticsPythonTool):
     @staticmethod
     def code_block(
         inputs: List[File],
@@ -50,6 +51,9 @@ class PrepareALLSortsInput_0_1_0(PythonTool):
 
     def friendly_name(self) -> Optional[str]:
         return "Prepare ALLSorts Input"
+
+    def tool_provider(self):
+        return "Peter MacCallum Cancer Centre"
 
 
 if __name__ == "__main__":

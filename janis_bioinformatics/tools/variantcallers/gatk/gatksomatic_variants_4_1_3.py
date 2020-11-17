@@ -56,6 +56,7 @@ class GatkSomaticVariantCaller_4_1_3(BioinformaticsWorkflow):
                 reference=self.reference,
                 germlineResource=self.gnomad,
                 panelOfNormals=self.panel_of_normals,
+                outputPrefix=self.normal_name,
             ),
         )
         self.step(

@@ -13,6 +13,9 @@ from .base import TrimmomaticBase
 
 
 class TrimmomaticPairedEndBase(TrimmomaticBase):
+    def friendly_name(self) -> Optional[str]:
+        return "Trimmomatic: Paired End (PE)"
+
     def tool(self) -> str:
         return "trimmomaticPairedEnd"
 

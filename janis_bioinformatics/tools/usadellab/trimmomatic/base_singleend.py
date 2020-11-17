@@ -9,6 +9,9 @@ class TrimmomaticSingleEndBase(TrimmomaticBase):
     def tool(self) -> str:
         return "trimmomaticSingleEnd"
 
+    def friendly_name(self) -> Optional[str]:
+        return "Trimmomatic: Single End (SE)"
+
     def arguments(self) -> Optional[List[ToolArgument]]:
         return [ToolArgument("SE", position=0)]
 

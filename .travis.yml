@@ -1,7 +1,8 @@
 language: python
 python:
 - '3.6'
-install: true
+install:
+- pip install keyring==21.4.0
 script: echo "Deploying Janis-Bioinformatics"
 deploy:
   provider: pypi

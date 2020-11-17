@@ -86,7 +86,10 @@ class Gatk4AddOrReplaceReadGroupsBase(Gatk4ToolBase, ABC):
             ),
             ToolInput(
                 tag="outputFilename",
-                input_type=Filename(prefix=InputSelector("inp"), extension=".bam"),
+                input_type=Filename(
+                    prefix=InputSelector("inp", remove_file_extension=True),
+                    extension=".bam",
+                ),
                 prefix="--OUTPUT",
                 separate_value_from_prefix=True,
                 doc=InputDocumentation(doc="(-O) Output file (BAM or SAM). Required."),

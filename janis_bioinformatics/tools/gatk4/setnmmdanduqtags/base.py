@@ -49,7 +49,9 @@ class Gatk4SetNmMdAndUqTagsBase(Gatk4ToolBase, ABC):
             ToolInput(
                 tag="outputFilename",
                 input_type=Filename(
-                    prefix=InputSelector("bam"), suffix=".sorted", extension=".bam"
+                    prefix=InputSelector("bam", remove_file_extension=True),
+                    suffix=".sorted",
+                    extension=".bam",
                 ),
                 prefix="--OUTPUT",
                 separate_value_from_prefix=True,

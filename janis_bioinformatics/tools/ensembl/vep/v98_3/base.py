@@ -15,10 +15,19 @@ from janis_core import (
     Float,
     Stdout,
     InputSelector,
+    ToolArgument,
 )
-from janis_unix import Tsv
+from janis_core.operators.logical import If, IsDefined, AndOperator
+from janis_core.operators.standard import JoinOperator
+from janis_unix import Tsv, TextFile
 
-from janis_bioinformatics.data_types import Fasta, CompressedVcf, Bam, BedTabix
+from janis_bioinformatics.data_types import (
+    Fasta,
+    CompressedVcf,
+    Bam,
+    BedTabix,
+    VcfTabix,
+)
 
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 
@@ -46,7 +55,10 @@ class VepBase_98_3(BioinformaticsTool):
             ),
             ToolInput(
                 "outputFilename",
-                Filename(extension=".vep"),
+                Filename(
+                    prefix=InputSelector("inputFile", remove_file_extension=True),
+                    extension=".vcf",
+                ),
                 prefix="--output_file",
                 doc="(-o) Output file name. Results can write to STDOUT by specifying "
                 ' as the output file name - this will force quiet mode. Default = "variant_effect_output.txt"',
@@ -190,6 +202,7 @@ class VepBase_98_3(BioinformaticsTool):
             ToolInput(
                 "fork",
                 Int(optional=True),
+                default=CpuSelector(),
                 prefix="--fork",
                 doc="Enable forking, using the specified number of forks. Forking can dramatically improve runtime. "
                 "Not used by default",
@@ -198,6 +211,7 @@ class VepBase_98_3(BioinformaticsTool):
                 "custom",
                 Array(BedTabix, optional=True),
                 prefix="--custom",
+                prefix_applies_to_all_elements=True,
                 doc="Add custom annotation to the output. Files must be tabix indexed or in the bigWig format. "
                 "Multiple files can be specified by supplying the --custom flag multiple times. "
                 "See https://asia.ensembl.org/info/docs/tools/vep/script/vep_custom.html for full details. "
@@ -789,13 +803,139 @@ Not used by default""",
                 prefix="--freq_filter",
                 doc="Specify whether to exclude or include only variants that pass the frequency filter",
             ),
+            # CADD plugin
+            ToolInput("caddReference", Array(VcfTabix, optional=True)),
+            # Condel
+            ToolInput(
+                "condelConfig",
+                Directory(optional=True),
+                doc="Directory containing CondelPlugin config, in format: '<dir>/condel_SP.conf'",
+            ),
+            # dbNSFP
+            ToolInput("dbnspReference", VcfTabix(optional=True), doc=""),
+            ToolInput("dbsnpColumns", Array(String, optional=True)),
+            # REVEL
+            ToolInput("revelReference", VcfTabix(optional=True)),
+            # CUSTOM
+            ToolInput("custom1Reference", VcfTabix(optional=True)),
+            ToolInput("custom1Columns", Array(String, optional=True)),
+            ToolInput("custom2Reference", VcfTabix(optional=True)),
+            ToolInput("custom2Columns", Array(String, optional=True)),
+        ]
+
+    def arguments(self):
+        return [
+            # CADD
+            ToolArgument(
+                If(
+                    IsDefined(InputSelector("caddReference")),
+                    "--plugin CADD,"
+                    + JoinOperator(
+                        InputSelector("caddReference").assert_not_null(), ","
+                    ),
+                    "",
+                ),
+                shell_quote=False,
+            ),
+            # Condel
+            ToolArgument(
+                If(
+                    IsDefined(InputSelector("condelConfig")),
+                    "--plugin "
+                    + StringFormatter(
+                        "Condel,{condelconfig},b",
+                        condelconfig=InputSelector("condelConfig").assert_not_null(),
+                    ),
+                    "",
+                ),
+                shell_quote=False,
+            ),
+            # dbNSFP
+            ToolArgument(
+                If(
+                    AndOperator(
+                        IsDefined(InputSelector("dbnspReference")),
+                        IsDefined(InputSelector("dbsnpColumns")),
+                    ),
+                    "--plugin "
+                    + StringFormatter(
+                        "dbNSFP,{ref},{cols}",
+                        ref=InputSelector("dbnspReference").assert_not_null(),
+                        cols=JoinOperator(
+                            InputSelector("dbsnpColumns").assert_not_null(), ","
+                        ),
+                    ),
+                    "",
+                ),
+                shell_quote=False,
+            ),
+            # REVEL
+            ToolArgument(
+                If(
+                    IsDefined(InputSelector("revelReference")),
+                    "--plugin "
+                    + StringFormatter(
+                        "REVEL,{ref}",
+                        ref=InputSelector("revelReference").assert_not_null(),
+                    ),
+                    "",
+                ),
+                shell_quote=False,
+            ),
+            # CUSTOM 1
+            ToolArgument(
+                If(
+                    AndOperator(
+                        IsDefined(InputSelector("custom1Reference")),
+                        IsDefined(InputSelector("custom1Columns")),
+                    ),
+                    "--custom "
+                    + StringFormatter(
+                        "{ref},{cols}",
+                        ref=InputSelector("custom1Reference").assert_not_null(),
+                        cols=JoinOperator(
+                            InputSelector("custom1Columns").assert_not_null(), ","
+                        ),
+                    ),
+                    "",
+                ),
+                shell_quote=False,
+            ),
+            # CUSTOM 2
+            ToolArgument(
+                If(
+                    AndOperator(
+                        IsDefined(InputSelector("custom2Reference")),
+                        IsDefined(InputSelector("custom2Columns")),
+                    ),
+                    "--custom "
+                    + StringFormatter(
+                        "{ref},{cols}",
+                        ref=InputSelector("custom2Reference").assert_not_null(),
+                        cols=JoinOperator(
+                            InputSelector("custom2Columns").assert_not_null(), ","
+                        ),
+                    ),
+                    "",
+                ),
+                shell_quote=False,
+            ),
         ]
 
     def outputs(self) -> List[ToolOutput]:
         return [
-            ToolOutput("std", Stdout),
-            ToolOutput("out", File, glob=InputSelector("outputFilename")),
             ToolOutput(
-                "stats", File(extension=".html"), glob=InputSelector("statsFile")
+                "out", VcfTabix(optional=True), selector=InputSelector("outputFilename")
+            ),
+            ToolOutput("out_stdout", Stdout(TextFile)),
+            ToolOutput(
+                "out_stats",
+                File(optional=True, extension=".html"),
+                selector=InputSelector("statsFile"),
+            ),
+            ToolOutput(
+                "out_warnings",
+                File(optional=True, extension=".txt"),
+                selector=InputSelector("warningFile"),
             ),
         ]

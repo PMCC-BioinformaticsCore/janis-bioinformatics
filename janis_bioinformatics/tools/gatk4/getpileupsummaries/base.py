@@ -11,6 +11,13 @@ from janis_core import (
     ToolMetadata,
     String,
     get_value_for_hints_and_ordered_resource_tuple,
+    StringFormatter,
+)
+from janis_core.operators.logical import If, IsDefined
+from janis_core.operators.standard import (
+    JoinOperator,
+    FilterNullOperator,
+    FirstOperator,
 )
 from janis_unix import TextFile
 
@@ -66,6 +73,9 @@ class Gatk4GetPileUpSummariesBase(Gatk4ToolBase, ABC):
                 position=0,
             ),
             ToolInput(
+                "sampleName", String(optional=True), doc="Used for naming purposes"
+            ),
+            ToolInput(
                 "sites",
                 VcfTabix(),
                 prefix="-V",
@@ -78,7 +88,29 @@ class Gatk4GetPileUpSummariesBase(Gatk4ToolBase, ABC):
                 doc="-L (BASE) One or more genomic intervals over which to operate",
             ),
             ToolInput(
-                "pileupTableOut", Filename(extension=".txt"), position=1, prefix="-O"
+                "pileupTableOut",
+                Filename(
+                    prefix=JoinOperator(
+                        FilterNullOperator(
+                            [
+                                FirstOperator(
+                                    [InputSelector("sampleName"), "generated"]
+                                ),
+                                # If(
+                                #     IsDefined(InputSelector("intervals")),
+                                #     InputSelector(
+                                #         "intervals", remove_file_extension=True
+                                #     ),
+                                #     "",
+                                # ),
+                            ]
+                        ),
+                        ".",
+                    ),
+                    extension=".txt",
+                ),
+                position=1,
+                prefix="-O",
             ),
             ToolInput(
                 "reference",

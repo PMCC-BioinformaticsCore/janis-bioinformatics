@@ -38,7 +38,7 @@ class Gatk4VariantFiltrationBase(Gatk4ToolBase):
             ToolInput(
                 tag="outputFilename",
                 input_type=Filename(
-                    prefix=InputSelector("variant"),
+                    prefix=InputSelector("variant", remove_file_extension=True),
                     suffix=".filtered",
                     extension=".vcf.gz",
                 ),
@@ -738,7 +738,13 @@ class Gatk4VariantFiltrationBase(Gatk4ToolBase):
         ]
 
     def outputs(self):
-        return [ToolOutput("out", VcfTabix(), glob=InputSelector("outputFilename"),)]
+        return [
+            ToolOutput(
+                "out",
+                VcfTabix(),
+                glob=InputSelector("outputFilename"),
+            )
+        ]
 
     def bind_metadata(self):
         return ToolMetadata(

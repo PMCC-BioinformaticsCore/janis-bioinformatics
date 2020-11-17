@@ -3,7 +3,7 @@ from janis_bioinformatics.data_types import FastqGzPair, FastaWithDict
 from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.common.bwamem_samtoolsview import BwaMem_SamToolsView
 from janis_bioinformatics.tools.cutadapt import CutAdapt_2_1
-from janis_bioinformatics.tools.gatk4 import Gatk4SortSam_4_1_3
+from janis_bioinformatics.tools.gatk4 import Gatk4SortSam_4_1_2
 
 
 class BwaAligner(BioinformaticsWorkflow):
@@ -41,6 +41,7 @@ class BwaAligner(BioinformaticsWorkflow):
                 removeMiddle3Adapter=self.cutadapt_removeMiddle3Adapter,
                 qualityCutoff=15,
                 minimumLength=50,
+                outputPrefix=self.sample_name,
             ),
         )
 
@@ -56,7 +57,7 @@ class BwaAligner(BioinformaticsWorkflow):
 
         self.step(
             "sortsam",
-            Gatk4SortSam_4_1_3(
+            Gatk4SortSam_4_1_2(
                 bam=self.bwamem.out,
                 sortOrder="coordinate",
                 createIndex=True,
