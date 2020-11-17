@@ -1,4 +1,4 @@
-from janis_core import Double, WorkflowMetadata, StringFormatter
+from janis_core import Double, WorkflowMetadata, StringFormatter, File
 
 from janis_bioinformatics.data_types import Bam, FastaWithIndexes
 from janis_bioinformatics.tools import BioinformaticsWorkflow
@@ -38,6 +38,7 @@ class OncopipeVariantCaller(BioinformaticsWorkflow):
 
         self.input("bam", Bam)
         self.input("reference", FastaWithIndexes)
+        self.input("sequence_dictionary", File)
         self.input("sample_name", str)
         self.input("platform", str)
         self.input("call_conf", Double, default=20.0)
@@ -71,6 +72,7 @@ class OncopipeVariantCaller(BioinformaticsWorkflow):
             Gatk4ReorderSam_4_1_4(
                 reference=self.reference,
                 inp=self.mark_duplicates.out,
+                sequence_dictionary=self.sequence_dictionary,
                 create_index=True,
             ),
         )
