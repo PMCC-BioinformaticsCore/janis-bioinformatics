@@ -5,7 +5,7 @@ before_install:
 - sudo apt-get update -y
 install:
 - sudo apt-get install -y samtools
-- pip install .
+- pip install git+https://github.com/PMCC-BioinformaticsCore/janis-core.git@v0.11.x
 - pip install -e .[tests]
 - pip install keyring==21.4.0
 script: nosetests -w tests -a travis
