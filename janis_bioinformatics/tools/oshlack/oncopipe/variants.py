@@ -18,8 +18,8 @@ class OncopipeVariantCaller(BioinformaticsWorkflow):
     def id(self) -> str:
         return "oncopipe_variantcaller"
 
-    # def friendly_name(self):
-    #     return "Oncopipe: VariantCaller"
+    def friendly_name(self):
+        return "Oncopipe: VariantCaller"
 
     def bind_metadata(self):
         return WorkflowMetadata(
