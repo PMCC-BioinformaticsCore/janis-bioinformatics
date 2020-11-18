@@ -25,12 +25,12 @@ from janis_core import ToolMetadata
 class BedToolsCoverageBedBase(BedToolsToolBase, ABC):
     def bind_metadata(self):
 
-        self.contributors = ["Jiaan Yu"]
+        self.metadata.contributors = ["Jiaan Yu"]
         self.metadata.dateUpdated = date(2020, 2, 26)
         self.metadata.dateCreated = date(2020, 2, 20)
         self.metadata.doi = None
         self.metadata.citation = None
-        self.keywords = ["bedtools", "coverageBed", "coverage"]
+        self.metadata.keywords = ["bedtools", "coverageBed", "coverage"]
         self.metadata.documentationUrl = (
             "https://bedtools.readthedocs.io/en/latest/content/tools/coverage.html"
         )

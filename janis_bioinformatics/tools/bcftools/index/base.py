@@ -85,7 +85,9 @@ class BcfToolsIndexBase(BcfToolsToolBase, ABC):
     def bind_metadata(self):
         from datetime import date
 
+        self.metadata.contributors = ["Michael Franklin"]
         self.metadata.dateCreated = date(2019, 1, 24)
+        self.metadata.dateUpdated = date(2019, 1, 24)
         self.metadata.doi = "http://www.ncbi.nlm.nih.gov/pubmed/19505943"
         self.metadata.citation = (
             "Li H, Handsaker B, Wysoker A, Fennell T, Ruan J, Homer N, Marth G, Abecasis G, Durbin R, "
