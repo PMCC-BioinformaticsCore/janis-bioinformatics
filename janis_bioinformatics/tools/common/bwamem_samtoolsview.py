@@ -1,5 +1,5 @@
 from typing import List, Dict, Any
-
+from datetime import datetime
 from janis_core import (
     ToolInput,
     Int,
@@ -15,6 +15,7 @@ from janis_core import (
     CpuSelector,
     Array,
     StringFormatter,
+    ToolMetadata,
 )
 from janis_core import get_value_for_hints_and_ordered_resource_tuple
 
@@ -177,6 +178,13 @@ class BwaMem_SamToolsView(BioinformaticsTool):
 
     def friendly_name(self) -> str:
         return "Bwa mem + Samtools View"
+
+    def bind_metadata(self):
+        return ToolMetadata(
+            contributors=["Michael Franklin"],
+            dateCreated=datetime(2019, 5, 10),
+            dateUpdated=datetime(2020, 7, 14),
+        )
 
     bwa_additional_inputs = [
         ToolInput(
