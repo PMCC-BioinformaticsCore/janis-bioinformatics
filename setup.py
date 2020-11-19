@@ -43,7 +43,7 @@ setup(
             "parameterized",
             # "janis-pipelines.unix >= 0.10.2",
             # "janis-pipelines.runner >= 0.10.8",
-            "janis-pipelines.unix @ git+https://github.com/PMCC-BioinformaticsCore/janis-unix.git@v0.11.x"
+            "janis-pipelines.unix @ git+https://github.com/PMCC-BioinformaticsCore/janis-unix.git@v0.11.x",
             "janis-pipelines.runner @ git+https://github.com/PMCC-BioinformaticsCore/janis-assistant.git@v0.11.x",
         ]
     },
