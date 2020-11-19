@@ -60,6 +60,9 @@ class _JoinIndexedFasta(BioinformaticsTool):
             documentation="",
         )
 
+    def skip_test(cls) -> bool:
+        return True
+
 
 class IndexFasta(BioinformaticsWorkflow):
     def id(self):
