@@ -38,7 +38,7 @@ class AddSymToDepthOfCoverageBase(BioinformaticsTool, ABC):
         return [ToolOutput("out", TextFile(), glob=InputSelector("outputFilename"))]
 
     def bind_metadata(self):
-        self.metadata.creator = "Jiaan Yu"
+        self.metadata.dateCreated = datetime.datetime(2020, 4, 9)
         self.metadata.dateUpdated = datetime.datetime(2020, 4, 9)
         self.metadata.contributors = ["Jiaan Yu"]
         self.metadata.documentationUrl = (

@@ -42,7 +42,7 @@ class Mutect2JointSomaticWorkflow(BioinformaticsWorkflow):
         self.metadata.dateCreated = date(2019, 10, 30)
         self.metadata.dateUpdated = date(2019, 10, 30)
 
-        self.contributors = ["Sebastian Hollizeck"]
+        self.metadata.contributors = ["Sebastian Hollizeck"]
         self.metadata.keywords = [
             "variants",
             "mutect2",

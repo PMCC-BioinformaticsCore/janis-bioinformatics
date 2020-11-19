@@ -94,6 +94,7 @@ class CNVKitBase(BioinformaticsTool):
         return []
 
     def bind_metadata(self):
+        self.metadata.contributors = ["Michael Franklin"]
         self.metadata.dateCreated = datetime(2019, 7, 3)
         self.metadata.dateUpdated = datetime(2019, 7, 3)
         self.metadata.documentationUrl = "https://github.com/etal/cnvkit"

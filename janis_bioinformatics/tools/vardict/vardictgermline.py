@@ -1,3 +1,4 @@
+from datetime import datetime
 from abc import ABC
 from typing import List, Dict, Any
 
@@ -14,6 +15,7 @@ from janis_core import (
     InputSelector,
     CaptureType,
     get_value_for_hints_and_ordered_resource_tuple,
+    ToolMetadata,
 )
 
 from janis_bioinformatics.data_types import BamBai, Bed, FastaFai, Vcf
@@ -495,8 +497,16 @@ class VarDictGermlineBase(BioinformaticsTool, ABC):
         ),
     ]
 
-    def docurl():
+    def docurl(self):
         return "https://github.com/AstraZeneca-NGS/VarDict"
+
+    def bind_metadata(self):
+        return ToolMetadata(
+            contributors=["Michael Franklin"],
+            dateCreated=datetime(2019, 1, 21),
+            dateUpdated=datetime(2020, 6, 4),
+            documentation="",
+        )
 
     def doc(self):
         return """

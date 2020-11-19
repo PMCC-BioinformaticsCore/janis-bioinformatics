@@ -1,6 +1,7 @@
+from datetime import datetime
 from typing import List, Optional, Union
 
-from janis_core import ToolOutput, ToolInput, InputSelector, Int, String
+from janis_core import ToolOutput, ToolInput, InputSelector, Int, String, ToolMetadata
 
 from janis_bioinformatics.data_types import (
     Fasta,
@@ -50,6 +51,14 @@ class _JoinIndexedFasta(BioinformaticsTool):
 
     def version(self) -> str:
         return "v0.1.0"
+
+    def bind_metadata(self):
+        return ToolMetadata(
+            contributors=["Michael Franklin"],
+            dateCreated=datetime(2020, 2, 14),
+            dateUpdated=datetime(2020, 11, 10),
+            documentation="",
+        )
 
 
 class IndexFasta(BioinformaticsWorkflow):
@@ -101,6 +110,14 @@ class IndexFasta(BioinformaticsWorkflow):
             "out_samtools", source=self.create_samtools, output_name="reference"
         )
         self.output("out_dict", source=self.create_dict, output_name="reference")
+
+    def bind_metadata(self):
+        return ToolMetadata(
+            contributors=["Michael Franklin"],
+            dateCreated=datetime(2020, 2, 14),
+            dateUpdated=datetime(2020, 11, 10),
+            documentation="",
+        )
 
 
 if __name__ == "__main__":

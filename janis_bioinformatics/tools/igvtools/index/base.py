@@ -1,7 +1,8 @@
+from datetime import datetime
 from abc import ABC
 from typing import List, Optional, Union
 
-from janis_core import ToolOutput, ToolInput, InputSelector
+from janis_core import ToolOutput, ToolInput, InputSelector, ToolMetadata
 
 from janis_bioinformatics.data_types import Vcf, VcfIdx
 from janis_bioinformatics.tools.igvtools.igvtoolsbase import IgvToolsBase
@@ -13,6 +14,14 @@ class IgvIndexBase(IgvToolsBase, ABC):
 
     def base_command(self) -> Optional[Union[str, List[str]]]:
         return ["igvtools", "index"]
+
+    def bind_metadata(self):
+        return ToolMetadata(
+            contributors=["Michael Franklin"],
+            dateCreated=datetime(2020, 6, 4),
+            dateUpdated=datetime(2020, 6, 15),
+            documentation="",
+        )
 
 
 class IgvIndexFeatureBase(IgvIndexBase, ABC):
