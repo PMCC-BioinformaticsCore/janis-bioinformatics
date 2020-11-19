@@ -35,14 +35,15 @@ setup(
     # TODO: revert this back
     # install_requires=["janis-pipelines.core >= 0.11.0"],
     install_requires=[
-        "janis-pipelines.core @ git+https://github.com/PMCC-BioinformaticsCore/janis-core.git@v0.11.x"
+        "janis-pipelines.core @ git+https://github.com/PMCC-BioinformaticsCore/janis-core.git@unit-test-with-janis-prepare"
     ],
     extras_require={
         "tests": [
             "nose",
             "parameterized",
-            "janis-pipelines.unix >= 0.10.2",
+            # "janis-pipelines.unix >= 0.10.2",
             # "janis-pipelines.runner >= 0.10.8",
+            "janis-pipelines.unix @ git+https://github.com/PMCC-BioinformaticsCore/janis-unix.git@v0.11.x"
             "janis-pipelines.runner @ git+https://github.com/PMCC-BioinformaticsCore/janis-assistant.git@v0.11.x",
         ]
     },
