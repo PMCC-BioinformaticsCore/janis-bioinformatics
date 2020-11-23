@@ -28,8 +28,19 @@ setup(
         "janis.extension": ["bioinformatics=janis_bioinformatics"],
         "janis.tools": ["bioinformatics=janis_bioinformatics.tools"],
         "janis.types": ["bioinformatics=janis_bioinformatics.data_types"],
+        "janis.datatype_transformations": [
+            "bioinformatics=janis_bioinformatics.transformations:transformations"
+        ],
     },
-    install_requires=["janis-pipelines.core >= 0.10.10"],
+    install_requires=["janis-pipelines.core >= 0.11.0"],
+    extras_require={
+        "tests": [
+            "nose",
+            "parameterized",
+            "janis-pipelines.unix >= 0.10.2",
+            "janis-pipelines.runner >= 0.10.8",
+        ]
+    },
     zip_safe=False,
     long_description=long_description,
     long_description_content_type="text/markdown",

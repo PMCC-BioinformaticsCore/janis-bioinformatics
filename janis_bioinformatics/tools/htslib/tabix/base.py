@@ -11,8 +11,9 @@ from janis_core import (
     File,
     InputSelector,
 )
+from janis_unix import Gunzipped
 
-from janis_bioinformatics.data_types import VcfTabix, CompressedVcf
+from janis_bioinformatics.data_types import VcfTabix, CompressedVcf, FileTabix
 from ..htslibbase import HtsLibBase
 
 
@@ -30,7 +31,7 @@ class TabixBase(HtsLibBase, ABC):
         return [
             ToolInput(
                 "inp",
-                CompressedVcf(),
+                Gunzipped(),
                 position=8,
                 localise_file=True,
                 doc="File from which to create the index. The input data file must be position sorted and "
@@ -52,7 +53,7 @@ class TabixBase(HtsLibBase, ABC):
     def outputs(self) -> List[ToolOutput]:
         return [
             ToolOutput(
-                "out", VcfTabix(), glob=InputSelector("inp")
+                "out", FileTabix(), glob=InputSelector("inp")
             )  # "$(inputs.file.basename)"
         ]
 

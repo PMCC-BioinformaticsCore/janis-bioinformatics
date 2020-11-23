@@ -1,9 +1,18 @@
+import os
+import operator
 from janis_core import Array
 from janis_bioinformatics.data_types import FastqGzPair, FastaWithDict
 from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.common.bwamem_samtoolsview import BwaMem_SamToolsView
 from janis_bioinformatics.tools.cutadapt import CutAdapt_2_1
 from janis_bioinformatics.tools.gatk4 import Gatk4SortSam_4_1_2
+from janis_bioinformatics.data_types.bam import Bam
+
+from janis_core.tool.test_classes import (
+    TTestPreprocessor,
+    TTestExpectedOutput,
+    TTestCase,
+)
 
 
 class BwaAligner(BioinformaticsWorkflow):
@@ -75,6 +84,58 @@ class BwaAligner(BioinformaticsWorkflow):
         self.metadata.creator = "Michael Franklin"
         self.metadata.dateCreated = "2018-12-24"
         self.metadata.version = "1.1"
+
+    def tests(self):
+        return [
+            TTestCase(
+                name="basic",
+                input={
+                    "sample_name": "NA12878",
+                    "fastq": [
+                        os.path.join(
+                            BioinformaticsWorkflow.test_data_path(), "BRCA1_R1.fastq.gz"
+                        ),
+                        os.path.join(
+                            BioinformaticsWorkflow.test_data_path(), "BRCA1_R2.fastq.gz"
+                        ),
+                    ],
+                    "reference": os.path.join(
+                        BioinformaticsWorkflow.test_data_path(), "hg38-brca1.fasta"
+                    ),
+                },
+                output=[
+                    TTestExpectedOutput(
+                        tag="out",
+                        preprocessor=TTestPreprocessor.FileSize,
+                        operator=operator.gt,
+                        expected_value=2767780,
+                    ),
+                    TTestExpectedOutput(
+                        tag="out",
+                        suffix_secondary_file=".bai",
+                        preprocessor=TTestPreprocessor.FileSize,
+                        operator=operator.gt,
+                        expected_value=290,
+                    ),
+                    TTestExpectedOutput(
+                        tag="out",
+                        preprocessor=Bam.flagstat,
+                        operator=operator.eq,
+                        expected_file=os.path.join(
+                            self.test_data_path(), "bwaaligner.flagstat.txt"
+                        ),
+                    ),
+                    TTestExpectedOutput(
+                        tag="out",
+                        preprocessor=TTestPreprocessor.Value,
+                        operator=Bam.equal,
+                        expected_value=os.path.join(
+                            self.test_data_path(), "bwaaligner.bam"
+                        ),
+                    ),
+                ],
+            )
+        ]
 
 
 if __name__ == "__main__":

@@ -1,8 +1,55 @@
-from janis_bioinformatics.data_types import Fasta
-from janis_bioinformatics.tools import BioinformaticsWorkflow
+from typing import List, Optional, Union
+
+from janis_core import ToolOutput, ToolInput, InputSelector, Int, String
+
+from janis_bioinformatics.data_types import (
+    Fasta,
+    FastaBwa,
+    FastaFai,
+    FastaDict,
+    FastaWithIndexes,
+)
+from janis_bioinformatics.tools import BioinformaticsWorkflow, BioinformaticsTool
 from janis_bioinformatics.tools.bwa import BwaIndexLatest
 from janis_bioinformatics.tools.gatk4 import Gatk4CreateSequenceDictionaryLatest
 from janis_bioinformatics.tools.samtools.faidx.versions import SamToolsFaidxLatest
+
+
+class _JoinIndexedFasta(BioinformaticsTool):
+    def tool(self) -> str:
+        return "join_indexed_fastas"
+
+    def base_command(self) -> Optional[Union[str, List[str]]]:
+        return ["echo", "Joining fastas"]
+
+    def inputs(self) -> List[ToolInput]:
+        return [
+            ToolInput(
+                "ref_bwa", FastaBwa, localise_file=True, presents_as="reference.fasta"
+            ),
+            ToolInput(
+                "ref_samtools",
+                FastaFai,
+                localise_file=True,
+                presents_as="reference.fasta",
+            ),
+            ToolInput(
+                "ref_dict", FastaDict, localise_file=True, presents_as="reference.fasta"
+            ),
+        ]
+
+    def outputs(self) -> List[ToolOutput]:
+        return [
+            ToolOutput(
+                "out_reference", FastaWithIndexes, selector=InputSelector("ref_bwa")
+            )
+        ]
+
+    def container(self) -> str:
+        return "ubuntu:latest"
+
+    def version(self) -> str:
+        return "v0.1.0"
 
 
 class IndexFasta(BioinformaticsWorkflow):
@@ -22,16 +69,44 @@ class IndexFasta(BioinformaticsWorkflow):
 
         self.input("reference", Fasta)
 
-        self.step("create_bwa", BwaIndexLatest(reference=self.reference))
+        # Change the default BWA index algorithm to bwtsw (for human genome), and up blockSize to 50M
+        self.input("bwa_algorithm", String(optional=True), default="bwtsw")
+        self.input("bwa_block_size", Int(optional=True), default=int(5e7))
+
+        self.step(
+            "create_bwa",
+            BwaIndexLatest(
+                reference=self.reference,
+                algorithm=self.bwa_algorithm,
+                blockSize=self.bwa_block_size,
+            ),
+        )
         self.step("create_samtools", SamToolsFaidxLatest(reference=self.reference))
         self.step(
             "create_dict", Gatk4CreateSequenceDictionaryLatest(reference=self.reference)
         )
 
-        self.output("bwa", source=self.create_bwa, output_name="reference")
-        self.output("samtools", source=self.create_samtools, output_name="reference")
-        self.output("dict", source=self.create_dict, output_name="reference")
+        self.step(
+            "merge",
+            _JoinIndexedFasta(
+                ref_bwa=self.create_bwa,
+                ref_samtools=self.create_samtools,
+                ref_dict=self.create_dict,
+            ),
+        )
+
+        self.output("out_reference", source=self.merge.out_reference)
+        self.output("out_bwa", source=self.create_bwa, output_name="reference")
+        self.output(
+            "out_samtools", source=self.create_samtools, output_name="reference"
+        )
+        self.output("out_dict", source=self.create_dict, output_name="reference")
 
 
 if __name__ == "__main__":
-    IndexFasta().translate("wdl")
+    IndexFasta().translate(
+        "wdl",
+        export_path="~/Desktop/tmp/wdltests/indexfasta",
+        to_disk=True,
+        validate=True,
+    )
