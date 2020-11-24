@@ -9,6 +9,8 @@ from janis_core.tool.test_suite_runner import ToolTestSuiteRunner
 from janis_core.tool import test_helpers
 
 version = None
+tool_id = None
+engine = None
 for arg in sys.argv:
     if arg.startswith("tool="):
         parts = arg.split("=")
