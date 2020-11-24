@@ -5,7 +5,7 @@ install:
 - pip install .
 - pip install -e .[tests]
 - pip install keyring==21.4.0
-script: nosetests -w tests -a ci
+script: nosetests -w tests -a ci --ignore-files="local_*"
 deploy:
   provider: pypi
   user: illusional
