@@ -24,6 +24,12 @@ for arg in sys.argv:
         parts = arg.split("=")
         version = parts[1]
 
+if tool_id is None or engine is None or version is None:
+    print(
+        "USAGE: -a test_suite -a tool=[TOOL_ID] -a engine=[ENGINE_NAME] -a version=[TOOL_VERSION]"
+    )
+    exit()
+
 tool = test_helpers.get_one_tool(tool_id, [janis_bioinformatics.tools], version)
 runner = ToolTestSuiteRunner(tool)
 
