@@ -34,7 +34,7 @@ class TestOneTool(unittest.TestCase):
     @parameterized.expand([[tc.name, tc] for tc in tool.tests()])
     @attr("test_suite")
     def test(self, name, test_case):
-        failed, succeeded = runner.run_one_test_case(test_case, engine)
+        failed, succeeded, output = runner.run_one_test_case(test_case, engine)
 
         if len(failed) > 0:
             error_msg = "\n".join(failed)

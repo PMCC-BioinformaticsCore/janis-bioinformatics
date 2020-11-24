@@ -40,7 +40,7 @@ class RunAllToolsTestSuite(unittest.TestCase):
             for tc in tool.tests():
                 error_msg = None
                 try:
-                    failed, succeeded = runner.run_one_test_case(tc, engine)
+                    failed, succeeded, output = runner.run_one_test_case(tc, engine)
 
                     # the len(failed) here is the number of expected output that fails per test case
                     if len(failed) > 0:
