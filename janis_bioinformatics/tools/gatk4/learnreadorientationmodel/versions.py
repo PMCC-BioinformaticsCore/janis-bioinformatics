@@ -1,4 +1,4 @@
-from ..versions import Gatk_4_1_2_0, Gatk_4_1_3_0, Gatk_4_1_4_0
+from .base import Gatk4LearnReadOrientationModelBase
 from ..versions import (
     Gatk_4_1_2_0,
     Gatk_4_1_3_0,
