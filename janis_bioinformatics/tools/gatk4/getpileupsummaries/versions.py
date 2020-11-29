@@ -1,6 +1,13 @@
 from .base import Gatk4GetPileUpSummariesBase
 from .base_cram import Gatk4GetPileUpSummariesCramBase
-from ..versions import Gatk_4_1_2_0, Gatk_4_1_3_0, Gatk_4_1_4_0, Gatk_4_1_6_0
+from ..versions import (
+    Gatk_4_1_2_0,
+    Gatk_4_1_3_0,
+    Gatk_4_1_4_0,
+    Gatk_4_1_6_0,
+    Gatk_4_1_7_0,
+    Gatk_4_1_8_0,
+)
 
 
 class Gatk4GetPileUpSummaries_4_1_2(Gatk_4_1_2_0, Gatk4GetPileUpSummariesBase):
