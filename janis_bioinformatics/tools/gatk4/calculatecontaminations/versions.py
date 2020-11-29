@@ -5,7 +5,7 @@ from ..versions import (
     Gatk_4_1_4_0,
     Gatk_4_1_6_0,
     Gatk_4_1_7_0,
-    Gatk_4_1_8_0,
+    Gatk_4_1_8_1,
 )
 
 
@@ -29,7 +29,7 @@ class Gatk4CalculateContamination_4_1_7(Gatk_4_1_7_0, Gatk4CalculateContaminatio
     pass
 
 
-class Gatk4CalculateContamination_4_1_8(Gatk_4_1_8_0, Gatk4CalculateContaminationBase):
+class Gatk4CalculateContamination_4_1_8(Gatk_4_1_8_1, Gatk4CalculateContaminationBase):
     pass
 
 

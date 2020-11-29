@@ -5,7 +5,7 @@ from ..versions import (
     Gatk_4_1_4_0,
     Gatk_4_1_6_0,
     Gatk_4_1_7_0,
-    Gatk_4_1_8_0,
+    Gatk_4_1_8_1,
 )
 
 
@@ -40,7 +40,7 @@ class Gatk4LearnReadOrientationModel_4_1_7(
 
 
 class Gatk4LearnReadOrientationModel_4_1_8(
-    Gatk_4_1_8_0, Gatk4LearnReadOrientationModelBase
+    Gatk_4_1_8_1, Gatk4LearnReadOrientationModelBase
 ):
     pass
 

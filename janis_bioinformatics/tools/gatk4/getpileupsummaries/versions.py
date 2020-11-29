@@ -6,7 +6,7 @@ from ..versions import (
     Gatk_4_1_4_0,
     Gatk_4_1_6_0,
     Gatk_4_1_7_0,
-    Gatk_4_1_8_0,
+    Gatk_4_1_8_1,
 )
 
 
@@ -30,7 +30,7 @@ class Gatk4GetPileUpSummaries_4_1_7(Gatk_4_1_7_0, Gatk4GetPileUpSummariesBase):
     pass
 
 
-class Gatk4GetPileUpSummaries_4_1_8(Gatk_4_1_8_0, Gatk4GetPileUpSummariesBase):
+class Gatk4GetPileUpSummaries_4_1_8(Gatk_4_1_8_1, Gatk4GetPileUpSummariesBase):
     pass
 
 
@@ -55,7 +55,7 @@ class Gatk4GetPileUpSummariesCram_4_1_7(Gatk_4_1_7_0, Gatk4GetPileUpSummariesCra
     pass
 
 
-class Gatk4GetPileUpSummariesCram_4_1_8(Gatk_4_1_8_0, Gatk4GetPileUpSummariesCramBase):
+class Gatk4GetPileUpSummariesCram_4_1_8(Gatk_4_1_8_1, Gatk4GetPileUpSummariesCramBase):
     pass
 
 
