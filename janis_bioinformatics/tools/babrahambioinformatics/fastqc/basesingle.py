@@ -105,17 +105,18 @@ class FastQCSingleBase(BioinformaticsTool, ABC):
             ToolOutput(
                 "out",
                 ZipFile(),
-                glob=WildcardSelector(wildcard="*.zip", select_first=True),
+                glob=InputSelector("read", remove_file_extension=True) + "_fastqc.zip",
             ),
             ToolOutput(
                 "out_datafile",
                 File,
-                glob=WildcardSelector(wildcard="*/fastqc_data.txt", select_first=True),
+                glob=InputSelector("read", remove_file_extension=True)
+                + "_fastqc/fastqc_data.txt",
             ),
             ToolOutput(
                 "out_html",
                 HtmlFile,
-                glob=WildcardSelector(wildcard="*.html", select_first=True),
+                glob=InputSelector("read", remove_file_extension=True) + "_fastqc.html",
             ),
             ToolOutput(
                 "out_directory",

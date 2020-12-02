@@ -1,4 +1,7 @@
 from janis_core import File
+from janis_unix.data_types import Gunzipped
+
+from janis_bioinformatics.data_types.tabix import FileTabix
 
 
 class Bed(File):
@@ -10,14 +13,16 @@ class Bed(File):
         return "bed"
 
 
-class BedTabix(File):
+class BedGz(Gunzipped):
     def __init__(self, optional=False):
-        super().__init__(optional=optional, extension=".bed.gz")
+        super().__init__(inner_type=Bed, optional=optional, extension=".bed.gz")
 
     @staticmethod
     def name():
-        return "BedTABIX"
+        return "BedGz"
 
+
+class BedTabix(FileTabix, BedGz):
     @staticmethod
-    def secondary_files():
-        return [".tbi"]
+    def name():
+        return "BedTABIX"

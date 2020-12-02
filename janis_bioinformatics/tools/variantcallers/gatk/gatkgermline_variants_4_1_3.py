@@ -2,7 +2,7 @@ from datetime import date
 
 from janis_unix.tools import UncompressArchive
 from janis_bioinformatics.tools import gatk4
-from janis_bioinformatics.data_types import FastaWithDict, BamBai, VcfTabix, Bed
+from janis_bioinformatics.data_types import FastaWithDict, BamBai, VcfTabix, Bed, Vcf
 from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.common import SplitMultiAllele
 
@@ -64,7 +64,9 @@ class GatkGermlineVariantCaller_4_1_3(BioinformaticsWorkflow):
         self.step("uncompressvcf", UncompressArchive(file=self.haplotype_caller.out))
         self.step(
             "splitnormalisevcf",
-            SplitMultiAllele(vcf=self.uncompressvcf.out, reference=self.reference),
+            SplitMultiAllele(
+                vcf=self.uncompressvcf.out.as_type(Vcf), reference=self.reference
+            ),
         )
 
         self.output("variants", source=self.haplotype_caller.out)

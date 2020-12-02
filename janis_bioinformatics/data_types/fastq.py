@@ -5,7 +5,9 @@ from janis_core import File, Array, Logger
 
 class Fastq(File):
     def __init__(self, optional=False):
-        super().__init__(optional=optional, extension=".fastq")
+        super().__init__(
+            optional=optional, extension=".fastq", alternate_extensions={".fq"}
+        )
 
     @staticmethod
     def name():
@@ -20,7 +22,9 @@ class Fastq(File):
 
 class FastqGz(File):
     def __init__(self, optional=False):
-        super().__init__(optional=optional, extension=".fastq.gz")
+        super().__init__(
+            optional=optional, extension=".fastq.gz", alternate_extensions={".fq.gz"}
+        )
 
     @staticmethod
     def name():
@@ -69,7 +73,7 @@ class FastqGzPairedEnd(Array):
 
 class FastqPairedEnd(Array):
     def __init__(self, optional=False):
-        super().__init__(File(optional=False, extension=".fastq"), optional=optional)
+        super().__init__(Fastq(optional=False), optional=optional)
 
     def id(self):
         if self.optional:
