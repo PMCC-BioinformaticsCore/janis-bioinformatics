@@ -35,11 +35,10 @@ class BGZipBase(HtsLibBase, ABC):
             ToolInput(
                 "outputFilename",
                 Filename(
-                    prefix=InputSelector("file"),
+                    prefix=InputSelector("file").basename(),
                     extension=".gz",
                 ),
                 position=102,
-                shell_quote=False,
             ),
             *self.additional_args,
         ]

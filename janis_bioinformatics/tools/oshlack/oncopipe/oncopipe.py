@@ -13,6 +13,7 @@ from janis_core import (
 from janis_bioinformatics.data_types import FastqGzPairedEnd, FastaWithIndexes, Fasta
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsWorkflow
 from janis_bioinformatics.tools.gatk4 import Gatk4SortSamLatest
+from janis_bioinformatics.tools.oshlack.jaffa.base import Jaffa_2_0
 from janis_bioinformatics.tools.oshlack.prepareallsortsinput import (
     PrepareALLSortsInput_0_1_0,
 )
@@ -80,6 +81,7 @@ Original code example:
         self.input("name", String, doc="Sample ID")
         self.input("reads", Array(FastqGzPairedEnd))
         self.input("genome_dir", Directory)
+        self.input("jaffa_reference", Directory)
         self.input("reference", Fasta)
         self.input("gtf", File)
         self.input("blacklist", File)
@@ -97,6 +99,17 @@ Original code example:
                 contigs=self.contigs,
             ),
             scatter="reads",
+        )
+
+        self.add_jaffa()
+
+    def add_jaffa(self):
+        self.step(
+            "jaffa",
+            Jaffa_2_0(
+                reference=self.jaffa_reference,
+                fastqs=self.reads,
+            ),
         )
 
         # Then
@@ -239,7 +252,8 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
         )
 
         self.step(
-            "allsorts", AllSorts_0_1_0(samples=self.prepareAllsortsInput.out),
+            "allsorts",
+            AllSorts_0_1_0(samples=self.prepareAllsortsInput.out),
         )
 
         self.output(
@@ -287,7 +301,7 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
         )
 
 
-__JANIS_ENTRYPOINT = OncopipeSamplePreparation
+__JANIS_ENTRYPOINT = OncopipeWorkflow
 
 if __name__ == "__main__":
-    __JANIS_ENTRYPOINT().get_dot_plot(show=True)
+    OncopipeWorkflow().get_dot_plot(show=True, expand_subworkflows=True)
