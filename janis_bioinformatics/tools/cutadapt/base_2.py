@@ -65,11 +65,8 @@ class CutAdaptBase_2(BioinformaticsTool):
     def inputs(self) -> List[ToolInput]:
         import uuid
 
-        fastq_uuid = str(uuid.uuid1())
         return [
-            ToolInput(
-                "outputPrefix", String(optional=True), doc="Used for naming purposes"
-            ),
+            ToolInput("outputPrefix", String(), doc="Used for naming purposes"),
             ToolInput("fastq", FastqGzPair, position=5),
             ToolInput(
                 "adapter",
@@ -106,7 +103,16 @@ class CutAdaptBase_2(BioinformaticsTool):
         ]
 
     def outputs(self) -> List[ToolOutput]:
-        return [ToolOutput("out", FastqGzPair, glob=WildcardSelector("*.fastq.gz"))]
+        return [
+            ToolOutput(
+                "out",
+                FastqGzPair,
+                selector=[
+                    InputSelector("outputPrefix") + "-R1.fastq.gz",
+                    InputSelector("outputPrefix") + "-R2.fastq.gz",
+                ],
+            )
+        ]
 
     def memory(self, hints):
         val = get_value_for_hints_and_ordered_resource_tuple(hints, MEM_TUPLE)
