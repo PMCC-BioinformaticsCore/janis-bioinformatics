@@ -10,9 +10,17 @@ class StarGenerateIndexesBase(StarBase, ABC):
     def run_mode(self):
         return "genomeGenerate"
 
+    def directories_to_create(self):
+        return [
+            InputSelector("outputGenomeDir")
+        ]
+
     def outputs(self) -> List[ToolOutput]:
         return [
             ToolOutput(
-                "out", Directory, selector=WildcardSelector(".", select_first=True)
+                "out", Directory, selector=InputSelector("outputGenomeDir")
             )
         ]
+
+# if __name__ == "__main__":
+#     StarGenerateIndexesBase().translate("cwl")
