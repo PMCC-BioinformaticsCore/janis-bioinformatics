@@ -71,7 +71,7 @@ class OncopipeStarAligner(BioinformaticsWorkflow):
                 sjdbOverhang=99,
                 sjdbGTFfile=self.gtf,
                 limitOutSJcollapsed=3000000,  # lots of splice junctions may need more than default 1M buffer
-                outputGenomeDir=".",
+                outputGenomeDir=self.sampleName,
             ),
             doc="Map reads using the STAR aligner: generate genome",
         )
@@ -89,7 +89,20 @@ class OncopipeStarAligner(BioinformaticsWorkflow):
                     library=self.library,
                     platform=self.platform,
                 ),
-                outSAMtype=["BAM", "SortedByCoordinate"],
+                outSAMtype=["BAM", "Unsorted"],
+                outSAMunmapped="Within",
+                outBAMcompression=0,
+                outFilterMultimapNmax=1,
+                outFilterMismatchNmax=3,
+                chimSegmentMin=10,
+                chimOutType=["WithinBAM", "SoftClip"],
+                chimJunctionOverhangMin=10,
+                chimScoreMin=1,
+                chimScoreDropMax=30,
+                chimScoreJunctionNonGTAG=0,
+                chimScoreSeparation=1,
+                alignSJstitchMismatchNmax=[5, -1, 5, 5],
+                chimSegmentReadGapMax=3,
             ),
         )
 
