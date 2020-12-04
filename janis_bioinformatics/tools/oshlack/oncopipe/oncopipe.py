@@ -212,7 +212,7 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
                 readFilesCommand="zcat",
                 genomeDir=self.star_gen2pass.out,
                 outSAMattrRGline=StringFormatter(
-                    "ID:{sample} SM:{lane} LB:{library} PL:{platform} PU:1",
+                    "ID:{sample}\tSM:{lane}\tLB:{library}\tPL:{platform}\tPU:1",
                     sample=self.name,
                     lane=self.lane,
                     library=self.library,
