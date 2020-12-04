@@ -211,13 +211,13 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
                 readFilesIn=self.trim.pairedOut,
                 readFilesCommand="zcat",
                 genomeDir=self.star_gen2pass.out,
-                outSAMattrRGline=StringFormatter(
-                    "ID:{sample}\tSM:{lane}\tLB:{library}\tPL:{platform}\tPU:1",
-                    sample=self.name,
-                    lane=self.lane,
-                    library=self.library,
-                    platform=self.platform,
-                ),
+                outSAMattrRGline=[
+                    StringFormatter("ID:{sample}", sample=self.name),
+                    StringFormatter("SM:{lane}", lane=self.lane),
+                    StringFormatter("LB:{library}", library=self.library),
+                    StringFormatter("PL:{platform}", platform=self.platform),
+                    StringFormatter("PL:1"),
+                ],
                 limitOutSJcollapsed=3000000,  # lots of splice junctions may need more than default 1M buffer
                 outSAMtype=["BAM", "Unsorted"],
                 outSAMunmapped="Within",
