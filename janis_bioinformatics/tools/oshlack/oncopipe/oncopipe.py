@@ -86,6 +86,7 @@ Original code example:
         self.input("gtf", File)
         self.input("blacklist", File(optional=True))
         self.input("contigs", Array(String(), optional=True))
+        self.input("filters", Array(String(), optional=True))
         self.input("lane", String)
         self.input("library", String)
         self.input("platform", String)
@@ -151,6 +152,7 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
         self.input("gtf", File)
         self.input("blacklist", File(optional=True))
         self.input("contigs", Array(String(), optional=True))
+        self.input("filters", Array(String(), optional=True))
         self.input("lane", String)
         self.input("library", String)
         self.input("platform", String)
@@ -216,7 +218,7 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
                     StringFormatter("SM:{lane}", lane=self.lane),
                     StringFormatter("LB:{library}", library=self.library),
                     StringFormatter("PL:{platform}", platform=self.platform),
-                    StringFormatter("PL:1"),
+                    StringFormatter("PU:1"),
                 ],
                 limitOutSJcollapsed=3000000,  # lots of splice junctions may need more than default 1M buffer
                 outSAMtype=["BAM", "Unsorted"],
@@ -260,6 +262,7 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
                 reference=self.reference,
                 gtf_file=self.gtf,
                 contigs=self.contigs,
+                filters=self.filters,
             ),
         )
 
