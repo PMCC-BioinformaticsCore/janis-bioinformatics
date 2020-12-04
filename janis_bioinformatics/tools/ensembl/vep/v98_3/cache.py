@@ -1,6 +1,7 @@
+from datetime import datetime
 from abc import ABC
 
-from janis_core import ToolInput, Boolean, Directory, Int
+from janis_core import ToolInput, Boolean, Directory, Int, ToolMetadata
 from janis_bioinformatics.data_types import FastaWithDict
 from .base import VepBase_98_3
 
@@ -98,3 +99,11 @@ class VepCacheBase_98_3(VepBase_98_3, ABC):
                 "to use more memory with a faster run time. Default = 5000",
             ),
         ]
+
+    def bind_metadata(self):
+        return ToolMetadata(
+            contributors=["Michael Franklin"],
+            dateCreated=datetime(2020, 2, 25),
+            dateUpdated=datetime(2020, 5, 7),
+            documentation="",
+        )

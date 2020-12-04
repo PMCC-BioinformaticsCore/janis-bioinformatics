@@ -1,7 +1,8 @@
+from datetime import datetime
 from abc import ABC
 from typing import List, Dict, Any
 
-from janis_core import CpuSelector
+from janis_core import CpuSelector, ToolMetadata
 from janis_core import get_value_for_hints_and_ordered_resource_tuple
 from janis_core.operators.standard import JoinOperator
 
@@ -508,8 +509,16 @@ class VarDictSomaticBase(BioinformaticsTool, ABC):
 
     var2vcf_inputs = []
 
-    def docurl():
+    def docurl(self):
         return "https://github.com/AstraZeneca-NGS/VarDict"
+
+    def bind_metadata(self):
+        return ToolMetadata(
+            contributors=["Michael Franklin"],
+            dateCreated=datetime(2019, 6, 12),
+            dateUpdated=datetime(2020, 7, 22),
+            documentation="",
+        )
 
     def doc(self):
         return """

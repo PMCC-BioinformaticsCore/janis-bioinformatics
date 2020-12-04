@@ -148,9 +148,9 @@ class FilterVepBase(BioinformaticsTool, ABC):
     def outputs(self):
         return [ToolOutput("out", TextFile, glob=InputSelector("outputFilename"))]
 
-    def metadata(self):
+    def bind_metadata(self):
         return ToolMetadata(
-            contributors=[],
+            contributors=["Michael Franklin"],
             dateCreated=datetime(2020, 5, 26),
             dateUpdated=datetime(2020, 5, 26),
             documentation="#------------#\n# filter_vep #\n#------------#\nhttp://www.ensembl.org/info/docs/tools/vep/script/vep_filter.html\n",

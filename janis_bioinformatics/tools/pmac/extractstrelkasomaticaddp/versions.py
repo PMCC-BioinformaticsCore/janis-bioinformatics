@@ -21,8 +21,9 @@ class ExtractStrelkaSomaticADDP_0_1_1(
     pass
 
 
-class ExtractStrelkaSomaticADDP_dev(ExtractStrelkaSomaticADDPBase, PeterMacUtils_dev):
-    pass
+# NOTE: disabled as this is for dev work only
+# class ExtractStrelkaSomaticADDP_dev(ExtractStrelkaSomaticADDPBase, PeterMacUtils_dev):
+#     pass
 
 
 ExtractStrelkaSomaticADDPLatest = ExtractStrelkaSomaticADDP_0_1_1

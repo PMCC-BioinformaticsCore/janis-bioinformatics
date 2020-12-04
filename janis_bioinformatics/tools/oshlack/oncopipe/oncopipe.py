@@ -287,6 +287,14 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
             ),
         )
 
+    def bind_metadata(self):
+        return WorkflowMetadata(
+            contributors=["Michael Franklin"],
+            dateCreated=datetime(2020, 9, 24),
+            dateUpdated=datetime(2020, 10, 7),
+            documentation="",
+        )
+
 
 __JANIS_ENTRYPOINT = OncopipeSamplePreparation
 

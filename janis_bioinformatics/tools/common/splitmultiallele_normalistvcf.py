@@ -1,5 +1,6 @@
+from datetime import datetime
 from typing import List, Dict, Any
-from janis_core import get_value_for_hints_and_ordered_resource_tuple
+from janis_core import get_value_for_hints_and_ordered_resource_tuple, ToolMetadata
 from janis_bioinformatics.data_types import FastaWithDict, CompressedVcf, Vcf, VcfTabix
 from janis_bioinformatics.tools import BioinformaticsTool
 from janis_core import (
@@ -138,6 +139,14 @@ class SplitMultiAlleleNormaliseVcf(BioinformaticsTool):
               -r  reference sequence fasta file []
               -?  displays help 
         """.strip()
+
+    def bind_metadata(self):
+        return ToolMetadata(
+            contributors=["Jiaan Yu"],
+            dateCreated=datetime(2020, 6, 4),
+            dateUpdated=datetime(2020, 6, 4),
+            documentation="",
+        )
 
 
 if __name__ == "__main__":

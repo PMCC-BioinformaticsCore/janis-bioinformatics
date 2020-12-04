@@ -4,9 +4,9 @@ from janis_bioinformatics.tools.pmac.versions import (
     PeterMacUtils_dev,
 )
 
-
-class AddBamStats_dev(AddBamStatsBase, PeterMacUtils_dev):
-    pass
+# NOTE: disabled as this is for dev work only
+# class AddBamStats_dev(AddBamStatsBase, PeterMacUtils_dev):
+#     pass
 
 
 class AddBamStats_0_0_7(AddBamStatsBase, PeterMacUtils_0_0_7):
