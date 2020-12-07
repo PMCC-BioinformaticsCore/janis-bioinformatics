@@ -140,6 +140,13 @@ from .depthofcoverage.versions import (
     Gatk4DepthOfCoverageLatest,
 )
 
+from .variantfiltration.versions import (
+    Gatk4VariantFiltration_4_1_2,
+    Gatk4VariantFiltration_4_1_3,
+    Gatk4VariantFiltration_4_1_4,
+    Gatk4VariantFiltrationLatest,
+)
+
 from .splitncigarreads.versions import *
 from .addorreplacereadgroups.versions import *
 from .reordersam.versions import *
