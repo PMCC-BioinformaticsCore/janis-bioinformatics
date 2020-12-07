@@ -8,17 +8,28 @@ from janis_core import (
     StringFormatter,
     Directory,
     File,
+    Double,
 )
 
 from janis_bioinformatics.data_types import FastqGzPairedEnd, FastaWithIndexes, Fasta
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsWorkflow
-from janis_bioinformatics.tools.gatk4 import Gatk4SortSamLatest
+from janis_bioinformatics.tools.gatk4 import (
+    Gatk4SortSamLatest,
+    Gatk4MarkDuplicates_4_1_4,
+    Gatk4ReorderSam_4_1_4,
+    Gatk4SplitNCigarReads_4_1_4,
+    Gatk4HaplotypeCaller_4_1_4,
+    Gatk4VariantFiltration_4_1_4,
+)
 from janis_bioinformatics.tools.oshlack.jaffa.base import Jaffa_2_0
 from janis_bioinformatics.tools.oshlack.prepareallsortsinput import (
     PrepareALLSortsInput_0_1_0,
 )
 from janis_bioinformatics.tools.oshlack.allsorts.versions import AllSorts_0_1_0
-from janis_bioinformatics.tools.star import StarAlignReads_2_7_1, StarGenerateIndexes_2_7_1
+from janis_bioinformatics.tools.star import (
+    StarAlignReads_2_7_1,
+    StarGenerateIndexes_2_7_1,
+)
 from janis_bioinformatics.tools.subread import FeatureCounts_2_0_1
 from janis_bioinformatics.tools.suhrig import Arriba_1_2_0
 from janis_bioinformatics.tools.usadellab import TrimmomaticPairedEnd_0_35
@@ -82,7 +93,7 @@ Original code example:
         self.input("reads", Array(FastqGzPairedEnd))
         self.input("genome_dir", Directory)
         self.input("jaffa_reference", Directory)
-        self.input("reference", Fasta)
+        self.input("reference", FastaWithIndexes)
         self.input("gtf", File)
         self.input("blacklist", File(optional=True))
         self.input("contigs", Array(String(), optional=True))
@@ -90,6 +101,8 @@ Original code example:
         self.input("lane", String)
         self.input("library", String)
         self.input("platform", String)
+        self.input("sequence_dictionary", File)
+        self.input("call_conf", Double, default=20.0)
 
         self.step(
             "process",
@@ -103,7 +116,9 @@ Original code example:
                 contigs=self.contigs,
                 lane=self.lane,
                 library=self.library,
-                platform=self.platform
+                platform=self.platform,
+                sequence_dictionary=self.sequence_dictionary,
+                call_conf=self.call_conf,
             ),
             scatter="reads",
         )
@@ -148,7 +163,7 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
         self.input("name", String, doc="Sample ID")
         self.input("reads", FastqGzPairedEnd)
         self.input("genome_dir", Directory)
-        self.input("reference", Fasta)
+        self.input("reference", FastaWithIndexes)
         self.input("gtf", File)
         self.input("blacklist", File(optional=True))
         self.input("contigs", Array(String(), optional=True))
@@ -156,11 +171,14 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
         self.input("lane", String)
         self.input("library", String)
         self.input("platform", String)
+        self.input("sequence_dictionary", File)
+        self.input("call_conf", Double, default=20.0)
 
         self.add_trim_and_align()
         self.add_sort_bam()
         self.add_arriba()
         self.add_all_sorts()
+        self.add_rna_seq_calling()
 
     def add_trim_and_align(self):
 
@@ -237,7 +255,6 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
                 chimSegmentReadGapMax=3,
             ),
         )
-
 
     def add_sort_bam(self):
         self.step(
@@ -345,6 +362,69 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
             output_folder="allsorts",
             output_name=StringFormatter(
                 "{sample_name}_waterfalls", sample_name=self.name
+            ),
+        )
+
+    def add_rna_seq_calling(self):
+        self.step(
+            "mark_duplicates",
+            Gatk4MarkDuplicates_4_1_4(
+                bam=[self.sortsam.out], validationStringency="SILENT", createIndex=True
+            ),
+            doc="Mark duplicates and create index",
+        )
+
+        self.step(
+            "reorder_bam",
+            Gatk4ReorderSam_4_1_4(
+                reference=self.reference,
+                inp=self.mark_duplicates.out,
+                sequence_dictionary=self.sequence_dictionary,
+                create_index=True,
+            ),
+        )
+
+        self.step(
+            "splitncigar",
+            Gatk4SplitNCigarReads_4_1_4(
+                inp=[self.reorder_bam.out],
+                reference=self.reference,
+            ),
+            doc="split'n'trim and reassign mapping qualities",
+        )
+
+        self.step(
+            "rnaseq_call_variants",
+            Gatk4HaplotypeCaller_4_1_4(
+                inputRead=self.splitncigar.out,
+                reference=self.reference,
+                dontUseSoftClippedBases=True,
+                standardMinConfidenceThresholdForCalling=self.call_conf,
+            ),
+        )
+
+        self.step(
+            "filter_variants",
+            Gatk4VariantFiltration_4_1_4(
+                reference=self.reference,
+                variant=self.rnaseq_call_variants.out,
+                clusterWindowSize=35,
+                clusterSize=3,
+                filterName=["FS", "QD"],
+                filterExpression=["FS > 30.0", "QD < 2.0"],
+            ),
+        )
+
+        self.output(
+            "out_HAP_vcf",
+            source=self.rnaseq_call_variants.out,
+            output_name=StringFormatter("{sample_name}_HAP", sample_name=self.name),
+        )
+        self.output(
+            "out_HAP_filter_vcf",
+            source=self.filter_variants.out,
+            output_name=StringFormatter(
+                "{sample_name}_HAP.filtered", sample_name=self.name
             ),
         )
 
