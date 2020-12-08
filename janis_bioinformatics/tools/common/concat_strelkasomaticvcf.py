@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import List
 
 from janis_core import (
@@ -9,6 +10,7 @@ from janis_core import (
     Filename,
     InputSelector,
     String,
+    ToolMetadata,
 )
 from janis_bioinformatics.data_types import CompressedVcf, VcfTabix, Vcf
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
@@ -47,7 +49,13 @@ class ConcatStrelkaSomaticVcf(BioinformaticsTool):
         ]
 
     def outputs(self) -> List[ToolOutput]:
-        return [ToolOutput("out", Vcf(), glob=InputSelector("outputFilename"),)]
+        return [
+            ToolOutput(
+                "out",
+                Vcf(),
+                glob=InputSelector("outputFilename"),
+            )
+        ]
 
     def arguments(self):
         return [
@@ -67,3 +75,11 @@ class ConcatStrelkaSomaticVcf(BioinformaticsTool):
         vcf-concat $vcf1.gz $vcf2.gz > header.vcf;
         vcf-merge $vcf1.gz $vcf2.gz > content.vcf;
         cat header.vcf content.vcf > ${output}.vcf;"""
+
+    def bind_metadata(self):
+        return ToolMetadata(
+            contributors=["Jiaan Yu"],
+            dateCreated=datetime(2020, 6, 4),
+            dateUpdated=datetime(2020, 7, 29),
+            documentation="",
+        )

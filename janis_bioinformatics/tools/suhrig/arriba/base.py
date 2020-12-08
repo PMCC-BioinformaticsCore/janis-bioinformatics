@@ -396,7 +396,7 @@ class ArribaBase(BioinformaticsTool, ABC):
             ),
         ]
 
-    def metadata(self):
+    def bind_metadata(self):
         return ToolMetadata(
             contributors=["Michael Franklin"],
             dateCreated=datetime(2020, 9, 2),

@@ -12,3 +12,6 @@ class StarInputAlignmentsFromBamBase(StarBase, ABC):
 
     def outputs(self) -> List[ToolOutput]:
         pass
+
+    def skip_test(cls) -> bool:
+        return True

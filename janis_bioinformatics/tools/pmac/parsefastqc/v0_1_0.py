@@ -1,7 +1,7 @@
 """
 Each modification of this tool should duplicate this code
 """
-
+from datetime import datetime
 from typing import List, Dict, Any, Optional
 
 from janis_core import PythonTool, File, Array, ToolMetadata
@@ -136,6 +136,7 @@ class ParseFastqcAdaptors(BioinformaticsPythonTool):
         self.metadata.documentation = (
             "Parse overrepresented region and lookup in Cutadapt table"
         )
-        self.metadata.creator = "Michael Franklin"
-        self.metadata.dateCreated = "2020-01-07"
+        self.metadata.contributors = ["Michael Franklin"]
+        self.metadata.dateCreated = datetime(2020, 1, 7)
+        self.metadata.dateUpdated = datetime(2020, 2, 14)
         self.metadata.version = "0.1.0"

@@ -365,6 +365,7 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
             ),
         )
 
+<<<<<<< HEAD
     def add_rna_seq_calling(self):
         self.step(
             "mark_duplicates",
@@ -426,6 +427,14 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
             output_name=StringFormatter(
                 "{sample_name}_HAP.filtered", sample_name=self.name
             ),
+=======
+    def bind_metadata(self):
+        return WorkflowMetadata(
+            contributors=["Michael Franklin"],
+            dateCreated=datetime(2020, 9, 24),
+            dateUpdated=datetime(2020, 10, 7),
+            documentation="",
+>>>>>>> 612b57a81fdc8a606cd396f6928a1982a537fe29
         )
 
 

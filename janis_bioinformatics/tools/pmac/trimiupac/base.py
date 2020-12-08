@@ -1,10 +1,18 @@
+from datetime import datetime
 from abc import ABC
 from typing import Dict, Any, List
 
 from janis_bioinformatics.data_types import Vcf
 
 from janis_bioinformatics.tools import BioinformaticsTool
-from janis_core import CaptureType, ToolInput, Filename, ToolOutput, InputSelector
+from janis_core import (
+    CaptureType,
+    ToolInput,
+    Filename,
+    ToolOutput,
+    InputSelector,
+    ToolMetadata,
+)
 from janis_core import get_value_for_hints_and_ordered_resource_tuple
 
 
@@ -71,3 +79,11 @@ class TrimIUPACBase(BioinformaticsTool, ABC):
 
     def outputs(self) -> List[ToolOutput]:
         return [ToolOutput("out", Vcf(), InputSelector("outputFilename"))]
+
+    def bind_metadata(self):
+        return ToolMetadata(
+            contributors=["Michael Franklin"],
+            dateCreated=datetime(2019, 5, 30),
+            dateUpdated=datetime(2019, 12, 8),
+            documentation="",
+        )

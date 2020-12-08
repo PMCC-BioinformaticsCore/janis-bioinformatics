@@ -1,3 +1,4 @@
+from datetime import datetime
 from janis_core import String
 from janis_core import WorkflowMetadata
 
@@ -31,7 +32,12 @@ class PerformanceSummaryGenome_0_1_0(BioinformaticsWorkflow):
         return "Peter MacCallum Cancer Centre"
 
     def bind_metadata(self):
-        return WorkflowMetadata(version="v0.1.0", contributors=["Jiaan Yu"])
+        return WorkflowMetadata(
+            version="v0.1.0",
+            contributors=["Jiaan Yu"],
+            dateCreated=datetime(2020, 4, 28),
+            dateUpdated=datetime(2020, 6, 12),
+        )
 
     def constructor(self):
 
@@ -44,7 +50,9 @@ class PerformanceSummaryGenome_0_1_0(BioinformaticsWorkflow):
         # Steps - Performance Summary
         self.step(
             "gatk4collectinsertsizemetrics",
-            Gatk4CollectInsertSizeMetricsLatest(bam=self.bam,),
+            Gatk4CollectInsertSizeMetricsLatest(
+                bam=self.bam,
+            ),
         )
         self.step("bamflagstat", SamToolsFlagstatLatest(bam=self.bam))
         self.step(
@@ -55,7 +63,8 @@ class PerformanceSummaryGenome_0_1_0(BioinformaticsWorkflow):
         self.step(
             "bedtoolsgenomecoveragebed",
             BedToolsGenomeCoverageBedLatest(
-                inputBam=self.samtoolsview.out, genome=self.genome_file,
+                inputBam=self.samtoolsview.out,
+                genome=self.genome_file,
             ),
         )
         # Give all the output files to performance summary script

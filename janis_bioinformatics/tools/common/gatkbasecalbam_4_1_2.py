@@ -1,9 +1,11 @@
+from datetime import datetime
 from janis_bioinformatics.data_types import BamBai, FastaWithDict, VcfTabix, Bed
 from janis_bioinformatics.tools.gatk4 import (
     Gatk4BaseRecalibrator_4_1_2,
     Gatk4ApplyBqsr_4_1_2,
 )
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsWorkflow
+from janis_core import ToolMetadata
 
 
 class GATKBaseRecalBQSRWorkflow_4_1_2(BioinformaticsWorkflow):
@@ -58,3 +60,11 @@ class GATKBaseRecalBQSRWorkflow_4_1_2(BioinformaticsWorkflow):
             ),
         )
         self.output("out", source=self.apply_bqsr.out)
+
+    def bind_metadata(self):
+        return ToolMetadata(
+            contributors=["Jiaan Yu"],
+            dateCreated=datetime(2020, 6, 26),
+            dateUpdated=datetime(2020, 6, 26),
+            documentation="",
+        )

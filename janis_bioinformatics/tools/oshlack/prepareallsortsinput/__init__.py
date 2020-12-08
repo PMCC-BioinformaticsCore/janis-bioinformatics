@@ -1,7 +1,8 @@
+from datetime import datetime
 from typing import List, Dict, Any, Optional
 
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsPythonTool
-from janis_core import TOutput, File
+from janis_core import TOutput, File, ToolMetadata
 
 from janis_unix import Csv
 
@@ -54,6 +55,14 @@ class PrepareALLSortsInput_0_1_0(BioinformaticsPythonTool):
 
     def tool_provider(self):
         return "Peter MacCallum Cancer Centre"
+
+    def bind_metadata(self):
+        return ToolMetadata(
+            contributors=["Jiaan Yu"],
+            dateCreated=datetime(2020, 9, 21),
+            dateUpdated=datetime(2020, 9, 21),
+            documentation="",
+        )
 
 
 if __name__ == "__main__":

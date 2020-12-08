@@ -100,7 +100,7 @@ class BcfToolsSortBase(BcfToolsToolBase, ABC):
 
     def bind_metadata(self):
         return ToolMetadata(
-            contributors=None,
+            contributors=["Michael Franklin"],
             dateCreated=datetime(2019, 5, 9),
             dateUpdated=datetime(2019, 7, 11),
             institution=None,

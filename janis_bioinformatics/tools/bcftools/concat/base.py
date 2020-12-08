@@ -48,6 +48,8 @@ class BcfToolsConcatBase(BcfToolsToolBase, ABC):
     def bind_metadata(self):
         from datetime import date
 
+        self.metadata.contributors = ["Michael Franklin"]
+        self.metadata.dateCreated = date(2019, 9, 9)
         self.metadata.dateUpdated = date(2019, 9, 9)
         self.metadata.doi = "http://www.ncbi.nlm.nih.gov/pubmed/19505943"
         self.metadata.citation = (

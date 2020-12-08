@@ -170,9 +170,9 @@ class Gatk4GatherBQSRReportsBase(Gatk4ToolBase, ABC):
     def outputs(self):
         return [ToolOutput("out", Tsv, glob=InputSelector("outputFilename"))]
 
-    def metadata(self):
+    def bind_metadata(self):
         return ToolMetadata(
-            contributors=[],
+            contributors=["Michael Franklin"],
             dateCreated=datetime(2020, 5, 18),
             dateUpdated=datetime(2020, 5, 18),
             documentation="USAGE: GatherBQSRReports [arguments]\nGathers scattered BQSR recalibration reports into a single file\nVersion:4.1.3.0\n",
