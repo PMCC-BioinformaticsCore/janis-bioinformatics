@@ -34,10 +34,7 @@ class BGZipBase(HtsLibBase, ABC):
             ToolInput("file", File(), position=100, doc="File to bgzip compress"),
             ToolInput(
                 "outputFilename",
-                Filename(
-                    prefix=InputSelector("file").basename(),
-                    extension=".gz",
-                ),
+                Filename(prefix=InputSelector("file").basename(), extension=".gz",),
                 position=102,
             ),
             *self.additional_args,
@@ -47,13 +44,7 @@ class BGZipBase(HtsLibBase, ABC):
         return [ToolArgument(">", position=101, shell_quote=False)]
 
     def outputs(self) -> List[ToolOutput]:
-        return [
-            ToolOutput(
-                "out",
-                Gunzipped(),
-                glob=InputSelector("outputFilename"),
-            )
-        ]
+        return [ToolOutput("out", Gunzipped(), glob=InputSelector("outputFilename"),)]
 
     def friendly_name(self):
         return "BGZip"

@@ -57,9 +57,7 @@ class AddBamStatsGermline_0_1_0(BioinformaticsWorkflow):
         self.step(
             "addbamstats",
             AddBamStatsLatest(
-                inputVcf=self.vcf,
-                mpileup=self.samtoolsmpileup.out,
-                type="germline",
+                inputVcf=self.vcf, mpileup=self.samtoolsmpileup.out, type="germline",
             ),
         )
 

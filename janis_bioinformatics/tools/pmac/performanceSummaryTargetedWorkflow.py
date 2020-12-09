@@ -57,9 +57,7 @@ class PerformanceSummaryTargeted_0_1_0(BioinformaticsWorkflow):
         self.step("indexbam", SamToolsIndex_1_9(bam=self.rmsecondaryalignments.out))
         self.step(
             "gatk4collectinsertsizemetrics",
-            Gatk4CollectInsertSizeMetrics_4_1_2(
-                bam=self.indexbam.out,
-            ),
+            Gatk4CollectInsertSizeMetrics_4_1_2(bam=self.indexbam.out,),
         )
         self.step(
             "bamflagstat", SamToolsFlagstat_1_9(bam=self.rmsecondaryalignments.out)

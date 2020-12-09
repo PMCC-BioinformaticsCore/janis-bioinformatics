@@ -46,18 +46,14 @@ class AddBamStatsSomatic_0_1_0(BioinformaticsWorkflow):
         self.step(
             "tumor",
             self.process_subpipeline(
-                vcf=self.vcf,
-                bam=self.tumor_bam,
-                reference=self.reference,
+                vcf=self.vcf, bam=self.tumor_bam, reference=self.reference,
             ),
         )
 
         self.step(
             "normal",
             self.process_subpipeline(
-                vcf=self.vcf,
-                bam=self.normal_bam,
-                reference=self.reference,
+                vcf=self.vcf, bam=self.normal_bam, reference=self.reference,
             ),
         )
 

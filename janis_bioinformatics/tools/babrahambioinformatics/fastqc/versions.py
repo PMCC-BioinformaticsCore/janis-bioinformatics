@@ -92,9 +92,7 @@ class FastqcSingleScattered(BioinformaticsWorkflow):
         }
 
         self.step(
-            "fastqc",
-            FastQCSingleLatest(read=self.reads, **kwargs),
-            scatter="read",
+            "fastqc", FastQCSingleLatest(read=self.reads, **kwargs), scatter="read",
         )
 
         self.capture_outputs_from_step(self.fastqc)
