@@ -24,7 +24,7 @@ setup(
         "janis_bioinformatics." + p
         for p in sorted(find_packages("./janis_bioinformatics"))
     ],
-    package_data={"janis_bioinformatics": ["tools/test_data/*"]},
+    package_data={"": ["*/test_data/*"]},
     include_package_data=True,
     entry_points={
         "janis.extension": ["bioinformatics=janis_bioinformatics"],
