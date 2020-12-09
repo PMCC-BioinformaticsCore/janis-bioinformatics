@@ -1,12 +1,19 @@
 import unittest
 import sys
 from parameterized import parameterized
-from nose.plugins.attrib import attr
 
 import janis_bioinformatics
 
 from janis_core.tool.test_suite_runner import ToolTestSuiteRunner
 from janis_core.tool import test_helpers
+
+try:
+    from nose.plugins.attrib import attr
+except ImportError:
+
+    def attr(ob):
+        return ob
+
 
 version = None
 for arg in sys.argv:

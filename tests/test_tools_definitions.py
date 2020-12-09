@@ -1,10 +1,17 @@
 import unittest
-from nose.plugins.attrib import attr
 from parameterized import parameterized
 
 import janis_bioinformatics
 from janis_core.tool.test_definitions import ToolEvaluator
 from janis_core.tool import test_helpers
+
+try:
+    from nose.plugins.attrib import attr
+except ImportError:
+
+    def attr(ob):
+        return ob
+
 
 all_tools = test_helpers.get_all_tools([janis_bioinformatics.tools])
 
@@ -16,6 +23,7 @@ for tool_versions in all_tools:
 
 
 class TestToolsDefinitions(unittest.TestCase):
+
     failed = {}
     succeeded = set()
 
