@@ -38,7 +38,7 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
         self.metadata.dateCreated = date(2019, 10, 18)
         self.metadata.dateUpdated = date(2019, 10, 25)
 
-        self.contributors = ["Sebastian Hollizeck"]
+        self.metadata.contributors = ["Sebastian Hollizeck"]
         self.metadata.keywords = [
             "variants",
             "freebayes",

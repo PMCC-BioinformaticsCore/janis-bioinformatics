@@ -9,18 +9,22 @@ from janis_bioinformatics.tools.bcftools import (
     BcfToolsNorm_1_9 as BcfToolsNorm,
 )
 from janis_bioinformatics.tools.dawson.createcallregions.base import CreateCallRegions
+
+# these dont need cram, because they dont work on crams
 from janis_bioinformatics.tools.gatk4 import (
     Gatk4CalculateContaminationLatest as CalculateContamination,
     Gatk4FilterMutectCallsLatest as FilterMutectCalls,
     Gatk4LearnReadOrientationModelLatest as LearnReadOrientationModel,
     Gatk4MergeMutectStatsLatest as MergeMutectStats,
 )
+
+# for these we need the special cram version because they work directly on the cram
 from janis_bioinformatics.tools.gatk4.mutect2.versions import (
-    GatkMutect2Cram_4_1_6 as Mutect2,
+    GatkMutect2Cram_4_1_8 as Mutect2,
 )
 
 from janis_bioinformatics.tools.gatk4.getpileupsummaries.versions import (
-    Gatk4GetPileUpSummariesCram_4_1_6 as GetPileUpSummaries,
+    Gatk4GetPileUpSummariesCram_4_1_8 as GetPileUpSummaries,
 )
 
 
@@ -42,7 +46,7 @@ class Mutect2JointSomaticWorkflow(BioinformaticsWorkflow):
         self.metadata.dateCreated = date(2019, 10, 30)
         self.metadata.dateUpdated = date(2019, 10, 30)
 
-        self.contributors = ["Sebastian Hollizeck"]
+        self.metadata.contributors = ["Sebastian Hollizeck"]
         self.metadata.keywords = [
             "variants",
             "mutect2",

@@ -1,4 +1,5 @@
-from janis_core import Array, Boolean, Int
+from datetime import datetime
+from janis_core import Array, Boolean, Int, ToolMetadata
 
 from janis_bioinformatics.data_types import BamBai
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsWorkflow
@@ -47,6 +48,14 @@ class MergeAndMarkBams_4_0(BioinformaticsWorkflow):
             ),
         )
         self.output("out", source=self.markDuplicates.out)
+
+    def bind_metadata(self):
+        return ToolMetadata(
+            contributors=["Michael Franklin"],
+            dateCreated=datetime(2019, 2, 19),
+            dateUpdated=datetime(2019, 12, 8),
+            documentation="",
+        )
 
 
 if __name__ == "__main__":

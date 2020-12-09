@@ -94,11 +94,7 @@ class GridssBase_2_4(BioinformaticsTool):
     def outputs(self):
         return [
             ToolOutput("out", Vcf(), glob=InputSelector("outputFilename")),
-            ToolOutput(
-                "assembly",
-                Bam(),
-                glob=InputSelector("assemblyFilename"),
-            ),
+            ToolOutput("assembly", Bam(), glob=InputSelector("assemblyFilename"),),
         ]
 
     def cpus(self, hints: Dict[str, Any]):

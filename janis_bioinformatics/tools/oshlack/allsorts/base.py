@@ -178,7 +178,7 @@ class AllSortsBase(BioinformaticsTool, ABC):
             ),
         ]
 
-    def metadata(self):
+    def bind_metadata(self):
         return ToolMetadata(
             contributors=["Michael Franklin", "Jiaan Yu"],
             dateCreated=datetime(2020, 9, 2),

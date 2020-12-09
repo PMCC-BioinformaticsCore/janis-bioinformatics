@@ -81,7 +81,7 @@ class BwaAligner(BioinformaticsWorkflow):
 
     def bind_metadata(self):
         self.metadata.documentation = "Align sorted bam with this subworkflow consisting of BWA Mem + SamTools + Gatk4SortSam"
-        self.metadata.creator = "Michael Franklin"
+        self.metadata.contributors = ["Michael Franklin"]
         self.metadata.dateCreated = "2018-12-24"
         self.metadata.version = "1.1"
 

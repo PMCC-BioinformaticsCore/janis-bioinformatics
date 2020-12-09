@@ -1,4 +1,5 @@
-from janis_core import Boolean
+from datetime import datetime
+from janis_core import Boolean, WorkflowMetadata
 from janis_unix.tools import UncompressArchive
 
 from janis_bioinformatics.data_types import FastaWithDict, BamBai, BedTabix
@@ -87,3 +88,11 @@ class IlluminaSomaticVariantCaller(BioinformaticsWorkflow):
         self.output("sv", source=self.manta.diploidSV)
         self.output("variants", source=self.sortvcf.out)
         self.output("out", source=self.filterpass.out)
+
+    def bind_metadata(self):
+        return WorkflowMetadata(
+            contributors=["Jiaan Yu", "Michael Franklin"],
+            dateCreated=datetime(2020, 6, 12),
+            dateUpdated=datetime(2020, 8, 25),
+            documentation="",
+        )

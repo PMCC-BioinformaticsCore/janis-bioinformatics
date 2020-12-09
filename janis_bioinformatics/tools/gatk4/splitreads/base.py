@@ -90,6 +90,7 @@ class Gatk4SplitReadsBase(Gatk4ToolBase):
 
     def bind_metadata(self):
         return ToolMetadata(
+            contributors=["Michael Franklin"],
             dateCreated=datetime(2019, 9, 16),
             dateUpdated=datetime(2019, 9, 16),
             documentation="USAGE: SplitReads [arguments]\nOutputs reads from a SAM/BAM/CRAM by read group, sample and library name\nVersion:4.1.3.0",

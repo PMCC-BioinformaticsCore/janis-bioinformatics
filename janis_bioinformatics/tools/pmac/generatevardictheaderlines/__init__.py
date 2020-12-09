@@ -57,6 +57,7 @@ class GenerateVardictHeaderLines(BioinformaticsPythonTool):
         return "v0.1.0"
 
     def bind_metadata(self):
+        self.metadata.dateCreated = datetime(2020, 6, 2)
         self.metadata.dateUpdated = datetime(2020, 6, 2)
         self.metadata.contributors = ["Michael Franklin", "Jiaan Yu"]
         self.metadata.documentation = """\

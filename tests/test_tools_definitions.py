@@ -18,21 +18,27 @@ for tool_versions in all_tools:
 class TestToolsDefinitions(unittest.TestCase):
     failed = {}
     succeeded = set()
+    skipped = set()
 
     @parameterized.expand([[t.versioned_id(), t] for t in all_versioned_tools])
-    @attr("travis")
+    @attr("ci")
     def test(self, name, tool):
         evaluation = ToolEvaluator.evaluate(tool)
 
         if evaluation is True:
             self.succeeded.add(tool.versioned_id())
+        elif evaluation == ToolEvaluator.STATUS_SKIPPED:
+            self.skipped.add(tool.versioned_id())
         else:
             self.failed[tool.versioned_id()] = evaluation
             raise Exception(evaluation)
 
+    @attr("ci")
     def test_report(self):
         # Note: This function has to be run LASt! (these tests are run by alphabetical order
-        test_helpers.print_test_report(failed=self.failed, succeeded=self.succeeded)
+        test_helpers.print_test_report(
+            failed=self.failed, succeeded=self.succeeded, skipped=self.skipped
+        )
 
         if len(self.failed) > 0:
             raise Exception(

@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import List
 
 from janis_core import (
@@ -9,6 +10,7 @@ from janis_core import (
     Filename,
     InputSelector,
     String,
+    ToolMetadata,
 )
 from janis_bioinformatics.data_types import Vcf, CompressedVcf, VcfTabix
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
@@ -50,13 +52,7 @@ class FilterVardictSomaticVcf(BioinformaticsTool):
         ]
 
     def outputs(self) -> List[ToolOutput]:
-        return [
-            ToolOutput(
-                "out",
-                Vcf,
-                glob=InputSelector("outputFilename"),
-            )
-        ]
+        return [ToolOutput("out", Vcf, glob=InputSelector("outputFilename"),)]
 
     def arguments(self):
         return [
@@ -76,3 +72,11 @@ class FilterVardictSomaticVcf(BioinformaticsTool):
         return """Filter somatic vardict vcf by removing the variants marks with "Germline", and variants without a "PASS" quality.
         Bash command:
         bcftools filter -e STATUS=GERMLINE -o - $vcf | bcftools filter -i FILTER==PASS -o $out_vcf"""
+
+    def bind_metadata(self):
+        return ToolMetadata(
+            contributors=["Jiaan Yu", "Michael Franklin"],
+            dateCreated=datetime(2020, 6, 4),
+            dateUpdated=datetime(2020, 11, 9),
+            documentation="",
+        )

@@ -38,7 +38,7 @@ class AddBamStatsBase(BioinformaticsTool, ABC):
         return [ToolOutput("out", Vcf(), glob=InputSelector("outputFilename"))]
 
     def bind_metadata(self):
-        self.metadata.creator = "Jiaan Yu"
+        self.metadata.dateCreated = datetime.datetime(2020, 5, 20)
         self.metadata.dateUpdated = datetime.datetime(2020, 5, 20)
         self.metadata.contributors = ["Jiaan Yu"]
         self.metadata.documentationUrl = (
