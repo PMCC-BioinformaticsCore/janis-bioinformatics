@@ -1,0 +1,8 @@
+from .freebayessomaticworkflow import FreeBayesSomaticWorkflow
+from .freebayessomaticworkflow_cram import FreeBayesSomaticWorkflowCram
+
+from .mutect2jointsomaticworkflow import Mutect2JointSomaticWorkflow
+from .mutect2jointsomaticworkflow_cram import Mutect2JointSomaticWorkflowCram
+
+from .strelka2passworkflow import Strelka2PassWorkflow
+from .strelka2passworkflow_cram import Strelka2PassWorkflowCram
