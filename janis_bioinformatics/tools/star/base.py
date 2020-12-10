@@ -51,13 +51,6 @@ class StarBase(BioinformaticsTool, ABC):
     def friendly_name(self):
         return "STAR Aligner"
 
-    # Need a better way to specify memory
-    def memory(self, hints):
-        return 32
-
-    def cpus(self, hints):
-        return 4
-
     def arguments(self):
         return [
             ToolArgument(

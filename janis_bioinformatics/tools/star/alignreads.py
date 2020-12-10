@@ -12,6 +12,12 @@ class StarAlignReadsBase(StarBase, ABC):
     def run_mode(self):
         return "alignReads"
 
+    def memory(self, hints):
+        return 32
+
+    def cpus(self, hints):
+        return 4
+
     def outputs(self) -> List[ToolOutput]:
         return [
             ToolOutput(

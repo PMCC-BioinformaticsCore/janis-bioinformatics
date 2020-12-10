@@ -7,11 +7,14 @@ from janis_bioinformatics.tools.star.base import StarBase
 
 
 class StarGenerateIndexesBase(StarBase, ABC):
-    def memory(self):
-        return 64
-
     def run_mode(self):
         return "genomeGenerate"
+
+    def memory(self, hints):
+        return 64
+
+    def cpus(self, hints):
+        return 4
 
     def directories_to_create(self):
         return [InputSelector("outputGenomeDir")]
