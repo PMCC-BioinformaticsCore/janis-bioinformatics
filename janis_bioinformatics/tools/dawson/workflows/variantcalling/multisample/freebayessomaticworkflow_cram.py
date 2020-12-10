@@ -20,12 +20,12 @@ from janis_bioinformatics.tools.vcflib import (
 from janis_core import Array, Int, String
 
 
-class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
+class FreeBayesSomaticWorkflowCram(BioinformaticsWorkflow):
     def id(self):
-        return "FreeBayesSomaticWorkflow"
+        return "FreeBayesSomaticWorkflowCram"
 
     def friendly_name(self):
-        return "Freebayes somatic workflow"
+        return "Freebayes somatic workflow (CRAM)"
 
     def tool_provider(self):
         return "Dawson Labs"
@@ -36,7 +36,7 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
     def bind_metadata(self):
         self.metadata.version = "0.1"
         self.metadata.dateCreated = date(2019, 10, 18)
-        self.metadata.dateUpdated = date(2019, 10, 25)
+        self.metadata.dateUpdated = date(2020, 12, 10)
 
         self.contributors = ["Sebastian Hollizeck"]
         self.metadata.keywords = [

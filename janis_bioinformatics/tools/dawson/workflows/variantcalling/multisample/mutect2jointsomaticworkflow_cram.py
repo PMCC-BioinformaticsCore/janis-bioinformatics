@@ -28,12 +28,12 @@ from janis_bioinformatics.tools.gatk4.getpileupsummaries.versions import (
 )
 
 
-class Mutect2JointSomaticWorkflow(BioinformaticsWorkflow):
+class Mutect2JointSomaticWorkflowCram(BioinformaticsWorkflow):
     def id(self):
-        return "Mutect2JointSomaticWorkflow"
+        return "Mutect2JointSomaticWorkflowCram"
 
     def friendly_name(self):
-        return "Mutect2 joint somatic variant calling workflow"
+        return "Mutect2 joint somatic variant calling workflow (CRAM)"
 
     def tool_provider(self):
         return "Dawson Labs"
@@ -44,7 +44,7 @@ class Mutect2JointSomaticWorkflow(BioinformaticsWorkflow):
     def bind_metadata(self):
         self.metadata.version = "0.1"
         self.metadata.dateCreated = date(2019, 10, 30)
-        self.metadata.dateUpdated = date(2019, 10, 30)
+        self.metadata.dateUpdated = date(2020, 12, 10)
 
         self.contributors = ["Sebastian Hollizeck"]
         self.metadata.keywords = [

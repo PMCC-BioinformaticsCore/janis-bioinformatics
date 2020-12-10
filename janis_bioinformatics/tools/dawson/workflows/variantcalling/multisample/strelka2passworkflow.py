@@ -1,14 +1,14 @@
 from datetime import date
 
-from janis_bioinformatics.data_types import BedTabix, CramCrai, FastaFai
+from janis_bioinformatics.data_types import BedTabix, BamBai, FastaFai
 from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.dawson import (
     RefilterStrelka2Calls_0_1 as RefilterStrelka2Calls,
 )
-from janis_bioinformatics.tools.dawson.workflows.strelka2passanalysisstep1 import (
+from .steps.strelka2passanalysisstep1 import (
     Strelka2PassWorkflowStep1,
 )
-from janis_bioinformatics.tools.dawson.workflows.strelka2passanalysisstep2 import (
+from .steps.strelka2passanalysisstep2 import (
     Strelka2PassWorkflowStep2,
 )
 from janis_bioinformatics.tools.htslib import BGZipLatest as BGZip, TabixLatest as Tabix
@@ -32,7 +32,7 @@ class Strelka2PassWorkflow(BioinformaticsWorkflow):
     def bind_metadata(self):
         self.metadata.version = "0.1"
         self.metadata.dateCreated = date(2019, 10, 11)
-        self.metadata.dateUpdated = date(2020, 8, 4)
+        self.metadata.dateUpdated = date(2020, 12, 10)
 
         self.metadata.contributors = ["Sebastian Hollizeck"]
         self.metadata.keywords = [
@@ -55,8 +55,8 @@ class Strelka2PassWorkflow(BioinformaticsWorkflow):
 
     def constructor(self):
 
-        self.input("normalBam", CramCrai)
-        self.input("tumorBams", Array(CramCrai))
+        self.input("normalBam", BamBai)
+        self.input("tumorBams", Array(BamBai))
 
         self.input("reference", FastaFai)
 
