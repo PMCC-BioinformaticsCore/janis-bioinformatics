@@ -384,6 +384,8 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
             ),
         )
 
+        # this tool may break in some samples
+        # Fixed in the pull request in https://github.com/broadinstitute/gatk/pull/6909 update version tbc
         self.step(
             "splitncigar",
             Gatk4SplitNCigarReads_4_1_4(
