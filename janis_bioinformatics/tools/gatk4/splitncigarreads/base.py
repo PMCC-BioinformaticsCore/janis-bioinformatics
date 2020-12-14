@@ -1,5 +1,6 @@
 from abc import ABC
 from datetime import datetime
+from typing import Dict, Any
 
 from janis_core import (
     ToolInput,
@@ -14,10 +15,26 @@ from janis_core import (
     InputSelector,
     ToolOutput,
     Array,
+    CaptureType,
+    get_value_for_hints_and_ordered_resource_tuple,
 )
 
 from janis_bioinformatics.data_types import Bam, BamBai, FastaWithIndexes
 from janis_bioinformatics.tools.gatk4.gatk4toolbase import Gatk4ToolBase
+
+MEM_TUPLE = [
+    (
+        CaptureType.key(),
+        {
+            CaptureType.TARGETED: 32,
+            CaptureType.CHROMOSOME: 64,
+            CaptureType.EXOME: 64,
+            CaptureType.THIRTYX: 64,
+            CaptureType.NINETYX: 64,
+            CaptureType.THREEHUNDREDX: 64,
+        },
+    )
+]
 
 
 class Gatk4SplitNCigarReadsBase(Gatk4ToolBase, ABC):
@@ -664,6 +681,12 @@ class Gatk4SplitNCigarReadsBase(Gatk4ToolBase, ABC):
                 secondaries_present_as={".bai": "^.bai"},
             )
         ]
+
+    def memory(self, hints: Dict[str, Any]):
+        val = get_value_for_hints_and_ordered_resource_tuple(hints, MEM_TUPLE)
+        if val:
+            return val
+        return 16
 
     def bind_metadata(self):
         return ToolMetadata(
