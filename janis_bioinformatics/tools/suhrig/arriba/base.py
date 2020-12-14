@@ -33,6 +33,10 @@ class ArribaBase(BioinformaticsTool, ABC):
     def tool(self) -> str:
         return "Arriba"
 
+    # set a bigger default memory
+    def memory(self, hints):
+        return 64
+
     def base_command(self):
         return ["arriba"]
 
