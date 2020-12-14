@@ -1,15 +1,12 @@
 from datetime import date
 
-from janis_bioinformatics.data_types import BedTabix, CramCrai, FastaFai
+from janis_bioinformatics.data_types import BedTabix, FastaFai
 from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.bcftools import (
     BcfToolsIndex_1_9 as BcfToolsIndex,
     BcfToolsNorm_1_9 as BcfToolsNorm,
 )
-from janis_bioinformatics.tools.illumina.manta.manta import MantaCram_1_5_0 as Manta
-from janis_bioinformatics.tools.illumina.strelkasomatic.strelkasomatic import (
-    StrelkaSomaticCram_2_9_10 as Strelka,
-)
+
 from janis_core import Boolean, File
 
 
@@ -24,12 +21,12 @@ class Strelka2PassWorkflowStep1(BioinformaticsWorkflow):
         return "Dawson Labs"
 
     def version(self):
-        return "0.1"
+        return "0.1.1"
 
     def bind_metadata(self):
-        self.metadata.version = "0.1"
+        self.metadata.version = "0.1.1"
         self.metadata.dateCreated = date(2019, 10, 11)
-        self.metadata.dateUpdated = date(2020, 8, 4)
+        self.metadata.dateUpdated = date(2020, 12, 10)
 
         self.metadata.contributors = ["Sebastian Hollizeck"]
         self.metadata.keywords = [
@@ -48,10 +45,28 @@ class Strelka2PassWorkflowStep1(BioinformaticsWorkflow):
         It also normalises and indexes the output vcfs
                 """.strip()
 
+    # this is a way to get the tool without spagetti code in bam and cram format
+    def getMantaTool(self):
+        from janis_bioinformatics.tools.illumina.manta.manta import Manta_1_5_0 as Manta
+
+        return Manta
+
+    def getStrelka2Tool(self):
+        from janis_bioinformatics.tools.illumina.strelkasomatic.strelkasomatic import (
+            StrelkaSomatic_2_9_10 as Strelka,
+        )
+
+        return Strelka
+
+    def getStrelka2InputType(self):
+        from janis_bioinformatics.data_types import BamBai
+
+        return BamBai
+
     def constructor(self):
 
-        self.input("normalBam", CramCrai)
-        self.input("tumorBam", CramCrai)
+        self.input("normalBam", self.getStrelka2InputType())
+        self.input("tumorBam", self.getStrelka2InputType())
 
         self.input("reference", FastaFai)
         self.input("callRegions", BedTabix(optional=True))
@@ -60,7 +75,7 @@ class Strelka2PassWorkflowStep1(BioinformaticsWorkflow):
 
         self.step(
             "manta",
-            Manta(
+            self.getMantaTool()(
                 bam=self.normalBam,
                 tumorBam=self.tumorBam,
                 reference=self.reference,
@@ -70,7 +85,7 @@ class Strelka2PassWorkflowStep1(BioinformaticsWorkflow):
         )
         self.step(
             "strelka",
-            Strelka(
+            self.getStrelka2Tool()(
                 indelCandidates=self.manta.candidateSmallIndels,
                 normalBam=self.normalBam,
                 tumorBam=self.tumorBam,

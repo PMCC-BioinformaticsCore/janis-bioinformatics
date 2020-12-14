@@ -1,13 +1,13 @@
 from datetime import date
 
-from janis_bioinformatics.data_types import CramCrai, FastaFai
+from janis_bioinformatics.data_types import FastaFai
 from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.bcftools import BcfToolsNormLatest as BcfToolsNorm
 from janis_bioinformatics.tools.dawson import (
     CallSomaticFreeBayes_0_1 as CallSomaticFreeBayes,
 )
 from janis_bioinformatics.tools.dawson.createcallregions.base import CreateCallRegions
-from janis_bioinformatics.tools.freebayes.versions import FreeBayesCram_1_3 as FreeBayes
+
 from janis_bioinformatics.tools.htslib import BGZipLatest as BGZip, TabixLatest as Tabix
 from janis_bioinformatics.tools.vcflib import (
     VcfAllelicPrimitivesLatest as VcfAllelicPrimitives,
@@ -20,21 +20,21 @@ from janis_bioinformatics.tools.vcflib import (
 from janis_core import Array, Int, String
 
 
-class FreeBayesSomaticWorkflowCram(BioinformaticsWorkflow):
+class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
     def id(self):
-        return "FreeBayesSomaticWorkflowCram"
+        return "FreeBayesSomaticWorkflow"
 
     def friendly_name(self):
-        return "Freebayes somatic workflow (CRAM)"
+        return "Freebayes somatic workflow"
 
     def tool_provider(self):
         return "Dawson Labs"
 
     def version(self):
-        return "0.1"
+        return "0.1.1"
 
     def bind_metadata(self):
-        self.metadata.version = "0.1"
+        self.metadata.version = "0.1.1"
         self.metadata.dateCreated = date(2019, 10, 18)
         self.metadata.dateUpdated = date(2020, 12, 10)
 
@@ -52,23 +52,63 @@ class FreeBayesSomaticWorkflowCram(BioinformaticsWorkflow):
         This allows a joint somatic genotyping of multiple samples of the same individual.
                 """.strip()
 
+    # this is a way to get the tool without spagetti code in bam and cram format
+    def getFreebayesTool(self):
+        from janis_bioinformatics.tools.freebayes.versions import (
+            FreeBayes_1_3 as freebayes,
+        )
+
+        return freebayes
+
+    def getFreebayesInputType(self):
+        from janis_bioinformatics.data_types import BamBai
+
+        return BamBai
+
     def constructor(self):
 
-        self.input("bams", Array(CramCrai))
+        self.input(
+            "bams",
+            Array(self.getFreebayesInputType()),
+            doc="All bams to be analysed. Samples can be split over multiple bams as well as multiple samples can be contained in one bam as long as the sample ids are set properly.",
+        )
 
-        self.input("reference", FastaFai)
-        self.input("regionSize", int, default=10000000)
+        self.input(
+            "reference",
+            FastaFai,
+            doc="The reference the bams were aligned to, with a fai index.",
+        )
+        self.input(
+            "regionSize",
+            int,
+            default=10000000,
+            doc="the size of the regions, to parallelise the analysis over. This needs to be adjusted if there are lots of samples or very high depth sequencing in the analysis.",
+        )
 
-        self.input("normalSample", String)
+        self.input(
+            "normalSample",
+            String,
+            doc="The sample id of the normal sample, as it is specified in the bam header.",
+        )
 
         # this is the coverage per sample that is the max we will analyse. It will automatically
         # multiplied by the amount of input bams we get
-        self.input("skipCov", Int(optional=True), default=500)
+        self.input(
+            "skipCov",
+            Int(optional=True),
+            default=500,
+            doc="The depth per sample, at which the variant calling process will skip a region. This is used to ignore regions with mapping issues, like the centromeres as well as heterochromatin. A good value is 3 times the maximum expected coverage.",
+        )
 
         # the same is true for min cov
-        self.input("minCov", Int(optional=True), default=10)
+        self.input(
+            "minCov",
+            Int(optional=True),
+            default=10,
+            doc="Minimum coverage over all samples, to still call variants.",
+        )
 
-        # this should be a conditional (if the callregions are supplied we use them, otherwise we
+        # this could be a conditional (if the callregions are supplied we use them, otherwise we
         # create them)
         self.step(
             "createCallRegions",
@@ -79,7 +119,7 @@ class FreeBayesSomaticWorkflowCram(BioinformaticsWorkflow):
 
         self.step(
             "callVariants",
-            FreeBayes(
+            self.getFreebayesTool()(
                 bams=self.bams,
                 reference=self.reference,
                 pooledDiscreteFlag=True,
