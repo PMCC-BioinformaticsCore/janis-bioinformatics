@@ -1,0 +1,2 @@
+from .strelka2passworkflow import Strelka2PassWorkflow
+from .strelka2passworkflow_cram import Strelka2PassWorkflowCram
