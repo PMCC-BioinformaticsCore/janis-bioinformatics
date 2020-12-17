@@ -177,8 +177,8 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
         self.add_trim_and_align()
         self.add_sort_bam()
         self.add_arriba()
-        self.add_all_sorts()
-        self.add_rna_seq_calling()
+        # self.add_all_sorts()
+        # pythself.add_rna_seq_calling()
 
     def add_trim_and_align(self):
 
@@ -238,6 +238,7 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
                     StringFormatter("PL:{platform}", platform=self.platform),
                     StringFormatter("PU:1"),
                 ],
+                sjdbGTFfile=self.gtf,
                 limitOutSJcollapsed=3000000,  # lots of splice junctions may need more than default 1M buffer
                 outSAMtype=["BAM", "Unsorted"],
                 outSAMunmapped="Within",
@@ -254,6 +255,11 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
                 alignSJstitchMismatchNmax=[5, -1, 5, 5],
                 chimSegmentReadGapMax=3,
             ),
+        )
+        self.output(
+            "out_star_gene_counts",
+            source=self.star_map_2pass_PE.out_gene_counts.assert_not_null(),
+            output_name=self.name,
         )
 
     def add_sort_bam(self):
