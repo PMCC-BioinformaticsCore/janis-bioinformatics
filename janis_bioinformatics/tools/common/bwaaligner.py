@@ -92,16 +92,10 @@ class BwaAligner(BioinformaticsWorkflow):
                 input={
                     "sample_name": "NA12878",
                     "fastq": [
-                        os.path.join(
-                            BioinformaticsWorkflow.test_data_path(), "BRCA1_R1.fastq.gz"
-                        ),
-                        os.path.join(
-                            BioinformaticsWorkflow.test_data_path(), "BRCA1_R2.fastq.gz"
-                        ),
+                        "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics/BRCA1_R1.fastq.gz",
+                        "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics/BRCA1_R2.fastq.gz",
                     ],
-                    "reference": os.path.join(
-                        BioinformaticsWorkflow.test_data_path(), "hg38-brca1.fasta"
-                    ),
+                    "reference": "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics/hg38-brca1.fasta",
                 },
                 output=[
                     TTestExpectedOutput(
@@ -121,17 +115,13 @@ class BwaAligner(BioinformaticsWorkflow):
                         tag="out",
                         preprocessor=Bam.flagstat,
                         operator=operator.eq,
-                        expected_file=os.path.join(
-                            self.test_data_path(), "bwaaligner.flagstat.txt"
-                        ),
+                        expected_file="https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics/bwaaligner/bwaaligner.flagstat.txt",
                     ),
                     TTestExpectedOutput(
                         tag="out",
                         preprocessor=TTestPreprocessor.Value,
                         operator=Bam.equal,
-                        expected_value=os.path.join(
-                            self.test_data_path(), "bwaaligner.bam"
-                        ),
+                        expected_value="https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics/small.bam",
                     ),
                 ],
             )
