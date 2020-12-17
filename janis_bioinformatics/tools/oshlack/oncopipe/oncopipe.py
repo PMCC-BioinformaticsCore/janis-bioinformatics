@@ -259,7 +259,9 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
         self.output(
             "out_star_gene_counts",
             source=self.star_map_2pass_PE.out_gene_counts.assert_not_null(),
-            output_name=self.name,
+            output_name=StringFormatter(
+                "{sample_name}_ReadsPerGene.out.tab", sample_name=self.name
+            ),
         )
 
     def add_sort_bam(self):
