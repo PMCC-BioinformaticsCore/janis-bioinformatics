@@ -239,6 +239,7 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
                     StringFormatter("PU:1"),
                 ],
                 sjdbGTFfile=self.gtf,
+                quantMode="GeneCounts",
                 limitOutSJcollapsed=3000000,  # lots of splice junctions may need more than default 1M buffer
                 outSAMtype=["BAM", "Unsorted"],
                 outSAMunmapped="Within",
