@@ -13,7 +13,7 @@ class StarAlignReadsBase(StarBase, ABC):
         return "alignReads"
 
     def memory(self, hints):
-        return 32
+        return 64
 
     def cpus(self, hints):
         return 4
@@ -30,6 +30,11 @@ class StarAlignReadsBase(StarBase, ABC):
                 Bam(optional=True),
                 glob=InputSelector("outFileNamePrefix")
                 + "Aligned.sortedByCoord.out.bam",
+            ),
+            ToolOutput(
+                "out_gene_counts",
+                File(optional=True),
+                glob=InputSelector("outFileNamePrefix") + "ReadsPerGene.out.tab",
             ),
             ToolOutput(
                 "SJ_out_tab",
