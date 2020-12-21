@@ -2,11 +2,11 @@ from datetime import datetime
 from typing import Dict, Any, List, Optional
 
 import janis_core as j
-
+from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsPythonTool
 from janis_bioinformatics.data_types import FastaDict, Bed
 
 
-class GenerateIntervalsByChromosome(j.PythonTool):
+class GenerateIntervalsByChromosome(BioinformaticsPythonTool):
     @staticmethod
     def code_block(
         reference: FastaDict,
