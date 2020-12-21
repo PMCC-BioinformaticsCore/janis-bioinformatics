@@ -90,11 +90,7 @@ class Gatk4MarkDuplicatesBase(Gatk4ToolBase, ABC):
             ToolInput("outputPrefix", String(optional=True)),
             ToolInput(
                 "outputFilename",
-                Filename(
-                    prefix=prefix,
-                    suffix=".markduped",
-                    extension=".bam",
-                ),
+                Filename(prefix=prefix, suffix=".markduped", extension=".bam",),
                 position=10,
                 prefix="-O",
                 doc="File to write duplication metrics to",

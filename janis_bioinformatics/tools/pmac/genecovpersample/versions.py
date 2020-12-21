@@ -16,8 +16,9 @@ class GeneCoveragePerSample_0_0_8(GeneCoveragePerSampleBase, PeterMacUtils_0_0_8
     pass
 
 
-class GeneCoveragePerSample_dev(GeneCoveragePerSampleBase, PeterMacUtils_dev):
-    pass
+# NOTE: disabled as this is for dev work only
+# class GeneCoveragePerSample_dev(GeneCoveragePerSampleBase, PeterMacUtils_dev):
+#     pass
 
 
 GeneCoveragePerSampleLatest = GeneCoveragePerSample_0_0_8

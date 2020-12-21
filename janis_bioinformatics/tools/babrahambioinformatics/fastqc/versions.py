@@ -63,7 +63,7 @@ class FastqcSingleScattered(BioinformaticsWorkflow):
     f"""
     FastQC doesn't return a Directory unless it's the single variant, but Janis will make
     you double scatter if you're processing an array of array of fastqs.
-    
+
     Note, this is bound to the LATEST version of FastQC: '{fastqc_single_instantiated.version()}'
     """
 

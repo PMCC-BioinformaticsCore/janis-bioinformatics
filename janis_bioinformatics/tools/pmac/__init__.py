@@ -15,3 +15,6 @@ from .molpathGermlineWorkflow import MolpathGermline_1_0_0
 from .molpathTumorOnlyWorkflow import MolpathTumorOnly_1_0_0
 from .generatevardictheaderlines import GenerateVardictHeaderLines
 from .generatebedtoolscoveragegenomefile import GenerateGenomeFileForBedtoolsCoverage
+from .generatintervalsbychromosome.generateintervalsbychromosome import (
+    GenerateIntervalsByChromosome,
+)

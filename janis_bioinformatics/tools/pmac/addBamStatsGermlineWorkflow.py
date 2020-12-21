@@ -1,3 +1,4 @@
+from datetime import datetime
 from janis_core import WorkflowBuilder, WorkflowMetadata
 
 # data types
@@ -26,7 +27,12 @@ class AddBamStatsGermline_0_1_0(BioinformaticsWorkflow):
         return "Peter MacCallum Cancer Centre"
 
     def bind_metadata(self):
-        return WorkflowMetadata(version="v0.1.0", contributors=["Jiaan Yu"])
+        return WorkflowMetadata(
+            version="v0.1.0",
+            contributors=["Jiaan Yu"],
+            dateCreated=datetime(2020, 6, 4),
+            dateUpdated=datetime(2020, 8, 10),
+        )
 
     def constructor(self):
 

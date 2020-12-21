@@ -232,14 +232,15 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
         self.step(
             "prepareAllsortsInput",
             PrepareALLSortsInput_0_1_0(
-                inputs=[self.featureCounts.out],
+                inps=[self.featureCounts.out],
                 labels=[self.name],
                 fusion_caller="featureCounts",
             ),
         )
 
         self.step(
-            "allsorts", AllSorts_0_1_0(samples=self.prepareAllsortsInput.out),
+            "allsorts",
+            AllSorts_0_1_0(samples=self.prepareAllsortsInput.out),
         )
 
         self.output(
@@ -284,6 +285,14 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
             output_name=StringFormatter(
                 "{sample_name}_waterfalls", sample_name=self.name
             ),
+        )
+
+    def bind_metadata(self):
+        return WorkflowMetadata(
+            contributors=["Michael Franklin"],
+            dateCreated=datetime(2020, 9, 24),
+            dateUpdated=datetime(2020, 10, 7),
+            documentation="",
         )
 
 

@@ -62,7 +62,7 @@ class GridssBase_2_4(BioinformaticsTool):
         return "Gridss"
 
     def base_command(self):
-        return "gridss.sh"
+        return "/opt/gridss/gridss.sh"
 
     def inputs(self):
         return [

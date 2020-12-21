@@ -1,7 +1,8 @@
+from datetime import datetime
 from typing import List, Dict, Any, Optional
 
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsPythonTool
-from janis_core import TOutput, File
+from janis_core import TOutput, File, ToolMetadata
 
 from janis_unix import Csv
 
@@ -9,14 +10,14 @@ from janis_unix import Csv
 class PrepareALLSortsInput_0_1_0(BioinformaticsPythonTool):
     @staticmethod
     def code_block(
-        inputs: List[File],
+        inps: List[File],
         labels: List[str] = None,
         output_filename: str = "output.csv",
         fusion_caller: str = "featureCounts",
     ) -> Dict[str, Any]:
         combined_count_list = []
         if fusion_caller == "featureCounts":
-            for i, file in enumerate(inputs):
+            for i, file in enumerate(inps):
                 gene_list = [""]
                 count_list = [labels[i]]
                 with open(file, "r") as f:
@@ -54,6 +55,14 @@ class PrepareALLSortsInput_0_1_0(BioinformaticsPythonTool):
 
     def tool_provider(self):
         return "Peter MacCallum Cancer Centre"
+
+    def bind_metadata(self):
+        return ToolMetadata(
+            contributors=["Jiaan Yu"],
+            dateCreated=datetime(2020, 9, 21),
+            dateUpdated=datetime(2020, 9, 21),
+            documentation="",
+        )
 
 
 if __name__ == "__main__":

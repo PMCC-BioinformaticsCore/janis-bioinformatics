@@ -72,6 +72,9 @@ class Bcl2FastqBase(IlluminaToolBase, ABC):
             ToolArgument(".", prefix="--output-dir", doc="path to demultiplexed output")
         ]
 
+    def skip_test(cls) -> bool:
+        return True
+
     def inputs(self):
         return [
             ToolInput(

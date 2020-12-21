@@ -1,3 +1,5 @@
+import os
+import operator
 from abc import ABC
 
 from janis_core import (
@@ -15,7 +17,14 @@ from janis_core import (
 from janis_unix import TextFile
 from janis_bioinformatics.data_types.bam import Bam
 from janis_bioinformatics.tools.samtools.samtoolstoolbase import SamToolsToolBase
+from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 from janis_core import ToolMetadata
+
+from janis_core.tool.test_classes import (
+    TTestPreprocessor,
+    TTestExpectedOutput,
+    TTestCase,
+)
 
 
 class SamToolsFlagstatBase(SamToolsToolBase, ABC):
@@ -94,3 +103,35 @@ with mate mapped to a different chr     0x1 bit set and neither 0x4 nor 0x8 bits
 
 with mate mapped to a different chr (mapQ>=5)     0x1 bit set and neither 0x4 nor 0x8 bits set and MRNM not equal to RNAME and MAPQ >= 5)""".strip(),
         )
+
+    def tests(self):
+        return [
+            TTestCase(
+                name="basic",
+                input={
+                    "bam": os.path.join(
+                        BioinformaticsTool.test_data_path(), "small.bam"
+                    ),
+                },
+                output=[
+                    TTestExpectedOutput(
+                        tag="out",
+                        preprocessor=TTestPreprocessor.FileMd5,
+                        operator=operator.eq,
+                        expected_value="dc58fe92a9bb0c897c85804758dfadbf",
+                    ),
+                    TTestExpectedOutput(
+                        tag="out",
+                        preprocessor=TTestPreprocessor.FileContent,
+                        operator=operator.contains,
+                        expected_value="19384 + 0 in total (QC-passed reads + QC-failed reads)",
+                    ),
+                    TTestExpectedOutput(
+                        tag="out",
+                        preprocessor=TTestPreprocessor.LineCount,
+                        operator=operator.eq,
+                        expected_value=13,
+                    ),
+                ],
+            )
+        ]
