@@ -178,7 +178,7 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
         self.add_sort_bam()
         self.add_arriba()
         # self.add_all_sorts()
-        # pythself.add_rna_seq_calling()
+        self.add_rna_seq_calling()
 
     def add_trim_and_align(self):
 
