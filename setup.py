@@ -39,9 +39,14 @@ setup(
         "tests": [
             "nose",
             "parameterized",
-            "janis-pipelines.unix >= 0.10.2",
-            "janis-pipelines.runner >= 0.10.8",
-        ]
+            "janis-pipelines.unix >= 0.11.0",
+            "janis-pipelines.runner >= 0.11.0",
+        ],
+        "ci": [
+            "setuptools",
+            "wheel",
+            "twine",
+        ],
     },
     zip_safe=False,
     long_description=long_description,

@@ -107,7 +107,7 @@ with mate mapped to a different chr (mapQ>=5)     0x1 bit set and neither 0x4 no
     def tests(self):
         return [
             TTestCase(
-                name="flagstat basic test",
+                name="basic",
                 input={
                     "bam": os.path.join(
                         BioinformaticsTool.test_data_path(), "small.bam"

@@ -1,0 +1,2 @@
+from .freebayessomaticworkflow import FreeBayesSomaticWorkflow
+from .freebayessomaticworkflow_cram import FreeBayesSomaticWorkflowCram
