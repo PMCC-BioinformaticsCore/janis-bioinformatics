@@ -98,9 +98,7 @@ Original code example:
         self.input("blacklist", File(optional=True))
         self.input("contigs", Array(String(), optional=True))
         self.input("filters", Array(String(), optional=True))
-        self.input("lane", String)
-        self.input("library", String)
-        self.input("platform", String)
+        self.input("platform", String, default="ILLUMINA")
         self.input("sequence_dictionary", File)
         self.input("call_conf", Double, default=20.0)
 
@@ -114,8 +112,6 @@ Original code example:
                 gtf=self.gtf,
                 blacklist=self.blacklist,
                 contigs=self.contigs,
-                lane=self.lane,
-                library=self.library,
                 platform=self.platform,
                 sequence_dictionary=self.sequence_dictionary,
                 call_conf=self.call_conf,
@@ -168,9 +164,7 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
         self.input("blacklist", File(optional=True))
         self.input("contigs", Array(String(), optional=True))
         self.input("filters", Array(String(), optional=True))
-        self.input("lane", String)
-        self.input("library", String)
-        self.input("platform", String)
+        self.input("platform", String, default="ILLUMINA")
         self.input("sequence_dictionary", File)
         self.input("call_conf", Double, default=20.0)
 
@@ -233,8 +227,8 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
                 genomeDir=self.star_gen2pass.out,
                 outSAMattrRGline=[
                     StringFormatter("ID:{sample}", sample=self.name),
-                    StringFormatter("SM:{lane}", lane=self.lane),
-                    StringFormatter("LB:{library}", library=self.library),
+                    StringFormatter("SM:{lane}", lane=self.name),
+                    StringFormatter("LB:{library}", library=self.name),
                     StringFormatter("PL:{platform}", platform=self.platform),
                     StringFormatter("PU:1"),
                 ],
