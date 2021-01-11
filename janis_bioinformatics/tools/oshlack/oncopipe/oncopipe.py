@@ -9,6 +9,8 @@ from janis_core import (
     Directory,
     File,
     Double,
+    ScatterDescription,
+    ScatterMethod,
 )
 
 from janis_bioinformatics.data_types import FastqGzPairedEnd, FastaWithIndexes, Fasta
@@ -89,7 +91,7 @@ Original code example:
 
     def constructor(self):
 
-        self.input("name", String, doc="Sample ID")
+        self.input("name", Array(String))
         self.input("reads", Array(FastqGzPairedEnd))
         self.input("genome_dir", Directory)
         self.input("jaffa_reference", Directory)
@@ -116,7 +118,11 @@ Original code example:
                 sequence_dictionary=self.sequence_dictionary,
                 call_conf=self.call_conf,
             ),
-            scatter="reads",
+            scatter=ScatterDescription(
+                ["reads", "name"],
+                method=ScatterMethod.dot,
+                labels=self.name,
+            ),
         )
 
         self.add_jaffa()
