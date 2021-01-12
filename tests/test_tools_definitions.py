@@ -31,7 +31,7 @@ class TestToolsDefinitions(unittest.TestCase):
             self.skipped.add(tool.versioned_id())
         else:
             self.failed[tool.versioned_id()] = evaluation
-            raise Exception(evaluation)
+            raise Exception(f"{tool.versioned_id()}: {evaluation}")
 
     @attr("ci")
     def test_report(self):
@@ -42,6 +42,7 @@ class TestToolsDefinitions(unittest.TestCase):
 
         if len(self.failed) > 0:
             raise Exception(
-                f"There were {len(self.failed)} tool(s) that did not contain sufficient metadata to include in the "
-                f"janis_bioinformatics repository. Please check to ensure your tool is in the list below"
+                f"There were {len(self.failed)} tool(s) ({', '.join(self.failed.keys())} that did not contain "
+                f"sufficient metadata to include in the janis_bioinformatics repository. Please check to ensure "
+                f"your tool is in the list below"
             )
