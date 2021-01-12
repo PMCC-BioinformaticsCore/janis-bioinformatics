@@ -10,14 +10,14 @@ from janis_unix import Csv
 class PrepareALLSortsInput_0_1_0(BioinformaticsPythonTool):
     @staticmethod
     def code_block(
-        inp: List[File],
+        inps: List[File],
         labels: List[str] = None,
         output_filename: str = "output.csv",
         fusion_caller: str = "featureCounts",
     ) -> Dict[str, Any]:
         combined_count_list = []
         if fusion_caller == "featureCounts":
-            for i, file in enumerate(inp):
+            for i, file in enumerate(inps):
                 gene_list = [""]
                 count_list = [labels[i]]
                 with open(file, "r") as f:

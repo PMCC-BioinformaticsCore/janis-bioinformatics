@@ -24,7 +24,7 @@ setup(
         "janis_bioinformatics." + p
         for p in sorted(find_packages("./janis_bioinformatics"))
     ],
-    package_data={"janis_bioinformatics": ["tools/test_data/*"]},
+    package_data={"": ["*/test_data/*"]},
     include_package_data=True,
     entry_points={
         "janis.extension": ["bioinformatics=janis_bioinformatics"],
@@ -39,9 +39,14 @@ setup(
         "tests": [
             "nose",
             "parameterized",
-            "janis-pipelines.unix >= 0.10.2",
-            "janis-pipelines.runner >= 0.10.8",
-        ]
+            "janis-pipelines.unix >= 0.11.0",
+            "janis-pipelines.runner >= 0.11.0",
+        ],
+        "ci": [
+            "setuptools",
+            "wheel",
+            "twine",
+        ],
     },
     zip_safe=False,
     long_description=long_description,

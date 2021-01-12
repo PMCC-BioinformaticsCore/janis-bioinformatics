@@ -47,11 +47,7 @@ transformations = [
         relevant_tool_output="out",
     ),
     JanisTransformation(
-        Bed,
-        BedGz,
-        BGZip_1_9(),
-        relevant_tool_input="file",
-        relevant_tool_output="out",
+        Bed, BedGz, BGZip_1_9(), relevant_tool_input="file", relevant_tool_output="out",
     ),
     JanisTransformation(
         BedGz,

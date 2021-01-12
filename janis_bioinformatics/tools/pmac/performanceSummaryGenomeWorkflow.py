@@ -50,9 +50,7 @@ class PerformanceSummaryGenome_0_1_0(BioinformaticsWorkflow):
         # Steps - Performance Summary
         self.step(
             "gatk4collectinsertsizemetrics",
-            Gatk4CollectInsertSizeMetricsLatest(
-                bam=self.bam,
-            ),
+            Gatk4CollectInsertSizeMetricsLatest(bam=self.bam,),
         )
         self.step("bamflagstat", SamToolsFlagstatLatest(bam=self.bam))
         self.step(
@@ -63,8 +61,7 @@ class PerformanceSummaryGenome_0_1_0(BioinformaticsWorkflow):
         self.step(
             "bedtoolsgenomecoveragebed",
             BedToolsGenomeCoverageBedLatest(
-                inputBam=self.samtoolsview.out,
-                genome=self.genome_file,
+                inputBam=self.samtoolsview.out, genome=self.genome_file,
             ),
         )
         # Give all the output files to performance summary script

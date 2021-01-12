@@ -1,26 +1,22 @@
 from datetime import date
 
 from janis_core import Array, String
-from janis_bioinformatics.data_types import CramCrai, FastaWithDict, VcfTabix
+from janis_bioinformatics.data_types import FastaWithDict, VcfTabix
 from janis_bioinformatics.tools import BioinformaticsWorkflow
+from janis_core.operators.standard import FirstOperator
+
 from janis_bioinformatics.tools.bcftools import (
     BcfToolsConcat_1_9 as BcfToolsConcat,
     BcfToolsIndex_1_9 as BcfToolsIndex,
     BcfToolsNorm_1_9 as BcfToolsNorm,
 )
 from janis_bioinformatics.tools.dawson.createcallregions.base import CreateCallRegions
+
 from janis_bioinformatics.tools.gatk4 import (
     Gatk4CalculateContaminationLatest as CalculateContamination,
     Gatk4FilterMutectCallsLatest as FilterMutectCalls,
     Gatk4LearnReadOrientationModelLatest as LearnReadOrientationModel,
     Gatk4MergeMutectStatsLatest as MergeMutectStats,
-)
-from janis_bioinformatics.tools.gatk4.mutect2.versions import (
-    GatkMutect2Cram_4_1_6 as Mutect2,
-)
-
-from janis_bioinformatics.tools.gatk4.getpileupsummaries.versions import (
-    Gatk4GetPileUpSummariesCram_4_1_6 as GetPileUpSummaries,
 )
 
 
@@ -35,12 +31,12 @@ class Mutect2JointSomaticWorkflow(BioinformaticsWorkflow):
         return "Dawson Labs"
 
     def version(self):
-        return "0.1"
+        return "0.1.1"
 
     def bind_metadata(self):
-        self.metadata.version = "0.1"
+        self.metadata.version = "0.1.1"
         self.metadata.dateCreated = date(2019, 10, 30)
-        self.metadata.dateUpdated = date(2019, 10, 30)
+        self.metadata.dateUpdated = date(2020, 12, 10)
 
         self.metadata.contributors = ["Sebastian Hollizeck"]
         self.metadata.keywords = [
@@ -55,36 +51,91 @@ class Mutect2JointSomaticWorkflow(BioinformaticsWorkflow):
         There are also som major tweaks we have to do for runtime, as the amount of data might overwhelm the tools otherwise.
                 """.strip()
 
+    # this is a way to get the tool without spagetti code in bam and cram format
+    def getMutect2Tool(self):
+        from janis_bioinformatics.tools.gatk4.mutect2.versions import (
+            GatkMutect2_4_1_8 as Mutect2,
+        )
+
+        return Mutect2
+
+    def getPileUpTool(self):
+        from janis_bioinformatics.tools.gatk4.getpileupsummaries.versions import (
+            Gatk4GetPileUpSummaries_4_1_8 as Pileup,
+        )
+
+        return Pileup
+
+    def getMutect2InputType(self):
+        from janis_bioinformatics.data_types import BamBai
+
+        return BamBai
+
     def constructor(self):
 
         # we have to split the bam into the ones of the normal sample (can be multiple) and the
         # tumor, because some tools only work with the tumor bams
-        self.input("normalBams", Array(CramCrai))
-        self.input("tumorBams", Array(CramCrai))
+        self.input(
+            "normalBams",
+            Array(self.getMutect2InputType()),
+            doc="The bams that make up the normal sample. Generally Mutect will expect one bam per sample, but as long as the sample ids in the bam header are set appropriatly, multiple bams per sample will work",
+        )
+        self.input(
+            "tumorBams",
+            Array(self.getMutect2InputType()),
+            doc="The bams that contain the tumour samples. Generally Mutect will expect one bam per sample, but as long as the sample ids in the bam header are set appropriatly, multiple bams per sample will work",
+        )
 
         # we also need the name of the normal sample (needs to be the name in the bams as well)
-        self.input("normalName", String)
+        self.input(
+            "normalName",
+            String,
+            doc="The sample id of the normal sample. This id will be used to distingiush reads from this sample from all other samples. This id needs to tbe the one set in the bam header",
+        )
 
-        self.input("biallelicSites", VcfTabix)
+        self.input(
+            "biallelicSites",
+            VcfTabix,
+            doc="A vcf of common biallalic sites from a population. This will be used to estimate sample contamination.",
+        )
 
-        self.input("reference", FastaWithDict)
+        self.input(
+            "reference",
+            FastaWithDict,
+            doc="A fasta and dict indexed reference, which needs to be the reference, the bams were aligned to.",
+        )
 
-        self.input("regionSize", int, default=10000000)
+        self.input(
+            "regionSize",
+            int,
+            default=10000000,
+            doc="The size of the regions over which to parallelise the analysis. This should be adjusted, if there are lots of samples or a very high sequencing depth. default: 10M bp",
+        )
 
-        self.input("panelOfNormals", VcfTabix)
+        self.input(
+            "panelOfNormals",
+            VcfTabix,
+            doc="The panel of normals, which summarises the technical and biological sites of errors. Its usually a good idea to generate this for your own cohort, but GATK suggests around 30 normals, so their panel is usually a good idea.",
+        )
 
-        self.input("germlineResource", VcfTabix)
+        self.input(
+            "germlineResource",
+            VcfTabix,
+            doc="Vcf of germline variants. GATK provides this as well, but it can easily substituted with the newst gnomad etc vcf.",
+        )
 
         self.step(
             "createCallRegions",
             CreateCallRegions(
-                reference=self.reference, regionSize=self.regionSize, equalize=True
+                reference=self.reference,
+                regionSize=self.regionSize,
+                equalize=True,
             ),
         )
 
         self.step(
             "mutect2",
-            Mutect2(
+            self.getMutect2Tool()(
                 tumorBams=self.tumorBams,
                 normalBams=self.normalBams,
                 normalSample=self.normalName,
@@ -107,7 +158,7 @@ class Mutect2JointSomaticWorkflow(BioinformaticsWorkflow):
 
         self.step(
             "pileup",
-            GetPileUpSummaries(
+            self.getPileUpTool()(
                 bam=self.tumorBams,
                 sites=self.biallelicSites,
                 intervals=self.biallelicSites,

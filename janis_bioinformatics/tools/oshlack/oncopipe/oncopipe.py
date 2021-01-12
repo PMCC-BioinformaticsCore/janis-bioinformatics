@@ -319,7 +319,7 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
         self.step(
             "prepareAllsortsInput",
             PrepareALLSortsInput_0_1_0(
-                inp=[self.featureCounts.out],
+                inps=[self.featureCounts.out],
                 labels=[self.name],
                 fusion_caller="featureCounts",
             ),

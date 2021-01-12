@@ -81,9 +81,7 @@ class MolpathGermline_1_0_0(BioinformaticsWorkflow):
         # get the overrepresentative sequence from fastqc
         self.step(
             "getfastqc_adapters",
-            ParseFastqcAdaptors(
-                fastqc_datafiles=self.fastqc.datafile,
-            ),
+            ParseFastqcAdaptors(fastqc_datafiles=self.fastqc.datafile,),
             scatter="fastqc_datafiles",
         )
         # align and generate sorted index bam

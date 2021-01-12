@@ -1,16 +1,11 @@
 from datetime import date
 
-from janis_bioinformatics.data_types import BedTabix, CramCrai, FastaFai
+from janis_bioinformatics.data_types import BedTabix, FastaFai
 from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.dawson import (
     RefilterStrelka2Calls_0_1 as RefilterStrelka2Calls,
 )
-from janis_bioinformatics.tools.dawson.workflows.strelka2passanalysisstep1 import (
-    Strelka2PassWorkflowStep1,
-)
-from janis_bioinformatics.tools.dawson.workflows.strelka2passanalysisstep2 import (
-    Strelka2PassWorkflowStep2,
-)
+
 from janis_bioinformatics.tools.htslib import BGZipLatest as BGZip, TabixLatest as Tabix
 from janis_core import Array, Boolean, String, File, Int
 from janis_bioinformatics.data_types import VcfTabix
@@ -27,12 +22,12 @@ class Strelka2PassWorkflow(BioinformaticsWorkflow):
         return "Dawson Labs"
 
     def version(self):
-        return "0.1"
+        return "0.2"
 
     def bind_metadata(self):
-        self.metadata.version = "0.1"
+        self.metadata.version = "0.2"
         self.metadata.dateCreated = date(2019, 10, 11)
-        self.metadata.dateUpdated = date(2020, 8, 4)
+        self.metadata.dateUpdated = date(2020, 12, 10)
 
         self.metadata.contributors = ["Sebastian Hollizeck"]
         self.metadata.keywords = [
@@ -53,23 +48,77 @@ class Strelka2PassWorkflow(BioinformaticsWorkflow):
          * output resuults
                 """.strip()
 
+    # this is a way to get the tool without spagetti code in bam and cram format
+    def getStep1Tool(self):
+        from .steps.strelka2passanalysisstep1 import (
+            Strelka2PassWorkflowStep1,
+        )
+
+        return Strelka2PassWorkflowStep1
+
+    def getStep2Tool(self):
+        from .steps.strelka2passanalysisstep2 import (
+            Strelka2PassWorkflowStep2,
+        )
+
+        return Strelka2PassWorkflowStep2
+
+    def getStrelka2InputType(self):
+        from janis_bioinformatics.data_types import BamBai
+
+        return BamBai
+
     def constructor(self):
 
-        self.input("normalBam", CramCrai)
-        self.input("tumorBams", Array(CramCrai))
+        self.input(
+            "normalBam",
+            self.getStrelka2InputType(),
+            doc="The bam of the normal sample. Strelka will assign any read in this bam to the normal sample, even if this bam contains multiple samples",
+        )
+        self.input(
+            "tumorBams",
+            Array(self.getStrelka2InputType()),
+            doc="The bam of the tumour sample. Strelka will assign any read in this bam to the normal sample, even if this bam contains multiple samples",
+        )
 
-        self.input("reference", FastaFai)
+        self.input(
+            "reference",
+            FastaFai,
+            doc="The fai indexed fasta reference, the bams were aligned to.",
+        )
 
-        self.input("configStrelka", File(optional=True))
-        self.input("callRegions", BedTabix(optional=True))
-        self.input("exome", Boolean(optional=True), default=False)
+        self.input(
+            "configStrelka",
+            File(optional=True),
+            doc="The possibly changed ini to use for Strelka2. This can be used to skip regions with extreme depth, like in heterochromatin regions, which lead to very long runtimes.",
+        )
+        self.input(
+            "callRegions",
+            BedTabix(optional=True),
+            doc="The tabix indexed bed file of regions to restict the analysis on. If this is unset, every site in the genome will be analysed.",
+        )
+        self.input(
+            "exome",
+            Boolean(optional=True),
+            default=False,
+            doc="Sets the flag to analyse everything in exome mode. This will adjust the parameter for a non uniform coverage profile.",
+        )
 
-        self.input("sampleNames", Array(String, optional=True))
-        self.input("minAD", Int(optional=True), default=2)
+        self.input(
+            "sampleNames",
+            Array(String, optional=True),
+            doc="The names of the tumour samples. This will only be used to rename output files. if unset, the output will be numbered in the same order as the input files.",
+        )
+        self.input(
+            "minAD",
+            Int(optional=True),
+            default=2,
+            doc="Minimum read support for a variant to be considered a true variant.",
+        )
 
         self.step(
             "step1",
-            Strelka2PassWorkflowStep1(
+            self.getStep1Tool()(
                 normalBam=self.normalBam,
                 tumorBam=self.tumorBams,
                 reference=self.reference,
@@ -82,7 +131,7 @@ class Strelka2PassWorkflow(BioinformaticsWorkflow):
 
         self.step(
             "step2",
-            Strelka2PassWorkflowStep2(
+            self.getStep2Tool()(
                 normalBam=self.normalBam,
                 tumorBam=self.tumorBams,
                 reference=self.reference,

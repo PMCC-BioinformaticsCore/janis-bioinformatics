@@ -738,13 +738,7 @@ class Gatk4VariantFiltrationBase(Gatk4ToolBase):
         ]
 
     def outputs(self):
-        return [
-            ToolOutput(
-                "out",
-                VcfTabix(),
-                glob=InputSelector("outputFilename"),
-            )
-        ]
+        return [ToolOutput("out", VcfTabix(), glob=InputSelector("outputFilename"),)]
 
     def bind_metadata(self):
         return ToolMetadata(

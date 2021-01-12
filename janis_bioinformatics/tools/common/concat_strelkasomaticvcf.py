@@ -49,13 +49,7 @@ class ConcatStrelkaSomaticVcf(BioinformaticsTool):
         ]
 
     def outputs(self) -> List[ToolOutput]:
-        return [
-            ToolOutput(
-                "out",
-                Vcf(),
-                glob=InputSelector("outputFilename"),
-            )
-        ]
+        return [ToolOutput("out", Vcf(), glob=InputSelector("outputFilename"),)]
 
     def arguments(self):
         return [

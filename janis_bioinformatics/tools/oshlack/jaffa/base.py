@@ -45,7 +45,8 @@ class JaffaBase(BioinformaticsTool):
             ToolArgument(
                 InputSelector("fastqs", type_hint=Array(FastqPair))
                 .flattened()
-                .joined(" ")
+                .joined(" "),
+                shell_quote=False,
             ),
         ]
 
@@ -56,12 +57,7 @@ class JaffaBase(BioinformaticsTool):
                 Array(FastqPair),
                 doc="Space separated, this gets bound using a ToolArgument",
             ),
-            BPipeToolInput(
-                "genome",
-                String,
-                default="hg38",
-                prefix="genome",
-            ),
+            BPipeToolInput("genome", String, default="hg38", prefix="genome",),
             BPipeToolInput(
                 "annotation", String, default="genCode22", prefix="annotation"
             ),
