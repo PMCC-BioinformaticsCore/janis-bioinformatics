@@ -105,11 +105,7 @@ Original code example:
 
     def add_jaffa(self):
         self.step(
-            "jaffa",
-            Jaffa_2_0(
-                reference=self.jaffa_reference,
-                fastqs=self.reads,
-            ),
+            "jaffa", Jaffa_2_0(reference=self.jaffa_reference, fastqs=self.reads,),
         )
 
         # Then
