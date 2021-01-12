@@ -42,7 +42,7 @@ class TestToolsDefinitions(unittest.TestCase):
 
         if len(self.failed) > 0:
             raise Exception(
-                f"There were {len(self.failed)} tool(s) ({', '.join(self.failed.keys())} that did not contain "
+                f"There were {len(self.failed)} tool(s) ({', '.join(self.failed.keys())}) that did not contain "
                 f"sufficient metadata to include in the janis_bioinformatics repository. Please check to ensure "
                 f"your tool is in the list below"
             )
