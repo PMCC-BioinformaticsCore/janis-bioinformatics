@@ -1,6 +1,4 @@
-from .mutect2jointsomaticworkflow import (
-    Mutect2JointSomaticWorkflow,
-)
+from .mutect2jointsomaticworkflow import Mutect2JointSomaticWorkflow
 
 
 class Mutect2JointSomaticWorkflowCram(Mutect2JointSomaticWorkflow):

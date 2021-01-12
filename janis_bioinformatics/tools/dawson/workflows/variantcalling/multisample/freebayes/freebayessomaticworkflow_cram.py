@@ -1,6 +1,4 @@
-from .freebayessomaticworkflow import (
-    FreeBayesSomaticWorkflow,
-)
+from .freebayessomaticworkflow import FreeBayesSomaticWorkflow
 
 
 class FreeBayesSomaticWorkflowCram(FreeBayesSomaticWorkflow):

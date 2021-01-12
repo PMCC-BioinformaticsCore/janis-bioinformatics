@@ -1,6 +1,4 @@
-from .strelka2passanalysisstep2 import (
-    Strelka2PassWorkflowStep2,
-)
+from .strelka2passanalysisstep2 import Strelka2PassWorkflowStep2
 
 
 class Strelka2PassWorkflowStep2Cram(Strelka2PassWorkflowStep2):
