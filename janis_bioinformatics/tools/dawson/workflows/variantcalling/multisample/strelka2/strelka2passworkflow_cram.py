@@ -1,6 +1,4 @@
-from .strelka2passworkflow import (
-    Strelka2PassWorkflow,
-)
+from .strelka2passworkflow import Strelka2PassWorkflow
 
 
 class Strelka2PassWorkflowCram(Strelka2PassWorkflow):
