@@ -1,6 +1,7 @@
 from typing import List, Optional, Union
 
 from janis_bioinformatics.data_types import Fasta, FastqGzPair, FastqPair
+from janis_unix import Csv
 from janis_core import (
     ToolOutput,
     ToolInput,
@@ -97,7 +98,8 @@ class JaffaBase(BioinformaticsTool):
 
     def outputs(self) -> List[ToolOutput]:
         return [
-            ToolOutput("out_reference", Fasta, selector=WildcardSelector("*.fasta"))
+            ToolOutput("out_reference", Fasta, selector=WildcardSelector("*.fasta")),
+            ToolOutput("out_csv", Csv, selector=WildcardSelector("jaffa_results.csv")),
         ]
 
     def memory(self, hints):
