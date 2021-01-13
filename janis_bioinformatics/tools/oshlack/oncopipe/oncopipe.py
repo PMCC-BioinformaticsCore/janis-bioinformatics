@@ -114,6 +114,7 @@ Original code example:
                 gtf=self.gtf,
                 blacklist=self.blacklist,
                 contigs=self.contigs,
+                filters=self.filters,
                 platform=self.platform,
                 sequence_dictionary=self.sequence_dictionary,
                 call_conf=self.call_conf,
