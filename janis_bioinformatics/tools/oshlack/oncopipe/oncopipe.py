@@ -261,6 +261,7 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
         self.output(
             "out_star_gene_counts",
             source=self.star_map_2pass_PE.out_gene_counts.assert_not_null(),
+            output_folder=self.name,
             output_name=StringFormatter(
                 "{sample_name}_ReadsPerGene.out.tab", sample_name=self.name
             ),
@@ -276,7 +277,12 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
             ),
         )
 
-        self.output("out_sorted_bam", source=self.sortsam.out, output_name=self.name)
+        self.output(
+            "out_sorted_bam",
+            source=self.sortsam.out,
+            output_folder=self.name,
+            output_name=self.name,
+        )
 
     def add_arriba(self):
         self.step(
@@ -296,11 +302,13 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
         self.output(
             "out_arriba_fusion",
             source=self.arriba.out,
+            output_folder=self.name,
             output_name=StringFormatter("{sample_name}_fusion", sample_name=self.name),
         )
         self.output(
             "out_arriba_fusion_discarded",
             source=self.arriba.out_discarded,
+            output_folder=self.name,
             output_name=StringFormatter(
                 "{sample_name}_fusion_discarded", sample_name=self.name
             ),
@@ -334,6 +342,7 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
         self.output(
             "out_gene_counts",
             source=self.featureCounts.out,
+            output_folder=self.name,
             output_name=StringFormatter(
                 "{sample_name}_feature_counts", sample_name=self.name
             ),
@@ -342,7 +351,7 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
         self.output(
             "out_predictions",
             source=self.allsorts.out_predictions,
-            output_folder="allsorts",
+            output_folder=[self.name, "allsorts"],
             output_name=StringFormatter(
                 "{sample_name}_predictions", sample_name=self.name
             ),
@@ -351,7 +360,7 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
         self.output(
             "out_probabilities",
             source=self.allsorts.out_probabilities,
-            output_folder="allsorts",
+            output_folder=[self.name, "allsorts"],
             output_name=StringFormatter(
                 "{sample_name}_probabilities", sample_name=self.name
             ),
@@ -360,7 +369,7 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
         self.output(
             "out_distributions",
             source=self.allsorts.out_distributions,
-            output_folder="allsorts",
+            output_folder=[self.name, "allsorts"],
             output_name=StringFormatter(
                 "{sample_name}_distributions", sample_name=self.name
             ),
@@ -369,7 +378,7 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
         self.output(
             "out_waterfalls",
             source=self.allsorts.out_waterfalls,
-            output_folder="allsorts",
+            output_folder=[self.name, "allsorts"],
             output_name=StringFormatter(
                 "{sample_name}_waterfalls", sample_name=self.name
             ),
@@ -430,11 +439,13 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
         self.output(
             "out_HAP_vcf",
             source=self.rnaseq_call_variants.out,
+            output_folder=self.name,
             output_name=StringFormatter("{sample_name}_HAP", sample_name=self.name),
         )
         self.output(
             "out_HAP_filter_vcf",
             source=self.filter_variants.out,
+            output_folder=self.name,
             output_name=StringFormatter(
                 "{sample_name}_HAP.filtered", sample_name=self.name
             ),
