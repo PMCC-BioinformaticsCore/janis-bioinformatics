@@ -120,9 +120,7 @@ Original code example:
                 call_conf=self.call_conf,
             ),
             scatter=ScatterDescription(
-                ["reads", "name"],
-                method=ScatterMethod.dot,
-                labels=self.name,
+                ["reads", "name"], method=ScatterMethod.dot, labels=self.name,
             ),
         )
 
@@ -130,13 +128,22 @@ Original code example:
 
     def add_jaffa(self):
         self.step(
-            "jaffa",
-            Jaffa_2_0(
-                reference=self.jaffa_reference,
-                fastqs=self.reads,
-            ),
+            "jaffa", Jaffa_2_0(reference=self.jaffa_reference, fastqs=self.reads,),
         )
 
+        self.output(
+            "out_reference",
+            source=self.jaffa.out_reference,
+            output_folder="jaffa",
+            output_name="jaffa_results.fasta",
+        )
+
+        self.output(
+            "out_csv",
+            source=self.jaffa.out_csv,
+            output_folder="jaffa",
+            output_name="jaffa_results.csv",
+        )
         # Then
         #   // Complete Jaffa
         #   compile_results_jaffa +
@@ -179,7 +186,7 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
         self.add_sort_bam()
         self.add_arriba()
         # self.add_all_sorts()
-        self.add_rna_seq_calling()
+        # self.add_rna_seq_calling()
 
     def add_trim_and_align(self):
 
@@ -335,8 +342,7 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
         )
 
         self.step(
-            "allsorts",
-            AllSorts_0_1_0(samples=self.prepareAllsortsInput.out),
+            "allsorts", AllSorts_0_1_0(samples=self.prepareAllsortsInput.out),
         )
 
         self.output(
@@ -408,8 +414,7 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
         self.step(
             "splitncigar",
             Gatk4SplitNCigarReads_4_1_4(
-                inp=[self.reorder_bam.out],
-                reference=self.reference,
+                inp=[self.reorder_bam.out], reference=self.reference,
             ),
             doc="split'n'trim and reassign mapping qualities",
         )
