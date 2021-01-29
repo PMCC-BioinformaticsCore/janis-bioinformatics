@@ -2,7 +2,7 @@ from datetime import datetime
 from janis_core import Boolean, WorkflowMetadata
 from janis_unix.tools import UncompressArchive
 
-from janis_bioinformatics.data_types import FastaWithDict, BamBai, BedTabix
+from janis_bioinformatics.data_types import FastaWithDict, BamBai, BedTabix, Vcf
 from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.common import SplitMultiAllele
 from janis_bioinformatics.tools.htslib import BGZipLatest, TabixLatest
@@ -55,7 +55,9 @@ class IlluminaGermlineVariantCaller(BioinformaticsWorkflow):
         self.step("uncompressvcf", UncompressArchive(file=self.strelka.variants))
         self.step(
             "splitnormalisevcf",
-            SplitMultiAllele(vcf=self.uncompressvcf.out, reference=self.reference),
+            SplitMultiAllele(
+                vcf=self.uncompressvcf.out.as_type(Vcf), reference=self.reference
+            ),
         )
 
         self.step(

@@ -3,7 +3,7 @@ from datetime import date
 from janis_core import String, Array, WorkflowBuilder
 from janis_unix.tools import UncompressArchive
 from janis_bioinformatics.tools import gatk4
-from janis_bioinformatics.data_types import FastaWithDict, BamBai, VcfTabix, Bed
+from janis_bioinformatics.data_types import FastaWithDict, BamBai, VcfTabix, Bed, Vcf
 from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.common import SplitMultiAllele
 from janis_bioinformatics.tools.htslib import BGZipLatest, TabixLatest
@@ -97,7 +97,9 @@ class GatkSomaticVariantCaller_4_1_3(BioinformaticsWorkflow):
         self.step("uncompressvcf", UncompressArchive(file=self.filtermutect2calls.out))
         self.step(
             "splitnormalisevcf",
-            SplitMultiAllele(vcf=self.uncompressvcf.out, reference=self.reference),
+            SplitMultiAllele(
+                vcf=self.uncompressvcf.out.as_type(Vcf), reference=self.reference
+            ),
         )
         self.step(
             "filterpass",
