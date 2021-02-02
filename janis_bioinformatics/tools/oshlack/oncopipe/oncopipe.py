@@ -9,6 +9,7 @@ from janis_core import (
     Directory,
     File,
     Double,
+    Int,
     ScatterDescription,
     ScatterMethod,
 )
@@ -29,8 +30,8 @@ from janis_bioinformatics.tools.oshlack.prepareallsortsinput import (
 )
 from janis_bioinformatics.tools.oshlack.allsorts.versions import AllSorts_0_1_0
 from janis_bioinformatics.tools.star import (
-    StarAlignReads_2_7_1,
-    StarGenerateIndexes_2_7_1,
+    StarAlignReads_2_7_3,
+    StarGenerateIndexes_2_7_3,
 )
 from janis_bioinformatics.tools.subread import FeatureCounts_2_0_1
 from janis_bioinformatics.tools.suhrig import Arriba_1_2_0
@@ -124,6 +125,8 @@ Original code example:
             ),
         )
 
+        self.capture_outputs_from_step(self.process, output_prefix="")
+
         self.add_jaffa()
 
     def add_jaffa(self):
@@ -181,6 +184,7 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
         self.input("platform", String, default="ILLUMINA")
         self.input("sequence_dictionary", File)
         self.input("call_conf", Double, default=20.0)
+        self.input("star_sjdbOverhang", Int, default=99)
 
         self.add_trim_and_align()
         self.add_sort_bam()
@@ -210,7 +214,7 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
         # Merge star alignment stages
         self.step(
             "star_map_1pass_PE",
-            StarAlignReads_2_7_1(
+            StarAlignReads_2_7_3(
                 readFilesIn=self.trim.pairedOut,
                 genomeDir=self.genome_dir,
                 limitOutSJcollapsed=3000000,  # lots of splice junctions may need more than default 1M buffer
@@ -222,10 +226,10 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
 
         self.step(
             "star_gen2pass",
-            StarGenerateIndexes_2_7_1(
+            StarGenerateIndexes_2_7_3(
                 genomeFastaFiles=self.reference,
                 sjdbFileChrStartEnd=self.star_map_1pass_PE.SJ_out_tab,
-                sjdbOverhang=99,
+                sjdbOverhang=self.star_sjdbOverhang,
                 sjdbGTFfile=self.gtf,
                 limitOutSJcollapsed=3000000,  # lots of splice junctions may need more than default 1M buffer
                 outputGenomeDir=self.name,
@@ -235,7 +239,7 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
 
         self.step(
             "star_map_2pass_PE",
-            StarAlignReads_2_7_1(
+            StarAlignReads_2_7_3(
                 readFilesIn=self.trim.pairedOut,
                 readFilesCommand="zcat",
                 genomeDir=self.star_gen2pass.out,
@@ -251,21 +255,17 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
                 limitOutSJcollapsed=3000000,  # lots of splice junctions may need more than default 1M buffer
                 outSAMtype=["BAM", "Unsorted"],
                 outSAMunmapped="Within",
-                # outBAMcompression=0,
-                # outFilterMultimapNmax=50,
-                # outFilterMismatchNmax=3,
-                # peOverlapNbasesMin=10,
-                # alignSplicedMateMapLminOverLmate=0.5,
-                # alignSJstitchMismatchNmax=[5, -1, 5, 5],
-                # chimSegmentMin=10,
-                # chimOutType=["WithinBAM", "HardClip"],
-                # chimJunctionOverhangMin=10,
-                # chimScoreMin=1,
-                # chimScoreDropMax=30,
-                # chimScoreJunctionNonGTAG=0,
-                # chimScoreSeparation=1,
-                # chimSegmentReadGapMax=3,
-                # chimMultimapNmax=50,
+                outFilterMultimapNmax=1,
+                outFilterMismatchNmax=3,
+                chimSegmentMin=10,
+                chimOutType=["WithinBAM", "SoftClip"],
+                chimJunctionOverhangMin=10,
+                chimScoreMin=1,
+                chimScoreDropMax=30,
+                chimScoreJunctionNonGTAG=0,
+                chimScoreSeparation=1,
+                alignSJstitchMismatchNmax=[5, -1, 5, 5],
+                chimSegmentReadGapMax=3,
             ),
         )
         self.output(
@@ -471,4 +471,4 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
 __JANIS_ENTRYPOINT = OncopipeWorkflow
 
 if __name__ == "__main__":
-    OncopipeWorkflow().get_dot_plot(show=True, expand_subworkflows=True)
+    print(OncopipeWorkflow().help())
