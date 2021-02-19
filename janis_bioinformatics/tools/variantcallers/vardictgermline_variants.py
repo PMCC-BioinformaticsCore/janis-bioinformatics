@@ -50,6 +50,7 @@ class VardictGermlineVariantCaller(BioinformaticsWorkflow):
                 chromColumn=1,
                 regStartCol=2,
                 geneEndCol=3,
+                threads=4,
             ),
         )
         self.step(
