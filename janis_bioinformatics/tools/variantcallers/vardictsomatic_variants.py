@@ -49,11 +49,11 @@ class VardictSomaticVariantCaller(BioinformaticsWorkflow):
                 normalName=self.normal_name,
                 tumorName=self.tumor_name,
                 alleleFreqThreshold=self.allele_freq_threshold,
-                chromNamesAreNumbers=True,
                 vcfFormat=True,
                 chromColumn=1,
                 regStartCol=2,
                 geneEndCol=3,
+                threads=4,
             ),
         )
         self.step(
