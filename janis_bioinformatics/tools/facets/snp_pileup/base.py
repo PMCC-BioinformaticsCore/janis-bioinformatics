@@ -10,14 +10,19 @@ from janis_core import (
     Filename,
     InputSelector,
     ToolMetadata,
+    Array,
 )
 
-from janis_bioinformatics.data_types import Vcf
+from janis_bioinformatics.data_types import CompressedVcf
 from janis_bioinformatics.data_types.bam import File, BamBai
 from janis_bioinformatics.tools.facets.facets_base import FacetsBase
 
 
 class FacetsSnpPileupBase(FacetsBase, ABC):
+    @classmethod
+    def facets_command(cls):
+        return "LD_LIBRARY_PATH=/opt/conda/lib /snp-pileup"
+
     def tool(self):
         return "FacetsSnpPileup"
 
@@ -64,7 +69,7 @@ class FacetsSnpPileupBase(FacetsBase, ABC):
             ),
             ToolInput(
                 "min_read_counts",
-                String(optional=True),
+                Array(Int(optional=True)),
                 prefix="--min-read-counts=",
                 position=12,
                 separate_value_from_prefix=False,
@@ -87,7 +92,7 @@ class FacetsSnpPileupBase(FacetsBase, ABC):
                 "insert a blank record with the total count at the"
                 "position.",
             ),
-            ToolInput("vcf_file", Vcf(), position=18),
+            ToolInput("vcf_file", CompressedVcf(), position=18),
             ToolInput("output_filename", Filename(extension=".csv.gz"), position=19),
             ToolInput("normal", BamBai(), position=20),
             ToolInput("tumour", BamBai(), position=21),

@@ -1,15 +1,5 @@
-from ..facets_0_5_14 import Facets_0_5_14
-from ..facets_0_5_14_1 import Facets_0_5_14_1
-from ..facets_0_5_14_2 import Facets_0_5_14_2
 from .base import FacetsSnpPileupBase
-
-
-class FacetsSnpPileup_0_5_14(Facets_0_5_14, FacetsSnpPileupBase):
-    pass
-
-
-class FacetsSnpPileup_0_5_14_1(Facets_0_5_14_1, FacetsSnpPileupBase):
-    pass
+from ..versions import Facets_0_5_14_2
 
 
 class FacetsSnpPileup_0_5_14_2(Facets_0_5_14_2, FacetsSnpPileupBase):
@@ -17,3 +7,6 @@ class FacetsSnpPileup_0_5_14_2(Facets_0_5_14_2, FacetsSnpPileupBase):
 
 
 FacetsSnpPileupLatest = FacetsSnpPileup_0_5_14_2
+
+if __name__ == "__main__":
+    print(FacetsSnpPileup_0_5_14_2().help())
