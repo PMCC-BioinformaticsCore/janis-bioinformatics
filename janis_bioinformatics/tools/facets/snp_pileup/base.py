@@ -69,6 +69,7 @@ class FacetsSnpPileupBase(FacetsBase, ABC):
             ToolInput(
                 "min_read_counts",
                 Array(Int(), optional=True),
+                separator=",",
                 prefix="--min-read-counts=",
                 separator=",",
                 position=12,
