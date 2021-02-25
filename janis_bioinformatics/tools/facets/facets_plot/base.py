@@ -11,6 +11,7 @@ from janis_core import (
     InputSelector,
     ToolMetadata,
     Array,
+    StringFormatter,
 )
 
 from janis_bioinformatics.data_types.bam import File
@@ -27,17 +28,34 @@ class FacetsPlotBase(FacetsBase, ABC):
 
     def inputs(self):
         return [
-            ToolInput("outputFilename", String(), position=3),
+            ToolInput("outputPrefix", String(), position=3),
             ToolInput("pileup_file", File(), position=4),
-            ToolInput("min_normal_depth", Int(), default=10, position=5),
-            ToolInput("cval", Int(), default=150, position=6),
-            ToolInput("maxiter", Int(), default=10, position=7),
-            ToolInput("seed_initial", Int(), default=42, position=8),
-            ToolInput("seed_iterations", Int(), default=10, position=9),
+            ToolInput("min_normal_depth", Int(), position=5),
+            ToolInput("cval", Int(), position=6),
+            ToolInput("maxiter", Int(), position=7),
+            ToolInput("seed_initial", Int(), position=8),
+            ToolInput("seed_iterations", Int(), position=9),
         ]
 
     def outputs(self):
-        return [ToolOutput("out", File(), glob=InputSelector("outputFilename"))]
+        return [
+            ToolOutput(
+                "out_genome_segments",
+                File(),
+                glob=InputSelector("outputPrefix") + ".genome_segments.pdf",
+            ),
+            ToolInput(
+                "out_diagnostic_plot",
+                File(),
+                glob=InputSelector("outputPrefix") + ".diagnostic_plot.pdf",
+            ),
+            ToolInput(
+                "out_purity", File(), glob=InputSelector("outputPrefix") + ".purity.txt"
+            ),
+            ToolInput(
+                "out_ploidy", File(), glob=InputSelector("outputPrefix") + ".ploidy.txt"
+            ),
+        ]
 
     def friendly_name(self):
         return "Facets: Make plot"
