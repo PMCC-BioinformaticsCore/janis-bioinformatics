@@ -28,7 +28,7 @@ class FacetsPlotBase(FacetsBase, ABC):
 
     def inputs(self):
         return [
-            ToolInput("outputPrefix", String(), position=3),
+            ToolInput("outputPrefix", Filename(), position=3),
             ToolInput("pileup_file", File(), position=4),
             ToolInput("min_normal_depth", Int(), position=5),
             ToolInput("cval", Int(), position=6),

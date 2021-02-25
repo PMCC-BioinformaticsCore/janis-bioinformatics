@@ -11,10 +11,11 @@ from janis_core import (
     InputSelector,
     ToolMetadata,
     Array,
+    File,
 )
 
 from janis_bioinformatics.data_types import CompressedVcf
-from janis_bioinformatics.data_types.bam import File, BamBai
+from janis_bioinformatics.data_types.bam import BamBai
 from janis_bioinformatics.tools.facets.facets_base import FacetsBase
 
 
@@ -92,7 +93,7 @@ class FacetsSnpPileupBase(FacetsBase, ABC):
                 "insert a blank record with the total count at the"
                 "position.",
             ),
-            ToolInput("vcf_file", CompressedVcf(), position=18),
+            ToolInput("vcf_file", File(), position=18),
             ToolInput("output_filename", Filename(extension=".csv.gz"), position=19),
             ToolInput("normal", BamBai(), position=20),
             ToolInput("tumour", BamBai(), position=21),
