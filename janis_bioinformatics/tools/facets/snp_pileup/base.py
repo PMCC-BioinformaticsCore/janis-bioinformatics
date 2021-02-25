@@ -28,7 +28,6 @@ class FacetsSnpPileupBase(FacetsBase, ABC):
 
     def inputs(self):
         return [
-            *super(FacetsSnpPileupBase, self).inputs(),
             ToolInput(
                 "count_orphans",
                 Boolean(optional=True),
@@ -69,8 +68,9 @@ class FacetsSnpPileupBase(FacetsBase, ABC):
             ),
             ToolInput(
                 "min_read_counts",
-                Array(Int(optional=True)),
+                Array(Int(), optional=True),
                 prefix="--min-read-counts=",
+                separator=",",
                 position=12,
                 separate_value_from_prefix=False,
                 doc="Comma separated list of minimum read counts for a position to be output. Default is 0.",
