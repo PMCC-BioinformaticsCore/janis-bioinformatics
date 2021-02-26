@@ -28,7 +28,7 @@ class FacetsPlotBase(FacetsBase, ABC):
 
     def inputs(self):
         return [
-            ToolInput("outputPrefix", Filename(), position=3),
+            ToolInput("outputPrefix", String(), position=3),
             ToolInput("pileup_file", File(), position=4),
             ToolInput("min_normal_depth", Int(), position=5),
             ToolInput("cval", Int(), position=6),
@@ -44,16 +44,20 @@ class FacetsPlotBase(FacetsBase, ABC):
                 File(),
                 glob=InputSelector("outputPrefix") + ".genome_segments.pdf",
             ),
-            ToolInput(
+            ToolOutput(
                 "out_diagnostic_plot",
                 File(),
                 glob=InputSelector("outputPrefix") + ".diagnostic_plot.pdf",
             ),
-            ToolInput(
-                "out_purity", File(), glob=InputSelector("outputPrefix") + ".purity.txt"
+            ToolOutput(
+                "out_purity",
+                File(),
+                glob=InputSelector("outputPrefix") + ".purity.txt",
             ),
-            ToolInput(
-                "out_ploidy", File(), glob=InputSelector("outputPrefix") + ".ploidy.txt"
+            ToolOutput(
+                "out_ploidy",
+                File(),
+                glob=InputSelector("outputPrefix") + ".ploidy.txt",
             ),
         ]
 
@@ -79,3 +83,4 @@ class FacetsPlotBase(FacetsBase, ABC):
         return []
 
     additional_inputs = []
+
