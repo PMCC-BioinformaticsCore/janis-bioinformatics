@@ -75,7 +75,7 @@ class FacestWorkflow(BioinformaticsWorkflow):
                 normal=self.normal_bam,
                 tumour=self.tumour_bam,
                 output_filename=StringFormatter(
-                    "{tumour}--{normal}", tumour=self.tumour_id, normal=self.normal_id
+                    "{tumour}--{normal}_coverage.csv.gz", tumour=self.tumour_id, normal=self.normal_id
                 ),
                 vcf_file=self.common_snp_vcf,
                 gzip=self.gzip,
