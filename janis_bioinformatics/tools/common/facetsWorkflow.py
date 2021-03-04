@@ -24,8 +24,8 @@ from janis_bioinformatics.data_types import BamBai, Bed
 from janis_bioinformatics.tools import BioinformaticsWorkflow
 
 from janis_bioinformatics.tools.facets import (
-    FacetsSnpPileup_0_5_14_2,
-    FacetsPlot_0_5_14_2,
+    FacetsSnpPileup_2_0_8,
+    RunFacets_2_0_8,
 )
 
 
@@ -55,74 +55,63 @@ class FacestWorkflow(BioinformaticsWorkflow):
         self.input("common_snp_vcf", File)
 
         # optional
-        self.input("gzip", Boolean, default=True)
-        self.input("min_map_quality", Int, default=30)
-        self.input("min_base_quality", Int, default=30)
-        self.input("min_read_counts", Array(Int), default=[10, 0])
-        self.input("min_normal_depth", Int, default=10)
-        self.input("cval", Int, default=150)
-        self.input("maxiter", Int, default=10)
-        self.input("seed_initial", Int, default=42)
-        self.input("seed_iterations", Int, default=10)
+        self.input("pseudo_snps", Int(optional=True))
+        self.input("max_depth", Int(optional=True))
+        self.input("everything", Boolean(optional=True))
+        self.input("genome", String(optional=True))
+        self.input("cval", Int(optional=True))
+        self.input("purity_cval", Int(optional=True))
+        self.input("normal_depth", Int(optional=True))
 
         self.add_snp_pileup()
-        self.add_plot()
+        self.add_run_facets()
 
     def add_snp_pileup(self):
         self.step(
             "snp_pileup",
-            FacetsSnpPileup_0_5_14_2(
-                normal=self.normal_bam,
-                tumour=self.tumour_bam,
-                output_filename=StringFormatter(
-                    "{tumour}--{normal}_coverage.csv.gz", tumour=self.tumour_id, normal=self.normal_id
+            FacetsSnpPileup_2_0_8(
+                normal_bam=self.normal_bam,
+                tumor_bam=self.tumour_bam,
+                output_prefix=StringFormatter(
+                    "{tumour}--{normal}",
+                    tumour=self.tumour_id,
+                    normal=self.normal_id,
                 ),
                 vcf_file=self.common_snp_vcf,
-                gzip=self.gzip,
-                min_map_quality=self.min_map_quality,
-                min_base_quality=self.min_base_quality,
-                min_read_counts=self.min_read_counts,
+                pseudo_snps=self.pseudo_snps,
+                max_depth=self.max_depth,
             ),
         )
 
-    def add_plot(self):
+    def add_run_facets(self):
         self.step(
-            "facets_plot",
-            FacetsPlot_0_5_14_2(
+            "run_facets",
+            RunFacets_2_0_8(
+                counts_file=self.snp_pileup.out,
                 outputPrefix=StringFormatter(
                     "{tumour}--{normal}", tumour=self.tumour_id, normal=self.normal_id
                 ),
-                pileup_file=self.snp_pileup.out,
-                min_normal_depth=self.min_normal_depth,
+                directory=".",
+                everything=self.everything,
+                genome=self.genome,
                 cval=self.cval,
-                maxiter=self.maxiter,
-                seed_initial=self.seed_initial,
-                seed_iterations=self.seed_iterations,
+                purity_cval=self.purity_cval,
+                normal_depth=self.normal_depth,
             ),
         )
-        # self.output(
-        #     "genome_segments_plot",
-        #     source=self.facets_plot.out_genome_segments,
-        #     output_folder="facets",
-        #     output_name=StringFormatter(
-        #         "{tumour}--{normal}.genome_segments.pdf",
-        #         tumour=self.tumour_id,
-        #         normal=self.normal_id,
-        #     ),
-        # )
 
-        # self.output(
-        #     "diagnostic_plot",
-        #     source=self.facets_plot.out_diagnostic_plot,
-        #     output_folder="facets",
-        #     output_name=StringFormatter(
-        #         "{tumour}--{normal}.diagnostic_plot.pdf",
-        #         tumour=self.tumour_id,
-        #         normal=self.normal_id,
-        #     ),
-        # )
+    #     self.output(
+    #         "genome_segments_plot",
+    #         source=self.facets_plot.out_genome_segments,
+    #         output_folder="facets",
+    #     )
+
+    #     self.output(
+    #         "diagnostic_plot",
+    #         source=self.facets_plot.out_diagnostic_plot,
+    #         output_folder="facets",
+    #     )
 
 
 if __name__ == "__main__":
     FacestWorkflow().translate("wdl")
-
