@@ -1,5 +1,5 @@
-from .facets_plot.versions import FacetsPlot_0_5_14_2, FacetsPlotLatest
+from .run_facets.versions import RunFacets_2_0_8, RunFacetsLatest
 from .snp_pileup.versions import (
-    FacetsSnpPileup_0_5_14_2,
+    FacetsSnpPileup_2_0_8,
     FacetsSnpPileupLatest,
 )

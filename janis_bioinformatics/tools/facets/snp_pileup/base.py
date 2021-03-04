@@ -14,7 +14,6 @@ from janis_core import (
     File,
 )
 
-from janis_bioinformatics.data_types import CompressedVcf
 from janis_bioinformatics.data_types.bam import BamBai
 from janis_bioinformatics.tools.facets.facets_base import FacetsBase
 
@@ -22,7 +21,7 @@ from janis_bioinformatics.tools.facets.facets_base import FacetsBase
 class FacetsSnpPileupBase(FacetsBase, ABC):
     @classmethod
     def facets_command(cls):
-        return "LD_LIBRARY_PATH=/opt/conda/lib /snp-pileup"
+        return "snp-pileup-wrapper.R"
 
     def tool(self):
         return "FacetsSnpPileup"
@@ -30,92 +29,66 @@ class FacetsSnpPileupBase(FacetsBase, ABC):
     def inputs(self):
         return [
             ToolInput(
-                "count_orphans",
-                Boolean(optional=True),
-                prefix="--count-orphans",
-                position=2,
-                doc="Do not discard anomalous read pairs",
+                "vcf_file",
+                File(),
+                prefix="--vcf-file",
+                doc="Path to VCF file containing SNP positions",
             ),
             ToolInput(
-                "ignore_overlaps",
-                Boolean(optional=True),
-                prefix="--ignore-overlaps",
-                position=4,
-                doc="Disable read-pair overlap detection.",
+                "normal_bam",
+                BamBai(),
+                prefix="--normal-bam",
+                doc="Path to normal sample BAM file",
+            ),
+            ToolInput(
+                "tumor_bam",
+                BamBai(),
+                prefix="--tumor-bam",
+                doc="Path to tumor sample BAM file",
+            ),
+            ToolInput(
+                "output_prefix",
+                Filename(),
+                prefix="--output-prefix",
+                doc="Path to VCF file containing SNP positions",
+            ),
+            ToolInput(
+                "pseudo_snps",
+                Int(optional=True),
+                prefix="--pseudo-snps",
+                doc="Do pileup at every p:th position [default %(default)s]",
             ),
             ToolInput(
                 "max_depth",
                 Int(optional=True),
-                prefix="--maxdepth=",
-                position=6,
-                separate_value_from_prefix=False,
-                doc="Sets the maximum depth. Default is 4000.",
-            ),
-            ToolInput(
-                "min_map_quality",
-                Int(optional=True),
-                prefix="--min-map-quality=",
-                position=8,
-                separate_value_from_prefix=False,
-                doc="Sets the minimum threshold for mapping quality. Default is 0.",
-            ),
-            ToolInput(
-                "min_base_quality",
-                Int(optional=True),
-                prefix="--min-base-quality=",
-                position=10,
-                separate_value_from_prefix=False,
-                doc="Sets the minimum threshold for base quality. Default is 0.",
-            ),
-            ToolInput(
-                "min_read_counts",
-                Array(Int(), optional=True),
-                separator=",",
-                prefix="--min-read-counts=",
-                separator=",",
-                position=12,
-                separate_value_from_prefix=False,
-                doc="Comma separated list of minimum read counts for a position to be output. Default is 0.",
-            ),
-            ToolInput(
-                "gzip",
-                Boolean(optional=True),
-                prefix="--gzip",
-                position=14,
-                doc="Compresses the output file with BGZF.",
-            ),
-            ToolInput(
-                "pseudo_snps",
-                String(optional=True),
-                prefix="--pseudo-snps=",
-                position=16,
-                separate_value_from_prefix=False,
-                doc="Every MULTIPLE positions, if there is no SNP,"
-                "insert a blank record with the total count at the"
-                "position.",
-            ),
-            ToolInput("vcf_file", File(), position=18),
-            ToolInput("output_filename", Filename(extension=".csv.gz"), position=19),
-            ToolInput("normal", BamBai(), position=20),
-            ToolInput("tumour", BamBai(), position=21),
+                prefix="--max-depth",
+                doc="Maximum read depth [default %(default)s]",
+            )
+            # ToolInput(
+            #     "snp-pileup-path", String(optional=True), prefix="--snp-pileup-path"
+            # ),
         ]
 
     def outputs(self):
-        return [ToolOutput("out", File(), glob=InputSelector("output_filename"))]
+        return [
+            ToolOutput(
+                "out", File(), glob=InputSelector("output_prefix") + ".snp_pileup.gz"
+            )
+        ]
 
     def friendly_name(self):
         return "Facets: snp-pileup"
 
     def bind_metadata(self):
         self.metadata = ToolMetadata(
-            contributors=["mumbler", "evanwehi"],
+            contributors=["mumbler", "evanwehi", "Jiaan Yu"],
             dateCreated=date(2019, 12, 16),
-            dateUpdated=date(2019, 12, 16),
-            institution="Vanallen Lab",
+            dateUpdated=date(2021, 3, 4),
+            institution="Memorial Sloan Kettering Cancer Center",
             doi="https://doi.org/10.1093/nar/gkw520",
             citation="Ronglai Shen, Venkatraman E. Seshan; FACETS: allele-specific copy number and clonal heterogeneity analysis tool for high-throughput DNA sequencing, Nucleic Acids Research, Volume 44, Issue 16, 19 September 2016, Pages e131,",
             keywords=["facets", "snp-pileup"],
-            documentationUrl="https://github.com/vanallenlab/facets",
+            documentationUrl="https://github.com/mskcc/facets-suite",
             documentation="""
       """.strip(),
         )
