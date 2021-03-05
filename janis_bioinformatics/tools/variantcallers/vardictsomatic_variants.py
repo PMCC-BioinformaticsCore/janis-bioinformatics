@@ -1,5 +1,5 @@
 from datetime import datetime
-from janis_core import File, String, Float, WorkflowMetadata
+from janis_core import File, String, Float, Int, WorkflowMetadata
 from janis_unix.tools import UncompressArchive
 
 from janis_bioinformatics.data_types import FastaWithDict, BamBai, Bed
@@ -28,16 +28,16 @@ class VardictSomaticVariantCaller(BioinformaticsWorkflow):
 
         self.input("normal_bam", BamBai)
         self.input("tumor_bam", BamBai)
-
         self.input("normal_name", String)
         self.input("tumor_name", String)
-
         self.input("intervals", Bed)
-
-        self.input("allele_freq_threshold", Float(), 0.05)
         self.input("header_lines", File)
-
         self.input("reference", FastaWithDict)
+
+        # vardict options
+        self.input("allele_freq_threshold", Float(), 0.05)
+        self.input("minMappingQual", Int(optional=True))
+        self.input("filter", String(optional=True))
 
         self.step(
             "vardict",
@@ -54,6 +54,8 @@ class VardictSomaticVariantCaller(BioinformaticsWorkflow):
                 regStartCol=2,
                 geneEndCol=3,
                 threads=4,
+                minMappingQual=self.minMappingQual,
+                filter=self.filter,
             ),
         )
         self.step(
