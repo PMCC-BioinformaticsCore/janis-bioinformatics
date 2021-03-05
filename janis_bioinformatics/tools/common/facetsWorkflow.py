@@ -100,17 +100,56 @@ class FacestWorkflow(BioinformaticsWorkflow):
             ),
         )
 
-    #     self.output(
-    #         "genome_segments_plot",
-    #         source=self.facets_plot.out_genome_segments,
-    #         output_folder="facets",
-    #     )
-
-    #     self.output(
-    #         "diagnostic_plot",
-    #         source=self.facets_plot.out_diagnostic_plot,
-    #         output_folder="facets",
-    #     )
+        self.output(
+            "out_summary",
+            source=self.run_facets.out_summary,
+            output_folder="facets",
+        )
+        self.output(
+            "out_purity_png",
+            source=self.run_facets.out_purity_png,
+            output_folder="facets",
+        ),
+        self.output(
+            "out_purity_seg",
+            source=self.run_facets.out_purity_seg,
+            output_folder="facets",
+        ),
+        self.output(
+            "out_purity_rds",
+            source=self.run_facets.out_purity_rds,
+            output_folder="facets",
+        ),
+        self.output(
+            "out_hisens_png",
+            source=self.run_facets.out_hisens_png,
+            output_folder="facets",
+        ),
+        self.output(
+            "out_hisens_seg",
+            source=self.run_facets.out_hisens_seg,
+            output_folder="facets",
+        ),
+        self.output(
+            "out_hisens_rds",
+            source=self.run_facets.out_hisens_rds,
+            output_folder="facets",
+        ),
+        self.output(
+            "out_arm_level",
+            source=self.run_facets.out_arm_level,
+            output_folder="facets",
+        ),
+        self.output(
+            "out_gene_level",
+            source=self.run_facets.out_gene_level,
+            output_folder="facets",
+        ),
+        self.output(
+            "out_qc",
+            source=self.run_facets.out_qc,
+            output_folder="facets",
+        ),
 
 
 if __name__ == "__main__":
