@@ -14,9 +14,24 @@ from janis_core import (
     StringFormatter,
     File,
     Double,
+    CaptureType,
+    get_value_for_hints_and_ordered_resource_tuple,
 )
-
+from typing import List, Dict, Any
 from janis_bioinformatics.tools.facets.facets_base import FacetsBase
+
+MEM_TUPLE = [
+    (
+        CaptureType.key(),
+        {
+            CaptureType.CHROMOSOME: 16,
+            CaptureType.EXOME: 16,
+            CaptureType.THIRTYX: 16,
+            CaptureType.NINETYX: 64,
+            CaptureType.THREEHUNDREDX: 64,
+        },
+    )
+]
 
 
 class RunFacetsBase(FacetsBase, ABC):
@@ -26,6 +41,12 @@ class RunFacetsBase(FacetsBase, ABC):
 
     def tool(self):
         return "RunFacets"
+
+    def memory(self, hints: Dict[str, Any]):
+        val = get_value_for_hints_and_ordered_resource_tuple(hints, MEM_TUPLE)
+        if val:
+            return val
+        return 64
 
     def inputs(self):
         return [
@@ -142,7 +163,7 @@ class RunFacetsBase(FacetsBase, ABC):
             ),
             ToolOutput(
                 "out_purity_rds",
-                File(optional=True),
+                File(),
                 glob=InputSelector("outputPrefix") + "_purity.rds",
             ),
             ToolOutput(
@@ -157,7 +178,7 @@ class RunFacetsBase(FacetsBase, ABC):
             ),
             ToolOutput(
                 "out_hisens_rds",
-                File(optional=True),
+                File(),
                 glob=InputSelector("outputPrefix") + "_hisens.rds",
             ),
             ToolOutput(
