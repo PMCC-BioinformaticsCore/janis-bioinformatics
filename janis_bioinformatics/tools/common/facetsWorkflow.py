@@ -104,51 +104,99 @@ class FacestWorkflow(BioinformaticsWorkflow):
             "out_summary",
             source=self.run_facets.out_summary,
             output_folder="facets",
+            output_name=StringFormatter(
+                "{tumour}--{normal}.txt", tumour=self.tumour_id, normal=self.normal_id
+            ),
         )
         self.output(
             "out_purity_png",
             source=self.run_facets.out_purity_png,
             output_folder="facets",
+            output_name=StringFormatter(
+                "{tumour}--{normal}_purity.png",
+                tumour=self.tumour_id,
+                normal=self.normal_id,
+            ),
         ),
         self.output(
             "out_purity_seg",
             source=self.run_facets.out_purity_seg,
             output_folder="facets",
+            output_name=StringFormatter(
+                "{tumour}--{normal}_purity.seg",
+                tumour=self.tumour_id,
+                normal=self.normal_id,
+            ),
         ),
         self.output(
             "out_purity_rds",
             source=self.run_facets.out_purity_rds,
             output_folder="facets",
+            output_name=StringFormatter(
+                "{tumour}--{normal}_purity.rds",
+                tumour=self.tumour_id,
+                normal=self.normal_id,
+            ),
         ),
         self.output(
             "out_hisens_png",
             source=self.run_facets.out_hisens_png,
             output_folder="facets",
+            output_name=StringFormatter(
+                "{tumour}--{normal}_hisens.png",
+                tumour=self.tumour_id,
+                normal=self.normal_id,
+            ),
         ),
         self.output(
             "out_hisens_seg",
             source=self.run_facets.out_hisens_seg,
             output_folder="facets",
+            output_name=StringFormatter(
+                "{tumour}--{normal}_hisens.seg",
+                tumour=self.tumour_id,
+                normal=self.normal_id,
+            ),
         ),
         self.output(
             "out_hisens_rds",
             source=self.run_facets.out_hisens_rds,
             output_folder="facets",
+            output_name=StringFormatter(
+                "{tumour}--{normal}_hisens.rds",
+                tumour=self.tumour_id,
+                normal=self.normal_id,
+            ),
         ),
         self.output(
             "out_arm_level",
             source=self.run_facets.out_arm_level,
             output_folder="facets",
+            output_name=StringFormatter(
+                "{tumour}--{normal}.arm_level.txt",
+                tumour=self.tumour_id,
+                normal=self.normal_id,
+            ),
         ),
         self.output(
             "out_gene_level",
             source=self.run_facets.out_gene_level,
             output_folder="facets",
+            output_name=StringFormatter(
+                "{tumour}--{normal}.gene_level.txt",
+                tumour=self.tumour_id,
+                normal=self.normal_id,
+            ),
         ),
         self.output(
             "out_qc",
             source=self.run_facets.out_qc,
             output_folder="facets",
+            output_name=StringFormatter(
+                "{tumour}--{normal}.qc.txt",
+                tumour=self.tumour_id,
+                normal=self.normal_id,
+            ),
         ),
 
 
