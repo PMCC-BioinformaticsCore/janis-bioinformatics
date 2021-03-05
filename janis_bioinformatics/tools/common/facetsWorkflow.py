@@ -49,10 +49,10 @@ class FacestWorkflow(BioinformaticsWorkflow):
 
     def constructor(self):
         self.input("normal_bam", BamBai)
-        self.input("tumour_bam", BamBai)
-        self.input("normal_id", String)
-        self.input("tumour_id", String)
-        self.input("common_snp_vcf", File)
+        self.input("tumor_bam", BamBai)
+        self.input("normal_name", String)
+        self.input("tumor_name", String)
+        self.input("snps_dbsnp", File)
 
         # optional
         self.input("pseudo_snps", Int(optional=True))
@@ -71,13 +71,13 @@ class FacestWorkflow(BioinformaticsWorkflow):
             "snp_pileup",
             FacetsSnpPileup_2_0_8(
                 normal_bam=self.normal_bam,
-                tumor_bam=self.tumour_bam,
+                tumor_bam=self.tumor_bam,
                 output_prefix=StringFormatter(
-                    "{tumour}--{normal}",
-                    tumour=self.tumour_id,
-                    normal=self.normal_id,
+                    "{tumor}--{normal}",
+                    tumor=self.tumor_name,
+                    normal=self.normal_name,
                 ),
-                vcf_file=self.common_snp_vcf,
+                vcf_file=self.snps_dbsnp,
                 pseudo_snps=self.pseudo_snps,
                 max_depth=self.max_depth,
             ),
@@ -89,7 +89,9 @@ class FacestWorkflow(BioinformaticsWorkflow):
             RunFacets_2_0_8(
                 counts_file=self.snp_pileup.out,
                 outputPrefix=StringFormatter(
-                    "{tumour}--{normal}", tumour=self.tumour_id, normal=self.normal_id
+                    "{tumor}--{normal}",
+                    tumor=self.tumor_name,
+                    normal=self.normal_name,
                 ),
                 directory=".",
                 everything=self.everything,
@@ -105,7 +107,9 @@ class FacestWorkflow(BioinformaticsWorkflow):
             source=self.run_facets.out_summary,
             output_folder="facets",
             output_name=StringFormatter(
-                "{tumour}--{normal}.txt", tumour=self.tumour_id, normal=self.normal_id
+                "{tumor}--{normal}.txt",
+                tumor=self.tumor_name,
+                normal=self.normal_name,
             ),
         )
         self.output(
@@ -113,9 +117,9 @@ class FacestWorkflow(BioinformaticsWorkflow):
             source=self.run_facets.out_purity_png,
             output_folder="facets",
             output_name=StringFormatter(
-                "{tumour}--{normal}_purity.png",
-                tumour=self.tumour_id,
-                normal=self.normal_id,
+                "{tumor}--{normal}_purity.png",
+                tumor=self.tumor_name,
+                normal=self.normal_name,
             ),
         ),
         self.output(
@@ -123,9 +127,9 @@ class FacestWorkflow(BioinformaticsWorkflow):
             source=self.run_facets.out_purity_seg,
             output_folder="facets",
             output_name=StringFormatter(
-                "{tumour}--{normal}_purity.seg",
-                tumour=self.tumour_id,
-                normal=self.normal_id,
+                "{tumor}--{normal}_purity.seg",
+                tumor=self.tumor_name,
+                normal=self.normal_name,
             ),
         ),
         self.output(
@@ -133,9 +137,9 @@ class FacestWorkflow(BioinformaticsWorkflow):
             source=self.run_facets.out_purity_rds,
             output_folder="facets",
             output_name=StringFormatter(
-                "{tumour}--{normal}_purity.rds",
-                tumour=self.tumour_id,
-                normal=self.normal_id,
+                "{tumor}--{normal}_purity.rds",
+                tumor=self.tumor_name,
+                normal=self.normal_name,
             ),
         ),
         self.output(
@@ -143,9 +147,9 @@ class FacestWorkflow(BioinformaticsWorkflow):
             source=self.run_facets.out_hisens_png,
             output_folder="facets",
             output_name=StringFormatter(
-                "{tumour}--{normal}_hisens.png",
-                tumour=self.tumour_id,
-                normal=self.normal_id,
+                "{tumor}--{normal}_hisens.png",
+                tumor=self.tumor_name,
+                normal=self.normal_name,
             ),
         ),
         self.output(
@@ -153,9 +157,9 @@ class FacestWorkflow(BioinformaticsWorkflow):
             source=self.run_facets.out_hisens_seg,
             output_folder="facets",
             output_name=StringFormatter(
-                "{tumour}--{normal}_hisens.seg",
-                tumour=self.tumour_id,
-                normal=self.normal_id,
+                "{tumor}--{normal}_hisens.seg",
+                tumor=self.tumor_name,
+                normal=self.normal_name,
             ),
         ),
         self.output(
@@ -163,9 +167,9 @@ class FacestWorkflow(BioinformaticsWorkflow):
             source=self.run_facets.out_hisens_rds,
             output_folder="facets",
             output_name=StringFormatter(
-                "{tumour}--{normal}_hisens.rds",
-                tumour=self.tumour_id,
-                normal=self.normal_id,
+                "{tumor}--{normal}_hisens.rds",
+                tumor=self.tumor_name,
+                normal=self.normal_name,
             ),
         ),
         self.output(
@@ -173,9 +177,9 @@ class FacestWorkflow(BioinformaticsWorkflow):
             source=self.run_facets.out_arm_level,
             output_folder="facets",
             output_name=StringFormatter(
-                "{tumour}--{normal}.arm_level.txt",
-                tumour=self.tumour_id,
-                normal=self.normal_id,
+                "{tumor}--{normal}.arm_level.txt",
+                tumor=self.tumor_name,
+                normal=self.normal_name,
             ),
         ),
         self.output(
@@ -183,9 +187,9 @@ class FacestWorkflow(BioinformaticsWorkflow):
             source=self.run_facets.out_gene_level,
             output_folder="facets",
             output_name=StringFormatter(
-                "{tumour}--{normal}.gene_level.txt",
-                tumour=self.tumour_id,
-                normal=self.normal_id,
+                "{tumor}--{normal}.gene_level.txt",
+                tumor=self.tumor_name,
+                normal=self.normal_name,
             ),
         ),
         self.output(
@@ -193,9 +197,9 @@ class FacestWorkflow(BioinformaticsWorkflow):
             source=self.run_facets.out_qc,
             output_folder="facets",
             output_name=StringFormatter(
-                "{tumour}--{normal}.qc.txt",
-                tumour=self.tumour_id,
-                normal=self.normal_id,
+                "{tumor}--{normal}.qc.txt",
+                tumor=self.tumor_name,
+                normal=self.normal_name,
             ),
         ),
 
