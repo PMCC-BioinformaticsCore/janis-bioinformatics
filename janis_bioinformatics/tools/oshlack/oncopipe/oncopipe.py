@@ -30,8 +30,8 @@ from janis_bioinformatics.tools.oshlack.prepareallsortsinput import (
 )
 from janis_bioinformatics.tools.oshlack.allsorts.versions import AllSorts_0_1_0
 from janis_bioinformatics.tools.star import (
-    StarAlignReads_2_7_3,
-    StarGenerateIndexes_2_7_3,
+    StarAlignReads_2_7_1,
+    StarGenerateIndexes_2_7_1,
 )
 from janis_bioinformatics.tools.subread import FeatureCounts_2_0_1
 from janis_bioinformatics.tools.suhrig import Arriba_1_2_0
@@ -104,6 +104,7 @@ Original code example:
         self.input("platform", String, default="ILLUMINA")
         self.input("sequence_dictionary", File)
         self.input("call_conf", Double, default=20.0)
+        self.input("star_threads", Int(optional=True), 8)
 
         self.step(
             "process",
@@ -119,9 +120,12 @@ Original code example:
                 platform=self.platform,
                 sequence_dictionary=self.sequence_dictionary,
                 call_conf=self.call_conf,
+                star_threads=self.star_threads,
             ),
             scatter=ScatterDescription(
-                ["reads", "name"], method=ScatterMethod.dot, labels=self.name,
+                ["reads", "name"],
+                method=ScatterMethod.dot,
+                labels=self.name,
             ),
         )
 
@@ -131,7 +135,11 @@ Original code example:
 
     def add_jaffa(self):
         self.step(
-            "jaffa", Jaffa_2_0(reference=self.jaffa_reference, fastqs=self.reads,),
+            "jaffa",
+            Jaffa_2_0(
+                reference=self.jaffa_reference,
+                fastqs=self.reads,
+            ),
         )
 
         self.output(
@@ -185,6 +193,7 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
         self.input("sequence_dictionary", File)
         self.input("call_conf", Double, default=20.0)
         self.input("star_sjdbOverhang", Int, default=99)
+        self.input("star_threads", Int(optional=True), 8)
 
         self.add_trim_and_align()
         self.add_sort_bam()
@@ -214,47 +223,42 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
         # Merge star alignment stages
         self.step(
             "star_map_1pass_PE",
-            StarAlignReads_2_7_3(
+            StarAlignReads_2_7_1(
                 readFilesIn=self.trim.pairedOut,
                 genomeDir=self.genome_dir,
                 limitOutSJcollapsed=3000000,  # lots of splice junctions may need more than default 1M buffer
                 readFilesCommand="zcat",
                 outSAMtype=["None"],
+                runThreadN=self.star_threads,
             ),
             doc="Map reads using the STAR aligner: 1st pass",
         )
 
         self.step(
             "star_gen2pass",
-            StarGenerateIndexes_2_7_3(
+            StarGenerateIndexes_2_7_1(
                 genomeFastaFiles=self.reference,
                 sjdbFileChrStartEnd=self.star_map_1pass_PE.SJ_out_tab,
                 sjdbOverhang=self.star_sjdbOverhang,
                 sjdbGTFfile=self.gtf,
                 limitOutSJcollapsed=3000000,  # lots of splice junctions may need more than default 1M buffer
                 outputGenomeDir=self.name,
+                runThreadN=self.star_threads,
             ),
             doc="Map reads using the STAR aligner: generate genome",
         )
 
         self.step(
             "star_map_2pass_PE",
-            StarAlignReads_2_7_3(
+            StarAlignReads_2_7_1(
+                runThreadN=self.star_threads,
+                genomeDir=self.star_gen2pass.out,
+                genomeLoad="NoSharedMemory",
                 readFilesIn=self.trim.pairedOut,
                 readFilesCommand="zcat",
-                genomeDir=self.star_gen2pass.out,
-                outSAMattrRGline=[
-                    StringFormatter("ID:{sample}", sample=self.name),
-                    StringFormatter("SM:{lane}", lane=self.name),
-                    StringFormatter("LB:{library}", library=self.name),
-                    StringFormatter("PL:{platform}", platform=self.platform),
-                    StringFormatter("PU:1"),
-                ],
-                sjdbGTFfile=self.gtf,
-                quantMode="GeneCounts",
-                limitOutSJcollapsed=3000000,  # lots of splice junctions may need more than default 1M buffer
                 outSAMtype=["BAM", "Unsorted"],
                 outSAMunmapped="Within",
+                outBAMcompression=0,
                 outFilterMultimapNmax=1,
                 outFilterMismatchNmax=3,
                 chimSegmentMin=10,
@@ -266,6 +270,14 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
                 chimScoreSeparation=1,
                 alignSJstitchMismatchNmax=[5, -1, 5, 5],
                 chimSegmentReadGapMax=3,
+                limitOutSJcollapsed=3000000,
+                outSAMattrRGline=[
+                    StringFormatter("ID:{sample}", sample=self.name),
+                    StringFormatter("SM:{lane}", lane=self.name),
+                    StringFormatter("LB:{library}", library=self.name),
+                    StringFormatter("PL:{platform}", platform=self.platform),
+                    StringFormatter("PU:1"),
+                ],
             ),
         )
         self.output(
@@ -345,7 +357,8 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
         )
 
         self.step(
-            "allsorts", AllSorts_0_1_0(samples=self.prepareAllsortsInput.out),
+            "allsorts",
+            AllSorts_0_1_0(samples=self.prepareAllsortsInput.out),
         )
 
         self.output(
@@ -417,7 +430,8 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
         self.step(
             "splitncigar",
             Gatk4SplitNCigarReads_4_1_4(
-                inp=[self.reorder_bam.out], reference=self.reference,
+                inp=[self.reorder_bam.out],
+                reference=self.reference,
             ),
             doc="split'n'trim and reassign mapping qualities",
         )
