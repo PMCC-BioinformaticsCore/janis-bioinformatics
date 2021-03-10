@@ -104,7 +104,7 @@ Original code example:
         self.input("platform", String, default="ILLUMINA")
         self.input("sequence_dictionary", File)
         self.input("call_conf", Double, default=20.0)
-        self.input("star_threads", Int(optional=True), 8)
+        self.input("star_threads", Int(optional=True), 4)
 
         self.step(
             "process",
@@ -193,7 +193,7 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
         self.input("sequence_dictionary", File)
         self.input("call_conf", Double, default=20.0)
         self.input("star_sjdbOverhang", Int, default=99)
-        self.input("star_threads", Int(optional=True), 8)
+        self.input("star_threads", Int(optional=True), 4)
 
         self.add_trim_and_align()
         self.add_sort_bam()
