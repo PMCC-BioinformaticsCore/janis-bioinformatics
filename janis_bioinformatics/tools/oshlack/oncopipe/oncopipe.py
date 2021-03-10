@@ -278,6 +278,7 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
                     StringFormatter("PL:{platform}", platform=self.platform),
                     StringFormatter("PU:1"),
                 ],
+                quantMode="GeneCounts",
             ),
         )
         self.output(
