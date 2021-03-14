@@ -6,13 +6,44 @@ from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.common.bwamem_samtoolsview import BwaMem_SamToolsView
 from janis_bioinformatics.tools.cutadapt import CutAdapt_2_1
 from janis_bioinformatics.tools.gatk4 import Gatk4SortSam_4_1_2
-from janis_bioinformatics.data_types.bam import Bam
+from janis_bioinformatics.data_types.bam import Bam, BamBai
 
 from janis_core.tool.test_classes import (
     TTestPreprocessor,
     TTestExpectedOutput,
     TTestCase,
 )
+
+"""
+def basic_test(bam_size, bai_size, flagstat, value):
+    return [
+        TTestExpectedOutput(
+            tag="out",
+            preprocessor=TTestPreprocessor.FileSize,
+            operator=operator.gt,
+            expected_value=bam_size,
+        ),
+        TTestExpectedOutput(
+            tag="out",
+            suffix_secondary_file=".bai",
+            preprocessor=TTestPreprocessor.FileSize,
+            operator=operator.gt,
+            expected_value=bai_size,
+        ),
+        TTestExpectedOutput(
+            tag="out",
+            preprocessor=Bam.flagstat,
+            operator=operator.eq,
+            expected_file=flagstat,
+        ),
+        TTestExpectedOutput(
+            tag="out",
+            preprocessor=TTestPreprocessor.Value,
+            operator=Bam.equal,
+            expected_value=value,
+        )
+    ]
+"""
 
 
 class BwaAligner(BioinformaticsWorkflow):
@@ -97,33 +128,12 @@ class BwaAligner(BioinformaticsWorkflow):
                     ],
                     "reference": "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics/hg38-brca1.fasta",
                 },
-                output=[
-                    TTestExpectedOutput(
-                        tag="out",
-                        preprocessor=TTestPreprocessor.FileSize,
-                        operator=operator.gt,
-                        expected_value=2767780,
-                    ),
-                    TTestExpectedOutput(
-                        tag="out",
-                        suffix_secondary_file=".bai",
-                        preprocessor=TTestPreprocessor.FileSize,
-                        operator=operator.gt,
-                        expected_value=290,
-                    ),
-                    TTestExpectedOutput(
-                        tag="out",
-                        preprocessor=Bam.flagstat,
-                        operator=operator.eq,
-                        expected_file="https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics/bwaaligner/bwaaligner.flagstat.txt",
-                    ),
-                    TTestExpectedOutput(
-                        tag="out",
-                        preprocessor=TTestPreprocessor.Value,
-                        operator=Bam.equal,
-                        expected_value="https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics/small.bam",
-                    ),
-                ],
+                output=BamBai.basic_test(
+                    2767780,
+                    290,
+                    "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics/bwaaligner/bwaaligner.flagstat.txt",
+                    "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics/small.bam",
+                ),
             )
         ]
 

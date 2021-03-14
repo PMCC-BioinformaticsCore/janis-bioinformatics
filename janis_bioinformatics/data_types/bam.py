@@ -1,5 +1,11 @@
 import subprocess
 from janis_core import File
+from janis_core.tool.test_classes import (
+    TTestPreprocessor,
+    TTestExpectedOutput,
+    TTestCase,
+)
+import operator
 
 
 class Bam(File):
@@ -47,3 +53,33 @@ class BamBai(Bam):
 
     def doc(self):
         return "A Bam and bai as the secondary"
+
+    @classmethod
+    def basic_test(cls, bam_size, bai_size, flagstat, value):
+        return [
+            TTestExpectedOutput(
+                tag="out",
+                preprocessor=TTestPreprocessor.FileSize,
+                operator=operator.gt,
+                expected_value=bam_size,
+            ),
+            TTestExpectedOutput(
+                tag="out",
+                suffix_secondary_file=".bai",
+                preprocessor=TTestPreprocessor.FileSize,
+                operator=operator.gt,
+                expected_value=bai_size,
+            ),
+            TTestExpectedOutput(
+                tag="out",
+                preprocessor=Bam.flagstat,
+                operator=operator.eq,
+                expected_file=flagstat,
+            ),
+            TTestExpectedOutput(
+                tag="out",
+                preprocessor=TTestPreprocessor.Value,
+                operator=Bam.equal,
+                expected_value=value,
+            ),
+        ]

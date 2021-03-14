@@ -1,3 +1,4 @@
+import os
 from abc import ABC
 from typing import Dict, Any
 
@@ -18,6 +19,9 @@ from janis_core import ToolMetadata
 
 from janis_bioinformatics.data_types import Bam, BamBai, FastaWithDict
 from ..gatk4toolbase import Gatk4ToolBase
+from janis_core.tool.test_classes import TTestCase
+
+from ... import BioinformaticsTool
 
 CORES_TUPLE = [
     (
@@ -222,3 +226,22 @@ class Gatk4SortSamBase(Gatk4ToolBase, ABC):
             "one of the following values: [ERROR, WARNING, INFO, DEBUG]",
         ),
     ]
+
+    def tests(self):
+        return [
+            TTestCase(
+                name="basic",
+                input={
+                    "bam": os.path.join(
+                        BioinformaticsTool.test_data_path(), "tmp_out_unsortedbam.bam"
+                    ),
+                    "sortOrder": "coordinate",
+                },
+                output=BamBai.basic_test(
+                    2767780,
+                    290,
+                    "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics/bwaaligner/bwaaligner.flagstat.txt",
+                    os.path.join(BioinformaticsTool.test_data_path(), "out.bam"),
+                ),
+            )
+        ]
