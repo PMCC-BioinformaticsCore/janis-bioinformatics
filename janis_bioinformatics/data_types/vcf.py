@@ -1,9 +1,18 @@
+import gzip
+import hashlib
+import re
 from abc import ABC
 
 from janis_core import File
 from janis_unix import Gunzipped
 
 from janis_bioinformatics.data_types.tabix import FileTabix
+from janis_core.tool.test_classes import (
+    TTestPreprocessor,
+    TTestExpectedOutput,
+    TTestCase,
+)
+import operator
 
 
 class Vcf(File):
@@ -24,6 +33,33 @@ class Vcf(File):
     Documentation: https://samtools.github.io/hts-specs/VCFv4.3.pdf
     """.strip()
 
+    @classmethod
+    def md5(cls, file_path: str):
+        with open(file_path, "r") as f:
+            meaningful_content = False
+            hash_md5 = hashlib.md5()
+            while True:
+                line = f.readline()
+                if not line:
+                    break
+                if re.match("^#CHROM", line):
+                    meaningful_content = True
+                if not meaningful_content:
+                    continue
+                hash_md5.update(line.encode())
+        return hash_md5.hexdigest()
+
+    @classmethod
+    def basic_test(cls, tag, md5_value):
+        return [
+            TTestExpectedOutput(
+                tag=tag,
+                preprocessor=Vcf.md5,
+                operator=operator.eq,
+                expected_value=md5_value,
+            ),
+        ]
+
 
 class VcfIdx(Vcf):
     @staticmethod
@@ -33,6 +69,18 @@ class VcfIdx(Vcf):
     @staticmethod
     def secondary_files():
         return [".idx"]
+
+    @classmethod
+    def basic_test(cls, tag, vcf_md5, idx_md5):
+        return Vcf.basic_test(tag, vcf_md5) + [
+            TTestExpectedOutput(
+                tag=tag,
+                suffix_secondary_file=".idx",
+                preprocessor=TTestPreprocessor.FileMd5,
+                operator=operator.eq,
+                expected_value=idx_md5,
+            ),
+        ]
 
 
 class CompressedVcf(Gunzipped):
@@ -46,6 +94,33 @@ class CompressedVcf(Gunzipped):
     def doc(self):
         return ".vcf.gz"
 
+    @classmethod
+    def md5(cls, file_path: str):
+        with gzip.open(file_path, "rt") as f:
+            meaningful_content = False
+            hash_md5 = hashlib.md5()
+            while True:
+                line = f.readline()
+                if not line:
+                    break
+                if re.match("^#CHROM", line):
+                    meaningful_content = True
+                if not meaningful_content:
+                    continue
+                hash_md5.update(line.encode())
+        return hash_md5.hexdigest()
+
+    @classmethod
+    def basic_test(cls, tag, md5_value):
+        return [
+            TTestExpectedOutput(
+                tag=tag,
+                preprocessor=CompressedVcf.md5,
+                operator=operator.eq,
+                expected_value=md5_value,
+            ),
+        ]
+
 
 class VcfTabix(CompressedVcf, FileTabix):
     @staticmethod
@@ -54,6 +129,18 @@ class VcfTabix(CompressedVcf, FileTabix):
 
     def doc(self):
         return ".vcf.gz with .vcf.gz.tbi file"
+
+    @classmethod
+    def basic_test(cls, tag, vcf_md5, tbi_size):
+        return CompressedVcf.basic_test(tag, vcf_md5) + [
+            TTestExpectedOutput(
+                tag=tag,
+                suffix_secondary_file=".tbi",
+                preprocessor=TTestPreprocessor.FileSize,
+                operator=operator.gt,
+                expected_value=tbi_size,
+            ),
+        ]
 
 
 # class GVCF(Vcf):

@@ -1,6 +1,8 @@
+import operator
 from typing import Any, Dict
 
 from janis_core import File, Array, Logger
+from janis_core.tool.test_classes import TTestExpectedOutput, TTestPreprocessor
 
 
 class Fastq(File):
@@ -69,6 +71,31 @@ class FastqGzPairedEnd(Array):
         if meta is not None and len(meta) != 2:
             hints.append(f"There must be exactly 2 (found {len(meta)}) fastq files")
         return ", ".join(hints)
+
+    @classmethod
+    def basic_test(cls, tag, first_size, second_size):
+        return [
+            TTestExpectedOutput(
+                tag=tag,
+                preprocessor=TTestPreprocessor.ListSize,
+                operator=operator.eq,
+                expected_value=2,
+            ),
+            TTestExpectedOutput(
+                tag=tag,
+                array_index=0,
+                preprocessor=TTestPreprocessor.FileSize,
+                operator=operator.eq,
+                expected_value=first_size,
+            ),
+            TTestExpectedOutput(
+                tag=tag,
+                array_index=1,
+                preprocessor=TTestPreprocessor.FileSize,
+                operator=operator.eq,
+                expected_value=second_size,
+            ),
+        ]
 
 
 class FastqPairedEnd(Array):

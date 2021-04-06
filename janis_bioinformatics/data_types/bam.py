@@ -41,6 +41,35 @@ class Bam(File):
 
         return flagstat1 == flagstat2
 
+    @classmethod
+    def basic_test(cls, tag, bam_size, value, flagstat=""):
+        output = [
+            TTestExpectedOutput(
+                tag=tag,
+                preprocessor=TTestPreprocessor.FileSize,
+                operator=operator.eq,
+                expected_value=bam_size,
+            ),
+            TTestExpectedOutput(
+                tag=tag,
+                preprocessor=TTestPreprocessor.Value,
+                operator=Bam.equal,
+                expected_value=value,
+            ),
+        ]
+
+        if flagstat == "":
+            return output
+
+        return output + [
+            TTestExpectedOutput(
+                tag=tag,
+                preprocessor=Bam.flagstat,
+                operator=operator.eq,
+                expected_file=flagstat,
+            ),
+        ]
+
 
 class BamBai(Bam):
     @staticmethod
@@ -55,31 +84,13 @@ class BamBai(Bam):
         return "A Bam and bai as the secondary"
 
     @classmethod
-    def basic_test(cls, bam_size, bai_size, flagstat, value):
-        return [
+    def basic_test(cls, tag, bam_size, bai_size, value, flagstat=""):
+        return Bam.basic_test(tag, bam_size, value, flagstat) + [
             TTestExpectedOutput(
-                tag="out",
-                preprocessor=TTestPreprocessor.FileSize,
-                operator=operator.gt,
-                expected_value=bam_size,
-            ),
-            TTestExpectedOutput(
-                tag="out",
+                tag=tag,
                 suffix_secondary_file=".bai",
                 preprocessor=TTestPreprocessor.FileSize,
                 operator=operator.gt,
                 expected_value=bai_size,
-            ),
-            TTestExpectedOutput(
-                tag="out",
-                preprocessor=Bam.flagstat,
-                operator=operator.eq,
-                expected_file=flagstat,
-            ),
-            TTestExpectedOutput(
-                tag="out",
-                preprocessor=TTestPreprocessor.Value,
-                operator=Bam.equal,
-                expected_value=value,
             ),
         ]
