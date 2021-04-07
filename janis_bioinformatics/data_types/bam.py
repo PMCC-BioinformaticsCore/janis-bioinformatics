@@ -42,8 +42,8 @@ class Bam(File):
         return flagstat1 == flagstat2
 
     @classmethod
-    def basic_test(cls, tag, bam_size, value, flagstat=""):
-        output = [
+    def basic_test(cls, tag, bam_size, flagstat, md5):
+        return [
             TTestExpectedOutput(
                 tag=tag,
                 preprocessor=TTestPreprocessor.FileSize,
@@ -52,21 +52,15 @@ class Bam(File):
             ),
             TTestExpectedOutput(
                 tag=tag,
-                preprocessor=TTestPreprocessor.Value,
-                operator=Bam.equal,
-                expected_value=value,
-            ),
-        ]
-
-        if flagstat == "":
-            return output
-
-        return output + [
-            TTestExpectedOutput(
-                tag=tag,
                 preprocessor=Bam.flagstat,
                 operator=operator.eq,
                 expected_file=flagstat,
+            ),
+            TTestExpectedOutput(
+                tag=tag,
+                preprocessor=TTestPreprocessor.FileMd5,
+                operator=operator.eq,
+                expected_value=md5,
             ),
         ]
 

@@ -3,9 +3,9 @@ repos:
     rev: stable
     hooks:
     - id: black
-#- repo: local
-#  hooks:
-#    - id: nosetests
-#      name: nosetests
-#      entry: sh -ec 'nosetests -w janis'
-#      language: system
+- repo: local
+  hooks:
+    - id: nosetests
+      name: nosetests
+      entry: sh -ec 'nosetests -w janis_bioinformatics'
+      language: system
