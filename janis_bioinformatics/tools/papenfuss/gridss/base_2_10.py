@@ -98,9 +98,8 @@ class GridssBase_2_10(BioinformaticsTool):
                 prefix="--jar",
                 doc="location of GRIDSS jar",
             ),
-            ToolInput("blacklist", Bed(optional=True), prefix="--blacklist"),
             ToolInput(
-                "tmpdir",
+                "workingDir",
                 String(optional=True),
                 default="./TMP",
                 prefix="--workingdir",

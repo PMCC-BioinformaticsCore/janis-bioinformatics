@@ -87,14 +87,21 @@ class GridssBase_2_4(BioinformaticsTool):
                 "blacklist", Bed(optional=True), position=4, prefix="--blacklist"
             ),
             ToolInput(
-                "tmpdir", String(optional=True), default="./TMP", prefix="--workingdir"
+                "workingDir",
+                String(optional=True),
+                default="./TMP",
+                prefix="--workingdir",
             ),
         ]
 
     def outputs(self):
         return [
             ToolOutput("out", Vcf(), glob=InputSelector("outputFilename")),
-            ToolOutput("assembly", Bam(), glob=InputSelector("assemblyFilename"),),
+            ToolOutput(
+                "assembly",
+                Bam(),
+                glob=InputSelector("assemblyFilename"),
+            ),
         ]
 
     def cpus(self, hints: Dict[str, Any]):
