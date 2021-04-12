@@ -1,3 +1,4 @@
+import os
 from abc import ABC
 from typing import Dict, Any
 from janis_core import get_value_for_hints_and_ordered_resource_tuple
@@ -14,10 +15,11 @@ from janis_core import (
     CaptureType,
 )
 from janis_core import ToolMetadata
+from janis_core.tool.test_classes import TTestCase
 
-from janis_bioinformatics.data_types import Vcf, CompressedVcf
+from janis_bioinformatics.data_types import Vcf, CompressedVcf, VcfIdx
 from ..gatk4toolbase import Gatk4ToolBase
-
+from ... import BioinformaticsTool
 
 CORES_TUPLE = [
     (
@@ -205,3 +207,27 @@ Input files must be supplied in genomic order and must not have events at overla
             doc="[default: INFO] Control verbosity of logging.",
         ),
     ]
+
+    def tests(self):
+        return [
+            TTestCase(
+                name="basic",
+                input={
+                    "javaOptions": ["-Xmx6G"],
+                    "vcfs": [
+                        os.path.join(
+                            BioinformaticsTool.test_data_path(),
+                            "wgsgermline_data",
+                            "NA12878-BRCA1.norm.vcf",
+                        )
+                    ],
+                },
+                output=Vcf.basic_test(
+                    "out",
+                    51615,
+                    221,
+                    ["GATKCommandLine"],
+                    "b7acb0a9900713cc7da7aeed5160c971",
+                ),
+            )
+        ]

@@ -1,3 +1,5 @@
+import operator
+import os
 from abc import ABC
 from datetime import datetime
 from typing import List, Dict, Any
@@ -17,11 +19,15 @@ from janis_core import (
     CpuSelector,
 )
 from janis_core import get_value_for_hints_and_ordered_resource_tuple
+from janis_core.tool.test_classes import (
+    TTestCase,
+    TTestExpectedOutput,
+    TTestPreprocessor,
+)
 from janis_unix import ZipFile
 
 from janis_bioinformatics.data_types import FastqGzPair, FastqGz
 from janis_bioinformatics.tools import BioinformaticsTool
-
 
 CORES_TUPLE = [
     (
@@ -240,3 +246,74 @@ class FastQCBase(BioinformaticsTool, ABC):
             "Defaults to system temp directory if not specified.",
         ),
     ]
+
+    def tests(self):
+        return [
+            TTestCase(
+                name="basic",
+                input={
+                    "reads": [
+                        os.path.join(
+                            BioinformaticsTool.test_data_path(),
+                            "wgsgermline_data",
+                            "NA12878-BRCA1_R1.fastq.gz",
+                        ),
+                        os.path.join(
+                            BioinformaticsTool.test_data_path(),
+                            "wgsgermline_data",
+                            "NA12878-BRCA1_R2.fastq.gz",
+                        ),
+                    ],
+                    "threads": 1,
+                },
+                output=[
+                    TTestExpectedOutput(
+                        tag="out",
+                        preprocessor=TTestPreprocessor.ListSize,
+                        operator=operator.eq,
+                        expected_value=2,
+                    ),
+                    TTestExpectedOutput(
+                        tag="out",
+                        array_index=0,
+                        preprocessor=TTestPreprocessor.FileSize,
+                        operator=operator.gt,
+                        expected_value=408000,
+                    ),
+                    TTestExpectedOutput(
+                        tag="out",
+                        array_index=0,
+                        preprocessor=TTestPreprocessor.FileSize,
+                        operator=operator.lt,
+                        expected_value=410000,
+                    ),
+                    TTestExpectedOutput(
+                        tag="out",
+                        array_index=1,
+                        preprocessor=TTestPreprocessor.FileSize,
+                        operator=operator.gt,
+                        expected_value=416000,
+                    ),
+                    TTestExpectedOutput(
+                        tag="out",
+                        array_index=1,
+                        preprocessor=TTestPreprocessor.FileSize,
+                        operator=operator.lt,
+                        expected_value=419000,
+                    ),
+                    TTestExpectedOutput(
+                        tag="datafile",
+                        preprocessor=TTestPreprocessor.ListSize,
+                        operator=operator.eq,
+                        expected_value=1,
+                    ),
+                    TTestExpectedOutput(
+                        tag="datafile",
+                        array_index=0,
+                        preprocessor=TTestPreprocessor.FileMd5,
+                        operator=operator.eq,
+                        expected_value="8e23d29e0859ba547f0aa616ca395a8f",
+                    ),
+                ],
+            ),
+        ]

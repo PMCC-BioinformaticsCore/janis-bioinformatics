@@ -1,3 +1,4 @@
+import os
 from abc import ABC
 from typing import Any, Dict
 
@@ -17,8 +18,9 @@ from janis_core import (
     get_value_for_hints_and_ordered_resource_tuple,
     ToolMetadata,
 )
+from janis_core.tool.test_classes import TTestCase
 
-from janis_bioinformatics.data_types import Sam, FastaBwa, FastqGz, FastqGzPair
+from janis_bioinformatics.data_types import Sam, FastaBwa, FastqGz, FastqGzPair, Bam
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 
 BWA_MEM_TUPLE = [
@@ -283,3 +285,41 @@ does not work with split alignments. One may consider to use option -M to flag s
             "4 or higher for debugging. When this option takes value 4, the output is not SAM. (Default: 3)",
         ),
     ]
+
+    def tests(self):
+        return [
+            TTestCase(
+                name="basic",
+                input={
+                    "reads": [
+                        os.path.join(
+                            BioinformaticsTool.test_data_path(),
+                            "wgsgermline_data",
+                            "NA12878-BRCA1_R1.fastq.gz",
+                        ),
+                        os.path.join(
+                            BioinformaticsTool.test_data_path(),
+                            "wgsgermline_data",
+                            "NA12878-BRCA1_R2.fastq.gz",
+                        ),
+                    ],
+                    "reference": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "Homo_sapiens_assembly38.chr17.fasta",
+                    ),
+                    "markShorterSplits": True,
+                    "readGroupHeaderLine": "@RG\tID:NA12878-BRCA1\tSM:NA12878-BRCA1\tLB:NA12878-BRCA1\tPL:ILLUMINA",
+                    "threads": 16,
+                },
+                output=Bam.basic_test(
+                    "out",
+                    8628527,
+                    os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "NA12878-BRCA1.bwamem.flagstat",
+                    ),
+                ),
+            )
+        ]

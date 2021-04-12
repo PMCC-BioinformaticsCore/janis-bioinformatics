@@ -1,13 +1,15 @@
 # grep ^@SQ reference.dict | cut -f2,3 | sed 's/SN://' | sed 's/LN://'
-
+import os
 from datetime import datetime
 from typing import List, Dict, Any
 
 from janis_core import TOutput, File, Filename, OutputDocumentation
+from janis_core.tool.test_classes import TTestCase
 from janis_unix import TextFile
 
 from janis_bioinformatics.data_types import FastaDict
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsPythonTool
+from janis_bioinformatics.tools import BioinformaticsTool
 
 
 class GenerateGenomeFileForBedtoolsCoverage(BioinformaticsPythonTool):
@@ -63,3 +65,18 @@ class GenerateGenomeFileForBedtoolsCoverage(BioinformaticsPythonTool):
         self.metadata.documentation = """\
 Generate --genome FILE for BedToolsCoverage      
         """
+
+    def tests(self):
+        return [
+            TTestCase(
+                name="basic",
+                input={
+                    "reference": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "Homo_sapiens_assembly38.chr17.fasta",
+                    ),
+                },
+                output=TextFile.basic_test("out", 15, "chr17\t83257441\n", 1),
+            )
+        ]

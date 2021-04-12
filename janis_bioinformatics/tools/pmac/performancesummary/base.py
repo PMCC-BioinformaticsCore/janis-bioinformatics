@@ -1,9 +1,17 @@
+import operator
+import os
 from abc import ABC
 import datetime
 
+from janis_core.tool.test_classes import (
+    TTestCase,
+    TTestExpectedOutput,
+    TTestPreprocessor,
+)
+
 from janis_bioinformatics.tools import BioinformaticsTool
 from janis_core import ToolInput, ToolOutput, File, Filename, InputSelector, Boolean
-from janis_unix import Csv
+from janis_unix import Csv, TextFile
 
 
 class PerformanceSummaryBase(BioinformaticsTool, ABC):
@@ -104,3 +112,45 @@ optional arguments:
         self.metadata.documentationUrl = (
             "https://github.com/PMCC-BioinformaticsCore/scripts/tree/master/performance"
         )
+
+    def tests(self):
+        with open(
+            os.path.join(
+                BioinformaticsTool.test_data_path(),
+                "wgsgermline_data",
+                "NA12878-BRCA1_performance_summary.csv",
+            ),
+            "r",
+        ) as f:
+            expected_content = f.read()
+        return [
+            TTestCase(
+                name="basic",
+                input={
+                    "flagstat": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "NA12878-BRCA1.markduped.bam.flagstat",
+                    ),
+                    "collectInsertSizeMetrics": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "NA12878-BRCA1.markduped.metrics.txt",
+                    ),
+                    "coverage": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "NA12878-BRCA1.genomeCoverageBed.stdout",
+                    ),
+                    "rmdupFlagstat": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "NA12878-BRCA1.markduped.bam.bam.flagstat",
+                    ),
+                    "genome": True,
+                },
+                output=TextFile.basic_test(
+                    "out", 948, expected_content, 2, "575354942cfb8d0367725f9020181443"
+                ),
+            )
+        ]

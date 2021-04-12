@@ -1,11 +1,14 @@
+import os
 from datetime import datetime
 from janis_core import String
 from janis_core import WorkflowMetadata
 
 # data types
+from janis_core.tool.test_classes import TTestCase
+
 from janis_bioinformatics.data_types import BamBai, Bed
 from janis_unix.data_types import TextFile
-from janis_bioinformatics.tools import BioinformaticsWorkflow
+from janis_bioinformatics.tools import BioinformaticsWorkflow, BioinformaticsTool
 from janis_bioinformatics.tools.bedtools import (
     BedToolsGenomeCoverageBedLatest,
     BedToolsCoverageBedLatest,
@@ -50,7 +53,9 @@ class PerformanceSummaryGenome_0_1_0(BioinformaticsWorkflow):
         # Steps - Performance Summary
         self.step(
             "gatk4collectinsertsizemetrics",
-            Gatk4CollectInsertSizeMetricsLatest(bam=self.bam,),
+            Gatk4CollectInsertSizeMetricsLatest(
+                bam=self.bam,
+            ),
         )
         self.step("bamflagstat", SamToolsFlagstatLatest(bam=self.bam))
         self.step(
@@ -61,7 +66,8 @@ class PerformanceSummaryGenome_0_1_0(BioinformaticsWorkflow):
         self.step(
             "bedtoolsgenomecoveragebed",
             BedToolsGenomeCoverageBedLatest(
-                inputBam=self.samtoolsview.out, genome=self.genome_file,
+                inputBam=self.samtoolsview.out,
+                genome=self.genome_file,
             ),
         )
         # Give all the output files to performance summary script
@@ -78,3 +84,41 @@ class PerformanceSummaryGenome_0_1_0(BioinformaticsWorkflow):
         )
 
         self.output("performanceSummaryOut", source=self.performancesummary.out)
+
+    def tests(self):
+        with open(
+            os.path.join(
+                BioinformaticsTool.test_data_path(),
+                "wgsgermline_data",
+                "NA12878-BRCA1_performance_summary.csv",
+            ),
+            "r",
+        ) as f:
+            expected_content = f.read()
+        return [
+            TTestCase(
+                name="basic",
+                input={
+                    "bam": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "NA12878-BRCA1.markduped.bam",
+                    ),
+                    "genome_file": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "NA12878-BRCA1.genome_file.txt",
+                    ),
+                    "sample_name": "NA12878-BRCA1",
+                    "samtoolsview_doNotOutputAlignmentsWithBitsSet": "0x400",
+                    "performancesummary_genome": True,
+                },
+                output=TextFile.basic_test(
+                    "performanceSummaryOut",
+                    948,
+                    expected_content,
+                    2,
+                    "575354942cfb8d0367725f9020181443",
+                ),
+            )
+        ]

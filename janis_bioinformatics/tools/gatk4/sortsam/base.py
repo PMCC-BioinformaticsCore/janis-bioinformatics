@@ -233,15 +233,28 @@ class Gatk4SortSamBase(Gatk4ToolBase, ABC):
                 name="basic",
                 input={
                     "bam": os.path.join(
-                        BioinformaticsTool.test_data_path(), "tmp_out_unsortedbam.bam"
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "NA12878-BRCA1.bam",
                     ),
                     "sortOrder": "coordinate",
+                    "createIndex": True,
+                    "maxRecordsInRam": 5000000,
+                    "tmpDir": "./tmp",
+                    "validationStringency": "SILENT",
+                    "javaOptions": ["-Xmx6G"],
                 },
                 output=BamBai.basic_test(
-                    2767780,
-                    290,
-                    "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics/bwaaligner/bwaaligner.flagstat.txt",
-                    os.path.join(BioinformaticsTool.test_data_path(), "out.bam"),
+                    "out",
+                    2826980,
+                    49688,
+                    os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "NA12878-BRCA1.bam.flagstat",
+                    ),
+                    "15eb0f8168b42e8ce3ab8b9bc9199e3c",
+                    "a9042025f29f7a08e5f56ce8d11469a1",
                 ),
             )
         ]

@@ -1,5 +1,9 @@
+import os
 from abc import ABC
 from typing import Dict, Any
+
+from janis_core.tool.test_classes import TTestCase
+
 from ..gatk4toolbase import Gatk4ToolBase
 from janis_bioinformatics.data_types import BamBai, FastaWithDict, Bed
 
@@ -15,6 +19,8 @@ from janis_core import (
     get_value_for_hints_and_ordered_resource_tuple,
 )
 from janis_unix import Tsv
+
+from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 
 CORES_TUPLE = [
     (
@@ -167,3 +173,42 @@ and write out the recalibrated data to a new BAM or CRAM file.
             doc="Temp directory to use.",
         )
     ]
+
+    def tests(self):
+        return [
+            TTestCase(
+                name="basic",
+                input={
+                    "bam": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "NA12878-BRCA1.markduped.bam",
+                    ),
+                    "reference": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "Homo_sapiens_assembly38.chr17.fasta",
+                    ),
+                    "recalFile": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "NA12878-BRCA1.markduped.table",
+                    ),
+                    "intervals": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "BRCA1.hg38.bed",
+                    ),
+                },
+                output=BamBai.basic_test(
+                    "out",
+                    2600000,
+                    21000,
+                    os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "NA12878-BRCA1.recalibrated.flagstat",
+                    ),
+                ),
+            )
+        ]

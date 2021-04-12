@@ -1,10 +1,17 @@
+import os
 from datetime import datetime
+
+from janis_core.tool.test_classes import TTestCase
+
 from janis_bioinformatics.data_types import BamBai, FastaWithDict, VcfTabix, Bed
 from janis_bioinformatics.tools.gatk4 import (
     Gatk4BaseRecalibrator_4_1_3,
     Gatk4ApplyBqsr_4_1_3,
 )
-from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsWorkflow
+from janis_bioinformatics.tools.bioinformaticstoolbase import (
+    BioinformaticsWorkflow,
+    BioinformaticsTool,
+)
 from janis_core import ToolMetadata
 
 
@@ -68,3 +75,57 @@ class GATKBaseRecalBQSRWorkflow_4_1_3(BioinformaticsWorkflow):
             dateUpdated=datetime(2020, 6, 12),
             documentation="",
         )
+
+    def tests(self):
+        return [
+            TTestCase(
+                name="basic",
+                input={
+                    "bam": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "NA12878-BRCA1.markduped.bam",
+                    ),
+                    "reference": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "Homo_sapiens_assembly38.chr17.fasta",
+                    ),
+                    "snps_dbsnp": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "Homo_sapiens_assembly38.dbsnp138.BRCA1.vcf.gz",
+                    ),
+                    "snps_1000gp": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "1000G_phase1.snps.high_confidence.hg38.BRCA1.vcf.gz",
+                    ),
+                    "known_indels": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "Homo_sapiens_assembly38.known_indels.BRCA1.vcf.gz",
+                    ),
+                    "mills_indels": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "Mills_and_1000G_gold_standard.indels.hg38.BRCA1.vcf.gz",
+                    ),
+                    "intervals": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "BRCA1.hg38.bed",
+                    ),
+                },
+                output=BamBai.basic_test(
+                    "out",
+                    2600000,
+                    21000,
+                    os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "NA12878-BRCA1.recalibrated.flagstat",
+                    ),
+                ),
+            )
+        ]

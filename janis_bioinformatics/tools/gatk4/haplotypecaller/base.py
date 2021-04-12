@@ -19,9 +19,19 @@ from janis_bioinformatics.data_types import (
     Bed,
     FastaWithDict,
     VcfTabix,
+    CompressedVcf,
 )
 from ..gatk4toolbase import Gatk4ToolBase
 from janis_core import ToolMetadata
+
+from janis_core.tool.test_classes import (
+    TTestPreprocessor,
+    TTestExpectedOutput,
+    TTestCase,
+)
+from ... import BioinformaticsTool
+import os
+import operator
 
 
 CORES_TUPLE = [
@@ -471,3 +481,54 @@ to our recommendations as documented (https://software.broadinstitute.org/gatk/d
             doc="Do not analyze soft clipped bases in the reads",
         ),
     ]
+
+    def tests(self):
+        return [
+            TTestCase(
+                name="basic",
+                input={
+                    "inputRead": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "NA12878-BRCA1.split.bam",
+                    ),
+                    "reference": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "Homo_sapiens_assembly38.chr17.fasta",
+                    ),
+                    "intervals": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "BRCA1.hg38.bed",
+                    ),
+                    "dbsnp": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "Homo_sapiens_assembly38.dbsnp138.BRCA1.vcf.gz",
+                    ),
+                    "javaOptions": ["-Xmx6G"],
+                    "pairHmmImplementation": "LOGLESS_CACHING",
+                },
+                output=VcfTabix.basic_test(
+                    "out",
+                    12800,
+                    214,
+                    270,
+                    ["GATKCommandLine"],
+                    "0224e24e5fc27286ee90c8d3c63373a7",
+                )
+                + BamBai.basic_test(
+                    "bam",
+                    596698,
+                    21272,
+                    os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "NA12878-BRCA1.haplotyped.flagstat",
+                    ),
+                    "d83b4c0d8eab24a3be1cc6af4f827753",
+                    "b4bb4028b8679a3a635e3ad87126a097",
+                ),
+            )
+        ]
