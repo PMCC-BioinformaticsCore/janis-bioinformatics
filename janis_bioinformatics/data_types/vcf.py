@@ -2,6 +2,7 @@ import gzip
 import hashlib
 import re
 from abc import ABC
+from typing import List, Optional
 
 from janis_core import File
 from janis_unix import Gunzipped
@@ -33,32 +34,78 @@ class Vcf(File):
     Documentation: https://samtools.github.io/hts-specs/VCFv4.3.pdf
     """.strip()
 
+    # @classmethod
+    # def md5(cls, file_path: str):
+    #     with open(file_path, "r") as f:
+    #         meaningful_content = False
+    #         hash_md5 = hashlib.md5()
+    #         while True:
+    #             line = f.readline()
+    #             if not line:
+    #                 break
+    #             if re.match("^#CHROM", line):
+    #                 meaningful_content = True
+    #             if not meaningful_content:
+    #                 continue
+    #             hash_md5.update(line.encode())
+    #     return hash_md5.hexdigest()
+
     @classmethod
-    def md5(cls, file_path: str):
+    def md5_without_header(cls, file_path: str, headers_to_remove: List[str]) -> str:
+        """
+        Compute md5 of a vcf file with unwanted headers removed
+
+        :param file_path: path to the file
+        :type file_path: str
+        :param headers_to_remove: headers to be removed before computing md5
+        :type headers_to_remove: List[str]
+        :return: md5
+        :rtype: str
+        """
         with open(file_path, "r") as f:
-            meaningful_content = False
             hash_md5 = hashlib.md5()
             while True:
                 line = f.readline()
                 if not line:
                     break
-                if re.match("^#CHROM", line):
-                    meaningful_content = True
-                if not meaningful_content:
-                    continue
-                hash_md5.update(line.encode())
+                if all(("##" + header) not in line for header in headers_to_remove):
+                    hash_md5.update(line.encode())
         return hash_md5.hexdigest()
 
     @classmethod
-    def basic_test(cls, tag, md5_value):
-        return [
+    def basic_test(
+        cls,
+        tag: str,
+        min_size: int,
+        line_count: int,
+        headers_to_remove: Optional[List[str]] = None,
+        md5_value: Optional[str] = None,
+    ) -> List[TTestExpectedOutput]:
+        outcome = [
             TTestExpectedOutput(
                 tag=tag,
-                preprocessor=Vcf.md5,
+                preprocessor=TTestPreprocessor.FileSize,
+                operator=operator.ge,
+                expected_value=min_size,
+            ),
+            TTestExpectedOutput(
+                tag=tag,
+                preprocessor=TTestPreprocessor.LineCount,
                 operator=operator.eq,
-                expected_value=md5_value,
+                expected_value=line_count,
             ),
         ]
+        if (headers_to_remove is not None) and (md5_value is not None):
+            outcome += [
+                TTestExpectedOutput(
+                    tag=tag,
+                    preprocessor=Vcf.md5_without_header,
+                    operator=operator.eq,
+                    expected_value=md5_value,
+                    additional_paras={"headers_to_remove": headers_to_remove},
+                ),
+            ]
+        return outcome
 
 
 class VcfIdx(Vcf):
@@ -71,16 +118,37 @@ class VcfIdx(Vcf):
         return [".idx"]
 
     @classmethod
-    def basic_test(cls, tag, vcf_md5, idx_md5):
-        return Vcf.basic_test(tag, vcf_md5) + [
+    def basic_test(
+        cls,
+        tag: str,
+        min_vcf_size: int,
+        line_count: int,
+        min_idx_size: int,
+        headers_to_remove: Optional[List[str]] = None,
+        vcf_md5: Optional[str] = None,
+        idx_md5: Optional[str] = None,
+    ) -> List[TTestExpectedOutput]:
+        outcome = super().basic_test(
+            tag, min_vcf_size, line_count, headers_to_remove, vcf_md5
+        ) + [
             TTestExpectedOutput(
                 tag=tag,
                 suffix_secondary_file=".idx",
-                preprocessor=TTestPreprocessor.FileMd5,
-                operator=operator.eq,
-                expected_value=idx_md5,
+                preprocessor=TTestPreprocessor.FileSize,
+                operator=operator.ge,
+                expected_value=min_idx_size,
             ),
         ]
+        if idx_md5 is not None:
+            outcome += [
+                TTestExpectedOutput(
+                    tag=tag,
+                    preprocessor=TTestPreprocessor.FileMd5,
+                    operator=operator.eq,
+                    expected_value=idx_md5,
+                ),
+            ]
+        return outcome
 
 
 class CompressedVcf(Gunzipped):
@@ -94,32 +162,86 @@ class CompressedVcf(Gunzipped):
     def doc(self):
         return ".vcf.gz"
 
+    # @classmethod
+    # def md5(cls, file_path: str):
+    #     with gzip.open(file_path, "rt") as f:
+    #         meaningful_content = False
+    #         hash_md5 = hashlib.md5()
+    #         while True:
+    #             line = f.readline()
+    #             if not line:
+    #                 break
+    #             if re.match("^#CHROM", line):
+    #                 meaningful_content = True
+    #             if not meaningful_content:
+    #                 continue
+    #             hash_md5.update(line.encode())
+    #     return hash_md5.hexdigest()
+
     @classmethod
-    def md5(cls, file_path: str):
+    def LineCount(cls, file_path: str):
+        count = 0
         with gzip.open(file_path, "rt") as f:
-            meaningful_content = False
+            while f.readline():
+                count += 1
+        return count
+
+    @classmethod
+    def md5_without_header(cls, file_path: str, headers_to_remove: List[str]) -> str:
+        """
+        Compute md5 of a vcf.gz file with unwanted headers removed
+
+        :param file_path: path to the file
+        :type file_path: str
+        :param headers_to_remove: headers to be removed before computing md5
+        :type headers_to_remove: List[str]
+        :return: md5
+        :rtype: str
+        """
+        with gzip.open(file_path, "rt") as f:
             hash_md5 = hashlib.md5()
             while True:
                 line = f.readline()
                 if not line:
                     break
-                if re.match("^#CHROM", line):
-                    meaningful_content = True
-                if not meaningful_content:
-                    continue
-                hash_md5.update(line.encode())
+                if all(("##" + header) not in line for header in headers_to_remove):
+                    hash_md5.update(line.encode())
         return hash_md5.hexdigest()
 
     @classmethod
-    def basic_test(cls, tag, md5_value):
-        return [
+    def basic_test(
+        cls,
+        tag: str,
+        min_size: int,
+        line_count: int,
+        headers_to_remove: Optional[List[str]] = None,
+        md5_value: Optional[str] = None,
+    ) -> List[TTestExpectedOutput]:
+        outcome = [
             TTestExpectedOutput(
                 tag=tag,
-                preprocessor=CompressedVcf.md5,
+                preprocessor=TTestPreprocessor.FileSize,
+                operator=operator.ge,
+                expected_value=min_size,
+            ),
+            TTestExpectedOutput(
+                tag=tag,
+                preprocessor=CompressedVcf.LineCount,
                 operator=operator.eq,
-                expected_value=md5_value,
+                expected_value=line_count,
             ),
         ]
+        if (headers_to_remove is not None) and (md5_value is not None):
+            outcome += [
+                TTestExpectedOutput(
+                    tag=tag,
+                    preprocessor=CompressedVcf.md5_without_header,
+                    operator=operator.eq,
+                    expected_value=md5_value,
+                    additional_paras={"headers_to_remove": headers_to_remove},
+                ),
+            ]
+        return outcome
 
 
 class VcfTabix(CompressedVcf, FileTabix):
@@ -131,16 +253,37 @@ class VcfTabix(CompressedVcf, FileTabix):
         return ".vcf.gz with .vcf.gz.tbi file"
 
     @classmethod
-    def basic_test(cls, tag, vcf_md5, tbi_size):
-        return CompressedVcf.basic_test(tag, vcf_md5) + [
+    def basic_test(
+        cls,
+        tag: str,
+        min_vcf_size: int,
+        line_count: int,
+        min_tbi_size: int,
+        headers_to_remove: Optional[List[str]] = None,
+        vcf_md5: Optional[str] = None,
+        tbi_md5: Optional[str] = None,
+    ) -> List[TTestExpectedOutput]:
+        outcome = super().basic_test(
+            tag, min_vcf_size, line_count, headers_to_remove, vcf_md5
+        ) + [
             TTestExpectedOutput(
                 tag=tag,
                 suffix_secondary_file=".tbi",
                 preprocessor=TTestPreprocessor.FileSize,
-                operator=operator.gt,
-                expected_value=tbi_size,
+                operator=operator.ge,
+                expected_value=min_tbi_size,
             ),
         ]
+        if tbi_md5 is not None:
+            outcome += [
+                TTestExpectedOutput(
+                    tag=tag,
+                    preprocessor=TTestPreprocessor.FileMd5,
+                    operator=operator.eq,
+                    expected_value=tbi_md5,
+                ),
+            ]
+        return outcome
 
 
 # class GVCF(Vcf):
