@@ -75,13 +75,13 @@ class GridssBase_2_10(BioinformaticsTool):
             ),
             ToolInput(
                 "outputFilename",
-                Filename(suffix=".gridss", extension=".vcf"),
+                Filename(extension=".vcf"),
                 prefix="--output",
                 doc="output VCF.",
             ),
             ToolInput(
                 "assemblyFilename",
-                Filename(suffix=".gridss.assembly", extension=".bam"),
+                Filename(suffix=".assembly", extension=".bam"),
                 prefix="--assembly",
                 doc="location of the GRIDSS assembly BAM. This file will be created by GRIDSS.",
             ),
@@ -197,7 +197,7 @@ class GridssBase_2_10(BioinformaticsTool):
 
     def outputs(self):
         return [
-            ToolOutput("out", Vcf(), glob=InputSelector("outputFilename")),
+            ToolOutput("vcf", Vcf(), glob=InputSelector("outputFilename")),
             ToolOutput(
                 "assembly",
                 Bam(),
