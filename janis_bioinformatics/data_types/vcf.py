@@ -34,22 +34,6 @@ class Vcf(File):
     Documentation: https://samtools.github.io/hts-specs/VCFv4.3.pdf
     """.strip()
 
-    # @classmethod
-    # def md5(cls, file_path: str):
-    #     with open(file_path, "r") as f:
-    #         meaningful_content = False
-    #         hash_md5 = hashlib.md5()
-    #         while True:
-    #             line = f.readline()
-    #             if not line:
-    #                 break
-    #             if re.match("^#CHROM", line):
-    #                 meaningful_content = True
-    #             if not meaningful_content:
-    #                 continue
-    #             hash_md5.update(line.encode())
-    #     return hash_md5.hexdigest()
-
     @classmethod
     def md5_without_header(cls, file_path: str, headers_to_remove: List[str]) -> str:
         """
@@ -161,22 +145,6 @@ class CompressedVcf(Gunzipped):
 
     def doc(self):
         return ".vcf.gz"
-
-    # @classmethod
-    # def md5(cls, file_path: str):
-    #     with gzip.open(file_path, "rt") as f:
-    #         meaningful_content = False
-    #         hash_md5 = hashlib.md5()
-    #         while True:
-    #             line = f.readline()
-    #             if not line:
-    #                 break
-    #             if re.match("^#CHROM", line):
-    #                 meaningful_content = True
-    #             if not meaningful_content:
-    #                 continue
-    #             hash_md5.update(line.encode())
-    #     return hash_md5.hexdigest()
 
     @classmethod
     def LineCount(cls, file_path: str):
