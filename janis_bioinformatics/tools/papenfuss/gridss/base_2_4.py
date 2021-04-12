@@ -87,10 +87,7 @@ class GridssBase_2_4(BioinformaticsTool):
                 "blacklist", Bed(optional=True), position=4, prefix="--blacklist"
             ),
             ToolInput(
-                "workingDir",
-                String(optional=True),
-                default="./TMP",
-                prefix="--workingdir",
+                "tmpdir", String(optional=True), default="./TMP", prefix="--workingdir"
             ),
         ]
 
