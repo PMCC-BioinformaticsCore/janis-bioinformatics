@@ -220,41 +220,14 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
             doc="Trim reads using Trimmomatic",
         )
 
-        # Merge star alignment stages
+        # star alignment steps
         self.step(
-            "star_map_1pass_PE",
+            "star_alignment",
             StarAlignReads_2_7_1(
                 readFilesIn=self.trim.pairedOut,
                 genomeDir=self.genome_dir,
-                limitOutSJcollapsed=3000000,  # lots of splice junctions may need more than default 1M buffer
-                readFilesCommand="zcat",
-                outSAMtype=["None"],
-                runThreadN=self.star_threads,
-            ),
-            doc="Map reads using the STAR aligner: 1st pass",
-        )
-
-        self.step(
-            "star_gen2pass",
-            StarGenerateIndexes_2_7_1(
-                genomeFastaFiles=self.reference,
-                sjdbFileChrStartEnd=self.star_map_1pass_PE.SJ_out_tab,
-                sjdbOverhang=self.star_sjdbOverhang,
-                sjdbGTFfile=self.gtf,
-                limitOutSJcollapsed=3000000,  # lots of splice junctions may need more than default 1M buffer
-                outputGenomeDir=self.name,
-                runThreadN=self.star_threads,
-            ),
-            doc="Map reads using the STAR aligner: generate genome",
-        )
-
-        self.step(
-            "star_map_2pass_PE",
-            StarAlignReads_2_7_1(
-                runThreadN=self.star_threads,
-                genomeDir=self.star_gen2pass.out,
                 genomeLoad="NoSharedMemory",
-                readFilesIn=self.trim.pairedOut,
+                twopassMode="Basic",
                 readFilesCommand="zcat",
                 outSAMtype=["BAM", "Unsorted"],
                 outSAMunmapped="Within",
@@ -280,10 +253,12 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
                 ],
                 quantMode="GeneCounts",
             ),
+            doc="Map reads using the STAR aligner",
         )
+
         self.output(
             "out_star_gene_counts",
-            source=self.star_map_2pass_PE.out_gene_counts.assert_not_null(),
+            source=self.star_alignment.out_gene_counts.assert_not_null(),
             output_folder=self.name,
             output_name=StringFormatter(
                 "{sample_name}_ReadsPerGene.out.tab", sample_name=self.name
@@ -294,7 +269,7 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
         self.step(
             "sortsam",
             Gatk4SortSamLatest(
-                bam=self.star_map_2pass_PE.out_unsorted_bam.assert_not_null(),
+                bam=self.star_alignment.out_unsorted_bam.assert_not_null(),
                 sortOrder="coordinate",
                 createIndex=True,
             ),
@@ -311,7 +286,7 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
         self.step(
             "arriba",
             Arriba_1_2_0(
-                aligned_inp=self.star_map_2pass_PE.out_unsorted_bam.assert_not_null(),
+                aligned_inp=self.star_alignment.out_unsorted_bam.assert_not_null(),
                 blacklist=self.blacklist,
                 fusion_transcript=True,
                 peptide_sequence=True,
@@ -341,7 +316,7 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
         self.step(
             "featureCounts",
             FeatureCounts_2_0_1(
-                bam=[self.star_map_2pass_PE.out_unsorted_bam.assert_not_null()],
+                bam=[self.star_alignment.out_unsorted_bam.assert_not_null()],
                 annotationFile=self.gtf,
                 attributeType="gene_name",
             ),
@@ -486,4 +461,5 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
 __JANIS_ENTRYPOINT = OncopipeWorkflow
 
 if __name__ == "__main__":
-    print(OncopipeWorkflow().help())
+    # print(OncopipeWorkflow().help())
+    print(OncopipeSamplePreparation().help())
