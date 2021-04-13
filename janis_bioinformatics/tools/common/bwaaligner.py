@@ -14,37 +14,6 @@ from janis_core.tool.test_classes import (
     TTestCase,
 )
 
-"""
-def basic_test(bam_size, bai_size, flagstat, value):
-    return [
-        TTestExpectedOutput(
-            tag="out",
-            preprocessor=TTestPreprocessor.FileSize,
-            operator=operator.gt,
-            expected_value=bam_size,
-        ),
-        TTestExpectedOutput(
-            tag="out",
-            suffix_secondary_file=".bai",
-            preprocessor=TTestPreprocessor.FileSize,
-            operator=operator.gt,
-            expected_value=bai_size,
-        ),
-        TTestExpectedOutput(
-            tag="out",
-            preprocessor=Bam.flagstat,
-            operator=operator.eq,
-            expected_file=flagstat,
-        ),
-        TTestExpectedOutput(
-            tag="out",
-            preprocessor=TTestPreprocessor.Value,
-            operator=Bam.equal,
-            expected_value=value,
-        )
-    ]
-"""
-
 
 class BwaAligner(BioinformaticsWorkflow):
     def id(self):
@@ -60,7 +29,6 @@ class BwaAligner(BioinformaticsWorkflow):
         return "1.0.0"
 
     def constructor(self):
-
         # Inputs
         self.input("sample_name", str)
         self.input("reference", FastaWithDict)

@@ -149,21 +149,24 @@ class ParseFastqcAdaptors(BioinformaticsPythonTool):
         self.metadata.dateUpdated = datetime(2020, 2, 14)
         self.metadata.version = "0.1.0"
 
-    # def tests(self):
-    #     return [
-    #         TTestCase(
-    #             name="basic",
-    #             input={
-    #                 "fastqc_datafiles": [os.path.join(BioinformaticsTool.test_data_path(), "wgsgermline_data", "NA12878-BRCA1.fastqc_data.txt")],
-    #                 "cutadapt_adaptors_lookup": os.path.join(BioinformaticsTool.test_data_path(), "wgsgermline_data", "contaminant_list.txt"),
-    #             },
-    #             output=[
-    #                 TTestExpectedOutput(
-    #                     tag="adaptor_sequences",
-    #                     preprocessor=TTestPreprocessor.FileSize,
-    #                     operator=operator.gt,
-    #                     expected_value=0,
-    #                 ),
-    #             ]
-    #         ),
-    #     ]
+    def tests(self):
+        return [
+            TTestCase(
+                name="basic",
+                input={
+                    "fastqc_datafiles": [
+                        os.path.join(
+                            BioinformaticsTool.test_data_path(),
+                            "wgsgermline_data",
+                            "NA12878-BRCA1.fastqc_data.txt",
+                        )
+                    ],
+                    "cutadapt_adaptors_lookup": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "contaminant_list.txt",
+                    ),
+                },
+                output=[],
+            ),
+        ]

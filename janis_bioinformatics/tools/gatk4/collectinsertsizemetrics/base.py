@@ -213,6 +213,7 @@ class Gatk4CollectInsertSizeMetricsBase(Gatk4ToolBase, ABC):
     ]
 
     def tests(self):
+        # The first 5 lines of the file include headers that change with every run (time, etc)
         with open(
             os.path.join(
                 BioinformaticsTool.test_data_path(),

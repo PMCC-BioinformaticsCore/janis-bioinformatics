@@ -114,15 +114,6 @@ optional arguments:
         )
 
     def tests(self):
-        with open(
-            os.path.join(
-                BioinformaticsTool.test_data_path(),
-                "wgsgermline_data",
-                "NA12878-BRCA1_performance_summary.csv",
-            ),
-            "r",
-        ) as f:
-            expected_content = f.read()
         return [
             TTestCase(
                 name="basic",
@@ -150,7 +141,15 @@ optional arguments:
                     "genome": True,
                 },
                 output=TextFile.basic_test(
-                    "out", 948, expected_content, 2, "575354942cfb8d0367725f9020181443"
+                    tag="out",
+                    min_size=948,
+                    line_count=2,
+                    md5="575354942cfb8d0367725f9020181443",
+                    expected_file_path=os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "NA12878-BRCA1_performance_summary.csv",
+                    ),
                 ),
             )
         ]
