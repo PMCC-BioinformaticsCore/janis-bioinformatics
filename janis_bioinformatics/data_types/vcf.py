@@ -61,7 +61,7 @@ class Vcf(File):
         cls,
         tag: str,
         min_size: int,
-        line_count: int,
+        line_count: Optional[int] = None,
         headers_to_remove: Optional[List[str]] = None,
         md5_value: Optional[str] = None,
     ) -> List[TTestExpectedOutput]:
@@ -72,23 +72,48 @@ class Vcf(File):
                 operator=operator.ge,
                 expected_value=min_size,
             ),
-            TTestExpectedOutput(
-                tag=tag,
-                preprocessor=TTestPreprocessor.LineCount,
-                operator=operator.eq,
-                expected_value=line_count,
-            ),
         ]
-        if (headers_to_remove is not None) and (md5_value is not None):
+
+        if line_count is not None:
             outcome += [
                 TTestExpectedOutput(
                     tag=tag,
-                    preprocessor=Vcf.md5_without_header,
+                    preprocessor=TTestPreprocessor.LineCount,
                     operator=operator.eq,
-                    expected_value=md5_value,
-                    preprocessor_params={"headers_to_remove": headers_to_remove},
+                    expected_value=line_count,
                 ),
             ]
+
+        if md5_value is not None:
+            if headers_to_remove is not None:
+                outcome += [
+                    TTestExpectedOutput(
+                        tag=tag,
+                        preprocessor=Vcf.md5_without_header,
+                        operator=operator.eq,
+                        expected_value=md5_value,
+                        preprocessor_params={"headers_to_remove": headers_to_remove},
+                    ),
+                ]
+            else:
+                outcome += [
+                    TTestExpectedOutput(
+                        tag=tag,
+                        preprocessor=TTestPreprocessor.FileMd5,
+                        operator=operator.eq,
+                        expected_value=md5_value,
+                    ),
+                ]
+        # if (headers_to_remove is not None) and (md5_value is not None):
+        #     outcome += [
+        #         TTestExpectedOutput(
+        #             tag=tag,
+        #             preprocessor=Vcf.md5_without_header,
+        #             operator=operator.eq,
+        #             expected_value=md5_value,
+        #             preprocessor_params={"headers_to_remove": headers_to_remove},
+        #         ),
+        #     ]
         return outcome
 
 
@@ -106,8 +131,8 @@ class VcfIdx(Vcf):
         cls,
         tag: str,
         min_vcf_size: int,
-        line_count: int,
         min_idx_size: int,
+        line_count: Optional[int] = None,
         headers_to_remove: Optional[List[str]] = None,
         vcf_md5: Optional[str] = None,
         idx_md5: Optional[str] = None,
@@ -181,7 +206,7 @@ class CompressedVcf(Gunzipped):
         cls,
         tag: str,
         min_size: int,
-        line_count: int,
+        line_count: Optional[int] = None,
         headers_to_remove: Optional[List[str]] = None,
         md5_value: Optional[str] = None,
     ) -> List[TTestExpectedOutput]:
@@ -192,23 +217,48 @@ class CompressedVcf(Gunzipped):
                 operator=operator.ge,
                 expected_value=min_size,
             ),
-            TTestExpectedOutput(
-                tag=tag,
-                preprocessor=CompressedVcf.LineCount,
-                operator=operator.eq,
-                expected_value=line_count,
-            ),
         ]
-        if (headers_to_remove is not None) and (md5_value is not None):
+
+        if line_count is not None:
             outcome += [
                 TTestExpectedOutput(
                     tag=tag,
-                    preprocessor=CompressedVcf.md5_without_header,
+                    preprocessor=CompressedVcf.LineCount,
                     operator=operator.eq,
-                    expected_value=md5_value,
-                    preprocessor_params={"headers_to_remove": headers_to_remove},
+                    expected_value=line_count,
                 ),
             ]
+
+        if md5_value is not None:
+            if headers_to_remove is not None:
+                outcome += [
+                    TTestExpectedOutput(
+                        tag=tag,
+                        preprocessor=CompressedVcf.md5_without_header,
+                        operator=operator.eq,
+                        expected_value=md5_value,
+                        preprocessor_params={"headers_to_remove": headers_to_remove},
+                    ),
+                ]
+            else:
+                outcome += [
+                    TTestExpectedOutput(
+                        tag=tag,
+                        preprocessor=TTestPreprocessor.FileMd5,
+                        operator=operator.eq,
+                        expected_value=md5_value,
+                    ),
+                ]
+        # if (headers_to_remove is not None) and (md5_value is not None):
+        #     outcome += [
+        #         TTestExpectedOutput(
+        #             tag=tag,
+        #             preprocessor=CompressedVcf.md5_without_header,
+        #             operator=operator.eq,
+        #             expected_value=md5_value,
+        #             preprocessor_params={"headers_to_remove": headers_to_remove},
+        #         ),
+        #     ]
         return outcome
 
 
@@ -225,8 +275,8 @@ class VcfTabix(CompressedVcf, FileTabix):
         cls,
         tag: str,
         min_vcf_size: int,
-        line_count: int,
         min_tbi_size: int,
+        line_count: Optional[int] = None,
         headers_to_remove: Optional[List[str]] = None,
         vcf_md5: Optional[str] = None,
         tbi_md5: Optional[str] = None,

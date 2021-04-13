@@ -513,8 +513,8 @@ to our recommendations as documented (https://software.broadinstitute.org/gatk/d
                 output=VcfTabix.basic_test(
                     "out",
                     12800,
-                    214,
                     270,
+                    214,
                     ["GATKCommandLine"],
                     "0224e24e5fc27286ee90c8d3c63373a7",
                 )
