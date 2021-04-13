@@ -1,5 +1,5 @@
 import operator
-from typing import Any, Dict
+from typing import Any, Dict, List
 
 from janis_core import File, Array, Logger
 from janis_core.tool.test_classes import TTestExpectedOutput, TTestPreprocessor
@@ -73,7 +73,9 @@ class FastqGzPairedEnd(Array):
         return ", ".join(hints)
 
     @classmethod
-    def basic_test(cls, tag, first_size, second_size):
+    def basic_test(
+        cls, tag: str, min_first_size: int, min_second_size: int
+    ) -> List[TTestExpectedOutput]:
         return [
             TTestExpectedOutput(
                 tag=tag,
@@ -85,15 +87,15 @@ class FastqGzPairedEnd(Array):
                 tag=tag,
                 array_index=0,
                 preprocessor=TTestPreprocessor.FileSize,
-                operator=operator.eq,
-                expected_value=first_size,
+                operator=operator.ge,
+                expected_value=min_first_size,
             ),
             TTestExpectedOutput(
                 tag=tag,
                 array_index=1,
                 preprocessor=TTestPreprocessor.FileSize,
-                operator=operator.eq,
-                expected_value=second_size,
+                operator=operator.ge,
+                expected_value=min_second_size,
             ),
         ]
 

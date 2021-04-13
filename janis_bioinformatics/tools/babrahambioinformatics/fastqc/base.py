@@ -24,7 +24,7 @@ from janis_core.tool.test_classes import (
     TTestExpectedOutput,
     TTestPreprocessor,
 )
-from janis_unix import ZipFile
+from janis_unix import ZipFile, TextFile
 
 from janis_bioinformatics.data_types import FastqGzPair, FastqGz
 from janis_bioinformatics.tools import BioinformaticsTool
@@ -266,41 +266,8 @@ class FastQCBase(BioinformaticsTool, ABC):
                     ],
                     "threads": 1,
                 },
-                output=[
-                    TTestExpectedOutput(
-                        tag="out",
-                        preprocessor=TTestPreprocessor.ListSize,
-                        operator=operator.eq,
-                        expected_value=2,
-                    ),
-                    TTestExpectedOutput(
-                        tag="out",
-                        array_index=0,
-                        preprocessor=TTestPreprocessor.FileSize,
-                        operator=operator.gt,
-                        expected_value=408000,
-                    ),
-                    TTestExpectedOutput(
-                        tag="out",
-                        array_index=0,
-                        preprocessor=TTestPreprocessor.FileSize,
-                        operator=operator.lt,
-                        expected_value=410000,
-                    ),
-                    TTestExpectedOutput(
-                        tag="out",
-                        array_index=1,
-                        preprocessor=TTestPreprocessor.FileSize,
-                        operator=operator.gt,
-                        expected_value=416000,
-                    ),
-                    TTestExpectedOutput(
-                        tag="out",
-                        array_index=1,
-                        preprocessor=TTestPreprocessor.FileSize,
-                        operator=operator.lt,
-                        expected_value=419000,
-                    ),
+                output=FastqGzPair.basic_test("out", 408000, 416000)
+                + [
                     TTestExpectedOutput(
                         tag="datafile",
                         preprocessor=TTestPreprocessor.ListSize,
