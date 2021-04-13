@@ -86,7 +86,7 @@ class Vcf(File):
                     preprocessor=Vcf.md5_without_header,
                     operator=operator.eq,
                     expected_value=md5_value,
-                    additional_paras={"headers_to_remove": headers_to_remove},
+                    preprocessor_params={"headers_to_remove": headers_to_remove},
                 ),
             ]
         return outcome
@@ -206,7 +206,7 @@ class CompressedVcf(Gunzipped):
                     preprocessor=CompressedVcf.md5_without_header,
                     operator=operator.eq,
                     expected_value=md5_value,
-                    additional_paras={"headers_to_remove": headers_to_remove},
+                    preprocessor_params={"headers_to_remove": headers_to_remove},
                 ),
             ]
         return outcome
