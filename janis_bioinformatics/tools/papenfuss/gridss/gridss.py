@@ -69,4 +69,4 @@ class Gridss_2_10_2(GridssBase_2_10):
         return "v2.10.2"
 
 
-GridssLatest = Gridss_2_6_2
+GridssLatest = Gridss_2_10_2
