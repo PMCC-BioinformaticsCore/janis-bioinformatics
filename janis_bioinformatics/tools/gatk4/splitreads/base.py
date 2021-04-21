@@ -3,6 +3,7 @@ from typing import Dict, Any
 
 from janis_core import (
     ToolInput,
+    ToolArgument,
     File,
     Boolean,
     String,
@@ -44,6 +45,20 @@ class Gatk4SplitReadsBase(Gatk4ToolBase):
     def gatk_command(cls):
         return "SplitReads"
 
+    @classmethod
+    def base_command(cls):
+        return None
+        # return ["gatk", cls.gatk_command()]
+
+    def arguments(self):
+        return [
+            ToolArgument("mkdir -p", position=-5, shell_quote=False),
+            ToolArgument(InputSelector("outputFilename"), position=-4, shell_quote=True),
+            ToolArgument("&&", position=-3, shell_quote=False),
+            ToolArgument("gatk", position=-2, shell_quote=False),
+            ToolArgument("SplitReads", position=-1, shell_quote=False),
+        ]
+
     def inputs(self):
         return [
             ToolInput(
@@ -82,7 +97,7 @@ class Gatk4SplitReadsBase(Gatk4ToolBase):
             ToolOutput(
                 "out",
                 BamBai,
-                glob=InputSelector("bam").basename(),
+                glob=(InputSelector("outputFilename") + '/' + InputSelector("bam").basename()),
                 doc="Bam",
                 secondaries_present_as={".bai": "^.bai"},
             )
