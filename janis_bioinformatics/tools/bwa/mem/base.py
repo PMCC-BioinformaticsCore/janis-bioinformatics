@@ -321,5 +321,31 @@ does not work with split alignments. One may consider to use option -M to flag s
                         "NA12878-BRCA1.bwamem.flagstat",
                     ),
                 ),
-            )
+            ),
+            TTestCase(
+                name="minimal",
+                input={
+                    "reads": [
+                        os.path.join(
+                            BioinformaticsTool.test_data_path(),
+                            "wgsgermline_data",
+                            "NA12878-BRCA1_R1.fastq.gz",
+                        ),
+                        os.path.join(
+                            BioinformaticsTool.test_data_path(),
+                            "wgsgermline_data",
+                            "NA12878-BRCA1_R2.fastq.gz",
+                        ),
+                    ],
+                    "reference": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "Homo_sapiens_assembly38.chr17.fasta",
+                    ),
+                    "markShorterSplits": True,
+                    "readGroupHeaderLine": "@RG\tID:NA12878-BRCA1\tSM:NA12878-BRCA1\tLB:NA12878-BRCA1\tPL:ILLUMINA",
+                    "threads": 16,
+                },
+                output=self.minimal_test(),
+            ),
         ]

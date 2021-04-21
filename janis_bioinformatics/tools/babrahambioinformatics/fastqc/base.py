@@ -283,4 +283,23 @@ class FastQCBase(BioinformaticsTool, ABC):
                     ),
                 ],
             ),
+            TTestCase(
+                name="minimal",
+                input={
+                    "reads": [
+                        os.path.join(
+                            BioinformaticsTool.test_data_path(),
+                            "wgsgermline_data",
+                            "NA12878-BRCA1_R1.fastq.gz",
+                        ),
+                        os.path.join(
+                            BioinformaticsTool.test_data_path(),
+                            "wgsgermline_data",
+                            "NA12878-BRCA1_R2.fastq.gz",
+                        ),
+                    ],
+                    "threads": 1,
+                },
+                output=self.minimal_test(),
+            ),
         ]

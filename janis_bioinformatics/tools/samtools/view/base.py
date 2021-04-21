@@ -339,5 +339,22 @@ Use of region specifications requires a coordinate-sorted and indexed input file
                     ),
                     "9a6af420f287df52a122ac723f41b535",
                 ),
-            )
+            ),
+            TTestCase(
+                name="minimal",
+                input={
+                    "sam": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "NA12878-BRCA1.bwamem.stdout",
+                    ),
+                    "reference": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "Homo_sapiens_assembly38.chr17.fasta",
+                    ),
+                    "threads": 16,
+                },
+                output=self.minimal_test(),
+            ),
         ]

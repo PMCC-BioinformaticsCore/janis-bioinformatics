@@ -488,5 +488,26 @@ class CutAdaptBase_2(BioinformaticsTool):
                     1090240,
                     1163374,
                 ),
-            )
+            ),
+            TTestCase(
+                name="minimal",
+                input={
+                    "fastq": [
+                        os.path.join(
+                            BioinformaticsTool.test_data_path(),
+                            "wgsgermline_data",
+                            "NA12878-BRCA1_R1.fastq.gz",
+                        ),
+                        os.path.join(
+                            BioinformaticsTool.test_data_path(),
+                            "wgsgermline_data",
+                            "NA12878-BRCA1_R2.fastq.gz",
+                        ),
+                    ],
+                    "qualityCutoff": 15,
+                    "minimumLength": 50,
+                    "outputPrefix": "output",
+                },
+                output=self.minimal_test(),
+            ),
         ]

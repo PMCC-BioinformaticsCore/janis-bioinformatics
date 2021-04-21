@@ -1,8 +1,13 @@
+import operator
 import os
 from abc import ABC
 from typing import Dict, Any
 
-from janis_core.tool.test_classes import TTestCase
+from janis_core.tool.test_classes import (
+    TTestCase,
+    TTestExpectedOutput,
+    TTestPreprocessor,
+)
 
 from ..gatk4toolbase import Gatk4ToolBase
 from janis_bioinformatics.data_types import BamBai, FastaWithDict, Bed
@@ -174,6 +179,33 @@ and write out the recalibrated data to a new BAM or CRAM file.
         )
     ]
 
+    # def minimal_test(self):
+    #     print(len(self.outputs()))
+    #     outcome = []
+    #     for i in self.outputs():
+    #         print(i.tag + " " + i.output_type.name())
+    #         outcome += [
+    #             TTestExpectedOutput(
+    #                 tag=i.tag,
+    #                 preprocessor=TTestPreprocessor.FileSize,
+    #                 operator=operator.gt,
+    #                 expected_value=0,
+    #             ),
+    #         ]
+    #         print("test bam")
+    #         if i.output_type.name() == "IndexedBam":
+    #             outcome += [
+    #                 TTestExpectedOutput(
+    #                     tag=i.tag,
+    #                     suffix_secondary_file=".bai",
+    #                     preprocessor=TTestPreprocessor.FileSize,
+    #                     operator=operator.gt,
+    #                     expected_value=0,
+    #                 ),
+    #             ]
+    #             print("test bai")
+    #     return outcome
+
     def tests(self):
         return [
             TTestCase(
@@ -210,5 +242,31 @@ and write out the recalibrated data to a new BAM or CRAM file.
                         "NA12878-BRCA1.recalibrated.flagstat",
                     ),
                 ),
-            )
+            ),
+            TTestCase(
+                name="minimal",
+                input={
+                    "bam": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "NA12878-BRCA1.markduped.bam",
+                    ),
+                    "reference": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "Homo_sapiens_assembly38.chr17.fasta",
+                    ),
+                    "recalFile": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "NA12878-BRCA1.markduped.table",
+                    ),
+                    "intervals": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "BRCA1.hg38.bed",
+                    ),
+                },
+                output=self.minimal_test(),
+            ),
         ]

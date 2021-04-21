@@ -256,5 +256,22 @@ class Gatk4SortSamBase(Gatk4ToolBase, ABC):
                     "15eb0f8168b42e8ce3ab8b9bc9199e3c",
                     "a9042025f29f7a08e5f56ce8d11469a1",
                 ),
-            )
+            ),
+            TTestCase(
+                name="minimal",
+                input={
+                    "bam": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "NA12878-BRCA1.bam",
+                    ),
+                    "sortOrder": "coordinate",
+                    "createIndex": True,
+                    "maxRecordsInRam": 5000000,
+                    "tmpDir": "./tmp",
+                    "validationStringency": "SILENT",
+                    "javaOptions": ["-Xmx6G"],
+                },
+                output=self.minimal_test(),
+            ),
         ]
