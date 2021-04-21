@@ -179,33 +179,6 @@ and write out the recalibrated data to a new BAM or CRAM file.
         )
     ]
 
-    # def minimal_test(self):
-    #     print(len(self.outputs()))
-    #     outcome = []
-    #     for i in self.outputs():
-    #         print(i.tag + " " + i.output_type.name())
-    #         outcome += [
-    #             TTestExpectedOutput(
-    #                 tag=i.tag,
-    #                 preprocessor=TTestPreprocessor.FileSize,
-    #                 operator=operator.gt,
-    #                 expected_value=0,
-    #             ),
-    #         ]
-    #         print("test bam")
-    #         if i.output_type.name() == "IndexedBam":
-    #             outcome += [
-    #                 TTestExpectedOutput(
-    #                     tag=i.tag,
-    #                     suffix_secondary_file=".bai",
-    #                     preprocessor=TTestPreprocessor.FileSize,
-    #                     operator=operator.gt,
-    #                     expected_value=0,
-    #                 ),
-    #             ]
-    #             print("test bai")
-    #     return outcome
-
     def tests(self):
         return [
             TTestCase(
