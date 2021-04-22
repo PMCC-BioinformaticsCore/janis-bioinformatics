@@ -1,7 +1,6 @@
 from abc import ABC
 from datetime import datetime
 
-from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 from janis_unix import Csv, Tsv
 
 from janis_bioinformatics.data_types import Bam, Fasta
@@ -21,24 +20,23 @@ from janis_core import (
     InputDocumentation,
     Array,
 )
+from janis_bioinformatics.tools.arriba.base import ArribaBase
 
 
-class ArribaBase(BioinformaticsTool, ABC):
+class RunArribaBase(ArribaBase, ABC):
+    @classmethod
+    def arriba_command(self):
+        return "arriba"
+
     def friendly_name(self) -> str:
-        return "Arriba"
-
-    def tool_provider(self):
-        return "Arriba"
+        return "Arriba: Run Arriba"
 
     def tool(self) -> str:
-        return "Arriba"
+        return "RunArriba"
 
     # set a bigger default memory
     def memory(self, hints):
         return 64
-
-    def base_command(self):
-        return ["arriba"]
 
     def inputs(self):
         return [
@@ -75,8 +73,9 @@ class ArribaBase(BioinformaticsTool, ABC):
             ),
             ToolInput(
                 tag="gtf_features",
-                input_type=Csv(optional=True),
+                input_type=Array(String, optional=True),
                 prefix="-G",
+                separator=",",
                 separate_value_from_prefix=True,
                 doc=InputDocumentation(
                     doc="Comma-/space-separated list of names of GTF features. "
@@ -104,7 +103,7 @@ class ArribaBase(BioinformaticsTool, ABC):
             ),
             ToolInput(
                 tag="known_fusions",
-                input_type=Tsv(optional=True),
+                input_type=File(optional=True),
                 prefix="-k",
                 separate_value_from_prefix=True,
                 doc=InputDocumentation(
@@ -115,7 +114,7 @@ class ArribaBase(BioinformaticsTool, ABC):
                 ),
             ),
             ToolInput(
-                tag="output_filename",
+                tag="outputFilename",
                 input_type=Filename(extension=".tsv"),
                 prefix="-o",
                 default="fusions.tsv",
@@ -125,7 +124,7 @@ class ArribaBase(BioinformaticsTool, ABC):
                 ),
             ),
             ToolInput(
-                tag="discarded_output_filename",
+                tag="discarded_outputFilename",
                 input_type=Filename(suffix=".discarded", extension=".tsv"),
                 prefix="-O",
                 separate_value_from_prefix=True,
@@ -136,7 +135,7 @@ class ArribaBase(BioinformaticsTool, ABC):
             ),
             ToolInput(
                 tag="structural_variants_coordinates",
-                input_type=Tsv(optional=True),
+                input_type=File(optional=True),
                 prefix="-d",
                 separate_value_from_prefix=True,
                 doc=InputDocumentation(
@@ -174,6 +173,7 @@ class ArribaBase(BioinformaticsTool, ABC):
                 tag="contigs",
                 input_type=Array(String(), optional=True),
                 prefix="-i",
+                separator=",",
                 doc=InputDocumentation(
                     doc="Comma-/space-separated list of interesting contigs. Fusions between genes on other contigs "
                     "are ignored. Contigs can be specified with or without the prefix 'chr'. "
@@ -184,7 +184,7 @@ class ArribaBase(BioinformaticsTool, ABC):
                 tag="filters",
                 input_type=Array(String, optional=True),
                 prefix="-f",
-                separator=" ",
+                separator=",",
                 doc=InputDocumentation(
                     doc="Comma-/space-separated list of filters to disable. By default all filters are enabled. "
                     "Valid values: homopolymer, same_gene, inconsistently_clipped, duplicates, low_entropy, "
@@ -348,6 +348,7 @@ class ArribaBase(BioinformaticsTool, ABC):
                     "than the given fraction, the 'intragenic_exonic' filter discards the event. Default: 0.200000"
                 ),
             ),
+            # Version 1.1 unique options
             ToolInput(
                 tag="fusion_transcript",
                 input_type=Boolean(optional=True),
@@ -381,6 +382,113 @@ class ArribaBase(BioinformaticsTool, ABC):
                     "also print the read identifiers to the file containing discarded fusions (-O). Default: off "
                 ),
             ),
+            # Version 2.1 unique options
+            ToolInput(
+                tag="tag_tsv",
+                input_type=File(optional=True),
+                prefix="-t",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="Tab-separated file containing fusions to annotate \
+                        with tags in the 'tags' column. The first two columns \
+                        specify the genes; the third column specifies the tag. \
+                        The file may be gzip-compressed."
+                ),
+            ),
+            ToolInput(
+                tag="protein_domains_gff",
+                input_type=File(optional=True),
+                prefix="-p",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="File in GFF3 format containing coordinates of the \
+                        protein domains of genes. The protein domains retained \
+                        in a fusion are listed in the column 'retained_protein\
+                        _domains'. The file may be gzip-compressed. "
+                ),
+            ),
+            ToolInput(
+                tag="viral_contigs",
+                input_type=Array(String(), optional=True),
+                prefix="-v",
+                separator=",",
+                doc=InputDocumentation(
+                    doc="Comma-/space-separated list of viral contigs. \
+                        Asterisks (*) are treated as wild-cards. \
+                        Default: AC_* NC_* "
+                ),
+            ),
+            ToolInput(
+                tag="top_n",
+                input_type=Int(optional=True),
+                prefix="-T",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="Only report viral integration sites of the top N \
+                        most highly expressed viral contigs. Default: 5"
+                ),
+            ),
+            ToolInput(
+                tag="covered_fraction",
+                input_type=Float(optional=True),
+                prefix="-C",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="Ignore virally associated events if the virus is not \
+                        fully expressed, i.e., less than the given fraction of \
+                        the viral contig is transcribed. Default: 0.150000."
+                ),
+            ),
+            ToolInput(
+                tag="max_itd_length",
+                input_type=Int(optional=True),
+                prefix="-l",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="Maximum length of internal tandem duplications. Note: \
+                        Increasing this value beyond the default can impair \
+                        performance and lead to many false positives. \
+                        Default: 100 "
+                ),
+            ),
+            ToolInput(
+                tag="use_bam_fdup",
+                input_type=Boolean(optional=True),
+                prefix="-u",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="Instead of performing duplicate marking itself, \
+                        Arriba relies on duplicate marking by a preceding \
+                        program using the BAM_FDUP flag. This makes sense \
+                        when unique molecular identifiers (UMI) are used. "
+                ),
+            ),
+            ToolInput(
+                tag="reduce",
+                input_type=Boolean(optional=True),
+                prefix="-X",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="To reduce the runtime and file size, by default, \
+                        the columns 'fusion_transcript', 'peptide_sequence', \
+                        and 'read_identifiers' are left empty in the file \
+                        containing discarded fusion candidates (see parameter \
+                        -O). When this flag is set, this extra information is \
+                        reported in the discarded fusions file. "
+                ),
+            ),
+            ToolInput(
+                tag="fill_assembly_sequence",
+                input_type=Boolean(optional=True),
+                prefix="-I",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    doc="If assembly of the fusion transcript sequence from \
+                        the supporting reads is incomplete (denoted as '...'), \
+                        fill the gaps using the assembly sequence wherever \
+                        possible."
+                ),
+            ),
             # ToolInput(
             #   tag="help",
             #   input_type=Boolean(optional=True),
@@ -392,19 +500,19 @@ class ArribaBase(BioinformaticsTool, ABC):
 
     def outputs(self):
         return [
-            ToolOutput("out", Tsv, selector=InputSelector("output_filename")),
+            ToolOutput("out", Tsv, selector=InputSelector("outputFilename")),
             ToolOutput(
                 "out_discarded",
                 Tsv,
-                selector=InputSelector("discarded_output_filename"),
+                selector=InputSelector("discarded_outputFilename"),
             ),
         ]
 
     def bind_metadata(self):
         return ToolMetadata(
-            contributors=["Michael Franklin"],
+            contributors=["Michael Franklin", "Jiaan Yu"],
             dateCreated=datetime(2020, 9, 2),
-            dateUpdated=datetime(2020, 9, 2),
+            dateUpdated=datetime(2021, 3, 15),
             documentation="""
 Arriba gene fusion detector
 --------------------------- 
