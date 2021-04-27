@@ -266,22 +266,19 @@ class FastQCBase(BioinformaticsTool, ABC):
                     ],
                     "threads": 1,
                 },
-                output=FastqGzPair.basic_test("out", 408000, 416000)
-                + [
-                    TTestExpectedOutput(
-                        tag="datafile",
-                        preprocessor=TTestPreprocessor.ListSize,
-                        operator=operator.eq,
-                        expected_value=1,
-                    ),
-                    TTestExpectedOutput(
-                        tag="datafile",
-                        array_index=0,
-                        preprocessor=TTestPreprocessor.FileMd5,
-                        operator=operator.eq,
-                        expected_value="8e23d29e0859ba547f0aa616ca395a8f",
-                    ),
-                ],
+                output=Array.array_wrapper(
+                    [
+                        FastqGz.basic_test("out", 408000),
+                        FastqGz.basic_test("out", 416000),
+                    ]
+                )
+                + Array.array_wrapper(
+                    [
+                        TextFile.basic_test(
+                            "datafile", 81000, md5="8e23d29e0859ba547f0aa616ca395a8f"
+                        )
+                    ]
+                ),
             ),
             TTestCase(
                 name="minimal",

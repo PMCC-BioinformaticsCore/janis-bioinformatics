@@ -78,5 +78,16 @@ Generate --genome FILE for BedToolsCoverage
                     ),
                 },
                 output=TextFile.basic_test("out", 15, "chr17\t83257441\n", 1),
-            )
+            ),
+            TTestCase(
+                name="minimal",
+                input={
+                    "reference": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "Homo_sapiens_assembly38.chr17.fasta",
+                    ),
+                },
+                output=self.minimal_test(),
+            ),
         ]

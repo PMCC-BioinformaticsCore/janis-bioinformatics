@@ -38,6 +38,17 @@ class FastqGz(File):
             "with no standard: https://en.wikipedia.org/wiki/FASTQ_format"
         )
 
+    @classmethod
+    def basic_test(cls, tag: str, min_size: int) -> List[TTestExpectedOutput]:
+        return [
+            TTestExpectedOutput(
+                tag=tag,
+                preprocessor=TTestPreprocessor.FileSize,
+                operator=operator.ge,
+                expected_value=min_size,
+            ),
+        ]
+
 
 class FastqGzPairedEnd(Array):
     def __init__(self, optional=False):

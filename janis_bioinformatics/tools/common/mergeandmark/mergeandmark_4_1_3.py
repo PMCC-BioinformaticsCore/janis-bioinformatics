@@ -12,7 +12,6 @@ from janis_bioinformatics.tools.bioinformaticstoolbase import (
     BioinformaticsWorkflow,
     BioinformaticsTool,
 )
-from janis_unix import TextFile
 
 
 class MergeAndMarkBams_4_1_3(BioinformaticsWorkflow):
@@ -93,7 +92,24 @@ class MergeAndMarkBams_4_1_3(BioinformaticsWorkflow):
                         "NA12878-BRCA1.markduped.bam.flagstat",
                     ),
                 ),
-            )
+            ),
+            TTestCase(
+                name="minimal",
+                input={
+                    "bams": [
+                        os.path.join(
+                            BioinformaticsTool.test_data_path(),
+                            "wgsgermline_data",
+                            "NA12878-BRCA1.sorted.bam",
+                        )
+                    ],
+                    "maxRecordsInRam": 5000000,
+                    "createIndex": True,
+                    "mergeSamFiles_useThreading": True,
+                    "mergeSamFiles_validationStringency": "SILENT",
+                },
+                output=self.minimal_test(),
+            ),
         ]
 
 

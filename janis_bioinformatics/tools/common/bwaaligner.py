@@ -126,7 +126,39 @@ class BwaAligner(BioinformaticsWorkflow):
                         "NA12878-BRCA1.bam.flagstat",
                     ),
                 ),
-            )
+            ),
+            TTestCase(
+                name="minimal",
+                input={
+                    "sample_name": "NA12878-BRCA1",
+                    "fastq": [
+                        os.path.join(
+                            BioinformaticsTool.test_data_path(),
+                            "wgsgermline_data",
+                            "NA12878-BRCA1_R1.fastq.gz",
+                        ),
+                        os.path.join(
+                            BioinformaticsTool.test_data_path(),
+                            "wgsgermline_data",
+                            "NA12878-BRCA1_R2.fastq.gz",
+                        ),
+                    ],
+                    "reference": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "Homo_sapiens_assembly38.chr17.fasta",
+                    ),
+                    "cutadapt_qualityCutoff": 15,
+                    "cutadapt_minimumLength": 50,
+                    "bwamem_markShorterSplits": True,
+                    "sortsam_sortOrder": "coordinate",
+                    "sortsam_createIndex": True,
+                    "sortsam_maxRecordsInRam": 5000000,
+                    "sortsam_tmpDir": "./tmp",
+                    "sortsam_validationStringency": "SILENT",
+                },
+                output=self.minimal_test(),
+            ),
         ]
 
 
