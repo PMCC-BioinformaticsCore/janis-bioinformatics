@@ -14,7 +14,12 @@ from janis_core import (
     ScatterMethod,
 )
 
-from janis_bioinformatics.data_types import FastqGzPairedEnd, FastaWithIndexes, Fasta
+from janis_bioinformatics.data_types import (
+    FastqGzPairedEnd,
+    FastaWithIndexes,
+    Fasta,
+    Bed,
+)
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsWorkflow
 
 from janis_bioinformatics.tools.usadellab import TrimmomaticPairedEnd_0_35
@@ -75,6 +80,7 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
                 "MINLEN:35",
             ],
         )
+        self.input("intervals", Bed(optional=True))
         self.input("platform", String, default="ILLUMINA")
         self.input("contigs", Array(String(), optional=True))
         self.input("filters", Array(String(), optional=True))
@@ -129,9 +135,9 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
         self.output(
             "out_star_gene_counts",
             source=self.star_alignment.out_gene_counts.assert_not_null(),
-            output_folder=self.sample_name,
+            output_folder=[self.sample_name, "COUNTS"],
             output_name=StringFormatter(
-                "{sample_name}_ReadsPerGene.out.tab", sample_name=self.sample_name
+                "{sample_name}_ReadsPerGene.out", sample_name=self.sample_name
             ),
         )
 
@@ -148,7 +154,7 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
         self.output(
             "out_sorted_bam",
             source=self.sortsam.out,
-            output_folder=self.sample_name,
+            output_folder=[self.sample_name, "BAM"],
             output_name=self.sample_name,
         )
 
@@ -180,7 +186,7 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
         self.output(
             "out_arriba_fusion",
             source=self.arriba.out,
-            output_folder=self.sample_name,
+            output_folder=[self.sample_name, "FUSION"],
             output_name=StringFormatter(
                 "{sample_name}_fusion", sample_name=self.sample_name
             ),
@@ -188,7 +194,7 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
         self.output(
             "out_arriba_fusion_discarded",
             source=self.arriba.out_discarded,
-            output_folder=self.sample_name,
+            output_folder=[self.sample_name, "FUSION"],
             output_name=StringFormatter(
                 "{sample_name}_fusion_discarded", sample_name=self.sample_name
             ),
@@ -196,7 +202,7 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
         self.output(
             "out_fusion_plot",
             source=self.fusion_plot.out,
-            output_folder=self.sample_name,
+            output_folder=[self.sample_name, "FUSION"],
             output_name=StringFormatter(
                 "{sample_name}_fusions", sample_name=self.sample_name
             ),
@@ -308,6 +314,7 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
             Gatk4HaplotypeCaller_4_1_4(
                 inputRead=self.splitncigar.out,
                 reference=self.reference,
+                intervals=self.intervals,
                 dontUseSoftClippedBases=True,
                 standardMinConfidenceThresholdForCalling=self.call_conf,
             ),
@@ -328,7 +335,7 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
         self.output(
             "out_HAP_vcf",
             source=self.rnaseq_call_variants.out,
-            output_folder=self.sample_name,
+            output_folder=[self.sample_name, "VCF"],
             output_name=StringFormatter(
                 "{sample_name}_HAP", sample_name=self.sample_name
             ),
@@ -336,7 +343,7 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
         self.output(
             "out_HAP_filter_vcf",
             source=self.filter_variants.out,
-            output_folder=self.sample_name,
+            output_folder=[self.sample_name, "VCF"],
             output_name=StringFormatter(
                 "{sample_name}_HAP.filtered", sample_name=self.sample_name
             ),
