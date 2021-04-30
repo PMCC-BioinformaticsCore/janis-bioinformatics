@@ -39,8 +39,6 @@ from janis_bioinformatics.tools.gatk4 import (
     Gatk4VariantFiltration_4_1_4,
 )
 
-# from janis_bioinformatics.tools.subread import FeatureCounts_2_0_1
-
 
 class OncopipeSamplePreparation(BioinformaticsWorkflow):
     def tool_provider(self):
@@ -56,9 +54,22 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
         return "v0.1.0"
 
     def constructor(self):
+        self.add_inputs()
+        self.add_trim_and_align()
+        self.add_sort_bam()
+        self.add_arriba()
+        self.add_rna_seq_calling()
+        # Allsort is not ready
+        # self.add_all_sorts()
 
+    def add_inputs(self):
         self.input("sample_name", String, doc="Sample ID")
         self.input("reads", FastqGzPairedEnd)
+        self.inputs_for_reference()
+        self.inputs_for_intervals()
+        self.inputs_for_configuration()
+
+    def inputs_for_reference(self):
         self.input("genome_dir", Directory)
         self.input("reference", FastaWithIndexes)
         self.input("gtf", File)
@@ -68,6 +79,10 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
         self.input("cytobands", File)
         self.input("sequence_dictionary", File)
 
+    def inputs_for_intervals(self):
+        self.input("intervals", Bed(optional=True))
+
+    def inputs_for_configuration(self):
         # optional inputs
         self.input(
             "trimming_options",
@@ -80,19 +95,11 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
                 "MINLEN:35",
             ],
         )
-        self.input("intervals", Bed(optional=True))
         self.input("platform", String, default="ILLUMINA")
         self.input("contigs", Array(String(), optional=True))
         self.input("filters", Array(String(), optional=True))
         self.input("call_conf", Double, default=20.0)
         self.input("star_threads", Int(optional=True), 8)
-
-        self.add_trim_and_align()
-        self.add_sort_bam()
-        self.add_arriba()
-        self.add_rna_seq_calling()
-        # Allsort is not ready
-        # self.add_all_sorts()
 
     def add_trim_and_align(self):
 
@@ -139,6 +146,7 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
             output_name=StringFormatter(
                 "{sample_name}_ReadsPerGene.out", sample_name=self.sample_name
             ),
+            extension=".tab",
         )
 
     def add_sort_bam(self):
@@ -299,7 +307,7 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
         )
 
         # this tool may break in some samples
-        # Fixed in the pull request in https://github.com/broadinstitute/gatk/pull/6909 update version tbc
+        # Fixed in the pull request in https://github.com/broadinstitute/gatk/pull/6909 update version - 4.2.0.0
         self.step(
             "splitncigar",
             Gatk4SplitNCigarReads_4_1_8_1(
