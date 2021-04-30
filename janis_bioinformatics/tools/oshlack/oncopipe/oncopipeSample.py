@@ -19,7 +19,7 @@ from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsWork
 
 from janis_bioinformatics.tools.usadellab import TrimmomaticPairedEnd_0_35
 from janis_bioinformatics.tools.star import (
-    StarAlignReads_2_7_1,
+    StarAlignReads_2_7_7,
 )
 from janis_bioinformatics.tools.arriba import (
     ArribaWorkflow_2_1_0,
@@ -54,6 +54,16 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
 
         self.input("sample_name", String, doc="Sample ID")
         self.input("reads", FastqGzPairedEnd)
+        self.input("genome_dir", Directory)
+        self.input("reference", FastaWithIndexes)
+        self.input("gtf", File)
+        self.input("blacklist", File)
+        self.input("known_fusions", File)
+        self.input("protein_domains_gff", File)
+        self.input("cytobands", File)
+        self.input("sequence_dictionary", File)
+
+        # optional inputs
         self.input(
             "trimming_options",
             Array(String),
@@ -65,21 +75,11 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
                 "MINLEN:35",
             ],
         )
-        self.input("genome_dir", Directory)
-        self.input("reference", FastaWithIndexes)
-        self.input("gtf", File)
         self.input("platform", String, default="ILLUMINA")
-        self.input("blacklist", File)
-        self.input("known_fusions", File)
-        self.input("protein_domains_gff", File)
-        self.input("cytobands", File)
-        self.input("sequence_dictionary", File)
-
-        # optional inputs
         self.input("contigs", Array(String(), optional=True))
         self.input("filters", Array(String(), optional=True))
         self.input("call_conf", Double, default=20.0)
-        self.input("star_threads", Int(optional=True), 4)
+        self.input("star_threads", Int(optional=True), 8)
 
         self.add_trim_and_align()
         self.add_sort_bam()
@@ -104,7 +104,7 @@ class OncopipeSamplePreparation(BioinformaticsWorkflow):
         # star alignment steps
         self.step(
             "star_alignment",
-            StarAlignReads_2_7_1(
+            StarAlignReads_2_7_7(
                 genomeDir=self.genome_dir,
                 genomeLoad="NoSharedMemory",
                 twopassMode="Basic",
