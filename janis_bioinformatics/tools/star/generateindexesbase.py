@@ -14,7 +14,7 @@ class StarGenerateIndexesBase(StarBase, ABC):
         return 64
 
     def cpus(self, hints):
-        return 4
+        return 8
 
     def directories_to_create(self):
         return [InputSelector("outputGenomeDir")]

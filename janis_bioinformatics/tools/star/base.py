@@ -132,7 +132,7 @@ class StarBase(BioinformaticsTool, ABC):
             ),
             ToolInput(
                 "genomeFastaFiles",
-                Array(Fasta, optional=True),
+                Fasta(optional=True),
                 prefix="--genomeFastaFiles",
                 doc="(default: -) path(s) to the fasta files with the genome sequences, separated by spaces. "
                 "These files should be plain text FASTA files, they *cannot* be zipped. Required for the genome "

@@ -128,3 +128,9 @@ class StarInputAlignmentsFromBam_2_7_5(Star_2_7_5, StarInputAlignmentsFromBamBas
 
 class StarInputAlignmentsFromBam_2_7_7(Star_2_7_7, StarInputAlignmentsFromBamBase):
     pass
+
+
+StarAlignReadsLatest = StarAlignReads_2_7_7
+StarGenerateIndexesLatest = StarGenerateIndexes_2_7_7
+StarLiftOverLatest = StarLiftOver_2_7_7
+StarInputAlignmentsFromBam_2_7_7
