@@ -61,6 +61,9 @@ class GridssBase_2_10(BioinformaticsTool):
     def friendly_name(self) -> str:
         return "Gridss"
 
+    def base_command(self):
+        return "/opt/gridss/gridss.sh"
+
     def inputs(self):
         return [
             ToolInput("bams", Array(BamBai()), position=10),
