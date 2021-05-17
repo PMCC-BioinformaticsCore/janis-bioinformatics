@@ -1,3 +1,4 @@
+import os
 from datetime import datetime
 from typing import Dict, Any
 
@@ -16,8 +17,10 @@ from janis_core import (
     get_value_for_hints_and_ordered_resource_tuple,
     Filename,
 )
+from janis_core.tool.test_classes import TTestCase
 
 from janis_bioinformatics.data_types import FastaWithDict, Bed, BamBai
+from janis_bioinformatics.tools import BioinformaticsTool
 from janis_bioinformatics.tools.gatk4.gatk4toolbase import Gatk4ToolBase
 
 MEM_TUPLE = [
@@ -467,3 +470,34 @@ class Gatk4SplitReadsBase(Gatk4ToolBase):
             doc=" Threshold ratio of soft clipped bases (anywhere in the cigar string) to total bases in read for read to be filtered.  Default value: null.  Cannot be used in conjuction with argument(s) minimumLeadingTrailingSoftClippedRatio",
         ),
     ]
+
+    def tests(self):
+        return [
+            TTestCase(
+                name="basic",
+                input={
+                    "bam": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "NA12878-BRCA1.recalibrated.bam",
+                    ),
+                    "intervals": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "BRCA1.hg38.bed",
+                    ),
+                    "javaOptions": ["-Xmx3G"],
+                    "outputFilename": ".",
+                },
+                output=BamBai.basic_test(
+                    "out",
+                    2600900,
+                    21300,
+                    os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "NA12878-BRCA1.split.flagstat",
+                    ),
+                ),
+            )
+        ]

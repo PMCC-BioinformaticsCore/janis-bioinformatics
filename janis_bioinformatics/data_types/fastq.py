@@ -1,6 +1,8 @@
-from typing import Any, Dict
+import operator
+from typing import Any, Dict, List
 
 from janis_core import File, Array, Logger
+from janis_core.tool.test_classes import TTestExpectedOutput, TTestPreprocessor
 
 
 class Fastq(File):
@@ -35,6 +37,17 @@ class FastqGz(File):
             "FastqGz files are compressed sequence data with quality score, there are different types"
             "with no standard: https://en.wikipedia.org/wiki/FASTQ_format"
         )
+
+    @classmethod
+    def basic_test(cls, tag: str, min_size: int) -> List[TTestExpectedOutput]:
+        return [
+            TTestExpectedOutput(
+                tag=tag,
+                preprocessor=TTestPreprocessor.FileSize,
+                operator=operator.ge,
+                expected_value=min_size,
+            ),
+        ]
 
 
 class FastqGzPairedEnd(Array):
@@ -72,6 +85,33 @@ class FastqGzPairedEnd(Array):
 
     def is_paired(self):
         return True
+
+    @classmethod
+    def basic_test(
+        cls, tag: str, min_first_size: int, min_second_size: int
+    ) -> List[TTestExpectedOutput]:
+        return [
+            TTestExpectedOutput(
+                tag=tag,
+                preprocessor=TTestPreprocessor.ListSize,
+                operator=operator.eq,
+                expected_value=2,
+            ),
+            TTestExpectedOutput(
+                tag=tag,
+                array_index=0,
+                preprocessor=TTestPreprocessor.FileSize,
+                operator=operator.ge,
+                expected_value=min_first_size,
+            ),
+            TTestExpectedOutput(
+                tag=tag,
+                array_index=1,
+                preprocessor=TTestPreprocessor.FileSize,
+                operator=operator.ge,
+                expected_value=min_second_size,
+            ),
+        ]
 
 
 class FastqPairedEnd(Array):

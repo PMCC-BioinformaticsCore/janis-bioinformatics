@@ -104,34 +104,55 @@ with mate mapped to a different chr     0x1 bit set and neither 0x4 nor 0x8 bits
 with mate mapped to a different chr (mapQ>=5)     0x1 bit set and neither 0x4 nor 0x8 bits set and MRNM not equal to RNAME and MAPQ >= 5)""".strip(),
         )
 
+    # def tests(self):
+    #     return [
+    #         TTestCase(
+    #             name="basic",
+    #             input={
+    #                 "bam": os.path.join(
+    #                     BioinformaticsTool.test_data_path(), "small.bam"
+    #                 ),
+    #             },
+    #             output=[
+    #                 TTestExpectedOutput(
+    #                     tag="out",
+    #                     preprocessor=TTestPreprocessor.FileMd5,
+    #                     operator=operator.eq,
+    #                     expected_value="dc58fe92a9bb0c897c85804758dfadbf",
+    #                 ),
+    #                 TTestExpectedOutput(
+    #                     tag="out",
+    #                     preprocessor=TTestPreprocessor.FileContent,
+    #                     operator=operator.contains,
+    #                     expected_value="19384 + 0 in total (QC-passed reads + QC-failed reads)",
+    #                 ),
+    #                 TTestExpectedOutput(
+    #                     tag="out",
+    #                     preprocessor=TTestPreprocessor.LineCount,
+    #                     operator=operator.eq,
+    #                     expected_value=13,
+    #                 ),
+    #             ],
+    #         )
+    #     ]
+
     def tests(self):
         return [
             TTestCase(
                 name="basic",
                 input={
                     "bam": os.path.join(
-                        BioinformaticsTool.test_data_path(), "small.bam"
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "NA12878-BRCA1.markduped.bam",
                     ),
                 },
-                output=[
-                    TTestExpectedOutput(
-                        tag="out",
-                        preprocessor=TTestPreprocessor.FileMd5,
-                        operator=operator.eq,
-                        expected_value="dc58fe92a9bb0c897c85804758dfadbf",
-                    ),
-                    TTestExpectedOutput(
-                        tag="out",
-                        preprocessor=TTestPreprocessor.FileContent,
-                        operator=operator.contains,
-                        expected_value="19384 + 0 in total (QC-passed reads + QC-failed reads)",
-                    ),
-                    TTestExpectedOutput(
-                        tag="out",
-                        preprocessor=TTestPreprocessor.LineCount,
-                        operator=operator.eq,
-                        expected_value=13,
-                    ),
-                ],
+                output=TextFile.basic_test(
+                    "out",
+                    410,
+                    "19486 + 0 in total (QC-passed reads + QC-failed reads)",
+                    13,
+                    "ddbcfe52e60b925d222fb8bc1517a7a0",
+                ),
             )
         ]

@@ -1,5 +1,8 @@
+import os
 from abc import ABC
 import datetime
+
+from janis_core.tool.test_classes import TTestCase
 
 from janis_bioinformatics.tools import BioinformaticsTool
 from janis_core import ToolInput, ToolOutput, File, Filename, InputSelector, String
@@ -103,3 +106,30 @@ optional arguments:
             doc="tumor sample id, required if input is somatic vcf",
         ),
     ]
+
+    def tests(self):
+        return [
+            TTestCase(
+                name="basic",
+                input={
+                    "inputVcf": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "NA12878-BRCA1.sorted.uncompressed.stdout",
+                    ),
+                    "mpileup": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "NA12878-BRCA1.mpileup.stdout",
+                    ),
+                    "type": "germline",
+                },
+                output=Vcf.basic_test(
+                    "out",
+                    69225,
+                    230,
+                    ["GATKCommandLine"],
+                    "db09c6c37c52771bd058e32d5c6b94c1",
+                ),
+            )
+        ]

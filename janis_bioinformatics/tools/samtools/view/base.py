@@ -292,22 +292,69 @@ Use of region specifications requires a coordinate-sorted and indexed input file
         ),
     ]
 
+    # def tests(self):
+    #     return [
+    #         TTestCase(
+    #             name="basic",
+    #             input={
+    #                 "sam": os.path.join(
+    #                     BioinformaticsTool.test_data_path(), "small.bam"
+    #                 ),
+    #             },
+    #             output=[
+    #                 TTestExpectedOutput(
+    #                     tag="out",
+    #                     preprocessor=TTestPreprocessor.FileMd5,
+    #                     operator=operator.eq,
+    #                     expected_value="54be668168b91eb1c04929b9305c1ac7",
+    #                 ),
+    #             ],
+    #         )
+    #     ]
+
     def tests(self):
         return [
             TTestCase(
                 name="basic",
                 input={
                     "sam": os.path.join(
-                        BioinformaticsTool.test_data_path(), "small.bam"
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "NA12878-BRCA1.bwamem.stdout",
                     ),
+                    "reference": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "Homo_sapiens_assembly38.chr17.fasta",
+                    ),
+                    "threads": 16,
                 },
-                output=[
-                    TTestExpectedOutput(
-                        tag="out",
-                        preprocessor=TTestPreprocessor.FileMd5,
-                        operator=operator.eq,
-                        expected_value="54be668168b91eb1c04929b9305c1ac7",
+                output=Bam.basic_test(
+                    "out",
+                    2740774,
+                    os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "NA12878-BRCA1.bam.flagstat",
                     ),
-                ],
-            )
+                    "9a6af420f287df52a122ac723f41b535",
+                ),
+            ),
+            TTestCase(
+                name="minimal",
+                input={
+                    "sam": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "NA12878-BRCA1.bwamem.stdout",
+                    ),
+                    "reference": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "Homo_sapiens_assembly38.chr17.fasta",
+                    ),
+                    "threads": 16,
+                },
+                output=self.minimal_test(),
+            ),
         ]

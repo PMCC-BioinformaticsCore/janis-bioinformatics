@@ -1,3 +1,4 @@
+import os
 from abc import ABC
 from typing import Dict, Any
 
@@ -12,6 +13,8 @@ from janis_core import (
     CaptureType,
     ToolMetadata,
 )
+from janis_core.tool.test_classes import TTestCase
+
 from janis_bioinformatics.data_types import (
     BamBai,
     FastaWithDict,
@@ -20,8 +23,9 @@ from janis_bioinformatics.data_types import (
     VcfTabix,
     Bed,
 )
+from janis_bioinformatics.tools import BioinformaticsTool
 from ..gatk4toolbase import Gatk4ToolBase
-from janis_unix import Tsv
+from janis_unix import Tsv, TextFile
 
 
 CORES_TUPLE = [
@@ -178,6 +182,56 @@ table (of the several covariate values, num observations, num mismatches, empiri
             doc="Temp directory to use.",
         )
     ]
+
+    def tests(self):
+        return [
+            TTestCase(
+                name="basic",
+                input={
+                    "bam": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "NA12878-BRCA1.markduped.bam",
+                    ),
+                    "reference": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "Homo_sapiens_assembly38.chr17.fasta",
+                    ),
+                    "knownSites": [
+                        os.path.join(
+                            BioinformaticsTool.test_data_path(),
+                            "wgsgermline_data",
+                            "Homo_sapiens_assembly38.known_indels.BRCA1.vcf.gz",
+                        ),
+                        os.path.join(
+                            BioinformaticsTool.test_data_path(),
+                            "wgsgermline_data",
+                            "Homo_sapiens_assembly38.dbsnp138.BRCA1.vcf.gz",
+                        ),
+                        os.path.join(
+                            BioinformaticsTool.test_data_path(),
+                            "wgsgermline_data",
+                            "Mills_and_1000G_gold_standard.indels.hg38.BRCA1.vcf.gz",
+                        ),
+                        os.path.join(
+                            BioinformaticsTool.test_data_path(),
+                            "wgsgermline_data",
+                            "1000G_phase1.snps.high_confidence.hg38.BRCA1.vcf.gz",
+                        ),
+                    ],
+                    "intervals": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "BRCA1.hg38.bed",
+                    ),
+                    "javaOptions": ["-Xmx12G"],
+                },
+                output=TextFile.basic_test(
+                    "out", 1131758, "#:GATKReport.v1.1:5", 10376
+                ),
+            )
+        ]
 
 
 if __name__ == "__main__":
