@@ -2,11 +2,11 @@ import os
 import operator
 from janis_core import Array
 from janis_bioinformatics.data_types import FastqGzPair, FastaWithDict
-from janis_bioinformatics.tools import BioinformaticsWorkflow
+from janis_bioinformatics.tools import BioinformaticsWorkflow, BioinformaticsTool
 from janis_bioinformatics.tools.common.bwamem_samtoolsview import BwaMem_SamToolsView
 from janis_bioinformatics.tools.cutadapt import CutAdapt_2_1
 from janis_bioinformatics.tools.gatk4 import Gatk4SortSam_4_1_2
-from janis_bioinformatics.data_types.bam import Bam
+from janis_bioinformatics.data_types.bam import Bam, BamBai
 
 from janis_core.tool.test_classes import (
     TTestPreprocessor,
@@ -29,7 +29,6 @@ class BwaAligner(BioinformaticsWorkflow):
         return "1.0.0"
 
     def constructor(self):
-
         # Inputs
         self.input("sample_name", str)
         self.input("reference", FastaWithDict)
@@ -90,41 +89,76 @@ class BwaAligner(BioinformaticsWorkflow):
             TTestCase(
                 name="basic",
                 input={
-                    "sample_name": "NA12878",
+                    "sample_name": "NA12878-BRCA1",
                     "fastq": [
-                        "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics/BRCA1_R1.fastq.gz",
-                        "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics/BRCA1_R2.fastq.gz",
+                        os.path.join(
+                            BioinformaticsTool.test_data_path(),
+                            "wgsgermline_data",
+                            "NA12878-BRCA1_R1.fastq.gz",
+                        ),
+                        os.path.join(
+                            BioinformaticsTool.test_data_path(),
+                            "wgsgermline_data",
+                            "NA12878-BRCA1_R2.fastq.gz",
+                        ),
                     ],
-                    "reference": "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics/hg38-brca1.fasta",
+                    "reference": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "Homo_sapiens_assembly38.chr17.fasta",
+                    ),
+                    "cutadapt_qualityCutoff": 15,
+                    "cutadapt_minimumLength": 50,
+                    "bwamem_markShorterSplits": True,
+                    "sortsam_sortOrder": "coordinate",
+                    "sortsam_createIndex": True,
+                    "sortsam_maxRecordsInRam": 5000000,
+                    "sortsam_tmpDir": "./tmp",
+                    "sortsam_validationStringency": "SILENT",
                 },
-                output=[
-                    TTestExpectedOutput(
-                        tag="out",
-                        preprocessor=TTestPreprocessor.FileSize,
-                        operator=operator.gt,
-                        expected_value=2767780,
+                output=BamBai.basic_test(
+                    "out",
+                    2826000,
+                    49688,
+                    os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "NA12878-BRCA1.bam.flagstat",
                     ),
-                    TTestExpectedOutput(
-                        tag="out",
-                        suffix_secondary_file=".bai",
-                        preprocessor=TTestPreprocessor.FileSize,
-                        operator=operator.gt,
-                        expected_value=290,
+                ),
+            ),
+            TTestCase(
+                name="minimal",
+                input={
+                    "sample_name": "NA12878-BRCA1",
+                    "fastq": [
+                        os.path.join(
+                            BioinformaticsTool.test_data_path(),
+                            "wgsgermline_data",
+                            "NA12878-BRCA1_R1.fastq.gz",
+                        ),
+                        os.path.join(
+                            BioinformaticsTool.test_data_path(),
+                            "wgsgermline_data",
+                            "NA12878-BRCA1_R2.fastq.gz",
+                        ),
+                    ],
+                    "reference": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "Homo_sapiens_assembly38.chr17.fasta",
                     ),
-                    TTestExpectedOutput(
-                        tag="out",
-                        preprocessor=Bam.flagstat,
-                        operator=operator.eq,
-                        expected_file="https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics/bwaaligner/bwaaligner.flagstat.txt",
-                    ),
-                    TTestExpectedOutput(
-                        tag="out",
-                        preprocessor=TTestPreprocessor.Value,
-                        operator=Bam.equal,
-                        expected_value="https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics/small.bam",
-                    ),
-                ],
-            )
+                    "cutadapt_qualityCutoff": 15,
+                    "cutadapt_minimumLength": 50,
+                    "bwamem_markShorterSplits": True,
+                    "sortsam_sortOrder": "coordinate",
+                    "sortsam_createIndex": True,
+                    "sortsam_maxRecordsInRam": 5000000,
+                    "sortsam_tmpDir": "./tmp",
+                    "sortsam_validationStringency": "SILENT",
+                },
+                output=self.minimal_test(),
+            ),
         ]
 
 

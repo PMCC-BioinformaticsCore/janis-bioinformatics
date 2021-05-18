@@ -1,13 +1,21 @@
 """
 Each modification of this tool should duplicate this code
 """
+import operator
+import os
 from datetime import datetime
 from typing import List, Dict, Any, Optional
 
 from janis_core import PythonTool, File, Array, ToolMetadata
+from janis_core.tool.test_classes import (
+    TTestCase,
+    TTestExpectedOutput,
+    TTestPreprocessor,
+)
 from janis_core.tool.tool import TOutput
 
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsPythonTool
+from janis_bioinformatics.tools import BioinformaticsTool
 
 
 class ParseFastqcAdaptors(BioinformaticsPythonTool):
@@ -140,3 +148,25 @@ class ParseFastqcAdaptors(BioinformaticsPythonTool):
         self.metadata.dateCreated = datetime(2020, 1, 7)
         self.metadata.dateUpdated = datetime(2020, 2, 14)
         self.metadata.version = "0.1.0"
+
+    def tests(self):
+        return [
+            TTestCase(
+                name="basic",
+                input={
+                    "fastqc_datafiles": [
+                        os.path.join(
+                            BioinformaticsTool.test_data_path(),
+                            "wgsgermline_data",
+                            "NA12878-BRCA1.fastqc_data.txt",
+                        )
+                    ],
+                    "cutadapt_adaptors_lookup": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "contaminant_list.txt",
+                    ),
+                },
+                output=[],
+            ),
+        ]

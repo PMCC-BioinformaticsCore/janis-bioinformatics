@@ -1,3 +1,5 @@
+import operator
+import os
 from abc import ABC
 from typing import Dict, Any
 
@@ -17,10 +19,16 @@ from janis_core import (
 )
 from janis_core import get_value_for_hints_and_ordered_resource_tuple
 from janis_core import ToolMetadata
+from janis_core.tool.test_classes import (
+    TTestCase,
+    TTestExpectedOutput,
+    TTestPreprocessor,
+)
 from janis_unix import TextFile
 
 from janis_bioinformatics.data_types import Bam, BamBai, FastaWithDict
 from ..gatk4toolbase import Gatk4ToolBase
+from ... import BioinformaticsTool
 
 CORES_TUPLE = [
     (
@@ -203,3 +211,39 @@ class Gatk4CollectInsertSizeMetricsBase(Gatk4ToolBase, ABC):
             doc="display hidden  arguments  Default  value: false.  Possible values: {true, false} ",
         ),
     ]
+
+    def tests(self):
+        # The first 5 lines of the file include headers that change with every run (time, etc)
+        with open(
+            os.path.join(
+                BioinformaticsTool.test_data_path(),
+                "wgsgermline_data",
+                "NA12878-BRCA1.markduped.metrics.txt",
+            ),
+            "r",
+        ) as f:
+            for i in range(5):
+                next(f)
+            expected_content = f.read()
+        return [
+            TTestCase(
+                name="basic",
+                input={
+                    "bam": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "NA12878-BRCA1.markduped.bam",
+                    ),
+                    "javaOptions": ["-Xmx6G"],
+                },
+                output=TextFile.basic_test("out", 7260, expected_content, 905)
+                + [
+                    TTestExpectedOutput(
+                        tag="outHistogram",
+                        preprocessor=TTestPreprocessor.FileSize,
+                        operator=operator.ge,
+                        expected_value=15600,
+                    ),
+                ],
+            )
+        ]

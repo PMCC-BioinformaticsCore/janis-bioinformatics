@@ -1,6 +1,9 @@
+import os
 from datetime import datetime
 from typing import List, Dict, Any
 from janis_core import get_value_for_hints_and_ordered_resource_tuple, ToolMetadata
+from janis_core.tool.test_classes import TTestCase
+
 from janis_bioinformatics.data_types import FastaWithDict, CompressedVcf
 from janis_bioinformatics.data_types import Vcf
 from janis_bioinformatics.tools import BioinformaticsTool
@@ -140,6 +143,32 @@ class SplitMultiAllele(BioinformaticsTool):
               -r  reference sequence fasta file []
               -?  displays help 
         """.strip()
+
+    def tests(self):
+        return [
+            TTestCase(
+                name="basic",
+                input={
+                    "vcf": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "NA12878-BRCA1.haplotype_uncompressed.stdout",
+                    ),
+                    "reference": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "Homo_sapiens_assembly38.chr17.fasta",
+                    ),
+                },
+                output=Vcf.basic_test(
+                    "out",
+                    51462,
+                    221,
+                    ["GATKCommandLine"],
+                    "5e48624cb5ef379a7d6d39cec44bc856",
+                ),
+            )
+        ]
 
 
 if __name__ == "__main__":

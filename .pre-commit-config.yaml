@@ -7,5 +7,5 @@ repos:
   hooks:
     - id: nosetests
       name: nosetests
-      entry: sh -ec 'nosetests -w janis'
+      entry: sh -ec 'nosetests -w janis_bioinformatics'
       language: system

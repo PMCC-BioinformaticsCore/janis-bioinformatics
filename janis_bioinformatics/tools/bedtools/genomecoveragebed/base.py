@@ -1,3 +1,5 @@
+import operator
+import os
 from abc import ABC
 from typing import List, Dict, Any
 from datetime import date
@@ -15,10 +17,18 @@ from janis_core import (
     Stdout,
     CaptureType,
 )
+from janis_core.tool.test_classes import (
+    TTestCase,
+    TTestExpectedOutput,
+    TTestPreprocessor,
+)
+
 from janis_bioinformatics.data_types import Bam, Bed
 from janis_unix import TextFile
 from ..bedtoolstoolbase import BedToolsToolBase
 from janis_core import ToolMetadata
+
+from ... import BioinformaticsTool
 
 
 class BedToolsGenomeCoverageBedBase(BedToolsToolBase, ABC):
@@ -168,3 +178,29 @@ class BedToolsGenomeCoverageBedBase(BedToolsToolBase, ABC):
             doc="Writes additional track line definition parameters in the first line. - Example: -trackopts 'name=\"My Track\" visibility=2 color=255,30,30' Note the use of single-quotes if you have spaces in your parameters.",
         ),
     ]
+
+    def tests(self):
+        return [
+            TTestCase(
+                name="basic",
+                input={
+                    "inputBam": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "NA12878-BRCA1.markduped.bam.bam",
+                    ),
+                    "genome": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "NA12878-BRCA1.genome_file.txt",
+                    ),
+                },
+                output=TextFile.basic_test(
+                    "out",
+                    7432,
+                    "chr17\t0\t83144233\t83257441\t0.99864",
+                    220,
+                    "f2007353bbd18f0a04eae9499d7c6a91",
+                ),
+            )
+        ]
