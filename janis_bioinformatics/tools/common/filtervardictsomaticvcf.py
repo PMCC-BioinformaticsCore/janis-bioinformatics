@@ -40,7 +40,11 @@ class FilterVardictSomaticVcf(BioinformaticsTool):
             ToolInput("vcf", Vcf(), position=1),
             ToolInput(
                 "outputFilename",
-                Filename(extension=".vcf", suffix=".filtered"),
+                Filename(
+                    prefix=InputSelector("vcf", remove_file_extension=True),
+                    extension=".vcf",
+                    suffix=".filter",
+                ),
                 prefix="-o",
                 position=3,
             ),
