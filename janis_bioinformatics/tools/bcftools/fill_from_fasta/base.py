@@ -85,7 +85,7 @@ class BcfToolsFillFromFastaBase(BcfToolsToolBase, ABC):
                     InputSelector("vcf", remove_file_extension=True),
                     extension=".vcf",
                 ),
-                position=4,
+                position=6,
                 doc="Output vcf",
             ),
             ToolInput(
@@ -131,7 +131,7 @@ class BcfToolsFillFromFastaBase(BcfToolsToolBase, ABC):
             ToolOutput(
                 "out",
                 Vcf(),
-                InputSelector("outputFilename"),
+                glob=InputSelector("outputFilename"),
             )
         ]
 
