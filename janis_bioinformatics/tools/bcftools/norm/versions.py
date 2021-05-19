@@ -1,5 +1,4 @@
-from ..bcftools_1_5 import BcfTools_1_5
-from ..bcftools_1_9 import BcfTools_1_9
+from ..versions import BcfTools_1_5, BcfTools_1_9
 from .base import BcfToolsNormBase
 
 
