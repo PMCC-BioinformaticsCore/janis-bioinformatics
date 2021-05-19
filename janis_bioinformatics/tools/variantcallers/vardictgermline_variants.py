@@ -46,7 +46,6 @@ class VardictGermlineVariantCaller(BioinformaticsWorkflow):
                 var2vcfSampleName=self.sample_name,
                 alleleFreqThreshold=self.allele_freq_threshold,
                 var2vcfAlleleFreqThreshold=self.allele_freq_threshold,
-                chromNamesAreNumbers=True,
                 vcfFormat=True,
                 chromColumn=1,
                 regStartCol=2,
