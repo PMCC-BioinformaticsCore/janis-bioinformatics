@@ -1,3 +1,4 @@
+import os
 from abc import ABC
 from typing import List, Dict, Any
 
@@ -15,7 +16,10 @@ from janis_core import (
     Stdout,
     ToolArgument,
 )
+from janis_core.tool.test_classes import TTestCase
+
 from janis_bioinformatics.data_types import Vcf, CompressedVcf
+from janis_bioinformatics.tools import BioinformaticsTool
 from janis_bioinformatics.tools.vcftools.vcftoolstoolbase import VcfToolsToolBase
 from janis_core import ToolMetadata
 
@@ -104,3 +108,27 @@ vcftools is a suite of functions for use on genetic variation data in the form o
         )
         # tbc
     ]
+
+    def tests(self):
+        return [
+            TTestCase(
+                name="basic",
+                input={
+                    "vcf": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgssomatic_data",
+                        "stdout.norm.vcf",
+                    ),
+                    "removeFileteredAll": True,
+                    "recode": True,
+                    "recodeINFOAll": True,
+                },
+                output=Vcf.basic_test(
+                    "out",
+                    34393,
+                    147,
+                    ["GATKCommandLine"],
+                    "c083775bc8c49397fb65ec12cd435688",
+                ),
+            ),
+        ]

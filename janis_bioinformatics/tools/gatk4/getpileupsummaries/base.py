@@ -1,3 +1,4 @@
+import os
 from abc import ABC
 from typing import Dict, Any
 
@@ -17,10 +18,12 @@ from janis_core.operators.standard import (
     FilterNullOperator,
     FirstOperator,
 )
+from janis_core.tool.test_classes import TTestCase
 from janis_unix import TextFile
 
 from janis_bioinformatics.data_types import BamBai, Bed, VcfTabix, FastaWithDict
 from ..gatk4toolbase import Gatk4ToolBase
+from ... import BioinformaticsTool
 
 CORES_TUPLE = [
     # (CaptureType.key(), {
@@ -159,3 +162,35 @@ Summarizes counts of reads that support reference, alternate and other alleles f
 The tool requires a common germline variant sites VCF, e.g. the gnomAD resource, with population allele frequencies (AF) in the INFO field. This resource must contain only biallelic SNPs and can be an eight-column sites-only VCF. The tool ignores the filter status of the sites. See the GATK Resource Bundle for an example human file.
 """.strip(),
         )
+
+    def tests(self):
+        return [
+            TTestCase(
+                name="basic",
+                input={
+                    "javaOptions": ["-Xmx48G"],
+                    "bam": [
+                        os.path.join(
+                            BioinformaticsTool.test_data_path(),
+                            "wgssomatic_data",
+                            "NA12878-NA24385-mixture.markduped.recalibrated.bam",
+                        )
+                    ],
+                    "sites": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgssomatic_data",
+                        "af-only-gnomad.hg38.BRCA1.vcf.gz",
+                    ),
+                    "intervals": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "BRCA1.hg38.bed",
+                    ),
+                },
+                output=TextFile.basic_test(
+                    "out",
+                    2592,
+                    md5="54672b8b13d46aaef25c56351c82a3f4",
+                ),
+            ),
+        ]

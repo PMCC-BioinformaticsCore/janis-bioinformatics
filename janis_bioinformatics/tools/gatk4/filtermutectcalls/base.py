@@ -1,3 +1,4 @@
+import os
 from abc import ABC
 from typing import Dict, Any
 
@@ -11,10 +12,12 @@ from janis_core import (
     get_value_for_hints_and_ordered_resource_tuple,
     Filename,
 )
+from janis_core.tool.test_classes import TTestCase
 from janis_unix.data_types import TextFile
 
 from janis_bioinformatics.data_types import VcfIdx, FastaWithDict, Vcf, VcfTabix
 from ..gatk4toolbase import Gatk4ToolBase
+from ... import BioinformaticsTool
 
 CORES_TUPLE = [
     # (CaptureType.key(), {
@@ -140,3 +143,51 @@ FilterMutectCalls applies filters to the raw output of Mutect2. Parameters are c
 If given a --contamination-table file, e.g. results from CalculateContamination, the tool will additionally filter on contamination fractions. This argument may be specified with a table for one or more tumor sample. Alternatively, provide a numerical fraction to filter with the --contamination argument. FilterMutectCalls can also be given one or more --tumor-segmentation files, which are also output by CalculateContamination.
 """.strip(),
         )
+
+    def tests(self):
+        return [
+            TTestCase(
+                name="basic",
+                input={
+                    "javaOptions": ["-Xmx12G"],
+                    "contaminationTable": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgssomatic_data",
+                        "generated.txt.mutect2_contamination",
+                    ),
+                    "segmentationFile": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgssomatic_data",
+                        "generated.txt.mutect2_segments",
+                    ),
+                    "statsFile": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgssomatic_data",
+                        "NA24385-BRCA1.vcf.gz.stats",
+                    ),
+                    "readOrientationModel": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgssomatic_data",
+                        "generated.orientation.tar.gz",
+                    ),
+                    "vcf": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgssomatic_data",
+                        "NA24385-BRCA1.vcf.gz",
+                    ),
+                    "reference": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "Homo_sapiens_assembly38.chr17.fasta",
+                    ),
+                },
+                output=VcfTabix.basic_test(
+                    "out",
+                    13339,
+                    274,
+                    182,
+                    ["GATKCommandLine"],
+                    "6cfd70dda8599a270978868166ab6545",
+                ),
+            ),
+        ]

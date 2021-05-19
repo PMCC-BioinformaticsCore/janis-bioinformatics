@@ -1,8 +1,10 @@
+import os
 from datetime import date
 
 from janis_core import String, Array, WorkflowBuilder
+from janis_core.tool.test_classes import TTestCase
 from janis_unix.tools import UncompressArchive
-from janis_bioinformatics.tools import gatk4
+from janis_bioinformatics.tools import gatk4, BioinformaticsTool
 from janis_bioinformatics.data_types import FastaWithDict, BamBai, VcfTabix, Bed, Vcf
 from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.common import SplitMultiAllele
@@ -34,6 +36,7 @@ class GatkSomaticVariantCaller_4_1_3(BioinformaticsWorkflow):
         self.input("reference", FastaWithDict)
         self.input("gnomad", VcfTabix)
         self.input("panel_of_normals", VcfTabix(optional=True))
+        self.input("output_bam_name", String(optional=True))
 
         # split normal and tumor bam
         self.step(
@@ -57,6 +60,7 @@ class GatkSomaticVariantCaller_4_1_3(BioinformaticsWorkflow):
                 germlineResource=self.gnomad,
                 panelOfNormals=self.panel_of_normals,
                 outputPrefix=self.normal_name,
+                outputBamName=self.output_bam_name,
             ),
         )
         self.step(
@@ -155,6 +159,70 @@ class GatkSomaticVariantCaller_4_1_3(BioinformaticsWorkflow):
         6. Split and normliase vcf
         7. Filter PASS variants
                 """.strip()
+
+    def tests(self):
+        return [
+            TTestCase(
+                name="basic",
+                input={
+                    "normal_bam": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgssomatic_data",
+                        "NA24385-BRCA1.markduped.recalibrated.bam",
+                    ),
+                    "tumor_bam": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgssomatic_data",
+                        "NA12878-NA24385-mixture.markduped.recalibrated.bam",
+                    ),
+                    "reference": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "Homo_sapiens_assembly38.chr17.fasta",
+                    ),
+                    "gnomad": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgssomatic_data",
+                        "af-only-gnomad.hg38.BRCA1.vcf.gz",
+                    ),
+                    "normal_name": "NA24385-BRCA1",
+                    "intervals": os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "BRCA1.hg38.bed",
+                    ),
+                    "filterpass_removeFileteredAll": True,
+                    "filterpass_recode": True,
+                    "filterpass_recodeINFOAll": True,
+                    "output_bam_name": "mutect2.bam",
+                },
+                output=Vcf.basic_test(
+                    "out",
+                    33000,
+                    147,
+                    ["GATKCommandLine"],
+                    "c083775bc8c49397fb65ec12cd435688",
+                )
+                + VcfTabix.basic_test(
+                    "variants",
+                    13000,
+                    260,
+                    182,
+                    ["GATKCommandLine"],
+                    "6cfd70dda8599a270978868166ab6545",
+                )
+                + BamBai.basic_test(
+                    "out_bam",
+                    813200,
+                    21200,
+                    os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgssomatic_data",
+                        "somatic_variant_caller.flagstat",
+                    ),
+                ),
+            ),
+        ]
 
 
 if __name__ == "__main__":
