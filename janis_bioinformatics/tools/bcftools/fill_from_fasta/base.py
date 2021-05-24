@@ -83,6 +83,7 @@ class BcfToolsFillFromFastaBase(BcfToolsToolBase, ABC):
                 "outputFilename",
                 Filename(
                     InputSelector("vcf", remove_file_extension=True),
+                    suffix=".fill",
                     extension=".vcf",
                 ),
                 position=6,
