@@ -1,7 +1,11 @@
 import os
 from datetime import datetime
 from typing import List, Dict, Any
-from janis_core import get_value_for_hints_and_ordered_resource_tuple, ToolMetadata
+from janis_core import (
+    get_value_for_hints_and_ordered_resource_tuple,
+    ToolMetadata,
+    UnionType,
+)
 from janis_core.tool.test_classes import TTestCase
 
 from janis_bioinformatics.data_types import FastaWithDict, CompressedVcf
@@ -77,7 +81,9 @@ class SplitMultiAllele(BioinformaticsTool):
 
     def inputs(self) -> List[ToolInput]:
         return [
-            ToolInput("vcf", Vcf(), position=1, shell_quote=False),
+            ToolInput(
+                "vcf", UnionType(Vcf, CompressedVcf), position=1, shell_quote=False
+            ),
             ToolInput(
                 "reference", FastaWithDict(), prefix="-r", position=4, shell_quote=False
             ),
