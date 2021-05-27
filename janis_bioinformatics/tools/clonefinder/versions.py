@@ -1,7 +1,7 @@
 from .base import CloneFinderBase
 
 
-class CloneFinder_0_2(CloneFinderBase_0_2):
+class CloneFinder_0_2(CloneFinderBase):
     def container(self):
         return "shollizeck/clonefinder:0.2"
 

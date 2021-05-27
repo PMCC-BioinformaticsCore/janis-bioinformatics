@@ -1,3 +1,4 @@
+import os
 from abc import ABC
 from typing import Dict, Any
 
@@ -15,9 +16,11 @@ from janis_core import (
 )
 from janis_core import get_value_for_hints_and_ordered_resource_tuple
 from janis_core import ToolMetadata
+from janis_core.tool.test_classes import TTestCase
 
 from janis_bioinformatics.data_types import FastaWithDict, BamBai
 from ..gatk4toolbase import Gatk4ToolBase
+from ... import BioinformaticsTool
 
 CORES_TUPLE = [
     (
@@ -251,3 +254,37 @@ class Gatk4MergeSamFilesBase(Gatk4ToolBase, ABC):
             "one of the following values: [ERROR, WARNING, INFO, DEBUG]",
         ),
     ]
+
+    def tests(self):
+        return [
+            TTestCase(
+                name="basic",
+                input={
+                    "bams": [
+                        os.path.join(
+                            BioinformaticsTool.test_data_path(),
+                            "wgsgermline_data",
+                            "NA12878-BRCA1.sorted.bam",
+                        )
+                    ],
+                    "createIndex": True,
+                    "validationStringency": "SILENT",
+                    "javaOptions": ["-Xmx6G"],
+                    "maxRecordsInRam": 5000000,
+                    "tmpDir": "./tmp",
+                    "useThreading": True,
+                },
+                output=BamBai.basic_test(
+                    "out",
+                    2826968,
+                    49688,
+                    os.path.join(
+                        BioinformaticsTool.test_data_path(),
+                        "wgsgermline_data",
+                        "NA12878-BRCA1.bam.flagstat",
+                    ),
+                    "963a51f7feed5b829319b947961b8a3e",
+                    "231c10d0e43766170f5a7cd1b8a6d14e",
+                ),
+            )
+        ]
