@@ -10,7 +10,7 @@ from janis_bioinformatics.data_types import (
 )
 from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.common import SplitMultiAllele
-from janis_bioinformatics.tools.illumina import StrelkaGermline_2_9_10
+from janis_bioinformatics.tools.illumina import StrelkaGermline_2_9_10, Manta_1_5_0
 from janis_bioinformatics.tools.vcftools import VcfToolsvcftoolsLatest
 
 
@@ -35,7 +35,19 @@ class IlluminaGermlineVariantCaller(BioinformaticsWorkflow):
         # optional
         self.input("intervals", BedTabix(optional=True))
         self.input("is_exome", Boolean(optional=True))
+        self.input("manta_config", File(optional=True))
         self.input("strelka_config", File(optional=True))
+
+        self.step(
+            "manta",
+            Manta_1_5_0(
+                bam=self.bam,
+                reference=self.reference,
+                callRegions=self.intervals,
+                exome=self.is_exome,
+                config=self.manta_config,
+            ),
+        )
 
         self.step(
             "strelka",
