@@ -4,6 +4,10 @@ from .annotate.versions import (
     BcfToolsAnnotateLatest,
 )
 from .concat.versions import BcfToolsConcat_1_9, BcfToolsConcatLatest
+from .fill_from_fasta.versions import (
+    BcfToolsFillFromFasta_1_12,
+    BcfToolsFillFromFastaLatest,
+)
 from .index.versions import BcfToolsIndex_1_9, BcfToolsIndexLatest
 from .norm.versions import BcfToolsNorm_1_5, BcfToolsNorm_1_9, BcfToolsNormLatest
 from .sort.versions import BcfToolsSort_1_9, BcfToolsSortLatest
