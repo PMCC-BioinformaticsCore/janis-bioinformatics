@@ -18,3 +18,4 @@ from .generatebedtoolscoveragegenomefile import GenerateGenomeFileForBedtoolsCov
 from .generatintervalsbychromosome.generateintervalsbychromosome import (
     GenerateIntervalsByChromosome,
 )
+from .generatemantaconfig import GenerateMantaConfig
