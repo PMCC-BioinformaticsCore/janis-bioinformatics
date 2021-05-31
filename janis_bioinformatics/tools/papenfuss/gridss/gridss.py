@@ -61,6 +61,15 @@ class Gridss_2_9_4(GridssBase_2_4):
         return "v2.9.4"
 
 
+# 2.8.3 is last version before library optimisation
+class Gridss_2_8_3(GridssBase_2_10):
+    def container(self):
+        return "gridss/gridss:2.8.3"
+
+    def version(self) -> str:
+        return "v2.8.3"
+
+
 class Gridss_2_10_2(GridssBase_2_10):
     def container(self):
         return "gridss/gridss:2.10.2"
