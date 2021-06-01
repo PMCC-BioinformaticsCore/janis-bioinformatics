@@ -186,11 +186,7 @@ class BedToolsGenomeCoverageBedBase(BedToolsToolBase, ABC):
                 name="basic",
                 input={
                     "inputBam": f"{remote_dir}/NA12878-BRCA1.markduped.bam.bam",
-                    "genome": os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgsgermline_data",
-                        "NA12878-BRCA1.genome_file.txt",
-                    ),
+                    "genome": f"{remote_dir}/NA12878-BRCA1.genome_file.txt",
                 },
                 output=TextFile.basic_test(
                     "out",
