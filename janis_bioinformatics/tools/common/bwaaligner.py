@@ -85,28 +85,17 @@ class BwaAligner(BioinformaticsWorkflow):
         self.metadata.version = "1.1"
 
     def tests(self):
+        remote_dir = "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics/wgsgermline_data"
         return [
             TTestCase(
                 name="basic",
                 input={
                     "sample_name": "NA12878-BRCA1",
                     "fastq": [
-                        os.path.join(
-                            BioinformaticsTool.test_data_path(),
-                            "wgsgermline_data",
-                            "NA12878-BRCA1_R1.fastq.gz",
-                        ),
-                        os.path.join(
-                            BioinformaticsTool.test_data_path(),
-                            "wgsgermline_data",
-                            "NA12878-BRCA1_R2.fastq.gz",
-                        ),
+                        f"{remote_dir}/NA12878-BRCA1_R1.fastq.gz",
+                        f"{remote_dir}/NA12878-BRCA1_R2.fastq.gz",
                     ],
-                    "reference": os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgsgermline_data",
-                        "Homo_sapiens_assembly38.chr17.fasta",
-                    ),
+                    "reference": f"{remote_dir}/Homo_sapiens_assembly38.chr17.fasta",
                     "cutadapt_qualityCutoff": 15,
                     "cutadapt_minimumLength": 50,
                     "bwamem_markShorterSplits": True,
@@ -120,11 +109,7 @@ class BwaAligner(BioinformaticsWorkflow):
                     "out",
                     2826000,
                     49688,
-                    os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgsgermline_data",
-                        "NA12878-BRCA1.bam.flagstat",
-                    ),
+                    f"{remote_dir}/NA12878-BRCA1.bam.flagstat",
                 ),
             ),
             TTestCase(
@@ -132,22 +117,10 @@ class BwaAligner(BioinformaticsWorkflow):
                 input={
                     "sample_name": "NA12878-BRCA1",
                     "fastq": [
-                        os.path.join(
-                            BioinformaticsTool.test_data_path(),
-                            "wgsgermline_data",
-                            "NA12878-BRCA1_R1.fastq.gz",
-                        ),
-                        os.path.join(
-                            BioinformaticsTool.test_data_path(),
-                            "wgsgermline_data",
-                            "NA12878-BRCA1_R2.fastq.gz",
-                        ),
+                        f"{remote_dir}/NA12878-BRCA1_R1.fastq.gz",
+                        f"{remote_dir}/NA12878-BRCA1_R2.fastq.gz",
                     ],
-                    "reference": os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgsgermline_data",
-                        "Homo_sapiens_assembly38.chr17.fasta",
-                    ),
+                    "reference": f"{remote_dir}/Homo_sapiens_assembly38.chr17.fasta",
                     "cutadapt_qualityCutoff": 15,
                     "cutadapt_minimumLength": 50,
                     "bwamem_markShorterSplits": True,
