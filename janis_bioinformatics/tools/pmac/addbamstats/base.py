@@ -112,16 +112,8 @@ optional arguments:
             TTestCase(
                 name="basic",
                 input={
-                    "inputVcf": os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgsgermline_data",
-                        "NA12878-BRCA1.sorted.uncompressed.stdout",
-                    ),
-                    "mpileup": os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgsgermline_data",
-                        "NA12878-BRCA1.mpileup.stdout",
-                    ),
+                    "inputVcf": f"{remote_dir}/NA12878-BRCA1.sorted.uncompressed.stdout",
+                    "mpileup": f"{remote_dir}/NA12878-BRCA1.mpileup.stdout",
                     "type": "germline",
                 },
                 output=Vcf.basic_test(
