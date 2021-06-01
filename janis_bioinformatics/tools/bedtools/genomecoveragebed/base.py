@@ -180,15 +180,12 @@ class BedToolsGenomeCoverageBedBase(BedToolsToolBase, ABC):
     ]
 
     def tests(self):
+        remote_dir = "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics/wgsgermline_data"
         return [
             TTestCase(
                 name="basic",
                 input={
-                    "inputBam": os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgsgermline_data",
-                        "NA12878-BRCA1.markduped.bam.bam",
-                    ),
+                    "inputBam": f"{remote_dir}/NA12878-BRCA1.markduped.bam.bam",
                     "genome": os.path.join(
                         BioinformaticsTool.test_data_path(),
                         "wgsgermline_data",
