@@ -213,11 +213,11 @@ class Gatk4CollectInsertSizeMetricsBase(Gatk4ToolBase, ABC):
     ]
 
     def tests(self):
+        remote_dir = "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics/wgsgermline_data"
         # The first 5 lines of the file include headers that change with every run (time, etc)
         with open(
             os.path.join(
                 BioinformaticsTool.test_data_path(),
-                "wgsgermline_data",
                 "NA12878-BRCA1.markduped.metrics.txt",
             ),
             "r",
@@ -229,11 +229,7 @@ class Gatk4CollectInsertSizeMetricsBase(Gatk4ToolBase, ABC):
             TTestCase(
                 name="basic",
                 input={
-                    "bam": os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgsgermline_data",
-                        "NA12878-BRCA1.markduped.bam",
-                    ),
+                    "bam": f"{remote_dir}/NA12878-BRCA1.markduped.bam",
                     "javaOptions": ["-Xmx6G"],
                 },
                 output=TextFile.basic_test("out", 7260, expected_content, 905)

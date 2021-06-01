@@ -114,30 +114,15 @@ optional arguments:
         )
 
     def tests(self):
+        remote_dir = "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics/wgsgermline_data"
         return [
             TTestCase(
                 name="basic",
                 input={
-                    "flagstat": os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgsgermline_data",
-                        "NA12878-BRCA1.markduped.bam.flagstat",
-                    ),
-                    "collectInsertSizeMetrics": os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgsgermline_data",
-                        "NA12878-BRCA1.markduped.metrics.txt",
-                    ),
-                    "coverage": os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgsgermline_data",
-                        "NA12878-BRCA1.genomeCoverageBed.stdout",
-                    ),
-                    "rmdupFlagstat": os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgsgermline_data",
-                        "NA12878-BRCA1.markduped.bam.bam.flagstat",
-                    ),
+                    "flagstat": f"{remote_dir}/NA12878-BRCA1.markduped.bam.flagstat",
+                    "collectInsertSizeMetrics": f"{remote_dir}/NA12878-BRCA1.markduped.metrics.txt",
+                    "coverage": f"{remote_dir}/NA12878-BRCA1.genomeCoverageBed.stdout",
+                    "rmdupFlagstat": f"{remote_dir}/NA12878-BRCA1.markduped.bam.bam.flagstat",
                     "genome": True,
                 },
                 output=TextFile.basic_test(
@@ -145,11 +130,7 @@ optional arguments:
                     min_size=948,
                     line_count=2,
                     md5="575354942cfb8d0367725f9020181443",
-                    expected_file_path=os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgsgermline_data",
-                        "NA12878-BRCA1_performance_summary.csv",
-                    ),
+                    expected_file_path=f"{remote_dir}/NA12878-BRCA1_performance_summary.csv",
                 ),
             )
         ]

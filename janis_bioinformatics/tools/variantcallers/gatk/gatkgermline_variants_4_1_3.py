@@ -76,30 +76,15 @@ class GatkGermlineVariantCaller_4_1_3(BioinformaticsWorkflow):
         self.output("out", source=self.splitnormalisevcf.out)
 
     def tests(self):
+        remote_dir = "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics/wgsgermline_data"
         return [
             TTestCase(
                 name="basic",
                 input={
-                    "bam": os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgsgermline_data",
-                        "NA12878-BRCA1.recalibrated.bam",
-                    ),
-                    "intervals": os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgsgermline_data",
-                        "BRCA1.hg38.bed",
-                    ),
-                    "reference": os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgsgermline_data",
-                        "Homo_sapiens_assembly38.chr17.fasta",
-                    ),
-                    "snps_dbsnp": os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgsgermline_data",
-                        "Homo_sapiens_assembly38.dbsnp138.BRCA1.vcf.gz",
-                    ),
+                    "bam": f"{remote_dir}/NA12878-BRCA1.recalibrated.bam",
+                    "intervals": f"{remote_dir}/BRCA1.hg38.bed",
+                    "reference": f"{remote_dir}/Homo_sapiens_assembly38.chr17.fasta",
+                    "snps_dbsnp": f"{remote_dir}/Homo_sapiens_assembly38.dbsnp138.BRCA1.vcf.gz",
                     "haplotype_caller_pairHmmImplementation": "LOGLESS_CACHING",
                 },
                 output=Vcf.basic_test(

@@ -313,46 +313,27 @@ Use of region specifications requires a coordinate-sorted and indexed input file
     #     ]
 
     def tests(self):
+        remote_dir = "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics/wgsgermline_data"
         return [
             TTestCase(
                 name="basic",
                 input={
-                    "sam": os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgsgermline_data",
-                        "NA12878-BRCA1.bwamem.stdout",
-                    ),
-                    "reference": os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgsgermline_data",
-                        "Homo_sapiens_assembly38.chr17.fasta",
-                    ),
+                    "sam": f"{remote_dir}/NA12878-BRCA1.bwamem.stdout",
+                    "reference": f"{remote_dir}/Homo_sapiens_assembly38.chr17.fasta",
                     "threads": 16,
                 },
                 output=Bam.basic_test(
                     "out",
                     2740774,
-                    os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgsgermline_data",
-                        "NA12878-BRCA1.bam.flagstat",
-                    ),
+                    f"{remote_dir}/NA12878-BRCA1.bam.flagstat",
                     "9a6af420f287df52a122ac723f41b535",
                 ),
             ),
             TTestCase(
                 name="minimal",
                 input={
-                    "sam": os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgsgermline_data",
-                        "NA12878-BRCA1.bwamem.stdout",
-                    ),
-                    "reference": os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgsgermline_data",
-                        "Homo_sapiens_assembly38.chr17.fasta",
-                    ),
+                    "sam": f"{remote_dir}/NA12878-BRCA1.bwamem.stdout",
+                    "reference": f"{remote_dir}/Homo_sapiens_assembly38.chr17.fasta",
                     "threads": 16,
                 },
                 output=self.minimal_test(),
