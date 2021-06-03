@@ -99,8 +99,8 @@ class FixUpFreeBayesMNPsBase(BioinformaticsTool, ABC):
 
         return ToolMetadata(
             contributors=["Sebastian Hollizeck"],
-            dateCreated=date(2021, 06, 03),
-            dateUpdated=date(2021, 06, 03),
+            dateCreated=date(2021, 6, 3),
+            dateUpdated=date(2021, 6, 3),
             institution="PMCC",
             doi=None,
             citation=None,
