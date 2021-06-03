@@ -217,27 +217,13 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
         self.step("uniqueAlleles", VcfUniqAlleles(vcf=self.normalizeSomatic2.out))
 
         self.step(
-            "joinMultiLineVars",
-            BcfToolsNorm(
-                vcf=self.uniqueAlleles.out,
-                reference=self.reference,
-                outputType="v",
-                multiallelics="+",
-                outputFilename="joined.vcf",
+            "fixUpFreeBayesMNPs",
+            FixUpFreeBayesMNPs(
+                input=self.uniqueAlleles.out,
             ),
         )
 
-        self.step(
-            "sortFinal", VcfStreamSort(vcf=self.joinMultiLineVar.out, inMemoryFlag=True)
-        )
-
-        self.step("uniqVcf", VcfUniq(vcf=self.sortFinal.out))
-
-        self.step("compressFinal", BGZip(file=self.uniqVcf.out))
-
-        self.step("indexFinal", Tabix(inp=self.compressFinal.out))
-
-        self.output("somaticOutVcf", source=self.indexFinal)
+        self.output("somaticOutVcf", source=self.fixUpFreeBayesMNPs)
 
 
 if __name__ == "__main__":
