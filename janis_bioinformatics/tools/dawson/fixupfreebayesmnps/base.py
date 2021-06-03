@@ -1,7 +1,7 @@
 from abc import ABC
 from typing import Any, Dict
 
-from janis_bioinformatics.data_types import VcfGz
+from janis_bioinformatics.data_types import Vcf, VcfTabix
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 from janis_core import (
     Boolean,
@@ -66,7 +66,7 @@ class FixUpFreeBayesMNPsBase(BioinformaticsTool, ABC):
             ),
             ToolInput(
                 tag="uncompressed",
-                input_type=Boolean(optional=T),
+                input_type=Boolean(optional=True),
                 prefix="-o",
                 doc="output file name (default: reassembled.vcf.bgz)",
             ),
@@ -76,7 +76,7 @@ class FixUpFreeBayesMNPsBase(BioinformaticsTool, ABC):
         return [
             ToolOutput(
                 "out",
-                VcfGz,
+                VcfTabix,
                 glob=InputSelector("outputFilename") + ".bgz",
                 doc="To determine type",
             )
@@ -99,8 +99,8 @@ class FixUpFreeBayesMNPsBase(BioinformaticsTool, ABC):
 
         return ToolMetadata(
             contributors=["Sebastian Hollizeck"],
-            dateCreated=date(2021, 06, 03),
-            dateUpdated=date(2021, 06, 03),
+            dateCreated=date(2021, 6, 3),
+            dateUpdated=date(2021, 6, 3),
             institution="PMCC",
             doi=None,
             citation=None,
