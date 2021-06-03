@@ -217,7 +217,18 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
         self.step("uniqueAlleles", VcfUniqAlleles(vcf=self.normalizeSomatic2.out))
 
         self.step(
-            "sortFinal", VcfStreamSort(vcf=self.uniqueAlleles.out, inMemoryFlag=True)
+            "joinMultiLineVars",
+            BcfToolsNorm(
+                vcf=self.uniqueAlleles.out,
+                reference=self.reference,
+                outputType="v",
+                multiallelics="+",
+                outputFilename="joined.vcf",
+            ),
+        )
+
+        self.step(
+            "sortFinal", VcfStreamSort(vcf=self.joinMultiLineVar.out, inMemoryFlag=True)
         )
 
         self.step("uniqVcf", VcfUniq(vcf=self.sortFinal.out))
