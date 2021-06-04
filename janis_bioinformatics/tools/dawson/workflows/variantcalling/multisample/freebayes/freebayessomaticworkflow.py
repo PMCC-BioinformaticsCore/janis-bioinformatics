@@ -5,7 +5,9 @@ from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.bcftools import BcfToolsNormLatest as BcfToolsNorm
 from janis_bioinformatics.tools.dawson import (
     CallSomaticFreeBayes_0_1 as CallSomaticFreeBayes,
+    FixUpFreeBayesMNPs_0_1 as FixUpFreeBayesMNPs,
 )
+
 from janis_bioinformatics.tools.dawson.createcallregions.base import CreateCallRegions
 
 from janis_bioinformatics.tools.htslib import BGZipLatest as BGZip, TabixLatest as Tabix
@@ -15,7 +17,6 @@ from janis_bioinformatics.tools.vcflib import (
     VcfFixUpLatest as VcfFixUp,
     VcfStreamSortLatest as VcfStreamSort,
     VcfUniqAllelesLatest as VcfUniqAlleles,
-    VcfUniqLatest as VcfUniq,
 )
 from janis_core import Array, Int, String
 
