@@ -37,7 +37,7 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
     def bind_metadata(self):
         self.metadata.version = "0.1.1"
         self.metadata.dateCreated = date(2019, 10, 18)
-        self.metadata.dateUpdated = date(2020, 12, 10)
+        self.metadata.dateUpdated = date(2021, 6, 4)
 
         self.contributors = ["Sebastian Hollizeck"]
         self.metadata.keywords = [
@@ -220,7 +220,7 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
         self.step(
             "fixUpFreeBayesMNPs",
             FixUpFreeBayesMNPs(
-                input=self.uniqueAlleles.out,
+                vcf=self.uniqueAlleles.out,
             ),
         )
 
