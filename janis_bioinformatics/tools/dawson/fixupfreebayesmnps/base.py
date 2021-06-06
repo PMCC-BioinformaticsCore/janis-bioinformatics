@@ -1,7 +1,7 @@
 from abc import ABC
 from typing import Any, Dict
 
-from janis_bioinformatics.data_types import Vcf, VcfIdx
+from janis_bioinformatics.data_types import Vcf, VcfTabix
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 from janis_core import (
     Boolean,
@@ -76,7 +76,7 @@ class FixUpFreeBayesMNPsBase(BioinformaticsTool, ABC):
         return [
             ToolOutput(
                 "out",
-                VcfIdx,
+                VcfTabix,
                 glob=InputSelector("outputFilename") + ".bgz",
                 doc="To determine type",
             )
