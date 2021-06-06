@@ -1,6 +1,7 @@
+from datetime import datetime
 from typing import Dict, List, Any
 
-from janis_core import TOutput, Array
+from janis_core import TOutput, Array, ToolMetadata
 
 from janis_bioinformatics.data_types import FastaFai
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsPythonTool
@@ -62,3 +63,11 @@ class CreateCallRegions(BioinformaticsPythonTool):
 
     def friendly_name(self):
         return "Create genomic call regions"
+
+    def bind_metadata(self):
+        return ToolMetadata(
+            contributors=["Sebastian Hollizeck"],
+            dateCreated=datetime(2020, 6, 17),
+            dateUpdated=datetime(2020, 7, 16),
+            documentation="",
+        )

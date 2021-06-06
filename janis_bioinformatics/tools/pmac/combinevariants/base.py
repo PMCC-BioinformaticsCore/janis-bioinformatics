@@ -122,9 +122,9 @@ class CombineVariantsBase(BioinformaticsTool, ABC):
         ]
 
     def bind_metadata(self):
-        self.metadata.creator = "Jiaan Yu"
+        self.metadata.dateCreated = datetime.datetime(2019, 3, 25)
         self.metadata.dateUpdated = datetime.datetime(2019, 7, 4)
-        self.metadata.contributors = ["Michael Franklin"]
+        self.metadata.contributors = ["Jiaan Yu", "Michael Franklin"]
         self.metadata.documentation = """
 usage: combine_vcf.py [-h] -i I --columns COLUMNS -o O --type
                       {germline,somatic} [--regions REGIONS] [--normal NORMAL]

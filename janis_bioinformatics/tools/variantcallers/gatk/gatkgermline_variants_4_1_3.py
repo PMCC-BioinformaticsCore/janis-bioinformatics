@@ -1,8 +1,10 @@
+import os
 from datetime import date
 
+from janis_core.tool.test_classes import TTestCase
 from janis_unix.tools import UncompressArchive
-from janis_bioinformatics.tools import gatk4
-from janis_bioinformatics.data_types import FastaWithDict, BamBai, VcfTabix, Bed
+from janis_bioinformatics.tools import gatk4, BioinformaticsTool
+from janis_bioinformatics.data_types import FastaWithDict, BamBai, VcfTabix, Bed, Vcf
 from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.common import SplitMultiAllele
 
@@ -64,12 +66,36 @@ class GatkGermlineVariantCaller_4_1_3(BioinformaticsWorkflow):
         self.step("uncompressvcf", UncompressArchive(file=self.haplotype_caller.out))
         self.step(
             "splitnormalisevcf",
-            SplitMultiAllele(vcf=self.uncompressvcf.out, reference=self.reference),
+            SplitMultiAllele(
+                vcf=self.uncompressvcf.out.as_type(Vcf), reference=self.reference
+            ),
         )
 
         self.output("variants", source=self.haplotype_caller.out)
         self.output("out_bam", source=self.haplotype_caller.bam)
         self.output("out", source=self.splitnormalisevcf.out)
+
+    def tests(self):
+        remote_dir = "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics/wgsgermline_data"
+        return [
+            TTestCase(
+                name="basic",
+                input={
+                    "bam": f"{remote_dir}/NA12878-BRCA1.recalibrated.bam",
+                    "intervals": f"{remote_dir}/BRCA1.hg38.bed",
+                    "reference": f"{remote_dir}/Homo_sapiens_assembly38.chr17.fasta",
+                    "snps_dbsnp": f"{remote_dir}/Homo_sapiens_assembly38.dbsnp138.BRCA1.vcf.gz",
+                    "haplotype_caller_pairHmmImplementation": "LOGLESS_CACHING",
+                },
+                output=Vcf.basic_test(
+                    "out",
+                    51000,
+                    221,
+                    ["GATKCommandLine"],
+                    "5e48624cb5ef379a7d6d39cec44bc856",
+                ),
+            )
+        ]
 
 
 if __name__ == "__main__":

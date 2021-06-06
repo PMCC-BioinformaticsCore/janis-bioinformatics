@@ -11,8 +11,9 @@ class PerformanceSummary_0_0_7(PerformanceSummaryBase, PeterMacUtils_0_0_7):
     pass
 
 
-class PerformanceSummary_dev(PerformanceSummaryBase, PeterMacUtils_dev):
-    pass
+# NOTE: disabled as this is for dev work only
+# class PerformanceSummary_dev(PerformanceSummaryBase, PeterMacUtils_dev):
+#     pass
 
 
 PerformanceSummaryLatest = PerformanceSummary_0_0_7

@@ -364,6 +364,7 @@ class StrelkaSomaticBase(IlluminaToolBase, ABC):
 
     def bind_metadata(self):
         return ToolMetadata(
+            contributors=["Michael Franklin"],
             dateCreated=datetime(2019, 5, 27),
             dateUpdated=datetime(2019, 10, 14),
             documentation="""Usage: configureStrelkaSomaticWorkflow.py [options]

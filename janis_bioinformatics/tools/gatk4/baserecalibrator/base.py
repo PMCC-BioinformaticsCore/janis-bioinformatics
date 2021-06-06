@@ -1,3 +1,4 @@
+import os
 from abc import ABC
 from typing import Dict, Any
 
@@ -12,6 +13,8 @@ from janis_core import (
     CaptureType,
     ToolMetadata,
 )
+from janis_core.tool.test_classes import TTestCase
+
 from janis_bioinformatics.data_types import (
     BamBai,
     FastaWithDict,
@@ -20,8 +23,9 @@ from janis_bioinformatics.data_types import (
     VcfTabix,
     Bed,
 )
+from janis_bioinformatics.tools import BioinformaticsTool
 from ..gatk4toolbase import Gatk4ToolBase
-from janis_unix import Tsv
+from janis_unix import Tsv, TextFile
 
 
 CORES_TUPLE = [
@@ -178,6 +182,29 @@ table (of the several covariate values, num observations, num mismatches, empiri
             doc="Temp directory to use.",
         )
     ]
+
+    def tests(self):
+        remote_dir = "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics/wgsgermline_data"
+        return [
+            TTestCase(
+                name="basic",
+                input={
+                    "bam": f"{remote_dir}/NA12878-BRCA1.markduped.bam",
+                    "reference": f"{remote_dir}/Homo_sapiens_assembly38.chr17.fasta",
+                    "knownSites": [
+                        f"{remote_dir}/Homo_sapiens_assembly38.known_indels.BRCA1.vcf.gz",
+                        f"{remote_dir}/Homo_sapiens_assembly38.dbsnp138.BRCA1.vcf.gz",
+                        f"{remote_dir}/Mills_and_1000G_gold_standard.indels.hg38.BRCA1.vcf.gz",
+                        f"{remote_dir}/1000G_phase1.snps.high_confidence.hg38.BRCA1.vcf.gz",
+                    ],
+                    "intervals": f"{remote_dir}/BRCA1.hg38.bed",
+                    "javaOptions": ["-Xmx12G"],
+                },
+                output=TextFile.basic_test(
+                    "out", 1131758, "#:GATKReport.v1.1:5", 10376
+                ),
+            )
+        ]
 
 
 if __name__ == "__main__":

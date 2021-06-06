@@ -1,3 +1,4 @@
+import os
 from abc import abstractmethod, ABC
 from typing import List
 
@@ -13,8 +14,11 @@ from janis_core import (
     Filename,
     ToolArgument,
 )
+from janis_core.tool.test_classes import TTestCase
+from janis_unix import Gunzipped
 
 from janis_bioinformatics.data_types import Vcf, CompressedVcf
+from janis_bioinformatics.tools import BioinformaticsTool
 from janis_bioinformatics.tools.htslib.htslibbase import HtsLibBase
 
 
@@ -30,12 +34,14 @@ class BGZipBase(HtsLibBase, ABC):
 
     def inputs(self) -> List[ToolInput]:
         return [
-            ToolInput("file", Vcf(), position=100, doc="File to bgzip compress"),
+            ToolInput("file", File(), position=100, doc="File to bgzip compress"),
             ToolInput(
                 "outputFilename",
-                Filename(extension=".vcf.gz"),
+                Filename(
+                    prefix=InputSelector("file").basename(),
+                    extension=".gz",
+                ),
                 position=102,
-                shell_quote=False,
             ),
             *self.additional_args,
         ]
@@ -45,7 +51,11 @@ class BGZipBase(HtsLibBase, ABC):
 
     def outputs(self) -> List[ToolOutput]:
         return [
-            ToolOutput("out", CompressedVcf(), glob=InputSelector("outputFilename"))
+            ToolOutput(
+                "out",
+                Gunzipped(),
+                glob=InputSelector("outputFilename"),
+            )
         ]
 
     def friendly_name(self):
@@ -166,3 +176,21 @@ Again after decompression completes the input file will be removed.""".strip(),
             doc="@: Number of threads to use [1].",
         ),
     ]
+
+    def tests(self):
+        remote_dir = "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics/wgsgermline_data"
+        return [
+            TTestCase(
+                name="basic",
+                input={
+                    "file": f"{remote_dir}/NA12878-BRCA1.generated.gathered.vcf",
+                },
+                output=CompressedVcf.basic_test(
+                    "out",
+                    11500,
+                    221,
+                    ["GATKCommandLine"],
+                    "b7acb0a9900713cc7da7aeed5160c971",
+                ),
+            )
+        ]

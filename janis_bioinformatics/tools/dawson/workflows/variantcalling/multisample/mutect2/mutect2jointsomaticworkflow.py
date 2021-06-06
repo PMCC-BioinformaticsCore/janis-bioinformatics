@@ -38,7 +38,7 @@ class Mutect2JointSomaticWorkflow(BioinformaticsWorkflow):
         self.metadata.dateCreated = date(2019, 10, 30)
         self.metadata.dateUpdated = date(2020, 12, 10)
 
-        self.contributors = ["Sebastian Hollizeck"]
+        self.metadata.contributors = ["Sebastian Hollizeck"]
         self.metadata.keywords = [
             "variants",
             "mutect2",
@@ -127,9 +127,7 @@ class Mutect2JointSomaticWorkflow(BioinformaticsWorkflow):
         self.step(
             "createCallRegions",
             CreateCallRegions(
-                reference=self.reference,
-                regionSize=self.regionSize,
-                equalize=True,
+                reference=self.reference, regionSize=self.regionSize, equalize=True,
             ),
         )
 

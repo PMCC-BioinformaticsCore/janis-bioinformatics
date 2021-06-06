@@ -1,4 +1,5 @@
-from janis_core import File, String, Float
+from datetime import datetime
+from janis_core import File, String, Float, Int, WorkflowMetadata
 from janis_unix.tools import UncompressArchive
 
 from janis_bioinformatics.data_types import FastaWithDict, BamBai, Bed
@@ -28,12 +29,14 @@ class VardictGermlineVariantCaller(BioinformaticsWorkflow):
 
         self.input("bam", BamBai)
         self.input("intervals", Bed)
-
         self.input("sample_name", String)
-        self.input("allele_freq_threshold", Float, default=0.5)
         self.input("header_lines", File)
-
         self.input("reference", FastaWithDict)
+
+        # vardict options
+        self.input("allele_freq_threshold", Float, default=0.05)
+        self.input("minMappingQual", Int(optional=True))
+        self.input("filter", String(optional=True))
 
         self.step(
             "vardict",
@@ -45,11 +48,13 @@ class VardictGermlineVariantCaller(BioinformaticsWorkflow):
                 var2vcfSampleName=self.sample_name,
                 alleleFreqThreshold=self.allele_freq_threshold,
                 var2vcfAlleleFreqThreshold=self.allele_freq_threshold,
-                chromNamesAreNumbers=True,
                 vcfFormat=True,
                 chromColumn=1,
                 regStartCol=2,
                 geneEndCol=3,
+                threads=4,
+                minMappingQual=self.minMappingQual,
+                filter=self.filter,
             ),
         )
         self.step(
@@ -76,6 +81,14 @@ class VardictGermlineVariantCaller(BioinformaticsWorkflow):
 
         self.output("variants", source=self.tabixvcf.out)
         self.output("out", source=self.filterpass.out)
+
+    def bind_metadata(self):
+        return WorkflowMetadata(
+            contributors=["Michael Franklin", "Jiaan Yu"],
+            dateCreated=datetime(2019, 3, 28),
+            dateUpdated=datetime(2021, 3, 5),
+            documentation="",
+        )
 
 
 if __name__ == "__main__":

@@ -1,10 +1,14 @@
+import os
+from datetime import datetime
 from janis_core import String
 from janis_core import WorkflowMetadata
 
 # data types
+from janis_core.tool.test_classes import TTestCase
+
 from janis_bioinformatics.data_types import BamBai, Bed
 from janis_unix.data_types import TextFile
-from janis_bioinformatics.tools import BioinformaticsWorkflow
+from janis_bioinformatics.tools import BioinformaticsWorkflow, BioinformaticsTool
 from janis_bioinformatics.tools.bedtools import (
     BedToolsGenomeCoverageBedLatest,
     BedToolsCoverageBedLatest,
@@ -31,7 +35,12 @@ class PerformanceSummaryGenome_0_1_0(BioinformaticsWorkflow):
         return "Peter MacCallum Cancer Centre"
 
     def bind_metadata(self):
-        return WorkflowMetadata(version="v0.1.0", contributors=["Jiaan Yu"])
+        return WorkflowMetadata(
+            version="v0.1.0",
+            contributors=["Jiaan Yu"],
+            dateCreated=datetime(2020, 4, 28),
+            dateUpdated=datetime(2020, 6, 12),
+        )
 
     def constructor(self):
 
@@ -44,7 +53,9 @@ class PerformanceSummaryGenome_0_1_0(BioinformaticsWorkflow):
         # Steps - Performance Summary
         self.step(
             "gatk4collectinsertsizemetrics",
-            Gatk4CollectInsertSizeMetricsLatest(bam=self.bam,),
+            Gatk4CollectInsertSizeMetricsLatest(
+                bam=self.bam,
+            ),
         )
         self.step("bamflagstat", SamToolsFlagstatLatest(bam=self.bam))
         self.step(
@@ -55,7 +66,8 @@ class PerformanceSummaryGenome_0_1_0(BioinformaticsWorkflow):
         self.step(
             "bedtoolsgenomecoveragebed",
             BedToolsGenomeCoverageBedLatest(
-                inputBam=self.samtoolsview.out, genome=self.genome_file,
+                inputBam=self.samtoolsview.out,
+                genome=self.genome_file,
             ),
         )
         # Give all the output files to performance summary script
@@ -72,3 +84,25 @@ class PerformanceSummaryGenome_0_1_0(BioinformaticsWorkflow):
         )
 
         self.output("performanceSummaryOut", source=self.performancesummary.out)
+
+    def tests(self):
+        remote_dir = "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics/wgsgermline_data"
+        return [
+            TTestCase(
+                name="basic",
+                input={
+                    "bam": f"{remote_dir}/NA12878-BRCA1.markduped.bam",
+                    "genome_file": f"{remote_dir}/NA12878-BRCA1.genome_file.txt",
+                    "sample_name": "NA12878-BRCA1",
+                    "samtoolsview_doNotOutputAlignmentsWithBitsSet": "0x400",
+                    "performancesummary_genome": True,
+                },
+                output=TextFile.basic_test(
+                    tag="performanceSummaryOut",
+                    min_size=948,
+                    line_count=2,
+                    md5="575354942cfb8d0367725f9020181443",
+                    expected_file_path=f"{remote_dir}/NA12878-BRCA1_performance_summary.csv",
+                ),
+            )
+        ]

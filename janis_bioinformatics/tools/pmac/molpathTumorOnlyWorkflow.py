@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import datetime
 
 from janis_core import (
     File,
@@ -62,7 +62,12 @@ class MolpathTumorOnly_1_0_0(BioinformaticsWorkflow):
         return "Peter MacCallum Cancer Centre"
 
     def bind_metadata(self):
-        return WorkflowMetadata(version="v1.0.0", contributors=["Jiaan Yu"])
+        return WorkflowMetadata(
+            version="v1.0.0",
+            contributors=["Jiaan Yu"],
+            dateCreated=datetime(2020, 6, 12),
+            dateUpdated=datetime(2020, 8, 10),
+        )
 
     def constructor(self):
 

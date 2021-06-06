@@ -11,9 +11,7 @@ from janis_core import (
     ToolMetadata,
     String,
     get_value_for_hints_and_ordered_resource_tuple,
-    StringFormatter,
 )
-from janis_core.operators.logical import If, IsDefined
 from janis_core.operators.standard import (
     JoinOperator,
     FilterNullOperator,
@@ -21,7 +19,7 @@ from janis_core.operators.standard import (
 )
 from janis_unix import TextFile
 
-from janis_bioinformatics.data_types import BamBai, VcfIdx, Bed, VcfTabix, FastaWithDict
+from janis_bioinformatics.data_types import BamBai, Bed, VcfTabix, FastaWithDict
 from ..gatk4toolbase import Gatk4ToolBase
 
 CORES_TUPLE = [

@@ -1,13 +1,21 @@
 """
 Each modification of this tool should duplicate this code
 """
-
+import operator
+import os
+from datetime import datetime
 from typing import List, Dict, Any, Optional
 
 from janis_core import PythonTool, File, Array, ToolMetadata
+from janis_core.tool.test_classes import (
+    TTestCase,
+    TTestExpectedOutput,
+    TTestPreprocessor,
+)
 from janis_core.tool.tool import TOutput
 
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsPythonTool
+from janis_bioinformatics.tools import BioinformaticsTool
 
 
 class ParseFastqcAdaptors(BioinformaticsPythonTool):
@@ -136,6 +144,22 @@ class ParseFastqcAdaptors(BioinformaticsPythonTool):
         self.metadata.documentation = (
             "Parse overrepresented region and lookup in Cutadapt table"
         )
-        self.metadata.creator = "Michael Franklin"
-        self.metadata.dateCreated = "2020-01-07"
+        self.metadata.contributors = ["Michael Franklin"]
+        self.metadata.dateCreated = datetime(2020, 1, 7)
+        self.metadata.dateUpdated = datetime(2020, 2, 14)
         self.metadata.version = "0.1.0"
+
+    def tests(self):
+        remote_dir = "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics/wgsgermline_data"
+        return [
+            TTestCase(
+                name="basic",
+                input={
+                    "fastqc_datafiles": [
+                        f"{remote_dir}/NA12878-BRCA1.fastqc_data.txt",
+                    ],
+                    "cutadapt_adaptors_lookup": f"{remote_dir}/contaminant_list.txt",
+                },
+                output=[],
+            ),
+        ]

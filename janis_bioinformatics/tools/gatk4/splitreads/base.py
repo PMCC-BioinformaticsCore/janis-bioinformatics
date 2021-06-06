@@ -1,3 +1,4 @@
+import os
 from datetime import datetime
 from typing import Dict, Any
 
@@ -15,8 +16,10 @@ from janis_core import (
     get_value_for_hints_and_ordered_resource_tuple,
     Filename,
 )
+from janis_core.tool.test_classes import TTestCase
 
 from janis_bioinformatics.data_types import FastaWithDict, Bed, BamBai
+from janis_bioinformatics.tools import BioinformaticsTool
 from janis_bioinformatics.tools.gatk4.gatk4toolbase import Gatk4ToolBase
 
 MEM_TUPLE = [
@@ -90,6 +93,7 @@ class Gatk4SplitReadsBase(Gatk4ToolBase):
 
     def bind_metadata(self):
         return ToolMetadata(
+            contributors=["Michael Franklin"],
             dateCreated=datetime(2019, 9, 16),
             dateUpdated=datetime(2019, 9, 16),
             documentation="USAGE: SplitReads [arguments]\nOutputs reads from a SAM/BAM/CRAM by read group, sample and library name\nVersion:4.1.3.0",
@@ -451,3 +455,23 @@ class Gatk4SplitReadsBase(Gatk4ToolBase):
             doc=" Threshold ratio of soft clipped bases (anywhere in the cigar string) to total bases in read for read to be filtered.  Default value: null.  Cannot be used in conjuction with argument(s) minimumLeadingTrailingSoftClippedRatio",
         ),
     ]
+
+    def tests(self):
+        remote_dir = "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics/wgsgermline_data"
+        return [
+            TTestCase(
+                name="basic",
+                input={
+                    "bam": f"{remote_dir}/NA12878-BRCA1.recalibrated.bam",
+                    "intervals": f"{remote_dir}/BRCA1.hg38.bed",
+                    "javaOptions": ["-Xmx3G"],
+                    "outputFilename": ".",
+                },
+                output=BamBai.basic_test(
+                    "out",
+                    2600900,
+                    21300,
+                    f"{remote_dir}/NA12878-BRCA1.split.flagstat",
+                ),
+            )
+        ]

@@ -1,3 +1,5 @@
+import operator
+import os
 from abc import ABC
 from datetime import datetime
 from typing import List, Dict, Any
@@ -17,11 +19,15 @@ from janis_core import (
     CpuSelector,
 )
 from janis_core import get_value_for_hints_and_ordered_resource_tuple
-from janis_unix import ZipFile
+from janis_core.tool.test_classes import (
+    TTestCase,
+    TTestExpectedOutput,
+    TTestPreprocessor,
+)
+from janis_unix import ZipFile, TextFile
 
 from janis_bioinformatics.data_types import FastqGzPair, FastqGz
 from janis_bioinformatics.tools import BioinformaticsTool
-
 
 CORES_TUPLE = [
     (
@@ -240,3 +246,42 @@ class FastQCBase(BioinformaticsTool, ABC):
             "Defaults to system temp directory if not specified.",
         ),
     ]
+
+    def tests(self):
+        remote_dir = "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics/wgsgermline_data"
+        return [
+            TTestCase(
+                name="basic",
+                input={
+                    "reads": [
+                        f"{remote_dir}/NA12878-BRCA1_R1.fastq.gz",
+                        f"{remote_dir}/NA12878-BRCA1_R2.fastq.gz",
+                    ],
+                    "threads": 1,
+                },
+                output=Array.array_wrapper(
+                    [
+                        FastqGz.basic_test("out", 408000),
+                        FastqGz.basic_test("out", 416000),
+                    ]
+                )
+                + Array.array_wrapper(
+                    [
+                        TextFile.basic_test(
+                            "datafile", 81000, md5="8e23d29e0859ba547f0aa616ca395a8f"
+                        )
+                    ]
+                ),
+            ),
+            TTestCase(
+                name="minimal",
+                input={
+                    "reads": [
+                        f"{remote_dir}/NA12878-BRCA1_R1.fastq.gz",
+                        f"{remote_dir}/NA12878-BRCA1_R2.fastq.gz",
+                    ],
+                    "threads": 1,
+                },
+                output=self.minimal_test(),
+            ),
+        ]

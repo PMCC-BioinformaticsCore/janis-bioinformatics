@@ -1,5 +1,13 @@
+import os
+from datetime import datetime
 from typing import List, Dict, Any
-from janis_core import get_value_for_hints_and_ordered_resource_tuple
+from janis_core import (
+    get_value_for_hints_and_ordered_resource_tuple,
+    ToolMetadata,
+    UnionType,
+)
+from janis_core.tool.test_classes import TTestCase
+
 from janis_bioinformatics.data_types import FastaWithDict, CompressedVcf
 from janis_bioinformatics.data_types import Vcf
 from janis_bioinformatics.tools import BioinformaticsTool
@@ -73,7 +81,9 @@ class SplitMultiAllele(BioinformaticsTool):
 
     def inputs(self) -> List[ToolInput]:
         return [
-            ToolInput("vcf", Vcf(), position=1, shell_quote=False),
+            ToolInput(
+                "vcf", UnionType(Vcf, CompressedVcf), position=1, shell_quote=False
+            ),
             ToolInput(
                 "reference", FastaWithDict(), prefix="-r", position=4, shell_quote=False
             ),
@@ -98,6 +108,14 @@ class SplitMultiAllele(BioinformaticsTool):
 
     def outputs(self) -> List[ToolOutput]:
         return [ToolOutput("out", Vcf(), glob=InputSelector("outputFilename"))]
+
+    def bind_metadata(self):
+        return ToolMetadata(
+            contributors=["Michael Franklin", "Jiaan Yu"],
+            dateCreated=datetime(2019, 1, 18),
+            dateUpdated=datetime(2020, 11, 6),
+            documentation="",
+        )
 
     def doc(self):
         return """
@@ -131,6 +149,25 @@ class SplitMultiAllele(BioinformaticsTool):
               -r  reference sequence fasta file []
               -?  displays help 
         """.strip()
+
+    def tests(self):
+        remote_dir = "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics/wgsgermline_data"
+        return [
+            TTestCase(
+                name="basic",
+                input={
+                    "vcf": f"{remote_dir}/NA12878-BRCA1.haplotype_uncompressed.stdout",
+                    "reference": f"{remote_dir}/Homo_sapiens_assembly38.chr17.fasta",
+                },
+                output=Vcf.basic_test(
+                    "out",
+                    51462,
+                    221,
+                    ["GATKCommandLine"],
+                    "5e48624cb5ef379a7d6d39cec44bc856",
+                ),
+            )
+        ]
 
 
 if __name__ == "__main__":

@@ -81,6 +81,7 @@ class ExtractStrelkaSomaticADDPBase(BioinformaticsTool, ABC):
 
     def bind_metadata(self):
         self.metadata.creator = "Jiaan Yu"
+        self.metadata.dateCreated = datetime.datetime(2020, 7, 27)
         self.metadata.dateUpdated = datetime.datetime(2020, 7, 27)
         self.metadata.contributors = ["Jiaan Yu"]
         self.metadata.documentation = """

@@ -1,3 +1,4 @@
+import os
 from abc import ABC
 from datetime import datetime
 from typing import Dict, Any
@@ -12,9 +13,11 @@ from janis_core import (
     CaptureType,
 )
 from janis_core import get_value_for_hints_and_ordered_resource_tuple
+from janis_core.tool.test_classes import TTestCase
 from janis_core.types import UnionType
 
 from janis_bioinformatics.data_types import Vcf, CompressedVcf
+from janis_bioinformatics.tools import BioinformaticsTool
 from janis_bioinformatics.tools.bcftools.bcftoolstoolbase import BcfToolsToolBase
 
 CORES_TUPLE = [
@@ -100,7 +103,7 @@ class BcfToolsSortBase(BcfToolsToolBase, ABC):
 
     def bind_metadata(self):
         return ToolMetadata(
-            contributors=None,
+            contributors=["Michael Franklin"],
             dateCreated=datetime(2019, 5, 9),
             dateUpdated=datetime(2019, 7, 11),
             institution=None,
@@ -111,3 +114,22 @@ class BcfToolsSortBase(BcfToolsToolBase, ABC):
             documentation="""About:   Sort VCF/BCF file.
 Usage:   bcftools sort [OPTIONS] <FILE.vcf>""",
         )
+
+    def tests(self):
+        remote_dir = "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics/wgsgermline_data"
+        return [
+            TTestCase(
+                name="basic",
+                input={
+                    "outputType": "z",
+                    "vcf": f"{remote_dir}/NA12878-BRCA1.generated.gathered.vcf.gz",
+                },
+                output=CompressedVcf.basic_test(
+                    "out",
+                    11602,
+                    221,
+                    ["GATKCommandLine"],
+                    "fcc35adbb0624abc91f6de2e9042f749",
+                ),
+            )
+        ]

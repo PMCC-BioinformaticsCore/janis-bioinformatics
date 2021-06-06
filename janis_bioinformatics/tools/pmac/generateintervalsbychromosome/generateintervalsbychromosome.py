@@ -2,11 +2,11 @@ from datetime import datetime
 from typing import Dict, Any, List, Optional
 
 import janis_core as j
-
+from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsPythonTool
 from janis_bioinformatics.data_types import FastaDict, Bed
 
 
-class GenerateIntervalsByChromosome(j.PythonTool):
+class GenerateIntervalsByChromosome(BioinformaticsPythonTool):
     @staticmethod
     def code_block(
         reference: FastaDict,
@@ -38,9 +38,9 @@ class GenerateIntervalsByChromosome(j.PythonTool):
         # Allowed contigs: use the standard human genome if none are provided
         # include M / MT for hg19 / hg39
         if allowed_contigs is None:
-            allowed_contigs = map(
-                lambda el: f"{prefix}{el}", [*range(23), "X", "Y", "M", "MT"]
-            )
+            allowed_contigs = list(
+                map(lambda el: f"{prefix}{el}", [*range(23), "X", "Y", "M", "MT"])
+            ) + [*range(23), "X", "Y", "M", "MT"]
         allowed_contigs = set(allowed_contigs)
 
         def contig_label(contig: str) -> str:
@@ -155,3 +155,7 @@ class GenerateIntervalsByChromosome(j.PythonTool):
 
     def tool_provider(self):
         return "Peter MacCallum Cancer Centre"
+
+
+if __name__ == "__main__":
+    GenerateIntervalsByChromosome().translate("wdl")

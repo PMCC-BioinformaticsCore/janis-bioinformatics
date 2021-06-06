@@ -1,3 +1,4 @@
+import os
 from abc import ABC
 from typing import Any, Dict
 
@@ -17,8 +18,9 @@ from janis_core import (
     get_value_for_hints_and_ordered_resource_tuple,
     ToolMetadata,
 )
+from janis_core.tool.test_classes import TTestCase
 
-from janis_bioinformatics.data_types import Sam, FastaBwa, FastqGz, FastqGzPair
+from janis_bioinformatics.data_types import Sam, FastaBwa, FastqGz, FastqGzPair, Bam
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 
 BWA_MEM_TUPLE = [
@@ -283,3 +285,40 @@ does not work with split alignments. One may consider to use option -M to flag s
             "4 or higher for debugging. When this option takes value 4, the output is not SAM. (Default: 3)",
         ),
     ]
+
+    def tests(self):
+        remote_dir = "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics/wgsgermline_data"
+        return [
+            TTestCase(
+                name="basic",
+                input={
+                    "reads": [
+                        f"{remote_dir}/NA12878-BRCA1_R1.fastq.gz",
+                        f"{remote_dir}/NA12878-BRCA1_R2.fastq.gz",
+                    ],
+                    "reference": f"{remote_dir}/Homo_sapiens_assembly38.chr17.fasta",
+                    "markShorterSplits": True,
+                    "readGroupHeaderLine": "@RG\tID:NA12878-BRCA1\tSM:NA12878-BRCA1\tLB:NA12878-BRCA1\tPL:ILLUMINA",
+                    "threads": 16,
+                },
+                output=Bam.basic_test(
+                    "out",
+                    8628527,
+                    f"{remote_dir}/NA12878-BRCA1.bwamem.flagstat",
+                ),
+            ),
+            TTestCase(
+                name="minimal",
+                input={
+                    "reads": [
+                        f"{remote_dir}/NA12878-BRCA1_R1.fastq.gz",
+                        f"{remote_dir}/NA12878-BRCA1_R2.fastq.gz",
+                    ],
+                    "reference": f"{remote_dir}/Homo_sapiens_assembly38.chr17.fasta",
+                    "markShorterSplits": True,
+                    "readGroupHeaderLine": "@RG\tID:NA12878-BRCA1\tSM:NA12878-BRCA1\tLB:NA12878-BRCA1\tPL:ILLUMINA",
+                    "threads": 16,
+                },
+                output=self.minimal_test(),
+            ),
+        ]
