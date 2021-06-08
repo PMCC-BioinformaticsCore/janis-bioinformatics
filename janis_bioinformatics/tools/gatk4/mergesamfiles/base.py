@@ -256,16 +256,13 @@ class Gatk4MergeSamFilesBase(Gatk4ToolBase, ABC):
     ]
 
     def tests(self):
+        remote_dir = "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics/wgsgermline_data"
         return [
             TTestCase(
                 name="basic",
                 input={
                     "bams": [
-                        os.path.join(
-                            BioinformaticsTool.test_data_path(),
-                            "wgsgermline_data",
-                            "NA12878-BRCA1.sorted.bam",
-                        )
+                        f"{remote_dir}/NA12878-BRCA1.sorted.bam",
                     ],
                     "createIndex": True,
                     "validationStringency": "SILENT",
@@ -278,11 +275,7 @@ class Gatk4MergeSamFilesBase(Gatk4ToolBase, ABC):
                     "out",
                     2826968,
                     49688,
-                    os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgsgermline_data",
-                        "NA12878-BRCA1.bam.flagstat",
-                    ),
+                    f"{remote_dir}/NA12878-BRCA1.bam.flagstat",
                     "963a51f7feed5b829319b947961b8a3e",
                     "231c10d0e43766170f5a7cd1b8a6d14e",
                 ),

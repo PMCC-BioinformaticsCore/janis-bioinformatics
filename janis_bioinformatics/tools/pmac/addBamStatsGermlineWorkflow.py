@@ -70,25 +70,14 @@ class AddBamStatsGermline_0_1_0(BioinformaticsWorkflow):
         self.output("out", source=self.addbamstats.out, output_name="addbasmtats.vcf")
 
     def tests(self):
+        remote_dir = "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics/wgsgermline_data"
         return [
             TTestCase(
                 name="basic",
                 input={
-                    "bam": os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgsgermline_data",
-                        "NA12878-BRCA1.markduped.bam",
-                    ),
-                    "reference": os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgsgermline_data",
-                        "Homo_sapiens_assembly38.chr17.fasta",
-                    ),
-                    "vcf": os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgsgermline_data",
-                        "NA12878-BRCA1.sorted.uncompressed.stdout",
-                    ),
+                    "bam": f"{remote_dir}/NA12878-BRCA1.markduped.bam",
+                    "reference": f"{remote_dir}/Homo_sapiens_assembly38.chr17.fasta",
+                    "vcf": f"{remote_dir}/NA12878-BRCA1.sorted.uncompressed.stdout",
                     "samtoolsmpileup_countOrphans": True,
                     "samtoolsmpileup_noBAQ": True,
                     "samtoolsmpileup_maxDepth": 10000,

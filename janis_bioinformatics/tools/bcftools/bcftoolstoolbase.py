@@ -1,8 +1,6 @@
-from abc import ABC, abstractmethod
-from datetime import date
+from abc import ABC
 
-from ..bioinformaticstoolbase import BioinformaticsTool
-from janis_core import ToolMetadata
+from janis_bioinformatics.tools import BioinformaticsTool
 
 
 class BcfToolsToolBase(BioinformaticsTool, ABC):

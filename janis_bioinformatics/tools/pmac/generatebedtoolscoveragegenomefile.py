@@ -67,26 +67,19 @@ Generate --genome FILE for BedToolsCoverage
         """
 
     def tests(self):
+        remote_dir = "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics/wgsgermline_data"
         return [
             TTestCase(
                 name="basic",
                 input={
-                    "reference": os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgsgermline_data",
-                        "Homo_sapiens_assembly38.chr17.fasta",
-                    ),
+                    "reference": f"{remote_dir}/Homo_sapiens_assembly38.chr17.fasta",
                 },
                 output=TextFile.basic_test("out", 15, "chr17\t83257441\n", 1),
             ),
             TTestCase(
                 name="minimal",
                 input={
-                    "reference": os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgsgermline_data",
-                        "Homo_sapiens_assembly38.chr17.fasta",
-                    ),
+                    "reference": f"{remote_dir}/Homo_sapiens_assembly38.chr17.fasta",
                 },
                 output=self.minimal_test(),
             ),

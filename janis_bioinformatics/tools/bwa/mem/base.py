@@ -287,27 +287,16 @@ does not work with split alignments. One may consider to use option -M to flag s
     ]
 
     def tests(self):
+        remote_dir = "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics/wgsgermline_data"
         return [
             TTestCase(
                 name="basic",
                 input={
                     "reads": [
-                        os.path.join(
-                            BioinformaticsTool.test_data_path(),
-                            "wgsgermline_data",
-                            "NA12878-BRCA1_R1.fastq.gz",
-                        ),
-                        os.path.join(
-                            BioinformaticsTool.test_data_path(),
-                            "wgsgermline_data",
-                            "NA12878-BRCA1_R2.fastq.gz",
-                        ),
+                        f"{remote_dir}/NA12878-BRCA1_R1.fastq.gz",
+                        f"{remote_dir}/NA12878-BRCA1_R2.fastq.gz",
                     ],
-                    "reference": os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgsgermline_data",
-                        "Homo_sapiens_assembly38.chr17.fasta",
-                    ),
+                    "reference": f"{remote_dir}/Homo_sapiens_assembly38.chr17.fasta",
                     "markShorterSplits": True,
                     "readGroupHeaderLine": "@RG\tID:NA12878-BRCA1\tSM:NA12878-BRCA1\tLB:NA12878-BRCA1\tPL:ILLUMINA",
                     "threads": 16,
@@ -315,33 +304,17 @@ does not work with split alignments. One may consider to use option -M to flag s
                 output=Bam.basic_test(
                     "out",
                     8628527,
-                    os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgsgermline_data",
-                        "NA12878-BRCA1.bwamem.flagstat",
-                    ),
+                    f"{remote_dir}/NA12878-BRCA1.bwamem.flagstat",
                 ),
             ),
             TTestCase(
                 name="minimal",
                 input={
                     "reads": [
-                        os.path.join(
-                            BioinformaticsTool.test_data_path(),
-                            "wgsgermline_data",
-                            "NA12878-BRCA1_R1.fastq.gz",
-                        ),
-                        os.path.join(
-                            BioinformaticsTool.test_data_path(),
-                            "wgsgermline_data",
-                            "NA12878-BRCA1_R2.fastq.gz",
-                        ),
+                        f"{remote_dir}/NA12878-BRCA1_R1.fastq.gz",
+                        f"{remote_dir}/NA12878-BRCA1_R2.fastq.gz",
                     ],
-                    "reference": os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgsgermline_data",
-                        "Homo_sapiens_assembly38.chr17.fasta",
-                    ),
+                    "reference": f"{remote_dir}/Homo_sapiens_assembly38.chr17.fasta",
                     "markShorterSplits": True,
                     "readGroupHeaderLine": "@RG\tID:NA12878-BRCA1\tSM:NA12878-BRCA1\tLB:NA12878-BRCA1\tPL:ILLUMINA",
                     "threads": 16,

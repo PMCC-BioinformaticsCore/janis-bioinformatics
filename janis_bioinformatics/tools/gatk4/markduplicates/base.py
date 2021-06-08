@@ -306,16 +306,13 @@ If desired, duplicates can be removed using the REMOVE_DUPLICATE and REMOVE_SEQU
     ]
 
     def tests(self):
+        remote_dir = "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics/wgsgermline_data"
         return [
             TTestCase(
                 name="basic",
                 input={
                     "bam": [
-                        os.path.join(
-                            BioinformaticsTool.test_data_path(),
-                            "wgsgermline_data",
-                            "NA12878-BRCA1.merged.bam",
-                        )
+                        f"{remote_dir}/NA12878-BRCA1.merged.bam",
                     ],
                     "javaOptions": ["-Xmx6G"],
                     "maxRecordsInRam": 5000000,
@@ -326,11 +323,7 @@ If desired, duplicates can be removed using the REMOVE_DUPLICATE and REMOVE_SEQU
                     "out",
                     2829000,
                     3780,
-                    os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgsgermline_data",
-                        "NA12878-BRCA1.markduped.bam.flagstat",
-                    ),
+                    f"{remote_dir}/NA12878-BRCA1.markduped.bam.flagstat",
                 )
                 + TextFile.basic_test(
                     "metrics",
