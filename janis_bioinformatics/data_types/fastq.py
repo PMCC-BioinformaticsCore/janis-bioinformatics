@@ -1,5 +1,7 @@
 import operator
-from typing import Any, Dict, List
+import os.path
+import zipfile
+from typing import Any, Dict, List, Optional
 
 from janis_core import File, Array, Logger
 from janis_core.tool.test_classes import TTestExpectedOutput, TTestPreprocessor
@@ -84,10 +86,37 @@ class FastqGzPairedEnd(Array):
         return ", ".join(hints)
 
     @classmethod
+    def ge(cls, file_paths: str, expected_sizes: List[int]):
+        """
+
+        :param file_paths: a string containing all file paths, separated by |
+        :type file_paths: str
+        :param expected_sizes: expected minimum sizes of all files
+        :type expected_sizes: List[int]
+        :return: a boolean value indicating if all files are bigger than or equal to their expected minimum sizes
+        """
+        files = file_paths.split("|")
+        if len(files) != len(expected_sizes):
+            return "Number of expected values don't match number of outputs"
+        for file in files:
+            unzipped = zipfile.ZipFile(file)
+            if "R1" in unzipped.namelist()[0]:
+                if os.path.getsize(file) < expected_sizes[0]:
+                    return False
+            else:
+                if os.path.getsize(file) < expected_sizes[1]:
+                    return False
+        return True
+
+    @classmethod
     def basic_test(
-        cls, tag: str, min_first_size: int, min_second_size: int
+        cls,
+        tag: str,
+        min_total_size: int,
+        min_first_size: Optional[int],
+        min_second_size: Optional[int],
     ) -> List[TTestExpectedOutput]:
-        return [
+        outcome = [
             TTestExpectedOutput(
                 tag=tag,
                 preprocessor=TTestPreprocessor.ListSize,
@@ -96,19 +125,23 @@ class FastqGzPairedEnd(Array):
             ),
             TTestExpectedOutput(
                 tag=tag,
-                array_index=0,
-                preprocessor=TTestPreprocessor.FileSize,
+                preprocessor=TTestPreprocessor.ListOfFilesTotalSize,
                 operator=operator.ge,
-                expected_value=min_first_size,
-            ),
-            TTestExpectedOutput(
-                tag=tag,
-                array_index=1,
-                preprocessor=TTestPreprocessor.FileSize,
-                operator=operator.ge,
-                expected_value=min_second_size,
+                expected_value=min_total_size,
             ),
         ]
+
+        # An example of how FastqGzPairedEnd.ge is used; can be removed if deemed unnecessary
+        if min_first_size is not None and min_second_size is not None:
+            outcome += [
+                TTestExpectedOutput(
+                    tag=tag,
+                    preprocessor=TTestPreprocessor.Value,
+                    operator=FastqGzPairedEnd.ge,
+                    expected_value=[min_first_size, min_second_size],
+                )
+            ]
+        return outcome
 
 
 class FastqPairedEnd(Array):
