@@ -113,8 +113,8 @@ class FastqGzPairedEnd(Array):
         cls,
         tag: str,
         min_total_size: int,
-        min_first_size: Optional[int],
-        min_second_size: Optional[int],
+        min_first_size: Optional[int] = None,
+        min_second_size: Optional[int] = None,
     ) -> List[TTestExpectedOutput]:
         outcome = [
             TTestExpectedOutput(
