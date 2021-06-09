@@ -145,41 +145,20 @@ If given a --contamination-table file, e.g. results from CalculateContamination,
         )
 
     def tests(self):
+        parent_dir = "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics"
+        germline_data = f"{parent_dir}/wgsgermline_data"
+        somatic_data = f"{parent_dir}/wgssomatic_data"
         return [
             TTestCase(
                 name="basic",
                 input={
                     "javaOptions": ["-Xmx12G"],
-                    "contaminationTable": os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgssomatic_data",
-                        "generated.txt.mutect2_contamination",
-                    ),
-                    "segmentationFile": os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgssomatic_data",
-                        "generated.txt.mutect2_segments",
-                    ),
-                    "statsFile": os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgssomatic_data",
-                        "NA24385-BRCA1.vcf.gz.stats",
-                    ),
-                    "readOrientationModel": os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgssomatic_data",
-                        "generated.orientation.tar.gz",
-                    ),
-                    "vcf": os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgssomatic_data",
-                        "NA24385-BRCA1.vcf.gz",
-                    ),
-                    "reference": os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgsgermline_data",
-                        "Homo_sapiens_assembly38.chr17.fasta",
-                    ),
+                    "contaminationTable": f"{somatic_data}/generated.txt.mutect2_contamination",
+                    "segmentationFile": f"{somatic_data}/generated.txt.mutect2_segments",
+                    "statsFile": f"{somatic_data}/NA24385-BRCA1.vcf.gz.stats",
+                    "readOrientationModel": f"{somatic_data}/generated.orientation.tar.gz",
+                    "vcf": f"{somatic_data}/NA24385-BRCA1.vcf.gz",
+                    "reference": f"{germline_data}/Homo_sapiens_assembly38.chr17.fasta",
                 },
                 output=VcfTabix.basic_test(
                     "out",

@@ -161,36 +161,19 @@ class GatkSomaticVariantCaller_4_1_3(BioinformaticsWorkflow):
                 """.strip()
 
     def tests(self):
+        parent_dir = "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics"
+        germline_data = f"{parent_dir}/wgsgermline_data"
+        somatic_data = f"{parent_dir}/wgssomatic_data"
         return [
             TTestCase(
                 name="basic",
                 input={
-                    "normal_bam": os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgssomatic_data",
-                        "NA24385-BRCA1.markduped.recalibrated.bam",
-                    ),
-                    "tumor_bam": os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgssomatic_data",
-                        "NA12878-NA24385-mixture.markduped.recalibrated.bam",
-                    ),
-                    "reference": os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgsgermline_data",
-                        "Homo_sapiens_assembly38.chr17.fasta",
-                    ),
-                    "gnomad": os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgssomatic_data",
-                        "af-only-gnomad.hg38.BRCA1.vcf.gz",
-                    ),
+                    "normal_bam": f"{somatic_data}/NA24385-BRCA1.markduped.recalibrated.bam",
+                    "tumor_bam": f"{somatic_data}/NA12878-NA24385-mixture.markduped.recalibrated.bam",
+                    "reference": f"{germline_data}/Homo_sapiens_assembly38.chr17.fasta",
+                    "gnomad": f"{somatic_data}/af-only-gnomad.hg38.BRCA1.vcf.gz",
+                    "intervals": f"{germline_data}/BRCA1.hg38.bed",
                     "normal_name": "NA24385-BRCA1",
-                    "intervals": os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgsgermline_data",
-                        "BRCA1.hg38.bed",
-                    ),
                     "filterpass_removeFileteredAll": True,
                     "filterpass_recode": True,
                     "filterpass_recodeINFOAll": True,
@@ -215,11 +198,7 @@ class GatkSomaticVariantCaller_4_1_3(BioinformaticsWorkflow):
                     "out_bam",
                     813200,
                     21200,
-                    os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgssomatic_data",
-                        "somatic_variant_caller.flagstat",
-                    ),
+                    f"{somatic_data}/somatic_variant_caller.flagstat",
                 ),
             ),
         ]

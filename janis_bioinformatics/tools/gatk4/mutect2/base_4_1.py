@@ -927,42 +927,25 @@ class Gatk4Mutect2Base_4_1(Gatk4ToolBase, ABC):
         )
 
     def tests(self):
+        parent_dir = "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics"
+        germline_data = f"{parent_dir}/wgsgermline_data"
+        somatic_data = f"{parent_dir}/wgssomatic_data"
         return [
             TTestCase(
                 name="basic",
                 input={
                     "javaOptions": ["-Xmx12G"],
                     "tumorBams": [
-                        os.path.join(
-                            BioinformaticsTool.test_data_path(),
-                            "wgssomatic_data",
-                            "NA12878-NA24385-mixture.markduped.recalibrated.bam",
-                        )
+                        f"{somatic_data}/NA12878-NA24385-mixture.markduped.recalibrated.bam"
                     ],
                     "normalBams": [
-                        os.path.join(
-                            BioinformaticsTool.test_data_path(),
-                            "wgssomatic_data",
-                            "NA24385-BRCA1.markduped.recalibrated.bam",
-                        )
+                        f"{somatic_data}/NA24385-BRCA1.markduped.recalibrated.bam"
                     ],
                     "normalSample": "NA24385-BRCA1",
-                    "reference": os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgsgermline_data",
-                        "Homo_sapiens_assembly38.chr17.fasta",
-                    ),
+                    "reference": f"{germline_data}/Homo_sapiens_assembly38.chr17.fasta",
                     "f1r2TarGz_outputFilename": "generated.tar.gz",
-                    "germlineResource": os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgssomatic_data",
-                        "af-only-gnomad.hg38.BRCA1.vcf.gz",
-                    ),
-                    "intervals": os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgsgermline_data",
-                        "BRCA1.hg38.bed",
-                    ),
+                    "germlineResource": f"{somatic_data}/af-only-gnomad.hg38.BRCA1.vcf.gz",
+                    "intervals": f"{germline_data}/BRCA1.hg38.bed",
                     "nativePairHmmThreads": 4,
                     "outputFilename": "NA24385-BRCA1.vcf.gz",
                     "outputBamName": "mutect2.bam",
@@ -983,11 +966,7 @@ class Gatk4Mutect2Base_4_1(Gatk4ToolBase, ABC):
                     "bam",
                     792870,
                     21272,
-                    os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgssomatic_data",
-                        "mutect2.flagstat",
-                    ),
+                    f"{somatic_data}/mutect2.flagstat",
                     bam_md5="af959398091c55021cd5013e370df987",
                     bai_md5="78f70f096a762d89980856e62f24d883",
                 ),

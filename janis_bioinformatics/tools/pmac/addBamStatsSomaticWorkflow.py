@@ -106,32 +106,19 @@ class AddBamStatsSomatic_0_1_0(BioinformaticsWorkflow):
         return w(**connections)
 
     def tests(self):
+        parent_dir = "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics"
+        germline_data = f"{parent_dir}/wgsgermline_data"
+        somatic_data = f"{parent_dir}/wgssomatic_data"
         return [
             TTestCase(
                 name="basic",
                 input={
                     "normal_id": "NA24385-BRCA1",
                     "tumor_id": "NA12878-NA24385-mixture",
-                    "normal_bam": os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgssomatic_data",
-                        "NA24385-BRCA1.markduped.bam",
-                    ),
-                    "tumor_bam": os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgssomatic_data",
-                        "NA12878-NA24385-mixture.markduped.bam",
-                    ),
-                    "reference": os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgsgermline_data",
-                        "Homo_sapiens_assembly38.chr17.fasta",
-                    ),
-                    "vcf": os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgssomatic_data",
-                        "uncompressed.stdout",
-                    ),
+                    "normal_bam": f"{somatic_data}/NA24385-BRCA1.markduped.bam",
+                    "tumor_bam": f"{somatic_data}/NA12878-NA24385-mixture.markduped.bam",
+                    "reference": f"{germline_data}/Homo_sapiens_assembly38.chr17.fasta",
+                    "vcf": f"{somatic_data}/uncompressed.stdout",
                 },
                 output=Vcf.basic_test(
                     "out",

@@ -110,15 +110,13 @@ vcftools is a suite of functions for use on genetic variation data in the form o
     ]
 
     def tests(self):
+        parent_dir = "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics"
+        somatic_data = f"{parent_dir}/wgssomatic_data"
         return [
             TTestCase(
                 name="basic",
                 input={
-                    "vcf": os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgssomatic_data",
-                        "stdout.norm.vcf",
-                    ),
+                    "vcf": f"{somatic_data}/stdout.norm.vcf",
                     "removeFileteredAll": True,
                     "recode": True,
                     "recodeINFOAll": True,

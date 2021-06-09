@@ -164,28 +164,19 @@ The tool requires a common germline variant sites VCF, e.g. the gnomAD resource,
         )
 
     def tests(self):
+        parent_dir = "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics"
+        germline_data = f"{parent_dir}/wgsgermline_data"
+        somatic_data = f"{parent_dir}/wgssomatic_data"
         return [
             TTestCase(
                 name="basic",
                 input={
                     "javaOptions": ["-Xmx48G"],
                     "bam": [
-                        os.path.join(
-                            BioinformaticsTool.test_data_path(),
-                            "wgssomatic_data",
-                            "NA12878-NA24385-mixture.markduped.recalibrated.bam",
-                        )
+                        f"{somatic_data}/NA12878-NA24385-mixture.markduped.recalibrated.bam"
                     ],
-                    "sites": os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgssomatic_data",
-                        "af-only-gnomad.hg38.BRCA1.vcf.gz",
-                    ),
-                    "intervals": os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgsgermline_data",
-                        "BRCA1.hg38.bed",
-                    ),
+                    "sites": f"{somatic_data}/af-only-gnomad.hg38.BRCA1.vcf.gz",
+                    "intervals": f"{germline_data}/BRCA1.hg38.bed",
                 },
                 output=TextFile.basic_test(
                     "out",

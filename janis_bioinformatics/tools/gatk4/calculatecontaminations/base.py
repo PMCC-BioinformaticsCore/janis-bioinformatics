@@ -155,16 +155,14 @@ This tool borrows from ContEst by Cibulskis et al the idea of estimating contami
         )
 
     def tests(self):
+        parent_dir = "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics"
+        somatic_data = f"{parent_dir}/wgssomatic_data"
         return [
             TTestCase(
                 name="basic",
                 input={
                     "javaOptions": ["-Xmx6G"],
-                    "pileupTable": os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgssomatic_data",
-                        "generated.txt",
-                    ),
+                    "pileupTable": f"{somatic_data}/generated.txt",
                     "segmentationFileOut": "generated.txt.mutect2_segments",
                 },
                 output=TextFile.basic_test(
