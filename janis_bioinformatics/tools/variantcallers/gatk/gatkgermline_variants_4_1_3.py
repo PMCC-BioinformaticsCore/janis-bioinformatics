@@ -1,11 +1,9 @@
-import os
 from datetime import date
 
 from janis_core.tool.test_classes import TTestCase
 from janis_unix.tools import UncompressArchive
-from janis_bioinformatics.tools import gatk4, BioinformaticsTool
 from janis_bioinformatics.data_types import FastaWithDict, BamBai, VcfTabix, Bed, Vcf
-from janis_bioinformatics.tools import BioinformaticsWorkflow
+from janis_bioinformatics.tools import gatk4, BioinformaticsWorkflow
 from janis_bioinformatics.tools.common import SplitMultiAllele
 
 
@@ -49,14 +47,9 @@ class GatkGermlineVariantCaller_4_1_3(BioinformaticsWorkflow):
         self.input("snps_dbsnp", VcfTabix)
 
         self.step(
-            "split_bam",
-            gatk4.Gatk4SplitReads_4_1_3(bam=self.bam, intervals=self.intervals),
-        )
-
-        self.step(
             "haplotype_caller",
             gatk4.Gatk4HaplotypeCaller_4_1_3(
-                inputRead=self.split_bam.out,
+                inputRead=self.bam,
                 intervals=self.intervals,
                 reference=self.reference,
                 dbsnp=self.snps_dbsnp,

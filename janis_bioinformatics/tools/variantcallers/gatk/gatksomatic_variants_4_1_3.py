@@ -1,12 +1,10 @@
 from datetime import date
 
-from janis_core import String, Array, WorkflowBuilder
+from janis_core import String
 from janis_unix.tools import UncompressArchive
-from janis_bioinformatics.tools import gatk4
 from janis_bioinformatics.data_types import FastaWithDict, BamBai, VcfTabix, Bed, Vcf
-from janis_bioinformatics.tools import BioinformaticsWorkflow
+from janis_bioinformatics.tools import gatk4, BioinformaticsWorkflow
 from janis_bioinformatics.tools.common import SplitMultiAllele
-from janis_bioinformatics.tools.htslib import BGZipLatest, TabixLatest
 from janis_bioinformatics.tools.vcftools import VcfToolsvcftoolsLatest
 
 
@@ -35,22 +33,12 @@ class GatkSomaticVariantCaller_4_1_3(BioinformaticsWorkflow):
         self.input("gnomad", VcfTabix)
         self.input("panel_of_normals", VcfTabix(optional=True))
 
-        # split normal and tumor bam
-        self.step(
-            "normal_split_bam",
-            self.process_subpipeline(bam=self.normal_bam, intervals=self.intervals),
-        )
-        self.step(
-            "tumor_split_bam",
-            self.process_subpipeline(bam=self.tumor_bam, intervals=self.intervals),
-        )
-
         # variant calling + learn read orientation model
         self.step(
             "mutect2",
             gatk4.GatkMutect2_4_1_3(
-                normalBams=[self.normal_split_bam.out],
-                tumorBams=[self.tumor_split_bam.out],
+                normalBams=[self.normal_bam],
+                tumorBams=[self.tumor_bam],
                 normalSample=self.normal_name,
                 intervals=self.intervals,
                 reference=self.reference,
@@ -70,7 +58,7 @@ class GatkSomaticVariantCaller_4_1_3(BioinformaticsWorkflow):
         self.step(
             "getpileupsummaries",
             gatk4.Gatk4GetPileUpSummariesLatest(
-                bam=self.tumor_split_bam.out,
+                bam=self.tumor_bam,
                 sites=self.gnomad,
                 intervals=self.intervals,
             ),
@@ -114,19 +102,6 @@ class GatkSomaticVariantCaller_4_1_3(BioinformaticsWorkflow):
         self.output("variants", source=self.filtermutect2calls.out)
         self.output("out_bam", source=self.mutect2.bam)
         self.output("out", source=self.filterpass.out)
-
-    @staticmethod
-    def process_subpipeline(**connections):
-        w = WorkflowBuilder("split_bam_subpipeline")
-
-        w.input("bam", BamBai)
-        w.input("intervals", Bed(optional=True))
-        w.step(
-            "split_bam", gatk4.Gatk4SplitReads_4_1_3(bam=w.bam, intervals=w.intervals)
-        )
-        w.output("out", source=w.split_bam.out)
-
-        return w(**connections)
 
     def bind_metadata(self):
         self.metadata.version = "4.1.3.0"
