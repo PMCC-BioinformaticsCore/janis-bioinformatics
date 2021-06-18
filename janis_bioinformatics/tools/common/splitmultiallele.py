@@ -1,7 +1,11 @@
 import os
 from datetime import datetime
 from typing import List, Dict, Any
-from janis_core import get_value_for_hints_and_ordered_resource_tuple, ToolMetadata
+from janis_core import (
+    get_value_for_hints_and_ordered_resource_tuple,
+    ToolMetadata,
+    UnionType,
+)
 from janis_core.tool.test_classes import TTestCase
 
 from janis_bioinformatics.data_types import FastaWithDict, CompressedVcf
@@ -77,7 +81,9 @@ class SplitMultiAllele(BioinformaticsTool):
 
     def inputs(self) -> List[ToolInput]:
         return [
-            ToolInput("vcf", Vcf(), position=1, shell_quote=False),
+            ToolInput(
+                "vcf", UnionType(Vcf, CompressedVcf), position=1, shell_quote=False
+            ),
             ToolInput(
                 "reference", FastaWithDict(), prefix="-r", position=4, shell_quote=False
             ),
@@ -145,20 +151,13 @@ class SplitMultiAllele(BioinformaticsTool):
         """.strip()
 
     def tests(self):
+        remote_dir = "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics/wgsgermline_data"
         return [
             TTestCase(
                 name="basic",
                 input={
-                    "vcf": os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgsgermline_data",
-                        "NA12878-BRCA1.haplotype_uncompressed.stdout",
-                    ),
-                    "reference": os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgsgermline_data",
-                        "Homo_sapiens_assembly38.chr17.fasta",
-                    ),
+                    "vcf": f"{remote_dir}/NA12878-BRCA1.haplotype_uncompressed.stdout",
+                    "reference": f"{remote_dir}/Homo_sapiens_assembly38.chr17.fasta",
                 },
                 output=Vcf.basic_test(
                     "out",

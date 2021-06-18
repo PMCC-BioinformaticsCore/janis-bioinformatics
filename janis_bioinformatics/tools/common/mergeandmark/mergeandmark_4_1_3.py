@@ -66,16 +66,13 @@ class MergeAndMarkBams_4_1_3(BioinformaticsWorkflow):
         )
 
     def tests(self):
+        remote_dir = "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics/wgsgermline_data"
         return [
             TTestCase(
                 name="basic",
                 input={
                     "bams": [
-                        os.path.join(
-                            BioinformaticsTool.test_data_path(),
-                            "wgsgermline_data",
-                            "NA12878-BRCA1.sorted.bam",
-                        )
+                        f"{remote_dir}/NA12878-BRCA1.sorted.bam",
                     ],
                     "maxRecordsInRam": 5000000,
                     "createIndex": True,
@@ -86,22 +83,14 @@ class MergeAndMarkBams_4_1_3(BioinformaticsWorkflow):
                     "out",
                     2829000,
                     3780,
-                    os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgsgermline_data",
-                        "NA12878-BRCA1.markduped.bam.flagstat",
-                    ),
+                   f"{remote_dir}/NA12878-BRCA1.markduped.bam.flagstat",
                 ),
             ),
             TTestCase(
                 name="minimal",
                 input={
                     "bams": [
-                        os.path.join(
-                            BioinformaticsTool.test_data_path(),
-                            "wgsgermline_data",
-                            "NA12878-BRCA1.sorted.bam",
-                        )
+                        f"{remote_dir}/NA12878-BRCA1.sorted.bam",
                     ],
                     "maxRecordsInRam": 5000000,
                     "createIndex": True,

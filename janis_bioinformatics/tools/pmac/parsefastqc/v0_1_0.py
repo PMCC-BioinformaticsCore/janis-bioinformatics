@@ -150,22 +150,15 @@ class ParseFastqcAdaptors(BioinformaticsPythonTool):
         self.metadata.version = "0.1.0"
 
     def tests(self):
+        remote_dir = "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics/wgsgermline_data"
         return [
             TTestCase(
                 name="basic",
                 input={
                     "fastqc_datafiles": [
-                        os.path.join(
-                            BioinformaticsTool.test_data_path(),
-                            "wgsgermline_data",
-                            "NA12878-BRCA1.fastqc_data.txt",
-                        )
+                        f"{remote_dir}/NA12878-BRCA1.fastqc_data.txt",
                     ],
-                    "cutadapt_adaptors_lookup": os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgsgermline_data",
-                        "contaminant_list.txt",
-                    ),
+                    "cutadapt_adaptors_lookup": f"{remote_dir}/contaminant_list.txt",
                 },
                 output=[],
             ),

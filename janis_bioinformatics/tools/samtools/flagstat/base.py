@@ -137,15 +137,12 @@ with mate mapped to a different chr (mapQ>=5)     0x1 bit set and neither 0x4 no
     #     ]
 
     def tests(self):
+        remote_dir = "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics/wgsgermline_data"
         return [
             TTestCase(
                 name="basic",
                 input={
-                    "bam": os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgsgermline_data",
-                        "NA12878-BRCA1.markduped.bam",
-                    ),
+                    "bam": f"{remote_dir}/NA12878-BRCA1.markduped.bam",
                 },
                 output=TextFile.basic_test(
                     "out",

@@ -483,30 +483,15 @@ to our recommendations as documented (https://software.broadinstitute.org/gatk/d
     ]
 
     def tests(self):
+        remote_dir = "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics/wgsgermline_data"
         return [
             TTestCase(
                 name="basic",
                 input={
-                    "inputRead": os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgsgermline_data",
-                        "NA12878-BRCA1.split.bam",
-                    ),
-                    "reference": os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgsgermline_data",
-                        "Homo_sapiens_assembly38.chr17.fasta",
-                    ),
-                    "intervals": os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgsgermline_data",
-                        "BRCA1.hg38.bed",
-                    ),
-                    "dbsnp": os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgsgermline_data",
-                        "Homo_sapiens_assembly38.dbsnp138.BRCA1.vcf.gz",
-                    ),
+                    "inputRead": f"{remote_dir}/NA12878-BRCA1.split.bam",
+                    "reference": f"{remote_dir}/Homo_sapiens_assembly38.chr17.fasta",
+                    "intervals": f"{remote_dir}/BRCA1.hg38.bed",
+                    "dbsnp": f"{remote_dir}/Homo_sapiens_assembly38.dbsnp138.BRCA1.vcf.gz",
                     "javaOptions": ["-Xmx6G"],
                     "pairHmmImplementation": "LOGLESS_CACHING",
                 },
@@ -522,11 +507,7 @@ to our recommendations as documented (https://software.broadinstitute.org/gatk/d
                     "bam",
                     596698,
                     21272,
-                    os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgsgermline_data",
-                        "NA12878-BRCA1.haplotyped.flagstat",
-                    ),
+                    f"{remote_dir}/NA12878-BRCA1.haplotyped.flagstat",
                     "d83b4c0d8eab24a3be1cc6af4f827753",
                     "b4bb4028b8679a3a635e3ad87126a097",
                 ),

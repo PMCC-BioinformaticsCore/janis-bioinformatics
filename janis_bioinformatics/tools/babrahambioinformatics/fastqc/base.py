@@ -248,34 +248,23 @@ class FastQCBase(BioinformaticsTool, ABC):
     ]
 
     def tests(self):
+        remote_dir = "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics/wgsgermline_data"
         return [
             TTestCase(
                 name="basic",
                 input={
                     "reads": [
-                        os.path.join(
-                            BioinformaticsTool.test_data_path(),
-                            "wgsgermline_data",
-                            "NA12878-BRCA1_R1.fastq.gz",
-                        ),
-                        os.path.join(
-                            BioinformaticsTool.test_data_path(),
-                            "wgsgermline_data",
-                            "NA12878-BRCA1_R2.fastq.gz",
-                        ),
+                        f"{remote_dir}/NA12878-BRCA1_R1.fastq.gz",
+                        f"{remote_dir}/NA12878-BRCA1_R2.fastq.gz",
                     ],
                     "threads": 1,
                 },
-                output=Array.array_wrapper(
-                    [
-                        FastqGz.basic_test("out", 408000),
-                        FastqGz.basic_test("out", 416000),
-                    ]
-                )
+                output=FastqGzPair.basic_test("out", 824000, 408000, 416000)
                 + Array.array_wrapper(
                     [
                         TextFile.basic_test(
-                            "datafile", 81000, md5="8e23d29e0859ba547f0aa616ca395a8f"
+                            "datafile",
+                            81000,
                         )
                     ]
                 ),
@@ -284,16 +273,8 @@ class FastQCBase(BioinformaticsTool, ABC):
                 name="minimal",
                 input={
                     "reads": [
-                        os.path.join(
-                            BioinformaticsTool.test_data_path(),
-                            "wgsgermline_data",
-                            "NA12878-BRCA1_R1.fastq.gz",
-                        ),
-                        os.path.join(
-                            BioinformaticsTool.test_data_path(),
-                            "wgsgermline_data",
-                            "NA12878-BRCA1_R2.fastq.gz",
-                        ),
+                        f"{remote_dir}/NA12878-BRCA1_R1.fastq.gz",
+                        f"{remote_dir}/NA12878-BRCA1_R2.fastq.gz",
                     ],
                     "threads": 1,
                 },

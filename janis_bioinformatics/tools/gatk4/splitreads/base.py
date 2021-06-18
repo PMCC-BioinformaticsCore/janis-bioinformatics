@@ -472,20 +472,13 @@ class Gatk4SplitReadsBase(Gatk4ToolBase):
     ]
 
     def tests(self):
+        remote_dir = "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics/wgsgermline_data"
         return [
             TTestCase(
                 name="basic",
                 input={
-                    "bam": os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgsgermline_data",
-                        "NA12878-BRCA1.recalibrated.bam",
-                    ),
-                    "intervals": os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgsgermline_data",
-                        "BRCA1.hg38.bed",
-                    ),
+                    "bam": f"{remote_dir}/NA12878-BRCA1.recalibrated.bam",
+                    "intervals": f"{remote_dir}/BRCA1.hg38.bed",
                     "javaOptions": ["-Xmx3G"],
                     "outputFilename": ".",
                 },
@@ -493,11 +486,7 @@ class Gatk4SplitReadsBase(Gatk4ToolBase):
                     "out",
                     2600900,
                     21300,
-                    os.path.join(
-                        BioinformaticsTool.test_data_path(),
-                        "wgsgermline_data",
-                        "NA12878-BRCA1.split.flagstat",
-                    ),
+                    f"{remote_dir}/NA12878-BRCA1.split.flagstat",
                 ),
             )
         ]
