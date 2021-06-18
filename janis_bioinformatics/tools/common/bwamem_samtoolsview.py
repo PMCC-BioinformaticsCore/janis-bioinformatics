@@ -101,6 +101,7 @@ class BwaMem_SamToolsView(BioinformaticsTool):
                     pl=InputSelector("platformTechnology"),
                 ),
                 prefix="-R",
+                separate_value_from_prefix=False,
                 position=2,
                 doc="Complete read group header line. ’\\t’ can be used in STR and will be converted to a TAB"
                 "in the output SAM. The read group ID will be attached to every read in the output. "

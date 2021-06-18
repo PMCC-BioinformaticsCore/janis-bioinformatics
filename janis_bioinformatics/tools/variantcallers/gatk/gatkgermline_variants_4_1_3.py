@@ -50,7 +50,7 @@ class GatkGermlineVariantCaller_4_1_3(BioinformaticsWorkflow):
 
         self.step(
             "split_bam",
-            gatk4.Gatk4SplitReads_4_1_3(bam=self.bam, intervals=self.intervals),
+            gatk4.Gatk4SplitReads_4_1_3(outputFilename='out', bam=self.bam, intervals=self.intervals),
         )
 
         self.step(
