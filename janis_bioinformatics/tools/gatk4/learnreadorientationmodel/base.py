@@ -1,3 +1,4 @@
+import os
 from abc import ABC
 from typing import Dict, Any
 
@@ -12,9 +13,11 @@ from janis_core import (
     ToolOutput,
     get_value_for_hints_and_ordered_resource_tuple,
 )
+from janis_core.tool.test_classes import TTestCase
 from janis_unix import TarFileGz
 
 from ..gatk4toolbase import Gatk4ToolBase
+from ... import BioinformaticsTool
 
 CORES_TUPLE = [
     # (CaptureType.key(), {
@@ -117,3 +120,21 @@ class Gatk4LearnReadOrientationModelBase(Gatk4ToolBase, ABC):
 TBD
 """.strip(),
         )
+
+    def tests(self):
+        parent_dir = "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics"
+        somatic_data = f"{parent_dir}/wgssomatic_data"
+        return [
+            TTestCase(
+                name="basic",
+                input={
+                    "javaOptions": ["-Xmx24G"],
+                    "f1r2CountsFiles": [f"{somatic_data}/generated.tar.gz"],
+                    "numEmIterations": 30,
+                },
+                output=TarFileGz.basic_test(
+                    "out",
+                    4700,
+                ),
+            ),
+        ]
