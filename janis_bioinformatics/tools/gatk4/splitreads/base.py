@@ -1,6 +1,6 @@
 import os
 from datetime import datetime
-from typing import Dict, Any
+from typing import Dict, Any, Union, List
 
 from janis_core import (
     ToolInput,
@@ -48,19 +48,8 @@ class Gatk4SplitReadsBase(Gatk4ToolBase):
     def gatk_command(cls):
         return "SplitReads"
 
-    @classmethod
-    def base_command(cls):
-        return None
-        # return ["gatk", cls.gatk_command()]
-
-    def arguments(self):
-        return [
-            ToolArgument("mkdir -p", position=-5, shell_quote=False),
-            ToolArgument(InputSelector("outputFilename"), position=-4, shell_quote=True),
-            ToolArgument("&&", position=-3, shell_quote=False),
-            ToolArgument("gatk", position=-2, shell_quote=False),
-            ToolArgument("SplitReads", position=-1, shell_quote=False),
-        ]
+    def directories_to_create(self) -> Union[str, List[str]]:
+        return [InputSelector("outputFilename")]
 
     def inputs(self):
         return [
