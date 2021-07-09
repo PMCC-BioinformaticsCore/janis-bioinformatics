@@ -115,10 +115,16 @@ class MantaBase(IlluminaToolBase, ABC):
                 Tsv(),
                 glob=InputSelector("runDir") + "/results/stats/svLocusGraphStats.tsv",
             ),
+            # optional outputs
             ToolOutput(
                 "somaticSVs",
                 VcfTabix(optional=True),
                 glob=InputSelector("runDir") + "/results/variants/somaticSV.vcf.gz",
+            ),
+            ToolOutput(
+                "tumorSVs",
+                VcfTabix(optional=True),
+                glob=InputSelector("runDir") + "/results/variants/tumorSV.vcf.gz",
             ),
         ]
 
