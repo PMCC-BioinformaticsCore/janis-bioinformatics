@@ -1,9 +1,17 @@
+import operator
+import os
 from abc import ABC
 import datetime
 
+from janis_core.tool.test_classes import (
+    TTestCase,
+    TTestExpectedOutput,
+    TTestPreprocessor,
+)
+
 from janis_bioinformatics.tools import BioinformaticsTool
 from janis_core import ToolInput, ToolOutput, File, Filename, InputSelector, Boolean
-from janis_unix import Csv
+from janis_unix import Csv, TextFile
 
 
 class PerformanceSummaryBase(BioinformaticsTool, ABC):
@@ -104,3 +112,25 @@ optional arguments:
         self.metadata.documentationUrl = (
             "https://github.com/PMCC-BioinformaticsCore/scripts/tree/master/performance"
         )
+
+    def tests(self):
+        remote_dir = "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics/wgsgermline_data"
+        return [
+            TTestCase(
+                name="basic",
+                input={
+                    "flagstat": f"{remote_dir}/NA12878-BRCA1.markduped.bam.flagstat",
+                    "collectInsertSizeMetrics": f"{remote_dir}/NA12878-BRCA1.markduped.metrics.txt",
+                    "coverage": f"{remote_dir}/NA12878-BRCA1.genomeCoverageBed.stdout",
+                    "rmdupFlagstat": f"{remote_dir}/NA12878-BRCA1.markduped.bam.bam.flagstat",
+                    "genome": True,
+                },
+                output=TextFile.basic_test(
+                    tag="out",
+                    min_size=948,
+                    line_count=2,
+                    md5="575354942cfb8d0367725f9020181443",
+                    expected_file_path=f"{remote_dir}/NA12878-BRCA1_performance_summary.csv",
+                ),
+            )
+        ]

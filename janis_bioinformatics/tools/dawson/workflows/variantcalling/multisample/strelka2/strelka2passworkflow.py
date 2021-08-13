@@ -50,16 +50,12 @@ class Strelka2PassWorkflow(BioinformaticsWorkflow):
 
     # this is a way to get the tool without spagetti code in bam and cram format
     def getStep1Tool(self):
-        from .steps.strelka2passanalysisstep1 import (
-            Strelka2PassWorkflowStep1,
-        )
+        from .steps.strelka2passanalysisstep1 import Strelka2PassWorkflowStep1
 
         return Strelka2PassWorkflowStep1
 
     def getStep2Tool(self):
-        from .steps.strelka2passanalysisstep2 import (
-            Strelka2PassWorkflowStep2,
-        )
+        from .steps.strelka2passanalysisstep2 import Strelka2PassWorkflowStep2
 
         return Strelka2PassWorkflowStep2
 

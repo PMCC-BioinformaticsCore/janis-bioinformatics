@@ -1,3 +1,5 @@
+import operator
+import os
 from abc import ABC
 from typing import Dict, Any
 
@@ -17,10 +19,16 @@ from janis_core import (
 )
 from janis_core.operators.logical import If
 from janis_core.operators.standard import JoinOperator, FirstOperator
-from janis_unix import Tsv
+from janis_core.tool.test_classes import (
+    TTestCase,
+    TTestExpectedOutput,
+    TTestPreprocessor,
+)
+from janis_unix import Tsv, TextFile
 
 from janis_bioinformatics.data_types import BamBai, Bam
 from ..gatk4toolbase import Gatk4ToolBase
+from janis_bioinformatics.tools import BioinformaticsTool
 
 CORES_TUPLE = [
     (
@@ -90,7 +98,11 @@ class Gatk4MarkDuplicatesBase(Gatk4ToolBase, ABC):
             ToolInput("outputPrefix", String(optional=True)),
             ToolInput(
                 "outputFilename",
-                Filename(prefix=prefix, suffix=".markduped", extension=".bam",),
+                Filename(
+                    prefix=prefix,
+                    suffix=".markduped",
+                    extension=".bam",
+                ),
                 position=10,
                 prefix="-O",
                 doc="File to write duplication metrics to",
@@ -292,3 +304,32 @@ If desired, duplicates can be removed using the REMOVE_DUPLICATE and REMOVE_SEQU
             "to find what works best.",
         ),
     ]
+
+    def tests(self):
+        remote_dir = "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics/wgsgermline_data"
+        return [
+            TTestCase(
+                name="basic",
+                input={
+                    "bam": [
+                        f"{remote_dir}/NA12878-BRCA1.merged.bam",
+                    ],
+                    "javaOptions": ["-Xmx6G"],
+                    "maxRecordsInRam": 5000000,
+                    "createIndex": True,
+                    "tmpDir": "./tmp",
+                },
+                output=BamBai.basic_test(
+                    "out",
+                    2829000,
+                    3780,
+                    f"{remote_dir}/NA12878-BRCA1.markduped.bam.flagstat",
+                )
+                + TextFile.basic_test(
+                    "metrics",
+                    3700,
+                    "NA12878-BRCA1\t193\t9468\t164\t193\t46\t7\t1\t0.003137\t7465518",
+                    112,
+                ),
+            )
+        ]

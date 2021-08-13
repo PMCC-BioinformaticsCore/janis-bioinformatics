@@ -127,9 +127,7 @@ class Mutect2JointSomaticWorkflow(BioinformaticsWorkflow):
         self.step(
             "createCallRegions",
             CreateCallRegions(
-                reference=self.reference,
-                regionSize=self.regionSize,
-                equalize=True,
+                reference=self.reference, regionSize=self.regionSize, equalize=True,
             ),
         )
 

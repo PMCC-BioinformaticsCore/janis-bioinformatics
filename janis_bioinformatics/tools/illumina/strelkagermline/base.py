@@ -74,6 +74,16 @@ class StrelkaGermlineBase(IlluminaToolBase, ABC):
     def inputs(self) -> List[ToolInput]:
         return [
             ToolInput(
+                "config",
+                File(optional=True),
+                prefix="--config",
+                position=1,
+                shell_quote=False,
+                doc="provide a configuration file to override defaults in \
+                global config file \
+                (/opt/strelka/bin/configureStrelkaGermlineWorkflow.py.ini)",
+            ),
+            ToolInput(
                 "bam",
                 BamBai(),
                 prefix="--bam",

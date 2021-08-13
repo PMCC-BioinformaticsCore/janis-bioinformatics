@@ -2,7 +2,6 @@ from datetime import datetime
 
 from janis_core import (
     WorkflowMetadata,
-    WorkflowBuilder,
     ScatterDescription,
     ScatterMethod,
     Array,
@@ -11,7 +10,6 @@ from janis_core import (
 )
 
 from janis_bioinformatics.data_types import FastqGzPairedEnd
-from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsWorkflow
 from janis_bioinformatics.tools.oshlack.oncopipe.oncopipeSample import (
     OncopipeSamplePreparation,
 )
@@ -140,6 +138,7 @@ Original code example:
             output_folder="jaffa",
             output_name="jaffa_results.csv",
         )
+
         # Then
         #   // Complete Jaffa
         #   compile_results_jaffa +

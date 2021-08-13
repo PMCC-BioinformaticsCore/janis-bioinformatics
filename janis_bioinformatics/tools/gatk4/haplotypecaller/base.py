@@ -19,9 +19,19 @@ from janis_bioinformatics.data_types import (
     Bed,
     FastaWithDict,
     VcfTabix,
+    CompressedVcf,
 )
 from ..gatk4toolbase import Gatk4ToolBase
 from janis_core import ToolMetadata
+
+from janis_core.tool.test_classes import (
+    TTestPreprocessor,
+    TTestExpectedOutput,
+    TTestCase,
+)
+from ... import BioinformaticsTool
+import os
+import operator
 
 
 CORES_TUPLE = [
@@ -471,3 +481,35 @@ to our recommendations as documented (https://software.broadinstitute.org/gatk/d
             doc="Do not analyze soft clipped bases in the reads",
         ),
     ]
+
+    def tests(self):
+        remote_dir = "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics/wgsgermline_data"
+        return [
+            TTestCase(
+                name="basic",
+                input={
+                    "inputRead": f"{remote_dir}/NA12878-BRCA1.split.bam",
+                    "reference": f"{remote_dir}/Homo_sapiens_assembly38.chr17.fasta",
+                    "intervals": f"{remote_dir}/BRCA1.hg38.bed",
+                    "dbsnp": f"{remote_dir}/Homo_sapiens_assembly38.dbsnp138.BRCA1.vcf.gz",
+                    "javaOptions": ["-Xmx6G"],
+                    "pairHmmImplementation": "LOGLESS_CACHING",
+                },
+                output=VcfTabix.basic_test(
+                    "out",
+                    12800,
+                    270,
+                    214,
+                    ["GATKCommandLine"],
+                    "0224e24e5fc27286ee90c8d3c63373a7",
+                )
+                + BamBai.basic_test(
+                    "bam",
+                    596698,
+                    21272,
+                    f"{remote_dir}/NA12878-BRCA1.haplotyped.flagstat",
+                    "d83b4c0d8eab24a3be1cc6af4f827753",
+                    "b4bb4028b8679a3a635e3ad87126a097",
+                ),
+            )
+        ]
