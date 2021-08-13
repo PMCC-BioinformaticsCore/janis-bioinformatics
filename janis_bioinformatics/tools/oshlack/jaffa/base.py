@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import List, Optional, Union
 
 from janis_bioinformatics.data_types import Fasta, FastqGzPair, FastqPair
@@ -14,6 +15,7 @@ from janis_core import (
     ToolArgument,
     Directory,
     InputSelector,
+    Metadata,
 )
 
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
@@ -107,6 +109,21 @@ class JaffaBase(BioinformaticsTool):
 
     def cpus(self, hints):
         return 8
+
+    def friendly_name(self) -> str:
+        return "Jaffa"
+
+    def tool_provider(self):
+        return "oshlack"
+
+    def bind_metadata(self) -> Metadata:
+        self.metadata.contributors = ["Michael Franklin"]
+        self.metadata.dateCreated = datetime(2020, 12, 1)
+        self.metadata.documentationUrl = "https://github.com/Oshlack/JAFFA/wiki"
+        self.metadata.citation = "Davidson, N.M., Majewski, I.J. & Oshlack, A. JAFFA: High sensitivity transcriptome-focused fusion gene detection. Genome Med 7, 43 (2015). https://doi.org/10.1186/s13073-015-0167-x"
+        self.metadata.doi = "https://doi.org/10.1186/s13073-015-0167-x"
+
+        return self.metadata
 
 
 class Jaffa_2_0(JaffaBase):
