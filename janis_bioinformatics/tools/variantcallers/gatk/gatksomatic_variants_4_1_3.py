@@ -1,6 +1,7 @@
 from datetime import date
 
 from janis_core import String
+from janis_core.tool.test_classes import TTestCase
 from janis_unix.tools import UncompressArchive
 from janis_bioinformatics.data_types import FastaWithDict, BamBai, VcfTabix, Bed, Vcf
 from janis_bioinformatics.tools import gatk4, BioinformaticsWorkflow
@@ -32,6 +33,7 @@ class GatkSomaticVariantCaller_4_1_3(BioinformaticsWorkflow):
         self.input("reference", FastaWithDict)
         self.input("gnomad", VcfTabix)
         self.input("panel_of_normals", VcfTabix(optional=True))
+        self.input("output_bam_name", String(optional=True))
 
         # variant calling + learn read orientation model
         self.step(
@@ -45,6 +47,7 @@ class GatkSomaticVariantCaller_4_1_3(BioinformaticsWorkflow):
                 germlineResource=self.gnomad,
                 panelOfNormals=self.panel_of_normals,
                 outputPrefix=self.normal_name,
+                outputBamName=self.output_bam_name,
             ),
         )
         self.step(
@@ -130,6 +133,49 @@ class GatkSomaticVariantCaller_4_1_3(BioinformaticsWorkflow):
         6. Split and normliase vcf
         7. Filter PASS variants
                 """.strip()
+
+    def tests(self):
+        parent_dir = "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics"
+        germline_data = f"{parent_dir}/wgsgermline_data"
+        somatic_data = f"{parent_dir}/wgssomatic_data"
+        return [
+            TTestCase(
+                name="basic",
+                input={
+                    "normal_bam": f"{somatic_data}/NA24385-BRCA1.markduped.recalibrated.bam",
+                    "tumor_bam": f"{somatic_data}/NA12878-NA24385-mixture.markduped.recalibrated.bam",
+                    "reference": f"{germline_data}/Homo_sapiens_assembly38.chr17.fasta",
+                    "gnomad": f"{somatic_data}/af-only-gnomad.hg38.BRCA1.vcf.gz",
+                    "intervals": f"{germline_data}/BRCA1.hg38.bed",
+                    "normal_name": "NA24385-BRCA1",
+                    "filterpass_removeFileteredAll": True,
+                    "filterpass_recode": True,
+                    "filterpass_recodeINFOAll": True,
+                    "output_bam_name": "mutect2.bam",
+                },
+                output=Vcf.basic_test(
+                    "out",
+                    33000,
+                    147,
+                    ["GATKCommandLine"],
+                    "c083775bc8c49397fb65ec12cd435688",
+                )
+                + VcfTabix.basic_test(
+                    "variants",
+                    13000,
+                    260,
+                    182,
+                    ["GATKCommandLine"],
+                    "6cfd70dda8599a270978868166ab6545",
+                )
+                + BamBai.basic_test(
+                    "out_bam",
+                    813200,
+                    21200,
+                    f"{somatic_data}/somatic_variant_caller.flagstat",
+                ),
+            ),
+        ]
 
 
 if __name__ == "__main__":

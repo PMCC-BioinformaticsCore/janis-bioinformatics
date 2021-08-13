@@ -62,7 +62,7 @@ class FilterVardictSomaticVcf(BioinformaticsTool):
     def arguments(self):
         return [
             ToolArgument(
-                "bcftools filter -e 'STATUS=\"GERMLINE\"' -o - ",
+                "bcftools filter -e 'STATUS=\"Germline\"' -o - ",
                 position=0,
                 shell_quote=False,
             ),
@@ -76,7 +76,7 @@ class FilterVardictSomaticVcf(BioinformaticsTool):
     def doc(self):
         return """Filter somatic vardict vcf by removing the variants marks with "Germline", and variants without a "PASS" quality.
         Bash command:
-        bcftools filter -e STATUS=GERMLINE -o - $vcf | bcftools filter -i FILTER==PASS -o $out_vcf"""
+        bcftools filter -e STATUS=Germline -o - $vcf | bcftools filter -i FILTER==PASS -o $out_vcf"""
 
     def bind_metadata(self):
         return ToolMetadata(

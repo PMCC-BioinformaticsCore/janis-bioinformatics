@@ -1,3 +1,4 @@
+import os
 from abc import ABC
 from typing import Dict, Any
 
@@ -11,8 +12,11 @@ from janis_core import (
     ToolMetadata,
     get_value_for_hints_and_ordered_resource_tuple,
 )
+from janis_core.tool.test_classes import TTestCase
 
 from ..gatk4toolbase import Gatk4ToolBase
+from ... import BioinformaticsTool
+from janis_unix import TextFile
 
 CORES_TUPLE = [
     # (CaptureType.key(), {
@@ -149,3 +153,27 @@ This tool is featured in the Somatic Short Mutation calling Best Practice Workfl
 This tool borrows from ContEst by Cibulskis et al the idea of estimating contamination from ref reads at hom alt sites. However, ContEst uses a probabilistic model that assumes a diploid genotype with no copy number variation and independent contaminating reads. That is, ContEst assumes that each contaminating read is drawn randomly and independently from a different human. This tool uses a simpler estimate of contamination that relaxes these assumptions. In particular, it works in the presence of copy number variations and with an arbitrary number of contaminating samples. In addition, this tool is designed to work well with no matched normal data. However, one can run GetPileupSummaries on a matched normal bam file and input the result to this tool.
 """.strip(),
         )
+
+    def tests(self):
+        parent_dir = "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics"
+        somatic_data = f"{parent_dir}/wgssomatic_data"
+        return [
+            TTestCase(
+                name="basic",
+                input={
+                    "javaOptions": ["-Xmx6G"],
+                    "pileupTable": f"{somatic_data}/generated.txt",
+                    "segmentationFileOut": "generated.txt.mutect2_segments",
+                },
+                output=TextFile.basic_test(
+                    "contOut",
+                    59,
+                    "sample\tcontamination\terror\nNA12878-NA24385-mixture\t0.0\t0.0",
+                )
+                + TextFile.basic_test(
+                    "segOut",
+                    125,
+                    "contig\tstart\tend\tminor_allele_fraction\nchr17\t43045941\t43098543\t0.28541019662496847",
+                ),
+            ),
+        ]

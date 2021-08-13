@@ -89,7 +89,8 @@ class IlluminaSomaticVariantCaller(BioinformaticsWorkflow):
             ),
         )
 
-        self.output("sv", source=self.manta.diploidSV)
+        self.output("tumor_sv", source=self.manta.somaticSV)
+        self.output("normal_sv", source=self.manta.diploidSV)
         self.output("variants", source=self.sortvcf.out)
         self.output("out", source=self.filterpass.out)
 
@@ -100,3 +101,9 @@ class IlluminaSomaticVariantCaller(BioinformaticsWorkflow):
             dateUpdated=datetime(2021, 5, 27),
             documentation="",
         )
+
+
+if __name__ == "__main__":
+    w = IlluminaSomaticVariantCaller()
+
+    w.translate("wdl")
