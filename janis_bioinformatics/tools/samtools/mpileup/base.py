@@ -10,10 +10,7 @@ from janis_core import (
     String,
     Boolean,
     ToolOutput,
-    Array,
     InputSelector,
-    WildcardSelector,
-    Stdout,
 )
 from janis_unix import TextFile
 from janis_bioinformatics.data_types.bam import BamBai
@@ -42,7 +39,7 @@ class SamToolsMpileupBase(SamToolsToolBase, ABC):
         ]
 
     def outputs(self):
-        return [ToolOutput("out", Stdout(TextFile))]
+        return [ToolOutput("out", TextFile, glob=InputSelector("outputFilename"))]
 
     def friendly_name(self):
         return "SamTools: Mpileup"
@@ -158,6 +155,12 @@ Note that there are two orthogonal ways to specify locations in the input file; 
             String(optional=True),
             prefix="--excl-flags",
             doc="filter flags: skip reads with mask bits set [UNMAP,SECONDARY,QCFAIL,DUP]",
+        ),
+        ToolInput(
+            "outputFilename",
+            Filename(extension=".txt"),
+            prefix="--output",
+            doc="write output to FILE [standard output]",
         ),
         ToolInput(
             "ignoreOverlaps",
