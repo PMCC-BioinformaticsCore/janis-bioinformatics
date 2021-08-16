@@ -1,12 +1,17 @@
+import os
 from datetime import datetime
 from janis_core import Array, Boolean, Int, String, ToolMetadata
+from janis_core.tool.test_classes import TTestCase
 
 from janis_bioinformatics.data_types import BamBai
 from janis_bioinformatics.tools.gatk4 import (
     Gatk4MarkDuplicates_4_1_3,
     Gatk4MergeSamFiles_4_1_3,
 )
-from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsWorkflow
+from janis_bioinformatics.tools.bioinformaticstoolbase import (
+    BioinformaticsWorkflow,
+    BioinformaticsTool,
+)
 
 
 class MergeAndMarkBams_4_1_3(BioinformaticsWorkflow):
@@ -59,6 +64,42 @@ class MergeAndMarkBams_4_1_3(BioinformaticsWorkflow):
             dateUpdated=datetime(2020, 11, 6),
             documentation="",
         )
+
+    def tests(self):
+        remote_dir = "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics/wgsgermline_data"
+        return [
+            TTestCase(
+                name="basic",
+                input={
+                    "bams": [
+                        f"{remote_dir}/NA12878-BRCA1.sorted.bam",
+                    ],
+                    "maxRecordsInRam": 5000000,
+                    "createIndex": True,
+                    "mergeSamFiles_useThreading": True,
+                    "mergeSamFiles_validationStringency": "SILENT",
+                },
+                output=BamBai.basic_test(
+                    "out",
+                    2829000,
+                    3780,
+                   f"{remote_dir}/NA12878-BRCA1.markduped.bam.flagstat",
+                ),
+            ),
+            TTestCase(
+                name="minimal",
+                input={
+                    "bams": [
+                        f"{remote_dir}/NA12878-BRCA1.sorted.bam",
+                    ],
+                    "maxRecordsInRam": 5000000,
+                    "createIndex": True,
+                    "mergeSamFiles_useThreading": True,
+                    "mergeSamFiles_validationStringency": "SILENT",
+                },
+                output=self.minimal_test(),
+            ),
+        ]
 
 
 if __name__ == "__main__":

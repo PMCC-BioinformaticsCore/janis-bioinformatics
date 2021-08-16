@@ -22,8 +22,7 @@ class TrimmomaticSingleEndBase(TrimmomaticBase):
             ToolInput(
                 "outputFilename",
                 Filename(
-                    prefix=InputSelector("sampleName"),
-                    suffix=".trimmed",
+                    prefix=InputSelector("sampleName") + ".trimmed",
                     extension=".fastq.gz",
                 ),
                 position=6,

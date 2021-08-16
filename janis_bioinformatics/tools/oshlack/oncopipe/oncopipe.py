@@ -2,29 +2,21 @@ from datetime import datetime
 
 from janis_core import (
     WorkflowMetadata,
-    String,
+    ScatterDescription,
+    ScatterMethod,
     Array,
-    WorkflowBuilder,
-    StringFormatter,
+    String,
     Directory,
-    File,
 )
 
-from janis_bioinformatics.data_types import FastqGzPairedEnd, FastaWithIndexes, Fasta
-from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsWorkflow
-from janis_bioinformatics.tools.gatk4 import Gatk4SortSamLatest
+from janis_bioinformatics.data_types import FastqGzPairedEnd
+from janis_bioinformatics.tools.oshlack.oncopipe.oncopipeSample import (
+    OncopipeSamplePreparation,
+)
 from janis_bioinformatics.tools.oshlack.jaffa.base import Jaffa_2_0
-from janis_bioinformatics.tools.oshlack.prepareallsortsinput import (
-    PrepareALLSortsInput_0_1_0,
-)
-from janis_bioinformatics.tools.oshlack.allsorts.versions import AllSorts_0_1_0
-from janis_bioinformatics.tools.star import StarAlignReads_2_7_1
-from janis_bioinformatics.tools.subread import FeatureCounts_2_0_1
-from janis_bioinformatics.tools.suhrig import Arriba_1_2_0
-from janis_bioinformatics.tools.usadellab import TrimmomaticPairedEnd_0_35
 
 
-class OncopipeWorkflow(BioinformaticsWorkflow):
+class OncopipeWorkflow(OncopipeSamplePreparation):
     def tool_provider(self):
         return "Oncopipe"
 
@@ -41,6 +33,7 @@ class OncopipeWorkflow(BioinformaticsWorkflow):
         return WorkflowMetadata(
             institution="Oshlack and Peter MacCallum Cancer Centre",
             dateCreated=datetime(2020, 1, 1),
+            dateUpdated=datetime(2021, 4, 30),
             contributors=[
                 # Original
                 "Rebecca Louise Evans",
@@ -77,35 +70,73 @@ Original code example:
         )
 
     def constructor(self):
+        self.add_inputs()
+        self.add_process_sample()
+        self.add_jaffa()
 
-        self.input("name", String, doc="Sample ID")
+    def add_inputs(self):
+        self.input("sample_name", Array(String))
         self.input("reads", Array(FastqGzPairedEnd))
-        self.input("genome_dir", Directory)
-        self.input("jaffa_reference", Directory)
-        self.input("reference", Fasta)
-        self.input("gtf", File)
-        self.input("blacklist", File)
-        self.input("contigs", Array(String(), optional=True))
+        self.inputs_for_reference()
+        self.inputs_for_intervals()
+        self.inputs_for_configuration()
 
+    def inputs_for_reference(self):
+        super().inputs_for_reference()
+        # Jaffa 2 only supports hg38
+        self.input("jaffa_reference", Directory)
+
+    def add_process_sample(self):
         self.step(
             "process",
             OncopipeSamplePreparation(
-                name=self.name,
+                sample_name=self.sample_name,
                 reads=self.reads,
                 genome_dir=self.genome_dir,
                 reference=self.reference,
                 gtf=self.gtf,
                 blacklist=self.blacklist,
+                known_fusions=self.known_fusions,
+                protein_domains_gff=self.protein_domains_gff,
+                cytobands=self.cytobands,
+                sequence_dictionary=self.sequence_dictionary,
+                intervals=self.intervals,
+                trimming_options=self.trimming_options,
+                platform=self.platform,
                 contigs=self.contigs,
+                filters=self.filters,
+                call_conf=self.call_conf,
+                star_threads=self.star_threads,
             ),
-            scatter="reads",
+            scatter=ScatterDescription(
+                ["reads", "sample_name"],
+                method=ScatterMethod.dot,
+                labels=self.sample_name,
+            ),
         )
-
-        self.add_jaffa()
+        self.capture_outputs_from_step(self.process)
 
     def add_jaffa(self):
         self.step(
-            "jaffa", Jaffa_2_0(reference=self.jaffa_reference, fastqs=self.reads,),
+            "jaffa",
+            Jaffa_2_0(
+                reference=self.jaffa_reference,
+                fastqs=self.reads,
+            ),
+        )
+
+        self.output(
+            "out_reference",
+            source=self.jaffa.out_reference,
+            output_folder="jaffa",
+            output_name="jaffa_results.fasta",
+        )
+
+        self.output(
+            "out_csv",
+            source=self.jaffa.out_csv,
+            output_folder="jaffa",
+            output_name="jaffa_results.csv",
         )
 
         # Then
@@ -119,192 +150,5 @@ Original code example:
         #   run_report
 
 
-class OncopipeSamplePreparation(BioinformaticsWorkflow):
-    def tool_provider(self):
-        return "Oncopipe"
-
-    def friendly_name(self):
-        return "Oncopipe: sample preparation"
-
-    def id(self) -> str:
-        return "OncopipeSamplePreparation"
-
-    def version(self):
-        return "v0.1.0"
-
-    def constructor(self):
-
-        self.input("name", String, doc="Sample ID")
-        self.input("reads", FastqGzPairedEnd)
-        self.input("genome_dir", Directory)
-        self.input("reference", Fasta)
-        self.input("gtf", File)
-        self.input("blacklist", File)
-        self.input("contigs", Array(String(), optional=True))
-
-        self.add_trim_and_align()
-        self.add_arriba()
-        self.add_all_sorts()
-
-    def add_trim_and_align(self):
-
-        self.step(
-            "trim",
-            TrimmomaticPairedEnd_0_35(
-                sampleName=self.name,
-                inp=self.reads,
-                phred33=True,
-                steps=[
-                    "ILLUMINACLIP:/usr/local/share/trimmomatic-0.35-6/adapters/TruSeq2-PE.fa:2:30:10",
-                    "LEADING:15",
-                    "TRAILING:15",
-                    "SLIDINGWINDOW:4:15",
-                    "MINLEN:35",
-                ],
-            ),
-            doc="Trim reads using Trimmomatic",
-        )
-
-        # https://arriba.readthedocs.io/en/latest/workflow/
-        self.step(
-            "star",
-            StarAlignReads_2_7_1(
-                readFilesIn=self.trim.pairedOut,
-                genomeDir=self.genome_dir,
-                limitOutSJcollapsed=3000000,  # lots of splice junctions may need more than default 1M buffer
-                readFilesCommand="zcat",
-                outSAMtype=["BAM", "Unsorted"],
-                outSAMunmapped="Within",
-                outBAMcompression=0,
-                outFilterMultimapNmax=1,
-                outFilterMismatchNmax=3,
-                chimSegmentMin=10,
-                chimOutType=["WithinBAM", "SoftClip"],
-                chimJunctionOverhangMin=10,
-                chimScoreMin=1,
-                chimScoreDropMax=30,
-                chimScoreJunctionNonGTAG=0,
-                chimScoreSeparation=1,
-                alignSJstitchMismatchNmax=[5, -1, 5, 5],
-                chimSegmentReadGapMax=3,
-            ),
-        )
-
-    def add_arriba(self):
-        self.step(
-            "arriba",
-            Arriba_1_2_0(
-                aligned_inp=self.star.out_unsorted_bam.assert_not_null(),
-                blacklist=self.blacklist,
-                fusion_transcript=True,
-                peptide_sequence=True,
-                reference=self.reference,
-                gtf_file=self.gtf,
-                contigs=self.contigs,
-            ),
-        )
-
-        self.step(
-            "sortsam",
-            Gatk4SortSamLatest(
-                bam=self.star.out_unsorted_bam.assert_not_null(),
-                sortOrder="coordinate",
-                createIndex=True,
-            ),
-        )
-
-        self.output("out_arriba_bam", source=self.sortsam.out, output_name=self.name)
-        self.output(
-            "out_arriba_fusion",
-            source=self.arriba.out,
-            output_name=StringFormatter("{sample_name}_fusion", sample_name=self.name),
-        )
-        self.output(
-            "out_arriba_fusion_discarded",
-            source=self.arriba.out_discarded,
-            output_name=StringFormatter(
-                "{sample_name}_fusion_discarded", sample_name=self.name
-            ),
-        )
-
-    def add_all_sorts(self):
-        self.step(
-            "featureCounts",
-            FeatureCounts_2_0_1(
-                bam=[self.star.out_unsorted_bam.assert_not_null()],
-                annotationFile=self.gtf,
-                attributeType="gene_name",
-            ),
-        )
-
-        # A script that transforms featurecounts output to allsorts input
-        self.step(
-            "prepareAllsortsInput",
-            PrepareALLSortsInput_0_1_0(
-                inps=[self.featureCounts.out],
-                labels=[self.name],
-                fusion_caller="featureCounts",
-            ),
-        )
-
-        self.step(
-            "allsorts", AllSorts_0_1_0(samples=self.prepareAllsortsInput.out),
-        )
-
-        self.output(
-            "out_gene_counts",
-            source=self.featureCounts.out,
-            output_name=StringFormatter(
-                "{sample_name}_feature_counts", sample_name=self.name
-            ),
-        )
-
-        self.output(
-            "out_predictions",
-            source=self.allsorts.out_predictions,
-            output_folder="allsorts",
-            output_name=StringFormatter(
-                "{sample_name}_predictions", sample_name=self.name
-            ),
-        )
-
-        self.output(
-            "out_probabilities",
-            source=self.allsorts.out_probabilities,
-            output_folder="allsorts",
-            output_name=StringFormatter(
-                "{sample_name}_probabilities", sample_name=self.name
-            ),
-        )
-
-        self.output(
-            "out_distributions",
-            source=self.allsorts.out_distributions,
-            output_folder="allsorts",
-            output_name=StringFormatter(
-                "{sample_name}_distributions", sample_name=self.name
-            ),
-        )
-
-        self.output(
-            "out_waterfalls",
-            source=self.allsorts.out_waterfalls,
-            output_folder="allsorts",
-            output_name=StringFormatter(
-                "{sample_name}_waterfalls", sample_name=self.name
-            ),
-        )
-
-    def bind_metadata(self):
-        return WorkflowMetadata(
-            contributors=["Michael Franklin"],
-            dateCreated=datetime(2020, 9, 24),
-            dateUpdated=datetime(2020, 10, 7),
-            documentation="",
-        )
-
-
-__JANIS_ENTRYPOINT = OncopipeWorkflow
-
 if __name__ == "__main__":
-    OncopipeWorkflow().get_dot_plot(show=True, expand_subworkflows=True)
+    OncopipeWorkflow().translate("wdl", allow_empty_container=True)

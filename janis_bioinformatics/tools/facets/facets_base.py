@@ -7,8 +7,12 @@ class FacetsBase(BioinformaticsTool, ABC):
     def tool_provider(self):
         return "Facets"
 
-    def base_command(self):
-        return ["LD_LIBRARY_PATH=/opt/conda/lib /snp-pileup"]
+    @classmethod
+    def base_command(cls):
+        return ["", cls.facets_command()]
+
+    # def base_command(self):
+    #     return ["LD_LIBRARY_PATH=/opt/conda/lib /snp-pileup"]
 
     def inputs(self):
         return []

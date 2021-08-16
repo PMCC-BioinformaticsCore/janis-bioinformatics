@@ -29,8 +29,7 @@ class TrimmomaticPairedEndBase(TrimmomaticBase):
             ToolInput(
                 "outputFilename_R1",
                 Filename(
-                    prefix=InputSelector("sampleName"),
-                    suffix="_R1.trimmed",
+                    prefix=InputSelector("sampleName") + "_R1.trimmed",
                     extension=".fastq.gz",
                 ),
                 position=6,
@@ -38,8 +37,7 @@ class TrimmomaticPairedEndBase(TrimmomaticBase):
             ToolInput(
                 "outputFilenameUnpaired_R1",
                 Filename(
-                    prefix=InputSelector("sampleName"),
-                    suffix="_R1.unpaired",
+                    prefix=InputSelector("sampleName") + "_R1.unpaired",
                     extension=".fastq.gz",
                 ),
                 position=7,
@@ -47,8 +45,7 @@ class TrimmomaticPairedEndBase(TrimmomaticBase):
             ToolInput(
                 "outputFilename_R2",
                 Filename(
-                    prefix=InputSelector("sampleName"),
-                    suffix="_R2.trimmed",
+                    prefix=InputSelector("sampleName") + "_R2.trimmed",
                     extension=".fastq.gz",
                 ),
                 position=8,
@@ -56,8 +53,7 @@ class TrimmomaticPairedEndBase(TrimmomaticBase):
             ToolInput(
                 "outputFilenameUnpaired_R2",
                 Filename(
-                    prefix=InputSelector("sampleName"),
-                    suffix="_R2.unpaired",
+                    prefix=InputSelector("sampleName") + "_R2.unpaired",
                     extension=".fastq.gz",
                 ),
                 position=9,
@@ -67,9 +63,17 @@ class TrimmomaticPairedEndBase(TrimmomaticBase):
     def outputs(self) -> List[ToolOutput]:
         return [
             ToolOutput(
-                "pairedOut", FastqGzPair, glob=WildcardSelector("*trimmed.fastq.gz")
+                "pairedOut",
+                FastqGzPair,
+                selector=WildcardSelector(
+                    InputSelector("sampleName") + "_R*.trimmed.fastq.gz"
+                ),
             ),
             ToolOutput(
-                "unpairedOut", FastqGzPair, glob=WildcardSelector("*unpaired.fastq.gz")
+                "unpairedOut",
+                FastqGzPair,
+                selector=WildcardSelector(
+                    InputSelector("sampleName") + "_R*.unpaired.fastq.gz"
+                ),
             ),
         ]

@@ -51,13 +51,6 @@ class StarBase(BioinformaticsTool, ABC):
     def friendly_name(self):
         return "STAR Aligner"
 
-    # Need a better way to specify memory
-    def memory(self, hints):
-        return 32
-
-    def cpus(self, hints):
-        return 4
-
     def arguments(self):
         return [
             ToolArgument(
@@ -139,7 +132,7 @@ class StarBase(BioinformaticsTool, ABC):
             ),
             ToolInput(
                 "genomeFastaFiles",
-                Array(Fasta, optional=True),
+                Fasta(optional=True),
                 prefix="--genomeFastaFiles",
                 doc="(default: -) path(s) to the fasta files with the genome sequences, separated by spaces. "
                 "These files should be plain text FASTA files, they *cannot* be zipped. Required for the genome "
@@ -526,7 +519,9 @@ class StarBase(BioinformaticsTool, ABC):
             ),
             ToolInput(
                 "outSAMattrRGline",
-                String(optional=True),
+                Array(String(), optional=True),
+                prefix_applies_to_all_elements=False,
+                separator=" ",
                 prefix="--outSAMattrRGline",
                 doc='(default: -) SAM/BAM read group line. The first word contains the read group identifier and must start with "ID:", e.g. --outSAMattrRGline ID:xxx CN:yy "DS:z z z".     xxx will be added as RG tag to each output alignment. Any spaces in the tag values have to be double quoted.     Comma separated RG lines correspons to different (comma separated) input files in --readFilesIn. Commas have to be surrounded by spaces, e.g.     --outSAMattrRGline ID:xxx , ID:zzz "DS:z z" , ID:yyy DS:yyyy',
             ),

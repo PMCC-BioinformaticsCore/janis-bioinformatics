@@ -1,5 +1,14 @@
+import operator
+import os
 from abc import ABC
 from typing import Dict, Any
+
+from janis_core.tool.test_classes import (
+    TTestCase,
+    TTestExpectedOutput,
+    TTestPreprocessor,
+)
+
 from ..gatk4toolbase import Gatk4ToolBase
 from janis_bioinformatics.data_types import BamBai, FastaWithDict, Bed
 
@@ -15,6 +24,8 @@ from janis_core import (
     get_value_for_hints_and_ordered_resource_tuple,
 )
 from janis_unix import Tsv
+
+from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 
 CORES_TUPLE = [
     (
@@ -167,3 +178,33 @@ and write out the recalibrated data to a new BAM or CRAM file.
             doc="Temp directory to use.",
         )
     ]
+
+    def tests(self):
+        remote_dir = "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics/wgsgermline_data"
+        return [
+            TTestCase(
+                name="basic",
+                input={
+                    "bam": f"{remote_dir}/NA12878-BRCA1.markduped.bam",
+                    "reference": f"{remote_dir}/Homo_sapiens_assembly38.chr17.fasta",
+                    "recalFile": f"{remote_dir}/NA12878-BRCA1.markduped.table",
+                    "intervals": f"{remote_dir}/BRCA1.hg38.bed",
+                },
+                output=BamBai.basic_test(
+                    "out",
+                    2600000,
+                    21000,
+                    f"{remote_dir}/NA12878-BRCA1.recalibrated.flagstat",
+                ),
+            ),
+            TTestCase(
+                name="minimal",
+                input={
+                    "bam": f"{remote_dir}/NA12878-BRCA1.markduped.bam",
+                    "reference": f"{remote_dir}/Homo_sapiens_assembly38.chr17.fasta",
+                    "recalFile":f"{remote_dir}/NA12878-BRCA1.markduped.table",
+                    "intervals": f"{remote_dir}/BRCA1.hg38.bed",
+                },
+                output=self.minimal_test(),
+            ),
+        ]

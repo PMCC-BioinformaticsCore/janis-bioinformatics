@@ -40,7 +40,7 @@ class Gatk4VariantFiltrationBase(Gatk4ToolBase):
                 input_type=Filename(
                     prefix=InputSelector("variant", remove_file_extension=True),
                     suffix=".filtered",
-                    extension=".vcf",
+                    extension=".vcf.gz",
                 ),
                 prefix="--output",
                 separate_value_from_prefix=True,

@@ -36,7 +36,7 @@ class Gatk4ReorderSamBase(Gatk4ToolBase, ABC):
             *super().inputs(),
             ToolInput(
                 tag="inp",
-                input_type=Bam(),
+                input_type=BamBai(),
                 prefix="--INPUT",
                 separate_value_from_prefix=True,
                 doc=InputDocumentation(
@@ -55,20 +55,24 @@ class Gatk4ReorderSamBase(Gatk4ToolBase, ABC):
                     doc="(-O) Output file (SAM or BAM) to write extracted reads to. Required."
                 ),
             ),
-            # since gatk 4.1.4.0 the reference option replace with reference dictionary
+            # since gatk 4.1.4.0 the sequence dictionary option replace reference option as required option
             ToolInput(
                 tag="sequence_dictionary",
-                # tag="reference",
                 input_type=File(),
-                # prefix="--REFERENCE",
                 prefix="--SEQUENCE_DICTIONARY",
                 separate_value_from_prefix=True,
                 doc=InputDocumentation(
                     "A Sequence Dictionary for the OUTPUT file (can be read from one of the following file types (SAM, BAM, VCF, BCF, Interval List, Fasta, or Dict)"
                 ),
-                # doc=InputDocumentation(
-                #     doc="(-R) Reference sequence to reorder reads to match. A sequence dictionary corresponding to the reference fasta is required.  Create one with CreateSequenceDictionary.  Required. "
-                # ),
+            ),
+            ToolInput(
+                tag="reference",
+                input_type=FastaWithIndexes(optional=True),
+                prefix="--REFERENCE_SEQUENCE",
+                separate_value_from_prefix=True,
+                doc=InputDocumentation(
+                    "Reference sequence file.  Default value: null."
+                ),
             ),
             ToolInput(
                 tag="allow_contig_length_discordance",

@@ -1,7 +1,10 @@
+import os
 from datetime import datetime
 from janis_core import WorkflowBuilder, WorkflowMetadata
 
 # data types
+from janis_core.tool.test_classes import TTestCase
+
 from janis_bioinformatics.data_types import Vcf, BamBai
 from janis_bioinformatics.data_types import FastaWithDict
 
@@ -11,6 +14,7 @@ from janis_bioinformatics.tools import BioinformaticsWorkflow
 
 from janis_bioinformatics.tools.bioinformaticstoolbase import (
     BioinformaticsWorkflowBuilder,
+    BioinformaticsTool,
 )
 from janis_bioinformatics.tools.pmac import AddBamStatsLatest
 from janis_bioinformatics.tools.samtools import SamToolsMpileupLatest
@@ -46,14 +50,18 @@ class AddBamStatsSomatic_0_1_0(BioinformaticsWorkflow):
         self.step(
             "tumor",
             self.process_subpipeline(
-                vcf=self.vcf, bam=self.tumor_bam, reference=self.reference,
+                vcf=self.vcf,
+                bam=self.tumor_bam,
+                reference=self.reference,
             ),
         )
 
         self.step(
             "normal",
             self.process_subpipeline(
-                vcf=self.vcf, bam=self.normal_bam, reference=self.reference,
+                vcf=self.vcf,
+                bam=self.normal_bam,
+                reference=self.reference,
             ),
         )
 
@@ -96,3 +104,28 @@ class AddBamStatsSomatic_0_1_0(BioinformaticsWorkflow):
         )
         w.output("out", source=w.samtools_mpileup.out)
         return w(**connections)
+
+    def tests(self):
+        parent_dir = "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics"
+        germline_data = f"{parent_dir}/wgsgermline_data"
+        somatic_data = f"{parent_dir}/wgssomatic_data"
+        return [
+            TTestCase(
+                name="basic",
+                input={
+                    "normal_id": "NA24385-BRCA1",
+                    "tumor_id": "NA12878-NA24385-mixture",
+                    "normal_bam": f"{somatic_data}/NA24385-BRCA1.markduped.bam",
+                    "tumor_bam": f"{somatic_data}/NA12878-NA24385-mixture.markduped.bam",
+                    "reference": f"{germline_data}/Homo_sapiens_assembly38.chr17.fasta",
+                    "vcf": f"{somatic_data}/uncompressed.stdout",
+                },
+                output=Vcf.basic_test(
+                    "out",
+                    44094,
+                    156,
+                    ["GATKCommandLine"],
+                    "5fc0e861893e0a23f974808265a6917e",
+                ),
+            )
+        ]

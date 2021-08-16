@@ -1,6 +1,10 @@
-from typing import Any, Dict
+import operator
+import os.path
+import zipfile
+from typing import Any, Dict, List, Optional
 
 from janis_core import File, Array, Logger
+from janis_core.tool.test_classes import TTestExpectedOutput, TTestPreprocessor
 
 
 class Fastq(File):
@@ -36,6 +40,17 @@ class FastqGz(File):
             "with no standard: https://en.wikipedia.org/wiki/FASTQ_format"
         )
 
+    @classmethod
+    def basic_test(cls, tag: str, min_size: int) -> List[TTestExpectedOutput]:
+        return [
+            TTestExpectedOutput(
+                tag=tag,
+                preprocessor=TTestPreprocessor.FileSize,
+                operator=operator.ge,
+                expected_value=min_size,
+            ),
+        ]
+
 
 class FastqGzPairedEnd(Array):
     def __init__(self, optional=False):
@@ -69,6 +84,64 @@ class FastqGzPairedEnd(Array):
         if meta is not None and len(meta) != 2:
             hints.append(f"There must be exactly 2 (found {len(meta)}) fastq files")
         return ", ".join(hints)
+
+    @classmethod
+    def ge(cls, file_paths: str, expected_sizes: List[int]):
+        """
+
+        :param file_paths: a string containing all file paths, separated by |
+        :type file_paths: str
+        :param expected_sizes: expected minimum sizes of all files
+        :type expected_sizes: List[int]
+        :return: a boolean value indicating if all files are bigger than or equal to their expected minimum sizes
+        """
+        files = file_paths.split("|")
+        if len(files) != len(expected_sizes):
+            return "Number of expected values don't match number of outputs"
+        for file in files:
+            unzipped = zipfile.ZipFile(file)
+            if "R1" in unzipped.namelist()[0]:
+                if os.path.getsize(file) < expected_sizes[0]:
+                    return False
+            else:
+                if os.path.getsize(file) < expected_sizes[1]:
+                    return False
+        return True
+
+    @classmethod
+    def basic_test(
+        cls,
+        tag: str,
+        min_total_size: int,
+        min_first_size: Optional[int] = None,
+        min_second_size: Optional[int] = None,
+    ) -> List[TTestExpectedOutput]:
+        outcome = [
+            TTestExpectedOutput(
+                tag=tag,
+                preprocessor=TTestPreprocessor.ListSize,
+                operator=operator.eq,
+                expected_value=2,
+            ),
+            TTestExpectedOutput(
+                tag=tag,
+                preprocessor=TTestPreprocessor.ListOfFilesTotalSize,
+                operator=operator.ge,
+                expected_value=min_total_size,
+            ),
+        ]
+
+        # An example of how FastqGzPairedEnd.ge is used; can be removed if deemed unnecessary
+        if min_first_size is not None and min_second_size is not None:
+            outcome += [
+                TTestExpectedOutput(
+                    tag=tag,
+                    preprocessor=TTestPreprocessor.Value,
+                    operator=FastqGzPairedEnd.ge,
+                    expected_value=[min_first_size, min_second_size],
+                )
+            ]
+        return outcome
 
 
 class FastqPairedEnd(Array):

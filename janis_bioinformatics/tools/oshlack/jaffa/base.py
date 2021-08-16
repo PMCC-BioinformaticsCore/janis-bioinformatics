@@ -2,6 +2,7 @@ from datetime import datetime
 from typing import List, Optional, Union
 
 from janis_bioinformatics.data_types import Fasta, FastqGzPair, FastqPair
+from janis_unix import Csv
 from janis_core import (
     ToolOutput,
     ToolInput,
@@ -47,7 +48,9 @@ class JaffaBase(BioinformaticsTool):
             ToolArgument(
                 InputSelector("fastqs", type_hint=Array(FastqPair))
                 .flattened()
-                .joined("' '"),
+                .joined(" "),
+                shell_quote=False,
+                position=SCRIPT_POSITION + 1,
             ),
         ]
 
@@ -58,13 +61,32 @@ class JaffaBase(BioinformaticsTool):
                 Array(FastqPair),
                 doc="Space separated, this gets bound using a ToolArgument",
             ),
-            BPipeToolInput("genome", String, default="hg38", prefix="genome",),
             BPipeToolInput(
-                "annotation", String, default="genCode22", prefix="annotation"
+                "genome",
+                String,
+                default="hg38",
+                prefix="genome",
+                position=SCRIPT_POSITION - 1,
             ),
-            BPipeToolInput("reference", Directory, prefix="refBase"),
+            BPipeToolInput(
+                "annotation",
+                String,
+                default="genCode22",
+                prefix="annotation",
+                position=SCRIPT_POSITION - 1,
+            ),
+            BPipeToolInput(
+                "reference",
+                Directory,
+                prefix="refBase",
+                position=SCRIPT_POSITION - 1,
+            ),
             ToolInput(
-                "threads", Int(optional=True), default=CpuSelector(), prefix="-n"
+                "threads",
+                Int(optional=True),
+                default=CpuSelector(),
+                prefix="-n",
+                position=SCRIPT_POSITION - 1,
             ),
             BPipeToolInput(
                 "readLayout",
@@ -72,12 +94,14 @@ class JaffaBase(BioinformaticsTool):
                 prefix="readLayout",
                 default="paired",
                 doc="paired | single | single-end",
+                position=SCRIPT_POSITION - 1,
             ),
         ]
 
     def outputs(self) -> List[ToolOutput]:
         return [
-            ToolOutput("out_reference", Fasta, selector=WildcardSelector("*.fasta"))
+            ToolOutput("out_reference", Fasta, selector=WildcardSelector("*.fasta")),
+            ToolOutput("out_csv", Csv, selector=WildcardSelector("jaffa_results.csv")),
         ]
 
     def memory(self, hints):

@@ -1,11 +1,15 @@
 from datetime import datetime
-from janis_core import Boolean, WorkflowMetadata
+from janis_core import Boolean, WorkflowMetadata, File
 from janis_unix.tools import UncompressArchive
 
-from janis_bioinformatics.data_types import FastaWithDict, BamBai, BedTabix
+from janis_bioinformatics.data_types import (
+    FastaWithDict,
+    BamBai,
+    BedTabix,
+    CompressedVcf,
+)
 from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.common import SplitMultiAllele
-from janis_bioinformatics.tools.htslib import BGZipLatest, TabixLatest
 from janis_bioinformatics.tools.illumina import StrelkaGermline_2_9_10, Manta_1_5_0
 from janis_bioinformatics.tools.vcftools import VcfToolsvcftoolsLatest
 
@@ -27,8 +31,12 @@ class IlluminaGermlineVariantCaller(BioinformaticsWorkflow):
 
         self.input("bam", BamBai)
         self.input("reference", FastaWithDict)
+
+        # optional
         self.input("intervals", BedTabix(optional=True))
         self.input("is_exome", Boolean(optional=True))
+        self.input("manta_config", File(optional=True))
+        self.input("strelka_config", File(optional=True))
 
         self.step(
             "manta",
@@ -37,6 +45,7 @@ class IlluminaGermlineVariantCaller(BioinformaticsWorkflow):
                 reference=self.reference,
                 callRegions=self.intervals,
                 exome=self.is_exome,
+                config=self.manta_config,
             ),
         )
 
@@ -45,17 +54,19 @@ class IlluminaGermlineVariantCaller(BioinformaticsWorkflow):
             StrelkaGermline_2_9_10(
                 bam=self.bam,
                 reference=self.reference,
-                indelCandidates=self.manta.candidateSmallIndels,
                 callRegions=self.intervals,
                 exome=self.is_exome,
+                config=self.strelka_config,
             ),
         )
 
         # normalise and filter "PASS" variants
-        self.step("uncompressvcf", UncompressArchive(file=self.strelka.variants))
         self.step(
             "splitnormalisevcf",
-            SplitMultiAllele(vcf=self.uncompressvcf.out, reference=self.reference),
+            SplitMultiAllele(
+                vcf=self.strelka.variants.as_type(CompressedVcf),
+                reference=self.reference,
+            ),
         )
 
         self.step(
@@ -76,7 +87,7 @@ class IlluminaGermlineVariantCaller(BioinformaticsWorkflow):
         return WorkflowMetadata(
             contributors=["Jiaan Yu", "Michael Franklin"],
             dateCreated=datetime(2019, 3, 28),
-            dateUpdated=datetime(2020, 7, 14),
+            dateUpdated=datetime(2021, 5, 27),
             documentation="",
         )
 

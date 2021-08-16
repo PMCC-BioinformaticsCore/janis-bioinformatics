@@ -202,6 +202,7 @@ Note that there are two orthogonal ways to specify locations in the input file; 
         ),
     ]
 
+    """
     def tests(self):
         return [
             TTestCase(
@@ -231,5 +232,30 @@ Note that there are two orthogonal ways to specify locations in the input file; 
                         expected_value=81689,
                     ),
                 ],
+            )
+        ]
+        """
+
+    def tests(self):
+        remote_dir = "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics/wgsgermline_data"
+        return [
+            TTestCase(
+                name="basic",
+                input={
+                    "positions": f"{remote_dir}/NA12878-BRCA1.sorted.uncompressed.stdout",
+                    "reference": f"{remote_dir}/Homo_sapiens_assembly38.chr17.fasta",
+                    "bam": f"{remote_dir}/NA12878-BRCA1.markduped.bam",
+                    "countOrphans": True,
+                    "noBAQ": True,
+                    "maxDepth": 10000,
+                    "minBQ": 0,
+                },
+                output=TextFile.basic_test(
+                    "out",
+                    19900,
+                    "chr17\t43044391\tG\t19\tA,A,,A.a,,A,,A..,,a\tDJCJ:FHDDBJBBJJIDDB",
+                    187,
+                    "53c3e03c20730ff45411087444379b1b",
+                ),
             )
         ]

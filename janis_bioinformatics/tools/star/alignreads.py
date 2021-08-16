@@ -12,6 +12,12 @@ class StarAlignReadsBase(StarBase, ABC):
     def run_mode(self):
         return "alignReads"
 
+    def memory(self, hints):
+        return 64
+
+    def cpus(self, hints):
+        return 4
+
     def outputs(self) -> List[ToolOutput]:
         return [
             ToolOutput(
@@ -24,6 +30,11 @@ class StarAlignReadsBase(StarBase, ABC):
                 Bam(optional=True),
                 glob=InputSelector("outFileNamePrefix")
                 + "Aligned.sortedByCoord.out.bam",
+            ),
+            ToolOutput(
+                "out_gene_counts",
+                File(optional=True),
+                glob=InputSelector("outFileNamePrefix") + "ReadsPerGene.out.tab",
             ),
             ToolOutput(
                 "SJ_out_tab",
