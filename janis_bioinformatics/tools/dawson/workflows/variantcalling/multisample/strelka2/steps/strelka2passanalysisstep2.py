@@ -44,7 +44,7 @@ class Strelka2PassWorkflowStep2(BioinformaticsWorkflow):
         It also normalises and indexes the output vcfs
                 """.strip()
 
-    # this is a way to get the tool without spagetti code in bam and cram format
+    # this is a way to get the tool without spaghetti code in bam and cram format
     def getStrelka2Tool(self):
         from janis_bioinformatics.tools.illumina.strelkasomatic.strelkasomatic import (
             StrelkaSomatic_2_9_10 as Strelka,

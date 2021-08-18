@@ -32,7 +32,7 @@ class CreateCallRegions(BioinformaticsPythonTool):
 
                 if equalize:
                     # in this case we make the regions as equal in size as we can an treat the
-                    # input size as a guide and not as nessecity
+                    # input size as a guide and not as necessity
                     steps = math.ceil(chrLength / chrRegionSize)
                     # change the regionSize to the equalized version
                     chrRegionSize = math.ceil(chrLength / steps)

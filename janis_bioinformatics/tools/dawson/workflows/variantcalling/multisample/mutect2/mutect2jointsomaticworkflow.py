@@ -51,7 +51,7 @@ class Mutect2JointSomaticWorkflow(BioinformaticsWorkflow):
         There are also som major tweaks we have to do for runtime, as the amount of data might overwhelm the tools otherwise.
                 """.strip()
 
-    # this is a way to get the tool without spagetti code in bam and cram format
+    # this is a way to get the tool without spaghetti code in bam and cram format
     def getMutect2Tool(self):
         from janis_bioinformatics.tools.gatk4.mutect2.versions import (
             GatkMutect2_4_1_8 as Mutect2,

@@ -8,7 +8,7 @@ class Strelka2PassWorkflowStep1Cram(Strelka2PassWorkflowStep1):
     def friendly_name(self):
         return "Strelka 2Pass analysis step1 (CRAM)"
 
-    # this is a way to get the tool without spagetti code in bam and cram format
+    # this is a way to get the tool without spaghetti code in bam and cram format
     def getMantaTool(self):
         from janis_bioinformatics.tools.illumina.manta.manta import (
             MantaCram_1_5_0 as Manta,

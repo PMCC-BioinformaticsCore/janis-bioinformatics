@@ -140,7 +140,7 @@ class BwaMem_SamToolsView(BioinformaticsTool):
             #   - If readGroupHeaderLine provided, use that,
             #   - If sampleName provided, construct based on that
             #   - Else don't include
-            # but this is probbaly a bit hard to do, and for all our purposes we require a readGroupHeaderLine,
+            # but this is probably a bit hard to do, and for all our purposes we require a readGroupHeaderLine,
             # so we're always going to construct it:
             ToolInput(
                 "sampleName",
