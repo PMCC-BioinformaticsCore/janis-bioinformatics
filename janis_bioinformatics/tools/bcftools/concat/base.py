@@ -10,6 +10,7 @@ from janis_core import (
     Int,
     ToolOutput,
     InputSelector,
+    UnionType,
 )
 from janis_bioinformatics.data_types import FastaWithDict, CompressedVcf
 from janis_bioinformatics.data_types import Vcf
@@ -29,7 +30,7 @@ class BcfToolsConcatBase(BcfToolsToolBase, ABC):
 
     def inputs(self):
         return [
-            ToolInput("vcf", Array(CompressedVcf()), position=15),
+            ToolInput("vcf", Array(UnionType(Vcf, CompressedVcf)), position=15),
             ToolInput(
                 "outputFilename",
                 Filename(extension=".vcf.gz"),
