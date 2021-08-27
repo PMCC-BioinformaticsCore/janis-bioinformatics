@@ -18,5 +18,5 @@ from .generatebedtoolscoveragegenomefile import GenerateGenomeFileForBedtoolsCov
 from .generateintervalsbychromosome.generateintervalsbychromosome import (
     GenerateIntervalsByChromosome,
 )
-from .circosplot.circosplot import CircosPlot
+from .circosplot.versions import *
 from .generatemantaconfig import GenerateMantaConfig
