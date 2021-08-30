@@ -46,7 +46,8 @@ $normal_name $facets_file $sv_file $out_dir $manta_filter[optional]
                 "out",
                 File,
                 glob=StringFormatter(
-                    "{tumor_name}--{normal_name}.pdf",
+                    "{output_dir}/{tumor_name}--{normal_name}.pdf",
+                    output_dir=InputSelector("output_dir"),
                     tumor_name=InputSelector("tumor_name"),
                     normal_name=InputSelector("normal_name"),
                 ),
