@@ -403,7 +403,7 @@ class StarBase(BioinformaticsTool, ABC):
             ),
             ToolInput(
                 "outFileNamePrefix",
-                String(),
+                String(optional=True),
                 default="./",
                 prefix="--outFileNamePrefix",
                 doc="(default: ./) output files name prefix (including full or relative path). Can only be defined on the command line.",
