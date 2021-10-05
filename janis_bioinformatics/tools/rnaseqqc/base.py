@@ -13,7 +13,7 @@ from janis_core.operators.selectors import InputSelector
 from janis_core.operators.stringformatter import StringFormatter
 from janis_core.tool.commandtool import ToolOutput
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
-from janis_bioinformatics.data_types import BamBai, Bed, Fasta
+from janis_bioinformatics.data_types import Bam, Bed, Fasta
 
 
 class RNASeqQCBase(BioinformaticsTool):
@@ -39,7 +39,7 @@ class RNASeqQCBase(BioinformaticsTool):
             ),
             ToolInput(
                 "bam",
-                BamBai,
+                Bam,
                 position=2,
                 doc="The input SAM/BAM file containing reads to process",
             ),
@@ -54,7 +54,6 @@ class RNASeqQCBase(BioinformaticsTool):
                 "sample",
                 String(optional=True),
                 position=4,
-                default=InputSelector("bam", remove_file_extension=True),
                 prefix="--sample",
                 doc="The name of the current sample. Default: The bam's filename",
             ),
