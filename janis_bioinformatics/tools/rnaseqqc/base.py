@@ -13,7 +13,7 @@ from janis_core.operators.selectors import InputSelector
 from janis_core.operators.stringformatter import StringFormatter
 from janis_core.tool.commandtool import ToolOutput
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
-from janis_bioinformatics.data_types import Bam, Bed, Fasta
+from janis_bioinformatics.data_types import Bam, BamBai, Bed, Fasta
 
 
 class RNASeqQCBase(BioinformaticsTool):
@@ -39,7 +39,7 @@ class RNASeqQCBase(BioinformaticsTool):
             ),
             ToolInput(
                 "bam",
-                Bam,
+                BamBai,
                 position=2,
                 doc="The input SAM/BAM file containing reads to process",
             ),
