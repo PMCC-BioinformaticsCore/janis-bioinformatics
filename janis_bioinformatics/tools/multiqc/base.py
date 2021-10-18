@@ -10,10 +10,12 @@ from janis_core import (
     Int,
     Filename,
     ToolMetadata,
+    ToolOutput,
+    InputSelector,
+    StringFormatter,
 )
 
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
-from janis_core.tool.commandtool import ToolOutput
 
 
 class MultiqcBase(BioinformaticsTool):
@@ -88,7 +90,8 @@ class MultiqcBase(BioinformaticsTool):
             ),
             ToolInput(
                 tag="outdir",
-                input_type=Filename(),
+                input_type=String(optional=True),
+                default=".",
                 prefix="--outdir",
                 separate_value_from_prefix=True,
                 doc="(-o) Create report in the specified output directory.",
@@ -283,15 +286,31 @@ class MultiqcBase(BioinformaticsTool):
 
     def outputs(self):
         return [
-            ToolOutput("out", File, selector="multiqc_report.html"),
-            ToolOutput("out_multiqc_data", Directory, selector="multiqc_data"),
+            ToolOutput(
+                "out",
+                File,
+                selector=StringFormatter(
+                    "{output_dir}/{filename}.html",
+                    output_dir=InputSelector("outdir"),
+                    filename=InputSelector("filename"),
+                ),
+            ),
+            ToolOutput(
+                "out_multiqc_data",
+                Directory,
+                selector=StringFormatter(
+                    "{output_dir}/{filename}_data",
+                    output_dir=InputSelector("outdir"),
+                    filename=InputSelector("filename"),
+                ),
+            ),
         ]
 
     def bind_metadata(self):
         return ToolMetadata(
-            contributors=["Michael Franklin"],
+            contributors=["Michael Franklin", "Jiaan Yu"],
             dateCreated=datetime(2019, 10, 24),
-            dateUpdated=datetime(2019, 10, 24),
+            dateUpdated=datetime(2021, 10, 19),
             documentationUrl="http://multiqc.info",
             documentation="""Usage: multiqc [OPTIONS] <analysis directory>
 MultiQC aggregates results from bioinformatics analyses across many samples into a single report.
