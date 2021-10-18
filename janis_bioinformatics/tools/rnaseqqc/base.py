@@ -205,7 +205,7 @@ class RNASeqQCBase(BioinformaticsTool):
             ToolOutput(
                 "gene_fragments",
                 File,
-                glob=StringFormatter(
+                selector=StringFormatter(
                     "{output_dir}/{sample}.gene_fragments.gct",
                     output_dir=InputSelector("output_dir"),
                     sample=InputSelector("sample"),
@@ -214,7 +214,7 @@ class RNASeqQCBase(BioinformaticsTool):
             ToolOutput(
                 "gene_reads",
                 File,
-                glob=StringFormatter(
+                selector=StringFormatter(
                     "{output_dir}/{sample}.gene_reads.gct",
                     output_dir=InputSelector("output_dir"),
                     sample=InputSelector("sample"),
@@ -223,7 +223,7 @@ class RNASeqQCBase(BioinformaticsTool):
             ToolOutput(
                 "gene_tpm",
                 File,
-                glob=StringFormatter(
+                selector=StringFormatter(
                     "{output_dir}/{sample}.gene_tpm.gct",
                     output_dir=InputSelector("output_dir"),
                     sample=InputSelector("sample"),
@@ -232,7 +232,7 @@ class RNASeqQCBase(BioinformaticsTool):
             ToolOutput(
                 "metrics",
                 Tsv,
-                glob=StringFormatter(
+                selector=StringFormatter(
                     "{output_dir}/{sample}.metrics.tsv",
                     output_dir=InputSelector("output_dir"),
                     sample=InputSelector("sample"),
@@ -241,7 +241,7 @@ class RNASeqQCBase(BioinformaticsTool):
             ToolOutput(
                 "coverage",
                 Tsv(optional=True),
-                glob=StringFormatter(
+                selector=StringFormatter(
                     "{output_dir}/{sample}.coverage.tsv",
                     output_dir=InputSelector("output_dir"),
                     sample=InputSelector("sample"),
@@ -250,7 +250,7 @@ class RNASeqQCBase(BioinformaticsTool):
             ToolOutput(
                 "exon_reads",
                 File,
-                glob=StringFormatter(
+                selector=StringFormatter(
                     "{output_dir}/{sample}.exon_reads.gct",
                     output_dir=InputSelector("output_dir"),
                     sample=InputSelector("sample"),
@@ -262,7 +262,7 @@ class RNASeqQCBase(BioinformaticsTool):
         return ToolMetadata(
             contributors=["Jiaan Yu"],
             dateCreated=datetime(2021, 9, 10),
-            dateUpdated=datetime(2021, 9, 10),
+            dateUpdated=datetime(2021, 10, 19),
             documentationUrl="https://github.com/getzlab/rnaseqc",
             documentation="""Usage: rnaseqc [gtf] [bam] [output] \{OPTIONS\}
 """,
