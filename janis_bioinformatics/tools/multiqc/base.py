@@ -13,6 +13,7 @@ from janis_core import (
 )
 
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
+from janis_core.tool.commandtool import ToolOutput
 
 
 class MultiqcBase(BioinformaticsTool):
@@ -281,7 +282,10 @@ class MultiqcBase(BioinformaticsTool):
         ]
 
     def outputs(self):
-        return []
+        return [
+            ToolOutput("out", File, selector="multiqc_report.html"),
+            ToolOutput("out_multiqc_data", Directory, selector="multiqc_data"),
+        ]
 
     def bind_metadata(self):
         return ToolMetadata(
