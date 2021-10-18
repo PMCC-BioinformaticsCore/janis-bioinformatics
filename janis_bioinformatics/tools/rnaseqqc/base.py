@@ -8,10 +8,11 @@ from janis_core import (
     Int,
     ToolMetadata,
     UnionType,
+    InputSelector,
+    StringFormatter,
+    ToolOutput,
 )
-from janis_core.operators.selectors import InputSelector
-from janis_core.operators.stringformatter import StringFormatter
-from janis_core.tool.commandtool import ToolOutput
+from janis_unix import Tsv
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 from janis_bioinformatics.data_types import Bam, BamBai, Bed, Fasta
 
@@ -230,7 +231,7 @@ class RNASeqQCBase(BioinformaticsTool):
             ),
             ToolOutput(
                 "metrics",
-                File,
+                Tsv,
                 glob=StringFormatter(
                     "{output_dir}/{sample}.metrics.tsv",
                     output_dir=InputSelector("output_dir"),
@@ -239,7 +240,7 @@ class RNASeqQCBase(BioinformaticsTool):
             ),
             ToolOutput(
                 "coverage",
-                File(optional=True),
+                Tsv(optional=True),
                 glob=StringFormatter(
                     "{output_dir}/{sample}.coverage.tsv",
                     output_dir=InputSelector("output_dir"),
