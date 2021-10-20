@@ -203,7 +203,7 @@ class RNASeqQCBase(BioinformaticsTool):
     def outputs(self):
         return [
             ToolOutput(
-                "gene_fragments",
+                "out_gene_fragments",
                 File,
                 selector=StringFormatter(
                     "{output_dir}/{sample}.gene_fragments.gct",
@@ -212,7 +212,7 @@ class RNASeqQCBase(BioinformaticsTool):
                 ),
             ),
             ToolOutput(
-                "gene_reads",
+                "out_gene_reads",
                 File,
                 selector=StringFormatter(
                     "{output_dir}/{sample}.gene_reads.gct",
@@ -221,7 +221,7 @@ class RNASeqQCBase(BioinformaticsTool):
                 ),
             ),
             ToolOutput(
-                "gene_tpm",
+                "out_gene_tpm",
                 File,
                 selector=StringFormatter(
                     "{output_dir}/{sample}.gene_tpm.gct",
@@ -230,7 +230,7 @@ class RNASeqQCBase(BioinformaticsTool):
                 ),
             ),
             ToolOutput(
-                "metrics",
+                "out_metrics_tsv",
                 Tsv,
                 selector=StringFormatter(
                     "{output_dir}/{sample}.metrics.tsv",
@@ -239,7 +239,7 @@ class RNASeqQCBase(BioinformaticsTool):
                 ),
             ),
             ToolOutput(
-                "coverage",
+                "out_coverage_tsv",
                 Tsv(optional=True),
                 selector=StringFormatter(
                     "{output_dir}/{sample}.coverage.tsv",
@@ -248,7 +248,7 @@ class RNASeqQCBase(BioinformaticsTool):
                 ),
             ),
             ToolOutput(
-                "exon_reads",
+                "out_exon_reads",
                 File,
                 selector=StringFormatter(
                     "{output_dir}/{sample}.exon_reads.gct",

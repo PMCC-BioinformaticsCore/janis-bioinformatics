@@ -287,7 +287,7 @@ class MultiqcBase(BioinformaticsTool):
     def outputs(self):
         return [
             ToolOutput(
-                "out",
+                "out_html",
                 File,
                 selector=StringFormatter(
                     "{output_dir}/{filename}.html",
