@@ -27,12 +27,12 @@ class GatherFilesForMultiqc(UnixTool):
             ToolInput(
                 "inp_files",
                 Array(File),
-                position=2,
+                position=4,
             ),
             ToolInput(
                 "inp_files2",
                 Array(File),
-                position=3,
+                position=5,
             ),
             ToolInput(
                 "output_dir", String(optional=True), default="output_dir", position=8
@@ -44,11 +44,14 @@ class GatherFilesForMultiqc(UnixTool):
 
     def arguments(self):
         return [
-            ToolArgument("mkdir tmpdir;", position=0, shell_quote=False),
-            ToolArgument("cp", position=1, shell_quote=False),
-            ToolArgument("tmpdir", position=5, shell_quote=False),
-            ToolArgument(";", position=6, shell_quote=False),
-            ToolArgument("mv tmpdir", position=7, shell_quote=False),
+            ToolArgument("mkdir", position=0, shell_quote=False),
+            ToolArgument(
+                InputSelector("output_dir"),
+                position=1,
+                shell_quote=False,
+            ),
+            ToolArgument(";", position=2, shell_quote=False),
+            ToolArgument("cp", position=3, shell_quote=False),
         ]
 
     def bind_metadata(self):
