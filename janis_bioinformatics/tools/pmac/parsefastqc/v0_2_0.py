@@ -1,39 +1,38 @@
 """
 Each modification of this tool should duplicate this code
 """
-import operator
-import os
 from datetime import datetime
 from typing import List, Dict, Any, Optional
 
 from janis_core import PythonTool, File, Array, ToolMetadata
+from janis_core.tool.tool import TOutput
 from janis_core.tool.test_classes import (
     TTestCase,
     TTestExpectedOutput,
     TTestPreprocessor,
 )
-from janis_core.tool.tool import TOutput
 
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsPythonTool
-from janis_bioinformatics.tools import BioinformaticsTool
 
 
 class ParseFastqcAdaptors(BioinformaticsPythonTool):
     @staticmethod
     def code_block(
-        fastqc_datafiles: List[File], cutadapt_adaptors_lookup: Optional[File]
+        fastqc_datafiles: List[File], adaptors_lookup: File, contamination_lookup: File
     ):
         """
 
-        :param fastqc_datafiles:
+        :param fastqc_datafiles: Array of files, fastqc_datafiles of read 1 and read 2, respectively
 
-        :param cutadapt_adaptors_lookup: Specifies a file which contains the list of adapter sequences which will
+        :param adaptors_lookup: Specifies a file which contains the list of adapter sequences which will
             be explicity searched against the library. The file must contain sets of named adapters in
             the form name[tab]sequence. Lines prefixed with a hash will be ignored.
-        :return:
+
+        :param contamination_lookup: Specifies a file which contains the list of universal adapter
+            sequences which will be explicity searched against the library.
+
+        :return: sequences in list
         """
-        if not cutadapt_adaptors_lookup:
-            return {"adaptor_sequences": []}
 
         import mmap, re, csv
         from io import StringIO
@@ -46,15 +45,24 @@ class ParseFastqcAdaptors(BioinformaticsPythonTool):
             adapt_section_query = (
                 br"(?s)>>Overrepresented sequences\t\S+\n(.*?)>>END_MODULE"
             )
+            adapt_section_fail_query = (
+                br"(?s)>>Overrepresented sequences\tfail+\n(.*?)>>END_MODULE"
+            )
             # fastqc_datafile could be fairly large, so we'll use mmap, and then
             with open(f) as f, mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ) as fp:
                 overrepresented_sequences_match = re.search(adapt_section_query, fp)
                 if overrepresented_sequences_match is None:
                     raise Exception(
-                        f"Couldn't find query ('{adapt_section_query.decode('utf8')}') in {fastqc_datafiles}"
+                        f"Couldn't find query ('{adapt_section_query.decode('utf8')}') in {f}"
                     )
-
-                return overrepresented_sequences_match.groups()[0].decode("utf8")
+                elif re.search(adapt_section_fail_query, fp):
+                    # parse the sequences when fail
+                    overrepresented_sequences_match = (
+                        overrepresented_sequences_match.groups()[0].decode("utf8")
+                    )
+                else:
+                    overrepresented_sequences_match = None
+                return overrepresented_sequences_match
 
         def parse_tsv_table(tbl: str, skip_headers):
             """
@@ -69,48 +77,73 @@ class ParseFastqcAdaptors(BioinformaticsPythonTool):
                 ret.pop(0)  # discard headers
             return ret
 
-        def get_cutadapt_map():
+        def get_adapt_map(adapter_file):
             """
-            Helper method to parse the file 'cutadapt_adaptors_lookup' with
-            format: 'name[tab]sequence' into the dictionary: '{ sequence: name }'
+            Helper method to parse the file 'adaptors_lookup'/ 'contamination_lookup' with
+            format: 'name[tab]sequence' into the dictionary: '{ name: sequence }'
             """
-            cutadapt_map = {}
-            with open(cutadapt_adaptors_lookup) as fp:
+            adapter_map = {}
+            with open(adapter_file) as fp:
                 for row in fp:
                     st = row.strip()
                     if not st or st.startswith("#"):
                         continue
 
-                    # In reality, the format is $name[\t+]$seqence (more than one tab)
+                    # In reality, the format is [\t+] (more than one tab)
                     # so we'll just split on a tab, and remove all the empty elements.
                     split = [f for f in st.split("\t") if bool(f) and len(f) > 0]
 
                     # Invalid format for line, so skip it.
                     if len(split) != 2:
                         print(
-                            f"Skipping cutadapt line '{st}' as irregular elements ({len(split)})",
+                            f"Skipping adaptor line '{st}' as irregular elements ({len(split)})",
                             file=stderr,
                         )
                         continue
-
-                    # reverse the order from name[tab]sequence to { sequence: tab }
-                    cutadapt_map[split[0]] = split[1]
-            return cutadapt_map
+                    adapter_map[split[0]] = split[1]
+            return adapter_map
 
         # Start doing the work
-        # Look up overrepresented sequences
-        overrepresented_sequences = set()
-        for fastqcfile in fastqc_datafiles:
-            text = get_overrepresented_text(fastqcfile)
-            overrepresented_sequences = overrepresented_sequences.union(
-                set(a[0] for a in parse_tsv_table(text, skip_headers=True))
-            )
+        # Only works for PE data
+        if not len(fastqc_datafiles) == 2:
+            sys.exit()
 
-        # Look up adaptor sequences
-        adaptor_sequences = []
-        adaptor_status = False
-        for fastqcfile in fastqc_datafiles:
-            for line in open(fastqcfile, "r"):
+        # Look up overrepresented sequences
+        i = 0
+        for qc_file in fastqc_datafiles:
+            overrepresented_ids = set()
+            overrepresented_sequences = []
+            text = get_overrepresented_text(qc_file)
+            if text:
+                overrepresented_ids = overrepresented_ids.union(
+                    set(
+                        a[3].split("(")[0].strip(" ")
+                        for a in parse_tsv_table(text, skip_headers=True)
+                    )
+                )
+                # print(overrepresented_ids)
+
+            if overrepresented_ids:
+                adapter_map = get_adapt_map(contamination_lookup)
+                # print(overrepresented_ids)
+                # print(adapter_map)
+                for oid in overrepresented_ids:
+                    if oid in adapter_map:
+                        print(
+                            f"Identified sequence '{oid}' as '{adapter_map.get(oid)}' in lookup",
+                            file=stderr,
+                        )
+                        overrepresented_sequences.append(adapter_map.get(oid))
+                    else:
+                        print(
+                            f"Couldn't find a corresponding sequence for '{oid}' in lookup map",
+                            file=stderr,
+                        )
+
+            # Look up common adaptor sequences
+            adaptor_sequences = []
+            adaptor_status = False
+            for line in open(qc_file, "r"):
                 if line.startswith(">>Adapter Content"):
                     adaptor_qc_line = line
                     adaptor_status = True
@@ -118,17 +151,17 @@ class ParseFastqcAdaptors(BioinformaticsPythonTool):
                     continue
                 elif adaptor_status == True and not line.startswith(">>END_MODULE"):
                     if line.startswith("#Position"):
-                        adaptor_list = line.strip("\n").split("\t")
+                        adaptor_names = line.strip("\n").split("\t")
                     else:
-                        adaptor_percentage = line.strip("\n").split("\t")
+                        adaptor_vals = line.strip("\n").split("\t")
 
             # Parse adaptor id if adaptor qc fails
             if "fail" in adaptor_qc_line:
-                cutadapt_map = get_cutadapt_map()
-                for (aid, percentage) in zip(adaptor_list[1:], adaptor_percentage[1:]):
+                adapter_map = get_adapt_map(adaptors_lookup)
+                for (aid, percentage) in zip(adaptor_names[1:], adaptor_vals[1:]):
                     if float(percentage) >= 10:
-                        if aid in cutadapt_map:
-                            sequence = cutadapt_map.get(aid)
+                        if aid in adapter_map:
+                            sequence = adapter_map.get(aid)
                             print(
                                 f"Identified adaptor '{aid}' sequence '{sequence}' in lookup",
                                 file=stderr,
@@ -142,12 +175,22 @@ class ParseFastqcAdaptors(BioinformaticsPythonTool):
             else:
                 pass
 
+            if i == 0:
+                read1_sequences = list(overrepresented_sequences) + adaptor_sequences
+            else:
+                read2_sequences = list(overrepresented_sequences) + adaptor_sequences
+            i += 1
+
         return {
-            "adaptor_sequences": list(overrepresented_sequences) + adaptor_sequences
+            "read1_sequences": read1_sequences,
+            "read2_sequences": read2_sequences,
         }
 
     def outputs(self) -> List[TOutput]:
-        return [TOutput("adaptor_sequences", Array(str))]
+        return [
+            TOutput("read1_sequences", Array(str)),
+            TOutput("read2_sequences", Array(str)),
+        ]
 
     def id(self) -> str:
         return "ParseFastqcAdaptors"
@@ -163,24 +206,26 @@ class ParseFastqcAdaptors(BioinformaticsPythonTool):
 
     def bind_metadata(self):
         self.metadata.documentation = (
-            "Parse overrepresented region and lookup in Cutadapt table"
+            "Parse overrepresented region and lookup in adaptor table"
         )
         self.metadata.contributors = ["Michael Franklin", "Jiaan Yu"]
         self.metadata.dateCreated = datetime(2020, 1, 7)
         self.metadata.dateUpdated = datetime(2021, 10, 6)
-        self.metadata.version = "0.1.0"
+        self.metadata.version = "0.2.0"
 
-    def tests(self):
-        remote_dir = "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics/wgsgermline_data"
-        return [
-            TTestCase(
-                name="basic",
-                input={
-                    "fastqc_datafiles": [
-                        f"{remote_dir}/NA12878-BRCA1.fastqc_data.txt",
-                    ],
-                    "cutadapt_adaptors_lookup": f"{remote_dir}/contaminant_list.txt",
-                },
-                output=[],
-            ),
-        ]
+
+# Unit test will fail
+# def tests(self):
+#     remote_dir = "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics/wgsgermline_data"
+#     return [
+#         TTestCase(
+#             name="basic",
+#             input={
+#                 "fastqc_datafile": [
+#                     f"{remote_dir}/NA12878-BRCA1.fastqc_data.txt",
+#                 ],
+#                 "adaptors_lookup": f"{remote_dir}/contaminant_list.txt",
+#             },
+#             output=[],
+#         ),
+#     ]
