@@ -15,16 +15,16 @@ from janis_core.tool.test_classes import (
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsPythonTool
 
 
-class ParseFastqcAdaptors(BioinformaticsPythonTool):
+class ParseFastqcAdapters(BioinformaticsPythonTool):
     @staticmethod
     def code_block(
-        fastqc_datafiles: List[File], adaptors_lookup: File, contamination_lookup: File
+        fastqc_datafiles: List[File], adapters_lookup: File, contamination_lookup: File
     ):
         """
 
         :param fastqc_datafiles: Array of files, fastqc_datafiles of read 1 and read 2, respectively
 
-        :param adaptors_lookup: Specifies a file which contains the list of adapter sequences which will
+        :param adapters_lookup: Specifies a file which contains the list of adapter sequences which will
             be explicity searched against the library. The file must contain sets of named adapters in
             the form name[tab]sequence. Lines prefixed with a hash will be ignored.
 
@@ -79,7 +79,7 @@ class ParseFastqcAdaptors(BioinformaticsPythonTool):
 
         def get_adapt_map(adapter_file):
             """
-            Helper method to parse the file 'adaptors_lookup'/ 'contamination_lookup' with
+            Helper method to parse the file 'adapters_lookup'/ 'contamination_lookup' with
             format: 'name[tab]sequence' into the dictionary: '{ name: sequence }'
             """
             adapter_map = {}
@@ -96,7 +96,7 @@ class ParseFastqcAdaptors(BioinformaticsPythonTool):
                     # Invalid format for line, so skip it.
                     if len(split) != 2:
                         print(
-                            f"Skipping adaptor line '{st}' as irregular elements ({len(split)})",
+                            f"Skipping adapter line '{st}' as irregular elements ({len(split)})",
                             file=stderr,
                         )
                         continue
@@ -140,33 +140,33 @@ class ParseFastqcAdaptors(BioinformaticsPythonTool):
                             file=stderr,
                         )
 
-            # Look up common adaptor sequences
-            adaptor_sequences = []
-            adaptor_status = False
+            # Look up common adapter sequences
+            adapter_sequences = []
+            adapter_status = False
             for line in open(qc_file, "r"):
                 if line.startswith(">>Adapter Content"):
-                    adaptor_qc_line = line
-                    adaptor_status = True
-                elif adaptor_status == False:
+                    adapter_qc_line = line
+                    adapter_status = True
+                elif adapter_status == False:
                     continue
-                elif adaptor_status == True and not line.startswith(">>END_MODULE"):
+                elif adapter_status == True and not line.startswith(">>END_MODULE"):
                     if line.startswith("#Position"):
-                        adaptor_names = line.strip("\n").split("\t")
+                        adapter_names = line.strip("\n").split("\t")
                     else:
-                        adaptor_vals = line.strip("\n").split("\t")
+                        adapter_vals = line.strip("\n").split("\t")
 
-            # Parse adaptor id if adaptor qc fails
-            if "fail" in adaptor_qc_line:
-                adapter_map = get_adapt_map(adaptors_lookup)
-                for (aid, percentage) in zip(adaptor_names[1:], adaptor_vals[1:]):
+            # Parse adapter id if adapter qc fails
+            if "fail" in adapter_qc_line:
+                adapter_map = get_adapt_map(adapters_lookup)
+                for (aid, percentage) in zip(adapter_names[1:], adapter_vals[1:]):
                     if float(percentage) >= 10:
                         if aid in adapter_map:
                             sequence = adapter_map.get(aid)
                             print(
-                                f"Identified adaptor '{aid}' sequence '{sequence}' in lookup",
+                                f"Identified adapter '{aid}' sequence '{sequence}' in lookup",
                                 file=stderr,
                             )
-                            adaptor_sequences.append(sequence)
+                            adapter_sequences.append(sequence)
                         else:
                             print(
                                 f"Couldn't find a corresponding sequence for '{aid}' in lookup map",
@@ -176,9 +176,9 @@ class ParseFastqcAdaptors(BioinformaticsPythonTool):
                 pass
 
             if i == 0:
-                read1_sequences = list(overrepresented_sequences) + adaptor_sequences
+                read1_sequences = list(overrepresented_sequences) + adapter_sequences
             else:
-                read2_sequences = list(overrepresented_sequences) + adaptor_sequences
+                read2_sequences = list(overrepresented_sequences) + adapter_sequences
             i += 1
 
         return {
@@ -193,10 +193,10 @@ class ParseFastqcAdaptors(BioinformaticsPythonTool):
         ]
 
     def id(self) -> str:
-        return "ParseFastqcAdaptors"
+        return "ParseFastqcAdapters"
 
     def friendly_name(self):
-        return "Parse FastQC Adaptors"
+        return "Parse FastQC Adapters"
 
     def version(self):
         return "v0.2.0"
@@ -206,7 +206,7 @@ class ParseFastqcAdaptors(BioinformaticsPythonTool):
 
     def bind_metadata(self):
         self.metadata.documentation = (
-            "Parse overrepresented region and lookup in adaptor table"
+            "Parse overrepresented region and lookup in adapter table"
         )
         self.metadata.contributors = ["Michael Franklin", "Jiaan Yu"]
         self.metadata.dateCreated = datetime(2020, 1, 7)
@@ -224,7 +224,7 @@ class ParseFastqcAdaptors(BioinformaticsPythonTool):
 #                 "fastqc_datafile": [
 #                     f"{remote_dir}/NA12878-BRCA1.fastqc_data.txt",
 #                 ],
-#                 "adaptors_lookup": f"{remote_dir}/contaminant_list.txt",
+#                 "adapters_lookup": f"{remote_dir}/contaminant_list.txt",
 #             },
 #             output=[],
 #         ),
