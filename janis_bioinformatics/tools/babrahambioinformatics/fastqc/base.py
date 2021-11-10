@@ -151,7 +151,8 @@ class FastQCBase(BioinformaticsTool, ABC):
             ToolOutput(
                 "out_R2",
                 ZipFile(),
-                selector=InputSelector("read2", remove_file_extension=True),
+                selector=InputSelector("read2", remove_file_extension=True)
+                + "_fastqc.zip",
             ),
             ToolOutput(
                 "out_R2_datafile",
