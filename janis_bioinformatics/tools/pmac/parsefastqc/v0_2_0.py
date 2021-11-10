@@ -18,11 +18,15 @@ from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsPyth
 class ParseFastqcAdapters(BioinformaticsPythonTool):
     @staticmethod
     def code_block(
-        fastqc_datafiles: List[File], adapters_lookup: File, contamination_lookup: File
+        read1_fastqc_datafile: File,
+        read2_fastqc_datafile: File,
+        adapters_lookup: File,
+        contamination_lookup: File,
     ):
         """
+        :param read1_fastqc_datafile: fastqc_datafile of read 1
 
-        :param fastqc_datafiles: Array of files, fastqc_datafiles of read 1 and read 2, respectively
+        :param read2_fastqc_datafile: fastqc_datafile of read 2
 
         :param adapters_lookup: Specifies a file which contains the list of adapter sequences which will
             be explicity searched against the library. The file must contain sets of named adapters in
@@ -104,13 +108,9 @@ class ParseFastqcAdapters(BioinformaticsPythonTool):
             return adapter_map
 
         # Start doing the work
-        # Only works for PE data
-        if not len(fastqc_datafiles) == 2:
-            sys.exit()
-
         # Look up overrepresented sequences
         i = 0
-        for qc_file in fastqc_datafiles:
+        for qc_file in [read1_fastqc_datafile, read2_fastqc_datafile]:
             overrepresented_ids = set()
             overrepresented_sequences = []
             text = get_overrepresented_text(qc_file)
@@ -182,14 +182,14 @@ class ParseFastqcAdapters(BioinformaticsPythonTool):
             i += 1
 
         return {
-            "read1_sequences": read1_sequences,
-            "read2_sequences": read2_sequences,
+            "out_R1_sequences": read1_sequences,
+            "out_R2_sequences": read2_sequences,
         }
 
     def outputs(self) -> List[TOutput]:
         return [
-            TOutput("read1_sequences", Array(str)),
-            TOutput("read2_sequences", Array(str)),
+            TOutput("out_R1_sequences", Array(str)),
+            TOutput("out_R2_sequences", Array(str)),
         ]
 
     def id(self) -> str:
