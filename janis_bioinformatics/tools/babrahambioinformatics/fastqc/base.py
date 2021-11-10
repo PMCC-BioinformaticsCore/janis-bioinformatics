@@ -3,7 +3,9 @@ import os
 from abc import ABC
 from datetime import datetime
 from typing import List, Dict, Any
+from janis_bioinformatics.data_types.fastq import FastqGzPair
 
+from janis_core.operators.operator import IndexOperator
 from janis_core import (
     ToolOutput,
     ToolInput,
@@ -17,6 +19,7 @@ from janis_core import (
     Int,
     CaptureType,
     CpuSelector,
+    InputSelector,
 )
 from janis_core import get_value_for_hints_and_ordered_resource_tuple
 from janis_core.tool.test_classes import (
@@ -24,9 +27,9 @@ from janis_core.tool.test_classes import (
     TTestExpectedOutput,
     TTestPreprocessor,
 )
-from janis_unix import ZipFile, TextFile
+from janis_unix import ZipFile, TextFile, HtmlFile
 
-from janis_bioinformatics.data_types import FastqGzPair, FastqGz
+from janis_bioinformatics.data_types import FastqGz
 from janis_bioinformatics.tools import BioinformaticsTool
 
 CORES_TUPLE = [
@@ -73,9 +76,9 @@ class FastQCBase(BioinformaticsTool, ABC):
 
     def bind_metadata(self):
         return ToolMetadata(
-            contributors=["Michael Franklin"],
+            contributors=["Michael Franklin", "Jiaan Yu"],
             dateCreated=datetime(2019, 3, 25),
-            dateUpdated=datetime(2019, 3, 25),
+            dateUpdated=datetime(2021, 11, 10),
             institution="Babraham Bioinformatics",
             doi=None,
             citation=None,
@@ -103,17 +106,69 @@ class FastQCBase(BioinformaticsTool, ABC):
         return 8
 
     def inputs(self) -> List[ToolInput]:
-        return [ToolInput("reads", Array(FastqGz), position=5), *self.additional_inputs]
+        return [
+            ToolInput("reads", FastqGzPair),
+            ToolInput(
+                "read1",
+                FastqGz(optional=True),
+                default=IndexOperator(InputSelector("reads"), 0),
+                position=5,
+            ),
+            ToolInput(
+                "read2",
+                FastqGz(optional=True),
+                default=IndexOperator(InputSelector("reads"), 1),
+                position=6,
+            ),
+            *self.additional_inputs,
+        ]
 
     def outputs(self) -> List[ToolOutput]:
         return [
             ToolOutput(
-                "out", Array(ZipFile()), glob=WildcardSelector(wildcard="*.zip")
+                "out_R1",
+                ZipFile(),
+                selector=InputSelector("read1", remove_file_extension=True)
+                + "_fastqc.zip",
             ),
             ToolOutput(
-                "datafile",
-                Array(File),
-                glob=WildcardSelector(wildcard="*/fastqc_data.txt"),
+                "out_R1_datafile",
+                File,
+                selector=InputSelector("read1", remove_file_extension=True)
+                + "_fastqc/fastqc_data.txt",
+            ),
+            ToolOutput(
+                "out_R1_html",
+                HtmlFile,
+                selector=InputSelector("read1", remove_file_extension=True)
+                + "_fastqc.html",
+            ),
+            ToolOutput(
+                "out_R1_directory",
+                Directory,
+                selector=InputSelector("read1", remove_file_extension=True) + "_fastqc",
+            ),
+            ToolOutput(
+                "out_R2",
+                ZipFile(),
+                selector=InputSelector("read2", remove_file_extension=True),
+            ),
+            ToolOutput(
+                "out_R2_datafile",
+                File,
+                selector=InputSelector("read2", remove_file_extension=True)
+                + "_fastqc/fastqc_data.txt",
+            ),
+            ToolOutput(
+                "out_R2_html",
+                HtmlFile,
+                selector=InputSelector("read2", remove_file_extension=True)
+                + "_fastqc.html",
+            ),
+            ToolOutput(
+                "out_R2_directory",
+                Directory,
+                selector=InputSelector("read2", remove_file_extension=True) + "_fastqc",
             ),
         ]
 
