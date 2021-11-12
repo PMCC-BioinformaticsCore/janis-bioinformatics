@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Dict, Any
 
 from janis_core import (
     CommandTool,
@@ -10,8 +10,38 @@ from janis_core import (
     StringFormatter,
     Int,
     InputSelector,
+    CaptureType,
+    get_value_for_hints_and_ordered_resource_tuple,
 )
 from janis_bioinformatics.data_types import CompressedVcf
+
+BWA_MEM_TUPLE = [
+    (
+        CaptureType.key(),
+        {
+            CaptureType.TARGETED: 8,
+            CaptureType.EXOME: 12,
+            CaptureType.CHROMOSOME: 12,
+            CaptureType.THIRTYX: 16,
+            CaptureType.NINETYX: 20,
+            CaptureType.THREEHUNDREDX: 24,
+        },
+    )
+]
+
+BWA_CORES_TUPLE = [
+    (
+        CaptureType.key(),
+        {
+            CaptureType.TARGETED: 1,
+            CaptureType.EXOME: 1,
+            CaptureType.CHROMOSOME: 1,
+            CaptureType.THIRTYX: 1,
+            CaptureType.NINETYX: 1,
+            CaptureType.THREEHUNDREDX: 1,
+        },
+    )
+]
 
 
 class CircosPlotBase(CommandTool):
@@ -53,6 +83,18 @@ $normal_name $facets_file $sv_file $out_dir $manta_filter[optional]
                 ),
             )
         ]
+
+    def memory(self, hints: Dict[str, Any]):
+        val = get_value_for_hints_and_ordered_resource_tuple(hints, BWA_MEM_TUPLE)
+        if val:
+            return val
+        return 16
+
+    def cpus(self, hints: Dict[str, Any]):
+        val = get_value_for_hints_and_ordered_resource_tuple(hints, BWA_CORES_TUPLE)
+        if val:
+            return val
+        return 1
 
     def bind_metadata(self) -> ToolMetadata:
         from datetime import datetime
