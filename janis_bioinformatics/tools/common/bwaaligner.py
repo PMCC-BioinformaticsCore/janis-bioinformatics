@@ -35,20 +35,20 @@ class BwaAligner(BioinformaticsWorkflow):
         self.input("fastq", FastqGzPair)
 
         # pipe adapters
-        self.input("three_prim_adapter_read1", Array(str, optional=True))
-        self.input("three_prim_adapter_read2", Array(str, optional=True))
-        self.input("five_prim_adapter_read1", Array(str, optional=True))
-        self.input("five_prim_adapter_read2", Array(str, optional=True))
+        self.input("three_prime_adapter_read1", Array(str, optional=True))
+        self.input("three_prime_adapter_read2", Array(str, optional=True))
+        self.input("five_prime_adapter_read1", Array(str, optional=True))
+        self.input("five_prime_adapter_read2", Array(str, optional=True))
 
         # Steps
         self.step(
             "cutadapt",
             CutAdapt_2_1(
                 fastq=self.fastq,
-                adapter=self.three_prim_adapter_read1,
-                adapterSecondRead=self.three_prim_adapter_read2,
-                front=self.five_prim_adapter_read1,
-                frontAdapterSecondRead=self.five_prim_adapter_read2,
+                adapter=self.three_prime_adapter_read1,
+                adapterSecondRead=self.three_prime_adapter_read2,
+                front=self.five_prime_adapter_read1,
+                frontAdapterSecondRead=self.five_prime_adapter_read2,
                 qualityCutoff=15,
                 minimumLength=50,
                 outputPrefix=self.sample_name,
