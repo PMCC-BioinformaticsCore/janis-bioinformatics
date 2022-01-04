@@ -3,6 +3,7 @@ from janis_bioinformatics.tools.bioinformaticstoolbase import (
     BioinformaticsWorkflow,
 )
 from janis_bioinformatics.tools import (
+    arriba,
     babrahambioinformatics,
     biobambam,
     bcftools,
