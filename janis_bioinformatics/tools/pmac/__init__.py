@@ -19,3 +19,4 @@ from .generateintervalsbychromosome.generateintervalsbychromosome import (
     GenerateIntervalsByChromosome,
 )
 from .generatemantaconfig import GenerateMantaConfig
+from .megafusion.versions import *
