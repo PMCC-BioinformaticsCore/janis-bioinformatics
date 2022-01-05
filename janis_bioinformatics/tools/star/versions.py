@@ -30,6 +30,14 @@ class Star_2_7_5:
         return "v2.7.5c"
 
 
+class Star_2_7_8:
+    def container(self):
+        return "quay.io/biocontainers/star:2.7.8a--0"
+
+    def version(self):
+        return "v2.7.8a"
+
+
 class StarAlignReads_2_5_3(Star_2_5_3, StarAlignReadsBase):
     pass
 
@@ -39,6 +47,10 @@ class StarAlignReads_2_7_1(Star_2_7_1, StarAlignReadsBase):
 
 
 class StarAlignReads_2_7_5(Star_2_7_5, StarAlignReadsBase):
+    pass
+
+
+class StarAlignReads_2_7_8(Star_2_7_8, StarAlignReadsBase):
     pass
 
 
@@ -54,6 +66,10 @@ class StarGenerateIndexes_2_7_5(Star_2_7_5, StarGenerateIndexesBase):
     pass
 
 
+class StarGenerateIndexes_2_7_8(Star_2_7_8, StarGenerateIndexesBase):
+    pass
+
+
 class StarLiftOver_2_5_3(Star_2_5_3, StarLiftOverBase):
     pass
 
@@ -66,6 +82,10 @@ class StarLiftOver_2_7_5(Star_2_7_5, StarLiftOverBase):
     pass
 
 
+class StarLiftOver_2_7_8(Star_2_7_8, StarLiftOverBase):
+    pass
+
+
 class StarInputAlignmentsFromBam_2_5_3(Star_2_5_3, StarInputAlignmentsFromBamBase):
     pass
 
@@ -75,4 +95,8 @@ class StarInputAlignmentsFromBam_2_7_1(Star_2_7_1, StarInputAlignmentsFromBamBas
 
 
 class StarInputAlignmentsFromBam_2_7_5(Star_2_7_5, StarInputAlignmentsFromBamBase):
+    pass
+
+
+class StarInputAlignmentsFromBam_2_7_8(Star_2_7_8, StarInputAlignmentsFromBamBase):
     pass
