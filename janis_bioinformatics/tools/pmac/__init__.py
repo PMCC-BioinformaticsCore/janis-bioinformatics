@@ -20,3 +20,4 @@ from .generateintervalsbychromosome.generateintervalsbychromosome import (
 )
 from .generatemantaconfig import GenerateMantaConfig
 from .megafusion.versions import *
+from .replacenfusionvcf.versions import *
