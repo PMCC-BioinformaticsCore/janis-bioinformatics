@@ -61,8 +61,8 @@ class ReplaceNFusionVcfBase(BioinformaticsTool, ABC):
 
         return ToolMetadata(
             contributors=["Jiaan Yu"],
-            dateCreated=datetime(2021, 1, 5),
-            dateUpdated=datetime(2021, 1, 5),
+            dateCreated=datetime(2022, 1, 5),
+            dateUpdated=datetime(2022, 1, 5),
             citation=None,
             doi=None,
             documentation="""
