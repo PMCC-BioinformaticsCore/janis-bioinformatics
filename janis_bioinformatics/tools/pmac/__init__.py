@@ -18,6 +18,8 @@ from .generatebedtoolscoveragegenomefile import GenerateGenomeFileForBedtoolsCov
 from .generateintervalsbychromosome.generateintervalsbychromosome import (
     GenerateIntervalsByChromosome,
 )
+from .circosplot.versions import *
 from .generatemantaconfig import GenerateMantaConfig
 from .megafusion.versions import *
 from .replacenfusionvcf.versions import *
+from .gatherfilesformultiqc import GatherFilesForMultiqc
