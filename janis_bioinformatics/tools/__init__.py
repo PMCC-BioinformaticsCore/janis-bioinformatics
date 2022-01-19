@@ -17,6 +17,7 @@ from janis_bioinformatics.tools import (
     freebayes,
     gatk3,
     gatk4,
+    htseq,
     htslib,
     igvtools,
     illumina,
