@@ -92,8 +92,7 @@ class HTSeqCountBase(HTSeqToolBase, ABC):
         ToolInput(
             "minaqual",
             Int(optional=True),
-            prefix="--a=",
-            separate_value_from_prefix=False,
+            prefix="-a",
             position=1,
         ),
         ToolInput(
