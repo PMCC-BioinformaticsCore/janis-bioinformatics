@@ -1,4 +1,5 @@
 from abc import ABC
+from typing import Dict, Any
 
 from janis_core import (
     ToolInput,
@@ -10,9 +11,37 @@ from janis_core import (
     Float,
     ToolOutput,
     InputSelector,
+    get_value_for_hints_and_ordered_resource_tuple,
+    CaptureType,
 )
 from janis_bioinformatics.data_types import Bam
 from janis_bioinformatics.tools.htseq.htseqtoolbase import HTSeqToolBase
+
+CORES_TUPLE = [
+    (
+        CaptureType.key(),
+        {
+            CaptureType.CHROMOSOME: 1,
+            CaptureType.EXOME: 1,
+            CaptureType.THIRTYX: 1,
+            CaptureType.NINETYX: 1,
+            CaptureType.THREEHUNDREDX: 1,
+        },
+    )
+]
+
+MEM_TUPLE = [
+    (
+        CaptureType.key(),
+        {
+            CaptureType.CHROMOSOME: 16,
+            CaptureType.EXOME: 16,
+            CaptureType.THIRTYX: 16,
+            CaptureType.NINETYX: 64,
+            CaptureType.THREEHUNDREDX: 64,
+        },
+    )
+]
 
 
 class HTSeqCountBase(HTSeqToolBase, ABC):
@@ -41,6 +70,18 @@ class HTSeqCountBase(HTSeqToolBase, ABC):
 
     def outputs(self):
         return [ToolOutput("out", File(), glob=InputSelector("outputFilename"))]
+
+    def cpus(self, hints: Dict[str, Any]):
+        val = get_value_for_hints_and_ordered_resource_tuple(hints, CORES_TUPLE)
+        if val:
+            return val
+        return 1
+
+    def memory(self, hints: Dict[str, Any]):
+        val = get_value_for_hints_and_ordered_resource_tuple(hints, MEM_TUPLE)
+        if val:
+            return val
+        return 8
 
     def bind_metadata(self):
         from datetime import date
