@@ -120,7 +120,7 @@ class HTSeqCountBase(HTSeqToolBase, ABC):
         ToolInput(
             "mode",
             String(optional=True),
-            prefix="--type=",
+            prefix="--mode=",
             separate_value_from_prefix=False,
             position=1,
         ),
