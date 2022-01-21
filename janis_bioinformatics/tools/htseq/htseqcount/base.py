@@ -108,6 +108,8 @@ class HTSeqCountBase(HTSeqToolBase, ABC):
             prefix="--format=",
             separate_value_from_prefix=False,
             position=1,
+            doc="Format of the input data. Possible values are sam (for text \
+SAM files) and bam (for binary BAM files). Default is sam.",
         ),
         ToolInput(
             "order",
@@ -115,6 +117,17 @@ class HTSeqCountBase(HTSeqToolBase, ABC):
             prefix="--order=",
             separate_value_from_prefix=False,
             position=1,
+            doc="For paired-end data, the alignment have to be sorted either \
+by read name or by alignment position. If your data is not sorted, use the \
+samtools sort function of samtools to sort it. Use this option, with name or \
+pos for <order> to indicate how the input data has been sorted. The default is name.\
+If name is indicated, htseq-count expects all the alignments for the reads of \
+a given read pair to appear in adjacent records in the input data. For pos, \
+this is not expected; rather, read alignments whose mate alignment have not \
+yet been seen are kept in a buffer in memory until the mate is found. While, \
+strictly speaking, the latter will also work with unsorted data, sorting \
+ensures that most alignment mates appear close to each other in the data \
+and hence the buffer is much less likely to overflow.",
         ),
         ToolInput(
             "max_reads_in_buffer",
@@ -122,6 +135,10 @@ class HTSeqCountBase(HTSeqToolBase, ABC):
             prefix="--max-reads-in-buffer=",
             separate_value_from_prefix=False,
             position=1,
+            doc="When <alignment_file> is paired end sorted by position, \
+allow only so many reads to stay in memory until the mates are found (raising \
+this number will use more memory). Has no effect for single end or paired end \
+sorted by name. (default: 30000000)",
         ),
         ToolInput(
             "stranded",
@@ -129,12 +146,23 @@ class HTSeqCountBase(HTSeqToolBase, ABC):
             prefix="--stranded=",
             separate_value_from_prefix=False,
             position=1,
+            doc="whether the data is from a strand-specific assay (default: \
+yes)\
+For stranded=no, a read is considered overlapping with a feature regardless \
+of whether it is mapped to the same or the opposite strand as the feature. \
+For stranded=yes and single-end reads, the read has to be mapped to the same \
+strand as the feature. For paired-end reads, the first read has to be on the \
+same strand and the second read on the opposite strand. For stranded=reverse, \
+these rules are reversed.",
         ),
         ToolInput(
             "minaqual",
             Int(optional=True),
             prefix="-a",
             position=1,
+            doc="skip all reads with alignment quality lower than the given \
+minimum value (default: 10 — Note: the default used to be 0 until \
+version 0.5.4.)",
         ),
         ToolInput(
             "type",
@@ -142,6 +170,9 @@ class HTSeqCountBase(HTSeqToolBase, ABC):
             prefix="--type=",
             separate_value_from_prefix=False,
             position=1,
+            doc="feature type (3rd column in GFF file) to be used, all \
+features of other type are ignored (default, suitable for RNA-Seq analysis \
+using an Ensembl GTF file: exon)",
         ),
         ToolInput(
             "id",
@@ -149,6 +180,10 @@ class HTSeqCountBase(HTSeqToolBase, ABC):
             prefix="--idattr=",
             separate_value_from_prefix=False,
             position=1,
+            doc="GFF attribute to be used as feature ID. Several GFF lines \
+with the same feature ID will be considered as parts of the same feature. The \
+feature ID is used to identity the counts in the output table. The default, \
+suitable for RNA-Seq analysis using an Ensembl GTF file, is gene_id.",
         ),
         ToolInput(
             "additional_attr",
@@ -156,6 +191,12 @@ class HTSeqCountBase(HTSeqToolBase, ABC):
             prefix="--additional-attr=",
             separate_value_from_prefix=False,
             position=1,
+            doc="Additional feature attributes, which will be printed as an \
+additional column after the primary attribute column but before the counts \
+column(s). The default is none, a suitable value to get gene names using an \
+Ensembl GTF file is gene_name. To use more than one additional attribute, \
+repeat the option in the command line more than once, with a single attribute \
+each time, e.g. --additional-attr=gene_name --additional_attr=exon_number.",
         ),
         ToolInput(
             "mode",
@@ -163,6 +204,9 @@ class HTSeqCountBase(HTSeqToolBase, ABC):
             prefix="--mode=",
             separate_value_from_prefix=False,
             position=1,
+            doc="Mode to handle reads overlapping more than one feature. \
+Possible values for <mode> are union, intersection-strict and \
+intersection-nonempty (default: union)",
         ),
         ToolInput(
             "nonunique",
@@ -170,6 +214,9 @@ class HTSeqCountBase(HTSeqToolBase, ABC):
             prefix="--nonunique=",
             separate_value_from_prefix=False,
             position=1,
+            doc="Mode to handle reads that align to or are assigned to more \
+than one feature in the overlap <mode> of choice (see -m option). <nonunique \
+mode> are none and all (default: none)",
         ),
         ToolInput(
             "secondary_alignments",
@@ -177,6 +224,8 @@ class HTSeqCountBase(HTSeqToolBase, ABC):
             prefix="--secondary-alignments=",
             separate_value_from_prefix=False,
             position=1,
+            doc="Mode to handle secondary alignments (SAM flag 0x100). <mode> \
+can be score and ignore (default: score)",
         ),
         ToolInput(
             "supplementary_alignments",
@@ -184,6 +233,8 @@ class HTSeqCountBase(HTSeqToolBase, ABC):
             prefix="--supplementary-alignments=",
             separate_value_from_prefix=False,
             position=1,
+            doc="Mode to handle supplementary/chimeric alignments (SAM flag \
+0x800). <mode> can be score and ignore (default: score)",
         ),
         ToolInput(
             "samout",
@@ -191,5 +242,8 @@ class HTSeqCountBase(HTSeqToolBase, ABC):
             prefix="--samout=",
             separate_value_from_prefix=False,
             position=1,
+            doc="write out all SAM alignment records into an output SAM file \
+called <samout>, annotating each line with its assignment to a feature or a \
+special counter (as an optional field with tag ‘XF’)",
         ),
     ]
