@@ -1,9 +1,7 @@
 import operator
-import os
 from abc import ABC
 from datetime import datetime
 from typing import List, Dict, Any
-from janis_bioinformatics.data_types.fastq import FastqGzPair
 
 from janis_core.operators.operator import IndexOperator
 from janis_core import (
@@ -29,7 +27,7 @@ from janis_core.tool.test_classes import (
 )
 from janis_unix import ZipFile, TextFile, HtmlFile
 
-from janis_bioinformatics.data_types import FastqGz
+from janis_bioinformatics.data_types import FastqGz, FastqGzPair
 from janis_bioinformatics.tools import BioinformaticsTool
 
 CORES_TUPLE = [
@@ -315,15 +313,24 @@ class FastQCBase(BioinformaticsTool, ABC):
                     ],
                     "threads": 1,
                 },
-                output=FastqGzPair.basic_test("out", 824000, 408000, 416000)
-                + Array.array_wrapper(
-                    [
-                        TextFile.basic_test(
-                            "datafile",
-                            81000,
-                        )
-                    ]
-                ),
+                output=[
+                    TTestExpectedOutput(
+                        tag="out_R1_datafile",
+                        preprocessor=TTestPreprocessor.LineCount,
+                        operator=operator.eq,
+                        expected_value=2739,
+                    ),
+                    TTestExpectedOutput(
+                        tag="out_R2_datafile",
+                        preprocessor=TTestPreprocessor.LineCount,
+                        operator=operator.eq,
+                        expected_value=2751,
+                    ),
+                ]
+                + ZipFile.basic_test("out_R1", 400000)
+                + ZipFile.basic_test("out_R2", 400000)
+                + HtmlFile.basic_test("out_R1_html", 600000)
+                + HtmlFile.basic_test("out_R2_html", 600000),
             ),
             TTestCase(
                 name="minimal",
