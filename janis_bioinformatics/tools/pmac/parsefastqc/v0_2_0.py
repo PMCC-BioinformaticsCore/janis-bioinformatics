@@ -213,19 +213,19 @@ class ParseFastqcAdapters(BioinformaticsPythonTool):
         self.metadata.dateUpdated = datetime(2021, 10, 6)
         self.metadata.version = "0.2.0"
 
-
-# Unit test will fail
-# def tests(self):
-#     remote_dir = "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics/wgsgermline_data"
-#     return [
-#         TTestCase(
-#             name="basic",
-#             input={
-#                 "fastqc_datafile": [
-#                     f"{remote_dir}/NA12878-BRCA1.fastqc_data.txt",
-#                 ],
-#                 "adapters_lookup": f"{remote_dir}/contaminant_list.txt",
-#             },
-#             output=[],
-#         ),
-#     ]
+    def tests(self):
+        # New files needed to update to the space
+        # Test not founding anything useful
+        remote_dir = "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics/wgsgermline_data"
+        return [
+            TTestCase(
+                name="basic",
+                input={
+                    "read1_fastqc_datafile": f"{remote_dir}/NA12878-BRCA1_R1.fastqc_data.txt",
+                    "read2_fastqc_datafile": f"{remote_dir}/NA12878-BRCA1_R2.fastqc_data.txt",
+                    "adapters_lookup": f"{remote_dir}/adapter_list.txt",
+                    "contamination_lookup": f"{remote_dir}/contaminant_list.txt",
+                },
+                output=[],
+            ),
+        ]
