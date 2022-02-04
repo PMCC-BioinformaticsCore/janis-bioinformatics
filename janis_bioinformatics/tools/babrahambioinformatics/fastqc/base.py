@@ -1,4 +1,3 @@
-import operator
 from abc import ABC
 from datetime import datetime
 from typing import List, Dict, Any
@@ -131,7 +130,7 @@ class FastQCBase(BioinformaticsTool, ABC):
             ),
             ToolOutput(
                 "out_R1_datafile",
-                File,
+                TextFile,
                 selector=InputSelector("read1", remove_file_extension=True)
                 + "_fastqc/fastqc_data.txt",
             ),
@@ -154,7 +153,7 @@ class FastQCBase(BioinformaticsTool, ABC):
             ),
             ToolOutput(
                 "out_R2_datafile",
-                File,
+                TextFile,
                 selector=InputSelector("read2", remove_file_extension=True)
                 + "_fastqc/fastqc_data.txt",
             ),
@@ -313,20 +312,18 @@ class FastQCBase(BioinformaticsTool, ABC):
                     ],
                     "threads": 1,
                 },
-                output=[
-                    TTestExpectedOutput(
-                        tag="out_R1_datafile",
-                        preprocessor=TTestPreprocessor.LineCount,
-                        operator=operator.eq,
-                        expected_value=2739,
-                    ),
-                    TTestExpectedOutput(
-                        tag="out_R2_datafile",
-                        preprocessor=TTestPreprocessor.LineCount,
-                        operator=operator.eq,
-                        expected_value=2751,
-                    ),
-                ]
+                output=TextFile.basic_test(
+                    "out_R1_datafile",
+                    80000,
+                    line_count=2739,
+                    md5="8e23d29e0859ba547f0aa616ca395a8f",
+                )
+                + TextFile.basic_test(
+                    "out_R2_datafile",
+                    80000,
+                    line_count=2751,
+                    md5="a623b0a610ce51cef1137c7cb542f773",
+                )
                 + ZipFile.basic_test("out_R1", 400000)
                 + ZipFile.basic_test("out_R2", 400000)
                 + HtmlFile.basic_test("out_R1_html", 600000)
