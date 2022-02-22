@@ -26,7 +26,7 @@ class BwaAligner(BioinformaticsWorkflow):
         return "common"
 
     def version(self):
-        return "1.0.0"
+        return "1.2.0"
 
     def constructor(self):
         # Inputs
@@ -35,18 +35,20 @@ class BwaAligner(BioinformaticsWorkflow):
         self.input("fastq", FastqGzPair)
 
         # pipe adapters
-        self.input("cutadapt_adapter", Array(str, optional=True))
-        self.input("cutadapt_removeMiddle3Adapter", Array(str, optional=True))
+        self.input("three_prime_adapter_read1", Array(str, optional=True))
+        self.input("three_prime_adapter_read2", Array(str, optional=True))
+        self.input("five_prime_adapter_read1", Array(str, optional=True))
+        self.input("five_prime_adapter_read2", Array(str, optional=True))
 
         # Steps
         self.step(
             "cutadapt",
             CutAdapt_2_1(
                 fastq=self.fastq,
-                adapter=self.cutadapt_adapter,
-                front=None,
-                removeMiddle5Adapter=None,
-                removeMiddle3Adapter=self.cutadapt_removeMiddle3Adapter,
+                adapter=self.three_prime_adapter_read1,
+                adapterSecondRead=self.three_prime_adapter_read2,
+                front=self.five_prime_adapter_read1,
+                frontAdapterSecondRead=self.five_prime_adapter_read2,
                 qualityCutoff=15,
                 minimumLength=50,
                 outputPrefix=self.sample_name,
@@ -80,9 +82,10 @@ class BwaAligner(BioinformaticsWorkflow):
 
     def bind_metadata(self):
         self.metadata.documentation = "Align sorted bam with this subworkflow consisting of BWA Mem + SamTools + Gatk4SortSam"
-        self.metadata.contributors = ["Michael Franklin"]
+        self.metadata.contributors = ["Michael Franklin", "Jiaan Yu"]
         self.metadata.dateCreated = "2018-12-24"
-        self.metadata.version = "1.1"
+        self.metadata.dateUpdated = "2021-11-03"
+        self.metadata.version = "1.2"
 
     def tests(self):
         remote_dir = "https://swift.rc.nectar.org.au/v1/AUTH_4df6e734a509497692be237549bbe9af/janis-test-data/bioinformatics/wgsgermline_data"
