@@ -26,20 +26,20 @@ class LocaliseFastqGzPair(UnixTool):
     def inputs(self):
         return [
             ToolInput(
-                "fastq",
+                "fastqs",
                 FastqGzPair,
                 position=2,
             ),
             ToolInput(
                 "outputRead1",
                 Filename(
-                    prefix=IndexOperator(InputSelector("reads"), 0), extension=".gz"
+                    prefix=IndexOperator(InputSelector("fastqs"), 0), extension=".gz"
                 ),
             ),
             ToolInput(
                 "outputRead2",
                 Filename(
-                    prefix=IndexOperator(InputSelector("reads"), 1), extension=".gz"
+                    prefix=IndexOperator(InputSelector("fastqs"), 1), extension=".gz"
                 ),
             ),
         ]
