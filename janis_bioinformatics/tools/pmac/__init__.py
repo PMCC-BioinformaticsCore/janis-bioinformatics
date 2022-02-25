@@ -1,6 +1,9 @@
 from .combinevariants.versions import *
 from .trimiupac.versions import *
+
+# Keep the old tool ParseFastqcAdaptors from breaking the other pipelines
 from .parsefastqc.v0_1_0 import ParseFastqcAdaptors
+from .parsefastqc.v0_2_0 import ParseFastqcAdapters
 from .performancesummary.versions import *
 from .genecovpersample.versions import *
 from .addsymtodepthofcoverage.versions import *
