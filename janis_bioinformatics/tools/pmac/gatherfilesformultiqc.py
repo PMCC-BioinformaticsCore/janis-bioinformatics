@@ -64,7 +64,7 @@ class GatherFilesForMultiqc(UnixTool):
 
     def bind_metadata(self):
         self.metadata.dateCreated = datetime(2021, 11, 1)
-        self.metadata.dateUpdated = datetime(2020, 11, 19)
+        self.metadata.dateUpdated = datetime(2021, 11, 19)
         self.metadata.contributors = ["Jiaan Yu"]
         self.metadata.documentation = """\
 Gather Files for MultiQC
