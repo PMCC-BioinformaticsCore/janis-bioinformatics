@@ -1,5 +1,4 @@
 from datetime import datetime
-from distutils import extension
 from janis_core import (
     ToolInput,
     ToolOutput,

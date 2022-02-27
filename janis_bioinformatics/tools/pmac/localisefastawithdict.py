@@ -1,6 +1,4 @@
 from datetime import datetime
-from distutils import extension
-from turtle import position
 from janis_core import ToolInput, ToolOutput, ToolArgument, InputSelector, Filename
 
 from janis_unix.tools.unixtool import UnixTool
