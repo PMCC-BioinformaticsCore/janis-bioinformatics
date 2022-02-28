@@ -51,8 +51,8 @@ class LocaliseFastqGzPair(UnixTool):
                 "out",
                 FastqGzPair,
                 selector=[
-                    InputSelector("outputRead1"),
-                    InputSelector("outputRead2"),
+                    InputSelector("outputRead1").basename(),
+                    InputSelector("outputRead2").basename(),
                 ],
             )
         ]

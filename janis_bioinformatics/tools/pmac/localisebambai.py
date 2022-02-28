@@ -34,7 +34,9 @@ class LocaliseBamBai(UnixTool):
         ]
 
     def outputs(self):
-        return [ToolOutput("out", BamBai, selector=InputSelector("bam_output"))]
+        return [
+            ToolOutput("out", BamBai, selector=InputSelector("bam_output").basename())
+        ]
 
     def arguments(self):
         return [

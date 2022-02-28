@@ -1,5 +1,12 @@
 from datetime import datetime
-from janis_core import ToolInput, ToolOutput, ToolArgument, InputSelector, Filename
+from janis_core import (
+    ToolInput,
+    ToolOutput,
+    ToolArgument,
+    InputSelector,
+    Filename,
+    String,
+)
 
 from janis_unix.tools.unixtool import UnixTool
 from janis_bioinformatics.data_types import FastaWithDict
@@ -10,7 +17,7 @@ class LocaliseFastaWithDict(UnixTool):
         return "LocaliseFastaWithDict"
 
     def friendly_name(self):
-        return "LocaliseFastaWithDict"
+        return "     "
 
     def base_command(self):
         return None
@@ -23,13 +30,13 @@ class LocaliseFastaWithDict(UnixTool):
             ),
             ToolInput(
                 "reference_all",
-                Filename(prefix=InputSelector("reference"), extension="*"),
+                String(prefix=InputSelector("reference"), extension="*"),
                 position=2,
                 shell_quote=False,
             ),
             ToolInput(
                 "reference_dict",
-                Filename(
+                String(
                     prefix=InputSelector("reference", remove_file_extension=True),
                     extension=".dict",
                 ),
@@ -44,7 +51,11 @@ class LocaliseFastaWithDict(UnixTool):
 
     def outputs(self):
         return [
-            ToolOutput("out", FastaWithDict, selector=InputSelector("reference_output"))
+            ToolOutput(
+                "out",
+                FastaWithDict,
+                selector=InputSelector("reference_output").basename(),
+            )
         ]
 
     def arguments(self):
