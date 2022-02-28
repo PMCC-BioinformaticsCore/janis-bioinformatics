@@ -17,7 +17,7 @@ class LocaliseFastaWithDict(UnixTool):
         return "LocaliseFastaWithDict"
 
     def friendly_name(self):
-        return "     "
+        return "LocaliseFastaWithDict"
 
     def base_command(self):
         return None
@@ -27,41 +27,15 @@ class LocaliseFastaWithDict(UnixTool):
             ToolInput(
                 "reference",
                 FastaWithDict,
-            ),
-            ToolInput(
-                "reference_all",
-                String(prefix=InputSelector("reference"), extension="*"),
-                position=2,
-                shell_quote=False,
-            ),
-            ToolInput(
-                "reference_dict",
-                String(
-                    prefix=InputSelector("reference", remove_file_extension=True),
-                    extension=".dict",
-                ),
-                position=2,
-                shell_quote=False,
-            ),
-            ToolInput(
-                "reference_output",
-                Filename(prefix=InputSelector("reference"), extension=".fasta"),
+                localise_file=True,
             ),
         ]
 
     def outputs(self):
         return [
             ToolOutput(
-                "out",
-                FastaWithDict,
-                selector=InputSelector("reference_output").basename(),
+                "out", FastaWithDict, selector=InputSelector("reference").basename()
             )
-        ]
-
-    def arguments(self):
-        return [
-            ToolArgument("cp", position=1, shell_quote=False),
-            ToolArgument(".", position=3, shell_quote=False),
         ]
 
     def tool_provider(self):
@@ -75,5 +49,5 @@ class LocaliseFastaWithDict(UnixTool):
         self.metadata.dateUpdated = datetime(2022, 1, 7)
         self.metadata.contributors = ["Jiaan Yu"]
         self.metadata.documentation = """\
-Localise Arrary of FastqGZ pairs
+Localise FastaWithDict
         """

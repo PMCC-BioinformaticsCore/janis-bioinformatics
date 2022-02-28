@@ -17,32 +17,11 @@ class LocaliseBamBai(UnixTool):
 
     def inputs(self):
         return [
-            ToolInput(
-                "bam",
-                BamBai,
-            ),
-            ToolInput(
-                "bam_all",
-                Filename(prefix=InputSelector("bam"), extension="*"),
-                position=2,
-                shell_quote=False,
-            ),
-            ToolInput(
-                "bam_output",
-                Filename(prefix=InputSelector("bam"), extension=".bam"),
-            ),
+            ToolInput("bam", BamBai, localise_file=True),
         ]
 
     def outputs(self):
-        return [
-            ToolOutput("out", BamBai, selector=InputSelector("bam_output").basename())
-        ]
-
-    def arguments(self):
-        return [
-            ToolArgument("cp", position=1, shell_quote=False),
-            ToolArgument(".", position=3, shell_quote=False),
-        ]
+        return [ToolOutput("out", BamBai, selector=InputSelector("bam").basename())]
 
     def tool_provider(self):
         return "Peter MacCallum Cancer Centre"
@@ -55,5 +34,5 @@ class LocaliseBamBai(UnixTool):
         self.metadata.dateUpdated = datetime(2022, 1, 7)
         self.metadata.contributors = ["Jiaan Yu"]
         self.metadata.documentation = """\
-Localise Arrary of FastqGZ pairs
+Localise BamBai
         """
