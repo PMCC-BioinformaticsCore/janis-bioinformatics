@@ -34,12 +34,14 @@ class LocaliseFastqGzPair(UnixTool):
                 Filename(
                     prefix=IndexOperator(InputSelector("fastqs"), 0), extension=".gz"
                 ),
+                shell_quote=False,
             ),
             ToolInput(
                 "outputRead2",
                 Filename(
                     prefix=IndexOperator(InputSelector("fastqs"), 1), extension=".gz"
                 ),
+                shell_quote=False,
             ),
         ]
 

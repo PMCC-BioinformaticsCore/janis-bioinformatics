@@ -25,6 +25,16 @@ class LocaliseFastaWithDict(UnixTool):
                 "reference_all",
                 Filename(prefix=InputSelector("reference"), extension="*"),
                 position=2,
+                shell_quote=False,
+            ),
+            ToolInput(
+                "reference_dict",
+                Filename(
+                    prefix=InputSelector("reference", remove_file_extension=True),
+                    extension=".dict",
+                ),
+                position=2,
+                shell_quote=False,
             ),
             ToolInput(
                 "reference_output",

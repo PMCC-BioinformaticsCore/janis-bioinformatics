@@ -25,6 +25,7 @@ class LocaliseBamBai(UnixTool):
                 "bam_all",
                 Filename(prefix=InputSelector("bam"), extension="*"),
                 position=2,
+                shell_quote=False,
             ),
             ToolInput(
                 "bam_output",
