@@ -1,7 +1,6 @@
 from abc import ABC
 from typing import List, Any, Dict
 
-from janis_core import CpuSelector
 from janis_core import (
     ToolOutput,
     ToolInput,
@@ -13,6 +12,8 @@ from janis_core import (
     CaptureType,
     StringFormatter,
     ToolMetadata,
+    CpuSelector,
+    MemorySelector,
 )
 from janis_core import get_value_for_hints_and_ordered_resource_tuple
 from janis_unix import Tsv
@@ -222,16 +223,6 @@ class StrelkaGermlineBase(IlluminaToolBase, ABC):
                 shell_quote=False,
                 doc="(-q QUEUE) specify scheduler queue name",
             ),
-            ToolInput(
-                "memGb",
-                String(optional=True),
-                prefix="--memGb",
-                position=3,
-                shell_quote=False,
-                doc=" (-g MEMGB) gigabytes of memory available to run workflow "
-                "-- only meaningful in local mode, must be an integer (default: Estimate the total "
-                "memory for this node for local mode, 'unlimited' for sge mode)",
-            ),
             # ToolInput("dryRun", Boolean(optional=True), prefix="--dryRun", position=3, shell_quote=False,
             #           doc="dryRun (-d,) workflow code without actually running command-tasks"),
             ToolInput(
@@ -310,6 +301,15 @@ class StrelkaGermlineBase(IlluminaToolBase, ABC):
                 shell_quote=False,
                 doc=" (-j JOBS)  number of jobs, must be an integer or 'unlimited' "
                 "(default: Estimate total cores on this node for local mode, 128 for sge mode)",
+            ),
+            ToolArgument(
+                MemorySelector(),
+                prefix="--memGb",
+                position=3,
+                shell_quote=False,
+                doc=" (-g MEMGB) gigabytes of memory available to run workflow "
+                "-- only meaningful in local mode, must be an integer (default: Estimate the total "
+                "memory for this node for local mode, 'unlimited' for sge mode)",
             ),
         ]
 

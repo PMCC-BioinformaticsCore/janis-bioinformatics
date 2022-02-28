@@ -11,6 +11,7 @@ from janis_core import (
     Filename,
     InputSelector,
     Int,
+    MemorySelector,
     String,
     StringFormatter,
     ToolArgument,
@@ -143,6 +144,15 @@ class MantaBase(IlluminaToolBase, ABC):
                 prefix="-j",
                 doc="(-j) number of jobs, must be an integer or 'unlimited' "
                 "(default: Estimate total cores on this node for local mode, 128 for sge mode)",
+            ),
+            ToolArgument(
+                MemorySelector(),
+                prefix="--memGb",
+                position=3,
+                shell_quote=False,
+                doc=" (-g MEMGB) gigabytes of memory available to run workflow "
+                "-- only meaningful in local mode, must be an integer (default: Estimate the total "
+                "memory for this node for local mode, 'unlimited' for sge mode)",
             ),
         ]
 
@@ -299,16 +309,6 @@ of capabilities and limitations.""".strip(),
             position=3,
             shell_quote=False,
             doc="(-q) specify scheduler queue name",
-        ),
-        ToolInput(
-            "memgb",
-            Int(optional=True),
-            prefix="--memGb",
-            position=3,
-            shell_quote=False,
-            doc="(-g) gigabytes of memory available to run workflow -- only meaningful in local mode, "
-            "must be an integer (default: Estimate the total memory for this node for local  mode, "
-            "'unlimited' for sge mode)",
         ),
         # ToolInput("dryRun", Boolean(optional=True), prefix="--dryRun", position=3, shell_quote=False,
         #           doc="(-d) dryRun workflow code without actually running command - tasks"),
