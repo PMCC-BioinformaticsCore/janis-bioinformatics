@@ -13,7 +13,7 @@ from janis_core import (
     InputSelector,
 )
 from janis_unix import TextFile
-from janis_bioinformatics.data_types.bam import BamBai
+from janis_bioinformatics.data_types import BamBai, FastaWithDict
 from janis_bioinformatics.tools.samtools.samtoolstoolbase import SamToolsToolBase
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 from janis_core import ToolMetadata
@@ -199,7 +199,7 @@ Note that there are two orthogonal ways to specify locations in the input file; 
         ),
         ToolInput(
             "reference",
-            File(optional=True),
+            FastaWithDict(optional=True),
             prefix="--reference",
             doc="Reference sequence FASTA FILE [null]",
         ),
