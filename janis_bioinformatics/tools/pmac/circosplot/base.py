@@ -67,7 +67,8 @@ $normal_name $facets_file $sv_file $out_dir $manta_filter[optional]
             ToolInput("facets_file", File, position=3),
             ToolInput("sv_file", CompressedVcf, position=4),
             ToolInput("output_dir", String(optional=True), default=".", position=5),
-            ToolInput("manta_filter", Int(optional=True), position=6),
+            ToolInput("genome", String, position=6),
+            ToolInput("manta_filter", Int(optional=True), position=7),
         ]
 
     def outputs(self) -> List[ToolOutput]:

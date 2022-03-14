@@ -14,6 +14,8 @@ from janis_core import (
     Float,
     Stdout,
     CaptureType,
+    Filename,
+    InputSelector,
 )
 from janis_bioinformatics.data_types import Bam, Bed
 from janis_unix import TextFile
@@ -84,10 +86,11 @@ class BedToolsCoverageBedBase(BedToolsToolBase, ABC):
                 prefix="-mean",
                 doc="Report the mean depth of all positions in each A feature.",
             ),
+            ToolInput("outputFilename", Filename, prefix=">", position=10),
         ]
 
     def outputs(self):
-        return [ToolOutput("out", Stdout(TextFile))]
+        return [ToolOutput("out", TextFile, selector=InputSelector("outputFilename"))]
 
     additional_inputs = [
         ToolInput(

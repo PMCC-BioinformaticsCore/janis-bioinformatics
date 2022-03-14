@@ -13,6 +13,8 @@ from janis_core import (
     Float,
     Stdout,
     CaptureType,
+    Filename,
+    InputSelector,
 )
 from janis_bioinformatics.data_types import Vcf, CompressedVcf
 from ..bcftoolstoolbase import BcfToolsToolBase
@@ -88,10 +90,16 @@ class BcfToolsViewBase(BcfToolsToolBase, ABC):
         return 8
 
     def inputs(self) -> List[ToolInput]:
-        return [ToolInput("file", CompressedVcf(), position=2), *self.additional_inputs]
+        return [
+            ToolInput("file", CompressedVcf(), position=2),
+            ToolInput("outputFilename", Filename, prefix=">", position=5)
+            * self.additional_inputs,
+        ]
 
     def outputs(self) -> List[ToolOutput]:
-        return [ToolOutput("out", Stdout(CompressedVcf()))]
+        return [
+            ToolOutput("out", CompressedVcf, selector=InputSelector("outputFilename"))
+        ]
 
     def arguments(self):
         return [

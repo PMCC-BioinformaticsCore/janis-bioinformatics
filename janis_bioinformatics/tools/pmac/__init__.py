@@ -24,3 +24,6 @@ from .generateintervalsbychromosome.generateintervalsbychromosome import (
 from .circosplot.versions import *
 from .generatemantaconfig import GenerateMantaConfig
 from .gatherfilesformultiqc import GatherFilesForMultiqc
+from .localisebambai import LocaliseBamBai
+from .localisefastawithdict import LocaliseFastaWithDict
+from .localisefastqgzpair import LocaliseFastqGzPair
