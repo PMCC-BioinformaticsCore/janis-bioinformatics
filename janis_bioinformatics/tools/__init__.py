@@ -26,6 +26,7 @@ from janis_bioinformatics.tools import (
     oshlack,
     papenfuss,
     pmac,
+    rnaseqqc,
     samtools,
     sequenza,
     star,

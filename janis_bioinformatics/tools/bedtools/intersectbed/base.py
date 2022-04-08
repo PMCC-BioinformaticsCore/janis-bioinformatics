@@ -14,6 +14,8 @@ from janis_core import (
     Float,
     Stdout,
     CaptureType,
+    Filename,
+    InputSelector,
 )
 from janis_bioinformatics.data_types import Bam, Bed
 from ..bedtoolstoolbase import BedToolsToolBase
@@ -58,10 +60,11 @@ class BedToolsIntersectBedBase(BedToolsToolBase, ABC):
                 prefix="-b",
                 doc="input file b: only bed is supported at the moment. May be followed with multiple databases and/or  wildcard (*) character(s). ",
             ),
+            ToolInput("outputFilename", Filename, prefix=">", position=10),
         ]
 
     def outputs(self):
-        return [ToolOutput("out", Stdout(Bam))]
+        return [ToolOutput("out", Bam, selector=InputSelector("outputFilename"))]
 
     additional_inputs = [
         ToolInput(

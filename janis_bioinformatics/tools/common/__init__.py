@@ -10,4 +10,4 @@ from .splitmultiallele_normalistvcf import SplitMultiAlleleNormaliseVcf
 from .filtervardictsomaticvcf import FilterVardictSomaticVcf
 from .gatkbasecalbam import GATKBaseRecalBQSRWorkflow_4_1_3
 from .gatkbasecalbam_4_1_2 import GATKBaseRecalBQSRWorkflow_4_1_2
-from .facetsWorkflow import FacestWorkflow
+from .facetsWorkflow import FacetsWorkflow

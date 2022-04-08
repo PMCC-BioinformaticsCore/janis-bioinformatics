@@ -102,7 +102,7 @@ class RefilterStrelka2CallsBase(BioinformaticsTool, ABC):
             ToolInput(
                 tag="EVS",
                 input_type=Int(),
-                default=10,
+                default=20,
                 prefix="--evs",
                 doc="minimum phred scaled evidence for a variant to be accepted (default: 20)",
             ),

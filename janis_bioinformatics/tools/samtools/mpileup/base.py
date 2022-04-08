@@ -10,13 +10,10 @@ from janis_core import (
     String,
     Boolean,
     ToolOutput,
-    Array,
     InputSelector,
-    WildcardSelector,
-    Stdout,
 )
 from janis_unix import TextFile
-from janis_bioinformatics.data_types.bam import BamBai
+from janis_bioinformatics.data_types import BamBai, FastaWithDict
 from janis_bioinformatics.tools.samtools.samtoolstoolbase import SamToolsToolBase
 from janis_bioinformatics.tools.bioinformaticstoolbase import BioinformaticsTool
 from janis_core import ToolMetadata
@@ -42,7 +39,7 @@ class SamToolsMpileupBase(SamToolsToolBase, ABC):
         ]
 
     def outputs(self):
-        return [ToolOutput("out", Stdout(TextFile))]
+        return [ToolOutput("out", TextFile, glob=InputSelector("outputFilename"))]
 
     def friendly_name(self):
         return "SamTools: Mpileup"
@@ -160,6 +157,12 @@ Note that there are two orthogonal ways to specify locations in the input file; 
             doc="filter flags: skip reads with mask bits set [UNMAP,SECONDARY,QCFAIL,DUP]",
         ),
         ToolInput(
+            "outputFilename",
+            Filename(extension=".txt"),
+            prefix="--output",
+            doc="write output to FILE [standard output]",
+        ),
+        ToolInput(
             "ignoreOverlaps",
             Boolean(optional=True),
             prefix="--ignore-overlaps",
@@ -196,7 +199,7 @@ Note that there are two orthogonal ways to specify locations in the input file; 
         ),
         ToolInput(
             "reference",
-            File(optional=True),
+            FastaWithDict(optional=True),
             prefix="--reference",
             doc="Reference sequence FASTA FILE [null]",
         ),

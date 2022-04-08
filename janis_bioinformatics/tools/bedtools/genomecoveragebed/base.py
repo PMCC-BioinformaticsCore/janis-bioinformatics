@@ -16,6 +16,8 @@ from janis_core import (
     Float,
     Stdout,
     CaptureType,
+    InputSelector,
+    Filename,
 )
 from janis_core.tool.test_classes import (
     TTestCase,
@@ -81,10 +83,11 @@ class BedToolsGenomeCoverageBedBase(BedToolsToolBase, ABC):
                 prefix="-g",
                 doc="Genome file. The genome file should tab delimited and structured as follows: <chromName><TAB><chromSize>.",
             ),
+            ToolInput("outputFilename", Filename, prefix=">", position=10),
         ]
 
     def outputs(self):
-        return [ToolOutput("out", Stdout(TextFile))]
+        return [ToolOutput("out", TextFile, selector=InputSelector("outputFilename"))]
 
     additional_inputs = [
         ToolInput(
