@@ -45,10 +45,11 @@ class SamToolsFlagstatBase(SamToolsToolBase, ABC):
                 prefix="-@",
                 doc="Number of BAM compression threads to use in addition to main thread [0].",
             ),
+            ToolInput("outputFilename", Filename, prefix=">", position=11),
         ]
 
     def outputs(self):
-        return [ToolOutput("out", Stdout(TextFile))]
+        return [ToolOutput("out", TextFile, selector=InputSelector("outputFilename"))]
 
     def friendly_name(self):
         return "SamTools: Flagstat"
