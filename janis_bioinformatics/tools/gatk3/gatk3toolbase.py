@@ -36,7 +36,10 @@ class GATK3ToolBase(BioinformaticsTool, ABC):
     def arguments(self):
         return [
             ToolArgument(
-                StringFormatter("-Xmx{memory}G", memory=MemorySelector() * 3 / 4,),
+                StringFormatter(
+                    "-Xmx{memory}G",
+                    memory=MemorySelector() * 3 / 4,
+                ),
                 position=-3,
                 shell_quote=False,
             ),

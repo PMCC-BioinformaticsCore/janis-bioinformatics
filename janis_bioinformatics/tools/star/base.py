@@ -472,7 +472,7 @@ class StarBase(BioinformaticsTool, ABC):
             ),
             ToolInput(
                 "outSAMattributes",
-                String(optional=True),
+                Array(String(), optional=True),
                 prefix="--outSAMattributes",
                 doc="(default: Standard) a string of desired SAM attributes, in the order desired for the output SAM NH HI AS nM NM MD jM jI XS MC ch ... any combination in any order None",
             ),
@@ -526,7 +526,9 @@ class StarBase(BioinformaticsTool, ABC):
             ),
             ToolInput(
                 "outSAMattrRGline",
-                String(optional=True),
+                Array(String(), optional=True),
+                prefix_applies_to_all_elements=False,
+                separator=" ",
                 prefix="--outSAMattrRGline",
                 doc='(default: -) SAM/BAM read group line. The first word contains the read group identifier and must start with "ID:", e.g. --outSAMattrRGline ID:xxx CN:yy "DS:z z z".     xxx will be added as RG tag to each output alignment. Any spaces in the tag values have to be double quoted.     Comma separated RG lines correspons to different (comma separated) input files in --readFilesIn. Commas have to be surrounded by spaces, e.g.     --outSAMattrRGline ID:xxx , ID:zzz "DS:z z" , ID:yyy DS:yyyy',
             ),
@@ -1060,7 +1062,7 @@ class StarBase(BioinformaticsTool, ABC):
             ),
             ToolInput(
                 "quantMode",
-                String(optional=True),
+                Array(String(), optional=True),
                 prefix="--quantMode",
                 doc="(default: -) types of quantification requested     -        ... prohibit single-end alignments",
             ),
