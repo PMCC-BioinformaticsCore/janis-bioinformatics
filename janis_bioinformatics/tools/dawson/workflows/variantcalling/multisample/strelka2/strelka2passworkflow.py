@@ -3,7 +3,7 @@ from datetime import date
 from janis_bioinformatics.data_types import BedTabix, FastaFai
 from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.dawson import (
-    RefilterStrelka2Calls_0_1 as RefilterStrelka2Calls,
+    RefilterStrelka2CallsLatest as RefilterStrelka2Calls,
 )
 
 from janis_bioinformatics.tools.htslib import BGZipLatest as BGZip, TabixLatest as Tabix

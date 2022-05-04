@@ -29,7 +29,7 @@ from janis_bioinformatics.tools.facets import (
 )
 
 
-class FacestWorkflow(BioinformaticsWorkflow):
+class FacetsWorkflow(BioinformaticsWorkflow):
     def id(self) -> str:
         return "FacetsWorkflow"
 
@@ -205,4 +205,4 @@ class FacestWorkflow(BioinformaticsWorkflow):
 
 
 if __name__ == "__main__":
-    FacestWorkflow().translate("wdl")
+    FacetsWorkflow().translate("wdl")

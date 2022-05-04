@@ -138,14 +138,14 @@ class CutAdaptBase_2(BioinformaticsTool):
         ),
         ToolInput(
             tag="front",
-            input_type=String(optional=True),
+            input_type=Array(String(), optional=True),
             prefix="--front",
             separate_value_from_prefix=True,
             doc="(-g)  Sequence of an adapter ligated to the 5' end (paired data: of the first read). The adapter and any preceding bases are trimmed. Partial matches at the 5' end are allowed. If a '^' character is prepended ('anchoring'), the adapter is only found if it is a prefix of the read.",
         ),
         ToolInput(
             tag="anywhere",
-            input_type=String(optional=True),
+            input_type=Array(String(), optional=True),
             prefix="--anywhere",
             separate_value_from_prefix=True,
             doc="(-b)  Sequence of an adapter that may be ligated to the 5' or 3' end (paired data: of the first read). Both types of matches as described under -a und -g are allowed. If the first base of the read is part of the match, the behavior is as with -g, otherwise as with -a. This option is mostly for rescuing failed library preparations - do not use if you know which end your adapter was ligated to!",
@@ -375,7 +375,7 @@ class CutAdaptBase_2(BioinformaticsTool):
             doc=" Write reads that do not contain any adapter to FILE. Default: output to same file as trimmed reads",
         ),
         ToolInput(
-            tag="removeMiddle3Adapter",
+            tag="adapterSecondRead",
             input_type=Array(String, optional=True),
             prefix="-A",
             separate_value_from_prefix=True,
@@ -383,15 +383,15 @@ class CutAdaptBase_2(BioinformaticsTool):
             doc="3' adapter to be removed from second read in a pair.",
         ),
         ToolInput(
-            tag="removeMiddle5Adapter",
-            input_type=String(optional=True),
+            tag="frontAdapterSecondRead",
+            input_type=Array(String, optional=True),
             prefix="-G",
             separate_value_from_prefix=True,
             doc="5' adapter to be removed from second read in a pair.",
         ),
         ToolInput(
-            tag="removeMiddleBothAdapter",
-            input_type=String(optional=True),
+            tag="anywhereAdapterSecondRead",
+            input_type=Array(String, optional=True),
             prefix="-B",
             separate_value_from_prefix=True,
             doc="5'/3 adapter to be removed from second read in a pair.",
@@ -405,7 +405,7 @@ class CutAdaptBase_2(BioinformaticsTool):
         ),
         ToolInput(
             tag="pairAdapters",
-            input_type=String(optional=True),
+            input_type=Boolean(optional=True),
             prefix="--pair-adapters",
             separate_value_from_prefix=True,
             doc="Treat adapters given with -a/-A etc. as pairs. Either both or none are removed from each read pair.",
@@ -449,9 +449,9 @@ class CutAdaptBase_2(BioinformaticsTool):
 
     def bind_metadata(self):
         return ToolMetadata(
-            contributors=["Michael Franklin"],
+            contributors=["Michael Franklin", "Jiaan Yu"],
             dateCreated=datetime(2019, 3, 21),
-            dateUpdated=datetime(2019, 7, 23),
+            dateUpdated=datetime(2021, 11, 3),
             institution=None,
             doi="DOI:10.14806/ej.17.1.200",
             citation="Martin, Marcel. “Cutadapt Removes Adapter Sequences from High-Throughput Sequencing Reads.” "

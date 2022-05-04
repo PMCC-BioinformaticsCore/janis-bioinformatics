@@ -1,6 +1,9 @@
 from .combinevariants.versions import *
 from .trimiupac.versions import *
+
+# Keep the old tool ParseFastqcAdaptors from breaking the other pipelines
 from .parsefastqc.v0_1_0 import ParseFastqcAdaptors
+from .parsefastqc.v0_2_0 import ParseFastqcAdapters
 from .performancesummary.versions import *
 from .genecovpersample.versions import *
 from .addsymtodepthofcoverage.versions import *
@@ -18,4 +21,9 @@ from .generatebedtoolscoveragegenomefile import GenerateGenomeFileForBedtoolsCov
 from .generateintervalsbychromosome.generateintervalsbychromosome import (
     GenerateIntervalsByChromosome,
 )
+from .circosplot.versions import *
 from .generatemantaconfig import GenerateMantaConfig
+from .gatherfilesformultiqc import GatherFilesForMultiqc
+from .localisebambai import LocaliseBamBai
+from .localisefastawithdict import LocaliseFastaWithDict
+from .localisefastqgzpair import LocaliseFastqGzPair
