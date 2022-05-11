@@ -472,7 +472,7 @@ class StarBase(BioinformaticsTool, ABC):
             ),
             ToolInput(
                 "outSAMattributes",
-                String(optional=True),
+                Array(String(), optional=True),
                 prefix="--outSAMattributes",
                 doc="(default: Standard) a string of desired SAM attributes, in the order desired for the output SAM NH HI AS nM NM MD jM jI XS MC ch ... any combination in any order None",
             ),
@@ -1062,7 +1062,7 @@ class StarBase(BioinformaticsTool, ABC):
             ),
             ToolInput(
                 "quantMode",
-                String(optional=True),
+                Array(String(), optional=True),
                 prefix="--quantMode",
                 doc="(default: -) types of quantification requested     -        ... prohibit single-end alignments",
             ),

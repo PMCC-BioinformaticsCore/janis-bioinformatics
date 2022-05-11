@@ -3,7 +3,7 @@ from typing import List
 
 from janis_core import File, ToolOutput, InputSelector, WildcardSelector
 
-from janis_bioinformatics.data_types import Bam
+from janis_bioinformatics.data_types import Bam, Sam
 
 from janis_bioinformatics.tools.star.base import StarBase
 
@@ -20,6 +20,7 @@ class StarAlignReadsBase(StarBase, ABC):
 
     def outputs(self) -> List[ToolOutput]:
         return [
+            # Bam files
             ToolOutput(
                 "out_unsorted_bam",
                 Bam(optional=True),
