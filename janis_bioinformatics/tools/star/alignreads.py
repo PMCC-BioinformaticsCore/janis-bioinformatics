@@ -33,6 +33,24 @@ class StarAlignReadsBase(StarBase, ABC):
                 + "Aligned.sortedByCoord.out.bam",
             ),
             ToolOutput(
+                "out_transcriptome_bam",
+                Bam(optional=True),
+                glob=InputSelector("outFileNamePrefix")
+                + "Aligned.toTranscriptome.out.bam",
+            ),
+            # Chimeric alignments files
+            ToolOutput(
+                "out_chimeric_out_junction",
+                File(optional=True),
+                glob=InputSelector("outFileNamePrefix") + "Chimeric.out.junction",
+            ),
+            ToolOutput(
+                "out_chimeric_out_sam",
+                Sam(optional=True),
+                glob=InputSelector("outFileNamePrefix") + "Chimeric.out.sam",
+            ),
+            # Gene counts
+            ToolOutput(
                 "out_gene_counts",
                 File(optional=True),
                 glob=InputSelector("outFileNamePrefix") + "ReadsPerGene.out.tab",
