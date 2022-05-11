@@ -84,7 +84,7 @@ class PeterMacUtils_0_1_2(CommandTool, ABC):
         return "Peter MacCallum Cancer Centre"
 
     def container(self):
-        return "michaelfranklin/pmacutil:0.1.2"
+        return "rlupat/pmacutil:latest"
 
     def version(self):
         return "0.1.2"
@@ -95,7 +95,7 @@ class PeterMacUtils_dev(CommandTool, ABC):
         return "Peter MacCallum Cancer Centre"
 
     def container(self):
-        return "jyu/pmacutil:dev"
+        return "rlupat/pmacutil:latest"
 
     def version(self):
         return "dev"

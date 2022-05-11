@@ -13,6 +13,7 @@ from janis_core import (
     Filename,
     InputSelector,
     Int,
+    MemorySelector,
     String,
     StringFormatter,
     ToolArgument,
@@ -89,6 +90,15 @@ class StrelkaSomaticBase(IlluminaToolBase, ABC):
                 shell_quote=False,
                 doc=" (-j JOBS)  number of jobs, must be an integer or 'unlimited' "
                 "(default: Estimate total cores on this node for local mode, 128 for sge mode)",
+            ),
+            ToolArgument(
+                MemorySelector(),
+                prefix="--memGb",
+                position=3,
+                shell_quote=False,
+                doc=" (-g MEMGB) gigabytes of memory available to run workflow "
+                "-- only meaningful in local mode, must be an integer (default: Estimate the total "
+                "memory for this node for local mode, 'unlimited' for sge mode)",
             ),
         ]
 
@@ -304,16 +314,6 @@ class StrelkaSomaticBase(IlluminaToolBase, ABC):
                 position=3,
                 shell_quote=False,
                 doc="(-q QUEUE) specify scheduler queue name",
-            ),
-            ToolInput(
-                "memGb",
-                String(optional=True),
-                prefix="--memGb",
-                position=3,
-                shell_quote=False,
-                doc=" (-g MEMGB) gigabytes of memory available to run workflow "
-                "-- only meaningful in local mode, must be an integer (default: Estimate the total "
-                "memory for this node for local mode, 'unlimited' for sge mode)",
             ),
             ToolInput(
                 "quiet",

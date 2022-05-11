@@ -5,7 +5,9 @@ from janis_bioinformatics.tools import BioinformaticsWorkflow
 from janis_bioinformatics.tools.bcftools import BcfToolsNormLatest as BcfToolsNorm
 from janis_bioinformatics.tools.dawson import (
     CallSomaticFreeBayes_0_1 as CallSomaticFreeBayes,
+    FixUpFreeBayesMNPs_0_1 as FixUpFreeBayesMNPs,
 )
+
 from janis_bioinformatics.tools.dawson.createcallregions.base import CreateCallRegions
 
 from janis_bioinformatics.tools.htslib import BGZipLatest as BGZip, TabixLatest as Tabix
@@ -15,7 +17,6 @@ from janis_bioinformatics.tools.vcflib import (
     VcfFixUpLatest as VcfFixUp,
     VcfStreamSortLatest as VcfStreamSort,
     VcfUniqAllelesLatest as VcfUniqAlleles,
-    VcfUniqLatest as VcfUniq,
 )
 from janis_core import Array, Int, String
 
@@ -36,7 +37,7 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
     def bind_metadata(self):
         self.metadata.version = "0.1.1"
         self.metadata.dateCreated = date(2019, 10, 18)
-        self.metadata.dateUpdated = date(2020, 12, 10)
+        self.metadata.dateUpdated = date(2021, 6, 4)
 
         self.metadata.contributors = ["Sebastian Hollizeck"]
         self.metadata.keywords = [
@@ -217,16 +218,13 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
         self.step("uniqueAlleles", VcfUniqAlleles(vcf=self.normalizeSomatic2.out))
 
         self.step(
-            "sortFinal", VcfStreamSort(vcf=self.uniqueAlleles.out, inMemoryFlag=True)
+            "fixUpFreeBayesMNPs",
+            FixUpFreeBayesMNPs(
+                vcf=self.uniqueAlleles.out,
+            ),
         )
 
-        self.step("uniqVcf", VcfUniq(vcf=self.sortFinal.out))
-
-        self.step("compressFinal", BGZip(file=self.uniqVcf.out))
-
-        self.step("indexFinal", Tabix(inp=self.compressFinal.out))
-
-        self.output("somaticOutVcf", source=self.indexFinal)
+        self.output("somaticOutVcf", source=self.fixUpFreeBayesMNPs)
 
 
 if __name__ == "__main__":
