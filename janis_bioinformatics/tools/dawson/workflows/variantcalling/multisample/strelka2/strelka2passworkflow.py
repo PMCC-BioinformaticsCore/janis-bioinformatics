@@ -146,7 +146,6 @@ class Strelka2PassWorkflow(BioinformaticsWorkflow):
             "refilterSNVs",
             RefilterStrelka2Calls(
                 inputFiles=self.step2.snvs,
-                sampleNames=self.sampleNames,
                 minAD=self.minAD,
             ),
         )
@@ -157,7 +156,6 @@ class Strelka2PassWorkflow(BioinformaticsWorkflow):
             "refilterINDELs",
             RefilterStrelka2Calls(
                 inputFiles=self.step2.indels,
-                sampleNames=self.sampleNames,
                 minAD=self.minAD,
             ),
         )
