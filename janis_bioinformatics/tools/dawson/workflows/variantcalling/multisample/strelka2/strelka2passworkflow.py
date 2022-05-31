@@ -27,7 +27,7 @@ class Strelka2PassWorkflow(BioinformaticsWorkflow):
     def bind_metadata(self):
         self.metadata.version = "0.2"
         self.metadata.dateCreated = date(2019, 10, 11)
-        self.metadata.dateUpdated = date(2020, 12, 10)
+        self.metadata.dateUpdated = date(2022, 05, 31)
 
         self.metadata.contributors = ["Sebastian Hollizeck"]
         self.metadata.keywords = [
