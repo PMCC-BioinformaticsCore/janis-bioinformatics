@@ -46,7 +46,7 @@ class PerformanceSummaryBase(BioinformaticsTool, ABC):
             ),
             ToolInput(
                 "outputPrefix",
-                Filename(extension=".csv"),
+                Filename(),
                 prefix="-o",
                 doc="prefix of output summary csv",
             ),
