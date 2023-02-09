@@ -98,7 +98,13 @@ class GatkSomaticVariantCaller_4_1_3(BioinformaticsWorkflow):
         )
 
         # normalise and filter "PASS" variants
-        self.step("uncompressvcf", UncompressArchive(file=self.filtermutect2calls.out))
+        self.step(
+            "uncompressvcf", 
+            UncompressArchive(
+                file=self.filtermutect2calls.out,
+                force=True
+            )
+        )
         self.step(
             "splitnormalisevcf",
             SplitMultiAllele(

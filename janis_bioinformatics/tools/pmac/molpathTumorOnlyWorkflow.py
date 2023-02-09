@@ -213,7 +213,7 @@ class MolpathTumorOnly_1_0_0(BioinformaticsWorkflow):
         )
         self.step("compressvcf", BGZip_1_9(file=self.combinevariants.out))
         self.step("sortvcf", BcfToolsSort_1_9(vcf=self.compressvcf.out))
-        self.step("uncompressvcf", UncompressArchive(file=self.sortvcf.out))
+        self.step("uncompressvcf", UncompressArchive(file=self.sortvcf.out, force=True))
         # addbamstats
         self.step(
             "addbamstats",
