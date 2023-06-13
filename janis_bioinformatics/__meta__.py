@@ -1,2 +1,2 @@
-__version__ = "v0.11.4"
+__version__ = "v0.12.1"
 description = "Bioinformatics tools for Janis; the Pipeline creation helper"

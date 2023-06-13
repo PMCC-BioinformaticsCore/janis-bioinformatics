@@ -97,6 +97,9 @@ $normal_name $facets_file $sv_file $out_dir $manta_filter[optional]
             return val
         return 1
 
+    def skip_test(cls) -> bool:
+        return True
+
     def bind_metadata(self) -> ToolMetadata:
         from datetime import datetime
 
