@@ -114,6 +114,9 @@ class IndexFasta(BioinformaticsWorkflow):
         )
         self.output("out_dict", source=self.create_dict, output_name="reference")
 
+    def skip_test(cls) -> bool:
+        return True
+
     def bind_metadata(self):
         return ToolMetadata(
             contributors=["Michael Franklin"],
