@@ -8,7 +8,7 @@ class Strelka2PassWorkflowCram(Strelka2PassWorkflow):
     def friendly_name(self):
         return "Strelka 2Pass analysis (CRAM)"
 
-    # this is a way to get the tool without spagetti code in bam and cram format
+    # this is a way to get the tool without spaghetti code in bam and cram format
     def getStep1Tool(self):
         from .steps.strelka2passanalysisstep1_cram import (
             Strelka2PassWorkflowStep1Cram as Strelka2PassWorkflowStep1,

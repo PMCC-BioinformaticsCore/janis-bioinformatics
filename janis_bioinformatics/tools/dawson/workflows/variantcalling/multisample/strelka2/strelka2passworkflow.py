@@ -48,7 +48,7 @@ class Strelka2PassWorkflow(BioinformaticsWorkflow):
          * output resuults
                 """.strip()
 
-    # this is a way to get the tool without spagetti code in bam and cram format
+    # this is a way to get the tool without spaghetti code in bam and cram format
     def getStep1Tool(self):
         from .steps.strelka2passanalysisstep1 import Strelka2PassWorkflowStep1
 

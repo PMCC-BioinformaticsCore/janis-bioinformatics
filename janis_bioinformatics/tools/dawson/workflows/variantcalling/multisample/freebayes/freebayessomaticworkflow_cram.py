@@ -8,7 +8,7 @@ class FreeBayesSomaticWorkflowCram(FreeBayesSomaticWorkflow):
     def friendly_name(self):
         return "Freebayes somatic workflow (CRAM)"
 
-    # this is a way to get the tool without spagetti code in bam and cram format
+    # this is a way to get the tool without spaghetti code in bam and cram format
     def getFreebayesTool(self):
         from janis_bioinformatics.tools.freebayes.versions import (
             FreeBayesCram_1_3 as freebayes,

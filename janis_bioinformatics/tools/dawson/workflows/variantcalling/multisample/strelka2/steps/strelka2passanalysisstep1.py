@@ -45,7 +45,7 @@ class Strelka2PassWorkflowStep1(BioinformaticsWorkflow):
         It also normalises and indexes the output vcfs
                 """.strip()
 
-    # this is a way to get the tool without spagetti code in bam and cram format
+    # this is a way to get the tool without spaghetti code in bam and cram format
     def getMantaTool(self):
         from janis_bioinformatics.tools.illumina.manta.manta import Manta_1_5_0 as Manta
 

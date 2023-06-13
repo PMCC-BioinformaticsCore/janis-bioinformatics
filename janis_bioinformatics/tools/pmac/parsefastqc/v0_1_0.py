@@ -81,7 +81,7 @@ class ParseFastqcAdaptors(BioinformaticsPythonTool):
                     if not st or st.startswith("#"):
                         continue
 
-                    # In reality, the format is $name[\t+]$seqence (more than one tab)
+                    # In reality, the format is $name[\t+]$sequence (more than one tab)
                     # so we'll just split on a tab, and remove all the empty elements.
                     split = [f for f in st.split("\t") if bool(f) and len(f) > 0]
 

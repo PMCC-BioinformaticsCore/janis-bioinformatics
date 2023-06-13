@@ -8,7 +8,7 @@ class Mutect2JointSomaticWorkflowCram(Mutect2JointSomaticWorkflow):
     def friendly_name(self):
         return "Mutect2 joint somatic variant calling workflow (CRAM)"
 
-    # this is a way to get the tool without spagetti code in bam and cram format
+    # this is a way to get the tool without spaghetti code in bam and cram format
     def getMutect2Tool(self):
         from janis_bioinformatics.tools.gatk4.mutect2.versions import (
             GatkMutect2Cram_4_1_8 as Mutect2,

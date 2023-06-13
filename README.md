@@ -24,7 +24,7 @@ Janis is opinionated about the `.bai` index for a Bam. Specifically we use the p
 - `mysample.bam`
 - `mysample.bam.bai`
 
-If you tool expects, or creates a file in the other common format (`.bam` and `.bai`), you can use the `secondaries_present_as` attribute on a:
+If your tool expects, or creates a file in the other common format (`.bam` and `.bai`), you can use the `secondaries_present_as` attribute on a:
 
 - [`ToolInput`](https://janis.readthedocs.io/en/latest/references/commandtool.html#tool-input) to localise the index using a specific format (see: )
 - [`ToolOutput`](https://janis.readthedocs.io/en/latest/references/commandtool.html#tool-output) to prepare your input for .

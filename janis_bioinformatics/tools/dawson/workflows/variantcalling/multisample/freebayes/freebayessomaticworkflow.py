@@ -53,7 +53,7 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
         This allows a joint somatic genotyping of multiple samples of the same individual.
                 """.strip()
 
-    # this is a way to get the tool without spagetti code in bam and cram format
+    # this is a way to get the tool without spaghetti code in bam and cram format
     def getFreebayesTool(self):
         from janis_bioinformatics.tools.freebayes.versions import (
             FreeBayes_1_3 as freebayes,
@@ -179,7 +179,7 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
             VcfStreamSort(vcf=self.combineRegions.out, inMemoryFlag=True),
         )
 
-        # no need to compress this here if it leads to problems when we dont have an index for the allelic allelicPrimitves
+        # no need to compress this here if it leads to problems when we dont have an index for the allelic allelicPrimitives
         self.step(
             "normalizeSomatic1",
             BcfToolsNorm(
@@ -191,7 +191,7 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
         )
 
         self.step(
-            "allelicPrimitves",
+            "allelicPrimitives",
             VcfAllelicPrimitives(
                 vcf=self.normalizeSomatic1.out,
                 tagParsed="DECOMPOSED",
@@ -199,7 +199,7 @@ class FreeBayesSomaticWorkflow(BioinformaticsWorkflow):
             ),
         )
 
-        self.step("fixSplitLines", VcfFixUp(vcf=self.allelicPrimitves.out))
+        self.step("fixSplitLines", VcfFixUp(vcf=self.allelicPrimitives.out))
 
         self.step(
             "sortSomatic2", VcfStreamSort(vcf=self.fixSplitLines.out, inMemoryFlag=True)

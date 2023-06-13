@@ -182,7 +182,7 @@ class BedToolsIntersectBedBase(BedToolsToolBase, ABC):
             prefix="-sorted",
             doc="Use the 'chromsweep' algorithm for sorted (-k1,1 -k2,2n) input.",
         ),
-        # ToolInput("names", Arrary(list), prefix="-names", doc="When using multiple databases, provide an alias for each that will appear instead of a fileId when also printing the DB record."),
+        # ToolInput("names", Array(list), prefix="-names", doc="When using multiple databases, provide an alias for each that will appear instead of a fileId when also printing the DB record."),
         # ToolInput("fileNames", Array(list), prefix="-filenames", doc="When using multiple databases, show each complete filename instead of a fileId when also printing the DB record."),
         ToolInput(
             "sortOut",

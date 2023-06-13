@@ -2,7 +2,7 @@ from janis_bioinformatics.data_types import Bam, BamBai, Cram, CramCrai
 from janis_core import Array
 
 
-# function that takes the inputs of a tool and changes every bam type into the respecitve cram type
+# function that takes the inputs of a tool and changes every bam type into the respective cram type
 # while also keeping anything else the same
 def cast_input_bams_to_crams(inputs):
     from copy import deepcopy
