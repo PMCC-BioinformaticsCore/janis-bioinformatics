@@ -85,6 +85,9 @@ class FastqGzPairedEnd(Array):
             hints.append(f"There must be exactly 2 (found {len(meta)}) fastq files")
         return ", ".join(hints)
 
+    def is_paired(self):
+        return True
+
     @classmethod
     def ge(cls, file_paths: str, expected_sizes: List[int]):
         """
@@ -173,6 +176,9 @@ class FastqPairedEnd(Array):
         if len(meta) != 2:
             hints.append(f"There must be exactly 2 (found {len(meta)}) fastq files")
         return ", ".join(hints)
+
+    def is_paired(self):
+        return True
 
 
 FastqGzPair = FastqGzPairedEnd

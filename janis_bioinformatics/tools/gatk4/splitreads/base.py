@@ -1,9 +1,10 @@
 import os
 from datetime import datetime
-from typing import Dict, Any
+from typing import Dict, Any, Union, List
 
 from janis_core import (
     ToolInput,
+    ToolArgument,
     File,
     Boolean,
     String,
@@ -47,6 +48,9 @@ class Gatk4SplitReadsBase(Gatk4ToolBase):
     def gatk_command(cls):
         return "SplitReads"
 
+    def directories_to_create(self) -> Union[str, List[str]]:
+        return [InputSelector("outputFilename")]
+
     def inputs(self):
         return [
             ToolInput(
@@ -85,7 +89,7 @@ class Gatk4SplitReadsBase(Gatk4ToolBase):
             ToolOutput(
                 "out",
                 BamBai,
-                glob=InputSelector("bam").basename(),
+                glob=(InputSelector("outputFilename") + '/' + InputSelector("bam").basename()),
                 doc="Bam",
                 secondaries_present_as={".bai": "^.bai"},
             )
