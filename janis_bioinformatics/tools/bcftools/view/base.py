@@ -92,7 +92,7 @@ class BcfToolsViewBase(BcfToolsToolBase, ABC):
     def inputs(self) -> List[ToolInput]:
         return [
             ToolInput("file", CompressedVcf(), position=2),
-            ToolInput("outputFilename", Filename, prefix=">", position=5)
+            ToolInput("outputFilename", Filename, prefix=">", position=5),
             * self.additional_inputs,
         ]
 
