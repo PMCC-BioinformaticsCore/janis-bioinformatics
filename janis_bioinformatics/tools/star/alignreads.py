@@ -55,27 +55,26 @@ class StarAlignReadsBase(StarBase, ABC):
                 File(optional=True),
                 glob=InputSelector("outFileNamePrefix") + "ReadsPerGene.out.tab",
             ),
-            # Logs
             ToolOutput(
-                "out_sj_out_tab",
+                "SJ_out_tab",
                 File,
                 glob=InputSelector("outFileNamePrefix") + "SJ.out.tab",
                 doc="Each splicing is counted in the numbers of splices, which would correspond to summing the counts in SJ.out.tab.",
             ),
             ToolOutput(
-                "out_log_out",
+                "Log_out",
                 File,
                 glob=InputSelector("outFileNamePrefix") + "Log.out",
                 doc="main log file with a lot of detailed information about the run. This file is most useful for troubleshooting and debugging.",
             ),
             ToolOutput(
-                "out_log_progress_out",
+                "Log_progress_out",
                 File,
                 glob=InputSelector("outFileNamePrefix") + "Log.progress.out",
-                doc="reports job progress statistics, such as the number of processed reads, %\ of mapped reads etc.",
+                doc="reports job progress statistics, such as the number of processed reads, % of mapped reads etc.",
             ),
             ToolOutput(
-                "out_log_final_out",
+                "Log_final_out",
                 File,
                 glob=InputSelector("outFileNamePrefix") + "Log.final.out",
                 doc="summary mapping statistics after mapping job is complete, very useful for quality control.",
