@@ -63,7 +63,7 @@ class GatkGermlineVariantCaller_4_1_3(BioinformaticsWorkflow):
                 pairHmmImplementation="LOGLESS_CACHING",
             ),
         )
-        self.step("uncompressvcf", UncompressArchive(file=self.haplotype_caller.out))
+        self.step("uncompressvcf", UncompressArchive(file=self.haplotype_caller.out, force=True))
         self.step(
             "splitnormalisevcf",
             SplitMultiAllele(
